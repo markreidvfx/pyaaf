@@ -75,22 +75,23 @@ cdef class File(object):
         productUID.Data3 = 0x4d11
         for i,value in enumerate((0xbc,0xd7,0x3a,0x3a,0x42,0x53,0xa2,0xef)):
             productUID.Data4[i] = value
-        
-        # bug productUID goe out of scope somehow and method segfaults
-        # not sure why byt this seem fix it
-        d = dict(productUID)
-        
+
         cdef lib.aafProductIdentification_t productInfo
         
-        productInfo.companyName = <lib.aafCharacter* > toWideString("CompanyName").c_str()
-        productInfo.productName = <lib.aafCharacter* > toWideString("pyaaf").c_str()
-        productInfo.productVersionString = <lib.aafCharacter* > toWideString("0").c_str()
+        company_name = "CompanyName"
+        product_name = "pyaaf"
+        producr_version_string = "0"
+        
+        productInfo.companyName = <lib.aafCharacter* > toWideString(company_name).c_str()
+        productInfo.productName = <lib.aafCharacter* > toWideString(product_name).c_str()
+        productInfo.productVersionString = <lib.aafCharacter* > toWideString(producr_version_string).c_str()
         productInfo.productID = productUID
         
         cdef wstring w_path = toWideString(path)
         cdef lib.aafUID_t kind = lib.kAAFFileKind_Aaf4KBinary
         
         if mode == 'rw':
+            #d = dict(productUID)
             error_check(lib.AAFFileOpenNewModifyEx(w_path.c_str(),
                                                       &kind, 0, &productInfo,
                                                       &self.proxy.ptr))

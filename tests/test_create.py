@@ -95,6 +95,9 @@ class TestFile(unittest.TestCase):
             ret= picture_essence.write(data, 1,'UInt8')
             print 'wrote', ret
         picture_essence.complete_write()
+        f.save()
+        #f.save(output_xml)
+        f.close()
         
     def test_create_sound_essence(self):
         output_aaf = os.path.join(sandbox, 'sound_essence_create.aaf')
@@ -143,7 +146,7 @@ class TestFile(unittest.TestCase):
         sound_essence.complete_write()
 
         f.save()
-        f.save(output_xml)
+        #f.save(output_xml)
         f.close()
         
     def test_create_comp(self):
@@ -194,7 +197,7 @@ class TestFile(unittest.TestCase):
         
         
         f.save()
-        f.save(output_xml)
+        #f.save(output_xml)
         f.close()
 
 
