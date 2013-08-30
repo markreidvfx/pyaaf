@@ -36,6 +36,8 @@ nosetests.xml
 
 # Other
 tests/sandbox
+*~
+docs/_*
 
 # Mac
 .DS_Store
