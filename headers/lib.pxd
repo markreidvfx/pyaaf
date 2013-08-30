@@ -1,0 +1,5 @@
+include "AAFTypes.pxd"
+include "AAFResult.pxd"
+include "AAFFileKinds.pxd"
+include "AAF.pxd"
+include "defmap.pxd"
