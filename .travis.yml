@@ -1,0 +1,25 @@
+language: python
+
+python:
+    - "2.6"
+    - "2.7"
+
+# Get AAF-devel libs
+
+env:
+    - AAF_ROOT=AAF-devel LD_LIBRARY_PATH=$AAF_ROOT/bin/debug
+
+before_install:
+    - mkdir AAF-devel
+    - cd AAF-devel
+    - wget http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6/AAF-devel-libs-x86_64Linux-1.1.6.0.tar.gz
+    - tar -xvf AAF-devel-libs-x86_64Linux-1.1.6.0.tar.gz
+    - cd ..
+    
+# Install build requirements.
+install: pip install --use-mirrors cython
+
+# Currently only building, not testing.
+script:
+    - make build
+    - nosetests

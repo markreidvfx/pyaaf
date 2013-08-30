@@ -19,8 +19,11 @@ build/cython/%.cpp: %.pyx
 build: cythonize
 	python setup.py build_ext --inplace --debug
 
-debug: build
-	gdb python --args python -m examples.tutorial $(TEST_MOV)
+install: build
+	python setup.py install
+	
+test:
+	nosetests
 
 docs: build
 	make -C docs html

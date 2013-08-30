@@ -5,7 +5,7 @@ import subprocess
 #os.environ['CC'] = 'g++'
 #os.environ['ARCHFLAGS'] ="-arch x86_64"
 
-AAF_ROOT = os.environ.get("AAF_ROOT", "/Users/mark/Dev/aaf/aaf-git/AAFx86_64DarwinSDK/g++")
+AAF_ROOT = os.environ.get("AAF_ROOT")
 
 AAF_INCLUDE = os.path.join(AAF_ROOT,'include')
 AAF_LIB = os.path.join(AAF_ROOT,'lib/debug')
@@ -17,6 +17,8 @@ ext_extra = {
     'library_dirs': [AAF_LIB, AAF_COM],
     'libraries': ['aaflib','aafiid', 'com-api']
 }
+
+print "AAF_ROOT =",AAF_ROOT
 
 # Construct the modules that we find in the "build/cython" directory.
 ext_modules = []
