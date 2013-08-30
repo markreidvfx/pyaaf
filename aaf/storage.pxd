@@ -8,6 +8,7 @@ cdef class IAAFFileProxy(AAFBase):
 cdef class File(object):
     cdef IAAFFileProxy proxy
     cdef readonly bytes mode
+    cdef lib.aafProductIdentification_t productInfo
     cdef object setup_new_file(self, bytes path, bytes mode=*)
     
 cdef class Header(AAFObject):

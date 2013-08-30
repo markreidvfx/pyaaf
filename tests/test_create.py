@@ -96,7 +96,7 @@ class TestFile(unittest.TestCase):
             print 'wrote', ret
         picture_essence.complete_write()
         f.save()
-        #f.save(output_xml)
+        f.save(output_xml)
         f.close()
         
     def test_create_sound_essence(self):
@@ -146,7 +146,7 @@ class TestFile(unittest.TestCase):
         sound_essence.complete_write()
 
         f.save()
-        #f.save(output_xml)
+        f.save(output_xml)
         f.close()
         
     def test_create_comp(self):
@@ -197,7 +197,7 @@ class TestFile(unittest.TestCase):
         
         
         f.save()
-        #f.save(output_xml)
+        f.save(output_xml)
         f.close()
 
 

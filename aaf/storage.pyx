@@ -76,7 +76,7 @@ cdef class File(object):
         for i,value in enumerate((0xbc,0xd7,0x3a,0x3a,0x42,0x53,0xa2,0xef)):
             productUID.Data4[i] = value
 
-        cdef lib.aafProductIdentification_t productInfo
+        productInfo = self.productInfo
         
         company_name = "CompanyName"
         product_name = "pyaaf"
