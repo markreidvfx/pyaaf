@@ -507,7 +507,8 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFComponent
     cdef GUID IID_IAAFComponent
     cdef cppclass IAAFComponent(IUnknown):
-        pass
+        HRESULT SetLength(aafLength_t& pLength)
+        HRESULT GetLength(aafLength_t * pLength)
     
     cdef aafUID_t AUID_AAFSegment
     cdef GUID IID_IAAFSegment
@@ -518,6 +519,7 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFSequence
     cdef cppclass IAAFSequence(IUnknown):
         HRESULT Initialize(IAAFDataDef * pDataDef)
+        HRESULT GetComponents(IEnumAAFComponents ** ppEnum)
     
     cdef aafUID_t AUID_AAFSourceReference
     cdef GUID IID_IAAFSourceReference
@@ -536,13 +538,9 @@ cdef extern from "AAF.h":
         
     ## IEnumAAFs
     
-    cdef GUID IID_IEnumAAFProperties
-    cdef cppclass IEnumAAFProperties(IUnknown):
-        HRESULT NextOne(IAAFProperty ** ppMob)
-        
-    cdef GUID IID_IEnumAAFPropertyValues
-    cdef cppclass IEnumAAFPropertyValues(IUnknown):
-        HRESULT NextOne(IAAFPropertyValue ** ppPropertyValue)
+    cdef GUID IID_IEnumAAFComponents
+    cdef cppclass IEnumAAFComponents(IUnknown):
+        HRESULT NextOne(IAAFComponent ** ppComponent)
         
     cdef GUID IID_IEnumAAFMobs
     cdef cppclass IEnumAAFMobs(IUnknown):
@@ -551,6 +549,15 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFMobSlots
     cdef cppclass IEnumAAFMobSlots(IUnknown):
         HRESULT NextOne(IAAFMobSlot ** ppMob)
+    
+    
+    cdef GUID IID_IEnumAAFProperties
+    cdef cppclass IEnumAAFProperties(IUnknown):
+        HRESULT NextOne(IAAFProperty ** ppMob)
+        
+    cdef GUID IID_IEnumAAFPropertyValues
+    cdef cppclass IEnumAAFPropertyValues(IUnknown):
+        HRESULT NextOne(IAAFPropertyValue ** ppPropertyValue)
         
     # File Functions
         

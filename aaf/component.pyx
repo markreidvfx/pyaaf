@@ -5,7 +5,7 @@ from .util cimport error_check, query_interface, register_object
 from base cimport AAFObject, AAFBase, AUID
 from mob cimport Mob 
 from datadef cimport DataDef
-
+from iterator cimport ComponentIter
 
 cdef class Component(AAFObject):
     def __init__(self, AAFBase obj = None):
@@ -24,6 +24,7 @@ cdef class Component(AAFObject):
     def __dealloc__(self):
         if self.comp_ptr:
             self.comp_ptr.Release()
+            
             
 cdef class Segment(Component):
     def __init__(self, AAFBase obj = None):
@@ -65,6 +66,11 @@ cdef class Sequence(Segment):
         cdef DataDef media_datadef        
         media_datadef = self.dictionary().lookup_datadef(media_kind)
         error_check(self.ptr.Initialize(media_datadef.ptr))
+        
+    def components(self):
+        cdef ComponentIter comp_inter = ComponentIter()
+        error_check(self.ptr.GetComponents(&comp_inter.ptr))
+        return comp_inter
 
 cdef class SourceReference(Segment):
     def __init__(self, AAFBase obj = None):
