@@ -59,7 +59,12 @@ cdef object register_object(object obj):
 
 cdef object lookup_object(bytes name):
     global OBJECT_MAP
-    return OBJECT_MAP[name]
+    rename = name
+    for n,r in (("",""), ("Definition", "Def")):
+        rename = rename.replace(n,r)
+        if OBJECT_MAP.has_key(rename):
+            return OBJECT_MAP[rename]
+    raise KeyError("No object named %s" % name)
 
 def set_resolver(object obj):
     global resolver
