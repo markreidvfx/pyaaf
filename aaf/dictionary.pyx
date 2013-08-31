@@ -28,6 +28,25 @@ cdef class Dictionary(AAFObject):
         
         return datadef.DataDef(definition)
     
+    def operation_defs(self):
+        for p in self['OperationDefinitions']:
+            yield p.value
+    def parameter_defs(self):
+        for p in self['ParameterDefinitions']:
+            yield p.value
+    def data_defs(self):
+        for p in self['DataDefinitions']:
+            yield p.value
+    def container_defs(self):
+        for p in self['ContainerDefinitions']:
+            yield p.value
+    def interpolation_defs(self):
+        for p in self['InterpolationDefinitions']:
+            yield p.value
+    def taggedvalue_defs(self):
+        for p in self['TaggedValueDefinitions']:
+            yield p.value
+    
     cdef lib.IUnknown **get(self):
         return <lib.IUnknown **> &self.ptr
     

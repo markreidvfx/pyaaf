@@ -116,6 +116,15 @@ cdef class AAFObject(AAFBase):
             cdef AUID auid = AUID()
             auid.auid = self.auid
             return auid
+        
+    property name:
+        def __get__(self):
+            for p in self.properties():
+                if p.name == "Name":
+                    name = p.value
+                    if name:
+                        return name
+            return None
     
     property class_name:
         def __get__(self):

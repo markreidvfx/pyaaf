@@ -329,8 +329,34 @@ class TestFile(unittest.TestCase):
             header["header doesn't have this key"]
             
         keys = d.keys()
+        print keys
         for item in d['OperationDefinitions']:
             pass
+    def test_dictionary_defs(self):
+        test_file = main_test_file
+        f = aaf.open(test_file)
+        header = f.header()
+        d = header.dictionary()
+        
+        for item in d.operation_defs():
+            c,name = item.class_name, item.name
+            #print c,name
+        for item in d.parameter_defs():
+            c,name =  item.class_name, item.name
+            #print c,name
+        for item in d.data_defs():
+            c,name =  item.class_name, item.name
+            #print c,name
+        for item in d.container_defs():
+            c,name =  item.class_name, item.name
+            #print c,name
+        for item in d.interpolation_defs():
+            c,name =  item.class_name, item.name
+            #print c,name
+        for item in d.taggedvalue_defs():
+            c,name =  item.class_name, item.name
+            #print c,name
+        
 
 if __name__ == '__main__':
     unittest.main()
