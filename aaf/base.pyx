@@ -87,6 +87,11 @@ cdef class AAFObject(AAFBase):
     def keys(self):
         return [p.name for p in self.properties()]
     
+    def has_key(self, bytes key):
+        if key in self.keys():
+            return True
+        return False
+    
     def initialize(self, *args, **kwargs):
         raise NotImplementedError("initialize not implemented for object")
     

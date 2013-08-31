@@ -56,6 +56,15 @@ cdef extern from "AAF.h":
             aafUID_t &dataDefinitionId,
             IAAFDataDef ** ppDataDef
         )
+        HRESULT GetClassDefs(IEnumAAFClassDefs ** ppEnum)
+        HRESULT GetCodecDefs(IEnumAAFCodecDefs ** ppEnum)
+        HRESULT GetTypeDefs(IEnumAAFTypeDefs ** ppEnum)
+        HRESULT GetPluginDefs(IEnumAAFPluginDefs ** ppEnum)
+
+    cdef aafUID_t AUID_AAFDictionary2
+    cdef GUID IID_IAAFDictionary2
+    cdef cppclass IAAFDictionary2(IUnknown):
+        HRESULT GetKLVDataDefs(IEnumAAFKLVDataDefs ** ppEnum)
         
     cdef aafUID_t AUID_AAFContentStorage
     cdef GUID IID_IAAFContentStorage
@@ -291,6 +300,21 @@ cdef extern from "AAF.h":
             aafCharacter *pName,
             aafCharacter *pDescription
         )
+        
+    cdef aafUID_t AUID_AAFCodecDef
+    cdef GUID IID_IAAFCodecDef
+    cdef cppclass IAAFCodecDef(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFPluginDef
+    cdef GUID IID_IAAFPluginDef
+    cdef cppclass IAAFPluginDef(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFKLVDataDefinition
+    cdef GUID IID_IAAFKLVDataDefinition
+    cdef cppclass IAAFKLVDataDefinition(IUnknown):
+        pass
         
     # File Locators
     
@@ -565,7 +589,6 @@ cdef extern from "AAF.h":
     cdef cppclass IEnumAAFMobSlots(IUnknown):
         HRESULT NextOne(IAAFMobSlot ** ppMob)
     
-    
     cdef GUID IID_IEnumAAFProperties
     cdef cppclass IEnumAAFProperties(IUnknown):
         HRESULT NextOne(IAAFProperty ** ppMob)
@@ -578,6 +601,26 @@ cdef extern from "AAF.h":
     cdef cppclass IEnumAAFSegments(IUnknown):
         HRESULT NextOne(IAAFSegment ** ppSegment)
         
+    cdef GUID IID_IEnumAAFClassDefs
+    cdef cppclass IEnumAAFClassDefs(IUnknown):
+        HRESULT NextOne(IAAFClassDef ** ppClassDefs)
+        
+    cdef GUID IID_IEnumAAFCodecDefs
+    cdef cppclass IEnumAAFCodecDefs(IUnknown):
+        HRESULT NextOne(IAAFCodecDef ** ppCodecDefs)
+    
+    cdef GUID IID_IEnumAAFTypeDefs
+    cdef cppclass IEnumAAFTypeDefs(IUnknown):
+        HRESULT NextOne(IAAFTypeDef ** ppTypeDef)
+        
+    cdef GUID IID_IEnumAAFPluginDefs
+    cdef cppclass IEnumAAFPluginDefs(IUnknown):
+        HRESULT NextOne(IAAFPluginDef ** ppPluginDefs)
+        
+    cdef GUID IID_IEnumAAFKLVDataDefs
+    cdef cppclass IEnumAAFKLVDataDefs(IUnknown):
+        HRESULT NextOne(IAAFKLVDataDefinition ** ppKLVDataDefs)
+    
     # File Functions
         
     cdef HRESULT AAFFileOpenExistingRead(

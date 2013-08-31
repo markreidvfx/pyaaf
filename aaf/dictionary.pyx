@@ -5,6 +5,7 @@ cimport datadef
 from base cimport AAFBase, AAFObject, AUID
 from .util cimport error_check, query_interface, register_object, lookup_object
 from wstring cimport wstring,toWideString
+from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter 
 
 
 cdef class Dictionary(AAFObject):
@@ -13,11 +14,13 @@ cdef class Dictionary(AAFObject):
         self.iid = lib.IID_IAAFDictionary
         self.auid = lib.AUID_AAFDictionary
         self.ptr = NULL
+        self.ptr2 = NULL
         self.create = CreateInstance(self)
         if not obj:
             return
         
         query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFDictionary)
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr2, lib.IID_IAAFDictionary2)
         
     def lookup_datadef(self, bytes name):
         
@@ -28,6 +31,31 @@ cdef class Dictionary(AAFObject):
         
         return datadef.DataDef(definition)
     
+    def class_defs(self):
+        cdef ClassDefIter def_iter = ClassDefIter()
+        error_check(self.ptr.GetClassDefs(&def_iter.ptr))
+        return def_iter
+
+    def codec_defs(self):
+        cdef CodecDefIter def_iter = CodecDefIter()
+        error_check(self.ptr.GetCodecDefs(&def_iter.ptr))
+        return def_iter
+    
+    def type_defs(self):
+        cdef TypeDefIter def_iter = TypeDefIter()
+        error_check(self.ptr.GetTypeDefs(&def_iter.ptr))
+        return def_iter
+    
+    def plugin_defs(self):
+        cdef PluginDefIter def_iter = PluginDefIter()
+        error_check(self.ptr.GetPluginDefs(&def_iter.ptr))
+        return def_iter
+     
+    def klvdata_defs(self):
+        cdef KLVDataDefIter def_iter = KLVDataDefIter()
+        error_check(self.ptr2.GetKLVDataDefs(&def_iter.ptr))
+        return def_iter
+     
     def operation_defs(self):
         for p in self['OperationDefinitions']:
             yield p.value

@@ -338,6 +338,23 @@ class TestFile(unittest.TestCase):
         header = f.header()
         d = header.dictionary()
         
+        for item in d.class_defs():
+            pass
+            #c,name = item.class_name, item.name
+            #print c,name
+        for item in d.codec_defs():
+            c,name = item.class_name, item.name
+            #print c,name
+        for item in d.type_defs():
+            pass
+            #c,name = item.class_name, item.name
+            #print c,name
+        for item in d.plugin_defs():
+            c,name = item.class_name, item.name
+            #print c,name
+        for item in d.klvdata_defs():
+            c,name = item.class_name, item.name
+            #print c,name        
         for item in d.operation_defs():
             c,name = item.class_name, item.name
             #print c,name

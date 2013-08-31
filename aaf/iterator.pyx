@@ -4,9 +4,55 @@ from .util cimport error_check
 from .mob cimport Mob,MobSlot
 from .property cimport Property,PropertyValue
 from .component cimport Component, Segment
+from .datadef cimport CodecDef, PluginDef, KLVDataDef
+from .metadef cimport ClassDef, TypeDef
 
 cdef class BaseIterator(object):
     pass
+
+cdef class ClassDefIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef ClassDef classdef = ClassDef()
+        ret = self.ptr.NextOne(&classdef.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return ClassDef(classdef)
+        else:
+            error_check(ret)
+
+cdef class CodecDefIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef CodecDef codecdef = CodecDef()
+        ret = self.ptr.NextOne(&codecdef.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return CodecDef(codecdef)
+        else:
+            error_check(ret)
 
 cdef class ComponentIter(BaseIterator):
     def __init__(self):
@@ -27,6 +73,28 @@ cdef class ComponentIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             return Component(comp).resolve()
+        else:
+            error_check(ret)
+            
+cdef class KLVDataDefIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef KLVDataDef klv_def = KLVDataDef()
+        ret = self.ptr.NextOne(&klv_def.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return KLVDataDef(klv_def)
         else:
             error_check(ret)
 
@@ -71,6 +139,28 @@ cdef class MobIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             return Mob(mob).resolve()
+        else:
+            error_check(ret)
+
+cdef class PluginDefIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef PluginDef plug_def = PluginDef()
+        ret = self.ptr.NextOne(&plug_def.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return PluginDef(plug_def)
         else:
             error_check(ret)
             
@@ -137,5 +227,27 @@ cdef class SegmentIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             return Segment(seg).resolve()
+        else:
+            error_check(ret)
+
+cdef class TypeDefIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef TypeDef type_def = TypeDef()
+        ret = self.ptr.NextOne(&type_def.typedef_ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return TypeDef(type_def).resolve()
         else:
             error_check(ret)

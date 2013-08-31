@@ -23,16 +23,16 @@ cdef class ParameterDef(DefObject):
     pass
     
 cdef class PluginDef(DefObject):
-    pass
+    cdef lib.IAAFPluginDef *ptr
     
 cdef class CodecDef(DefObject):
-    pass
+    cdef lib.IAAFCodecDef *ptr
     
 cdef class OperationDef(DefObject):
     pass
     
 cdef class KLVDataDef(DefObject):
-    pass
+    cdef lib.IAAFKLVDataDefinition *ptr
     
 cdef class TaggedValueDef(DefObject):
     pass

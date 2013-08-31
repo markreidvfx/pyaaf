@@ -85,5 +85,63 @@ cdef class DataDef(DefObject):
     
     def initialize(self, object def_type, bytes):
         pass
+
+cdef class PluginDef(DefObject):
+    def __init__(self, AAFBase obj = None):
+        super(PluginDef, self).__init__(obj)
+        self.iid = lib.IID_IAAFPluginDef
+        self.auid = lib.AUID_AAFPluginDef
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+
+cdef class CodecDef(DefObject):
+    def __init__(self, AAFBase obj = None):
+        super(CodecDef, self).__init__(obj)
+        self.iid = lib.IID_IAAFCodecDef
+        self.auid = lib.AUID_AAFCodecDef
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
             
+cdef class KLVDataDef(DefObject):
+    def __init__(self, AAFBase obj = None):
+        super(KLVDataDef, self).__init__(obj)
+        self.iid = lib.IID_IAAFKLVDataDefinition
+        self.auid = lib.AUID_AAFKLVDataDefinition
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+
+register_object(DefObject)           
 register_object(DataDef)
+register_object(PluginDef)
+register_object(CodecDef)
+register_object(KLVDataDef)

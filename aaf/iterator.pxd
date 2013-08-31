@@ -5,10 +5,10 @@ cdef class BaseIterator(object):
     pass
     
 cdef class ClassDefIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFClassDefs *ptr
     
 cdef class CodecDefIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFCodecDefs *ptr
     
 cdef class CodecFlavourIter(BaseIterator):
     pass
@@ -44,7 +44,7 @@ cdef class KLVDataIter(BaseIterator):
     pass
     
 cdef class KLVDataDefIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFKLVDataDefs *ptr
     
 cdef class LoadedPluginIter(BaseIterator):
     pass
@@ -68,7 +68,7 @@ cdef class ParamIter(BaseIterator):
     pass
     
 cdef class PluginDefIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFPluginDefs* ptr
     
 cdef class PluginLocatorIter(BaseIterator):
     pass
@@ -95,7 +95,7 @@ cdef class TaggedValueIter(BaseIterator):
     pass
     
 cdef class TypeDefIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFTypeDefs *ptr
     
 
     
