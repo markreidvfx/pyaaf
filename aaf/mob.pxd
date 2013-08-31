@@ -2,9 +2,6 @@ cimport lib
 
 from base cimport AAFObject
 
-cdef class MobID(object):
-    cdef lib.aafMobID_t mobID
-
 cdef class Mob(AAFObject):
     cdef lib.IAAFMob *ptr
     

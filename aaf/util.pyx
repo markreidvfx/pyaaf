@@ -78,4 +78,31 @@ cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r):
     f = Fraction(obj)
     r.numerator = f.numerator
     r.denominator = f.denominator
+    
+cdef class MobID(object):
+    
+    def __repr__(self):
+        return '<%s.%s of %s at 0x%x>' % (
+            self.__class__.__module__,
+            self.__class__.__name__,
+            self.to_string(),
+            id(self),
+        )
+
+    def to_string(self):
+        
+        f = b"urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
+             "%02x"  + \
+             "%02x%02x%02x." + \
+             "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"
+        mobID = self.mobID
+        return f % (
+             mobID.SMPTELabel[0], mobID.SMPTELabel[1], mobID.SMPTELabel[2],  mobID.SMPTELabel[3],
+             mobID.SMPTELabel[4], mobID.SMPTELabel[5], mobID.SMPTELabel[6],  mobID.SMPTELabel[7],
+             mobID.SMPTELabel[8], mobID.SMPTELabel[9], mobID.SMPTELabel[10], mobID.SMPTELabel[11],
+             mobID.length,
+             mobID.instanceHigh, mobID.instanceMid, mobID.instanceLow,
+             mobID.material.Data4[0], mobID.material.Data4[1], mobID.material.Data4[2], mobID.material.Data4[3],
+             mobID.material.Data4[4], mobID.material.Data4[5], mobID.material.Data4[6], mobID.material.Data4[7],
+             mobID.material.Data1, mobID.material.Data2, mobID.material.Data3)
         

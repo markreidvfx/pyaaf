@@ -4,7 +4,7 @@ from base cimport AAFObject, AAFBase, AUID
 cimport datadef
 from essence cimport Locator, EssenceAccess
 
-from util cimport error_check, query_interface, register_object, fraction_to_aafRational
+from util cimport error_check, query_interface, register_object, fraction_to_aafRational, MobID
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -18,33 +18,6 @@ from .essence cimport EssenceDescriptor
 from .component cimport Segment
 
 from wstring cimport wstring, wideToString, toWideString
-
-cdef class MobID(object):
-    
-    def __repr__(self):
-        return '<%s.%s of %s at 0x%x>' % (
-            self.__class__.__module__,
-            self.__class__.__name__,
-            self.to_string(),
-            id(self),
-        )
-
-    def to_string(self):
-        
-        f = b"urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
-             "%02x"  + \
-             "%02x%02x%02x." + \
-             "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"
-        mobID = self.mobID
-        return f % (
-             mobID.SMPTELabel[0], mobID.SMPTELabel[1], mobID.SMPTELabel[2],  mobID.SMPTELabel[3],
-             mobID.SMPTELabel[4], mobID.SMPTELabel[5], mobID.SMPTELabel[6],  mobID.SMPTELabel[7],
-             mobID.SMPTELabel[8], mobID.SMPTELabel[9], mobID.SMPTELabel[10], mobID.SMPTELabel[11],
-             mobID.length,
-             mobID.instanceHigh, mobID.instanceMid, mobID.instanceLow,
-             mobID.material.Data4[0], mobID.material.Data4[1], mobID.material.Data4[2], mobID.material.Data4[3],
-             mobID.material.Data4[4], mobID.material.Data4[5], mobID.material.Data4[6], mobID.material.Data4[7],
-             mobID.material.Data1, mobID.material.Data2, mobID.material.Data3)
 
 cdef class Mob(AAFObject):
     def __init__(self, AAFBase obj=None):
@@ -95,16 +68,13 @@ cdef class Mob(AAFObject):
             
     property name:
         def __get__(self):
-            cdef lib.aafUInt32 sizeInBytes = 0
-            error_check(self.ptr.GetNameBufLen(&sizeInBytes))
-            
-            cdef int sizeInChars = (sizeInBytes / sizeof(lib.aafCharacter)) + 1
-            cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter](sizeInChars)
-            
-            error_check(self.ptr.GetName(&buf[0], sizeInChars*sizeof(lib.aafCharacter) ))
-            
-            cdef wstring name = wstring(&buf[0])
-            return wideToString(name)
+            for p in self.properties():
+                if p.name == 'Name':
+                    name = p.value
+                    if name:
+                        return name
+
+            return None
         
         def __set__(self, bytes value):
             cdef wstring name = toWideString(value)

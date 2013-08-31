@@ -18,6 +18,9 @@ cdef object resolve_object(object obj)
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r)
 
+cdef class MobID(object):
+    cdef lib.aafMobID_t mobID
+
 cdef fused aaf_integral:
     lib.aafInt8
     lib.aafInt16
