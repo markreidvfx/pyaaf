@@ -25,7 +25,11 @@ def resolve_object(AAFBase obj):
             return obj_type(AAFObj)
         except:
             #print "no lookup for %s" % AAFObj.class_name
-            return AAFObj
+            
+            if isinstance(obj, AAFObject):
+                return obj
+            else:
+                return AAFObj
     elif isA(obj, MetaDef):
         
         if isA(obj, TypeDef):

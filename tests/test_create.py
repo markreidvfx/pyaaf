@@ -47,9 +47,9 @@ class TestFile(unittest.TestCase):
                                                              compress=True)
         
         slot = list(picture_mastermob.slots())[0]
-        clip = aaf.component.SourceClip(slot.segment())
-        source_mob = aaf.mob.SourceMob(clip.resolve_ref())
-        cdci_desc = aaf.essence.CDCIDescriptor(source_mob.essence_descriptor)
+        clip = slot.segment()
+        source_mob = clip.resolve_ref()
+        cdci_desc = source_mob.essence_descriptor
         
         component_width = 8
         horizontal_subsampling = 2 # 2 means 4:2:2
@@ -128,9 +128,9 @@ class TestFile(unittest.TestCase):
          
         
         slot = list(sound_mastermob.slots())[0]
-        clip = aaf.component.SourceClip(slot.segment())
-        source_mob = aaf.mob.SourceMob(clip.resolve_ref())
-        WAVEDesc = aaf.essence.WAVEDescriptor(source_mob.essence_descriptor)
+        clip = slot.segment()
+        source_mob = clip.resolve_ref()
+        WAVEDesc = source_mob.essence_descriptor
         
         format = sound_essence.get_emptyfileformat()
         format['AudioSampleBits'] =  16

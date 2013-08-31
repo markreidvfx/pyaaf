@@ -69,7 +69,7 @@ cdef class MobIter(BaseIterator):
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return Mob(mob)
+            return Mob(mob).resolve()
         else:
             error_check(ret)
 
@@ -91,6 +91,6 @@ cdef class MobSlotIter(BaseIterator):
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return MobSlot(slot)
+            return MobSlot(slot).resolve()
         else:
             error_check(ret)

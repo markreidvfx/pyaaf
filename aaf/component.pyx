@@ -105,7 +105,7 @@ cdef class SourceClip(SourceReference):
     def resolve_ref(self):
         cdef Mob mob = Mob()
         error_check(self.ptr.ResolveRef(&mob.ptr))
-        return Mob(mob)
+        return Mob(mob).resolve()
     
 register_object(Component)
 register_object(Segment)

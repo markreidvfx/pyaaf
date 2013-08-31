@@ -251,7 +251,7 @@ cdef class SourceMob(Mob):
         def __get__(self):
             cdef EssenceDescriptor descriptor = EssenceDescriptor()
             error_check(self.src_ptr.GetEssenceDescriptor(&descriptor.essence_ptr))
-            return EssenceDescriptor(descriptor)
+            return EssenceDescriptor(descriptor).resolve()
 
 cdef class MobSlot(AAFObject):
     def __init__(self, AAFBase obj = None):
@@ -272,7 +272,7 @@ cdef class MobSlot(AAFObject):
     def segment(self):
         cdef Segment seg = Segment()
         error_check(self.slot_ptr.GetSegment(&seg.seg_ptr))
-        return Segment(seg)
+        return Segment(seg).resolve()
     
 cdef class TimelineMobSlot(MobSlot):
     def __init__(self, AAFBase obj = None):
@@ -296,3 +296,4 @@ register_object(MasterMob)
 register_object(CompositionMob)
 register_object(SourceMob)
 register_object(MobSlot)
+register_object(TimelineMobSlot)
