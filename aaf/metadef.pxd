@@ -67,3 +67,4 @@ cdef class TypeDefString(TypeDef):
 cdef class TypeDefVariableArray(TypeDef):
     cdef lib.IAAFTypeDefVariableArray *ptr
 
+cdef object resolve_typedef(TypeDef typedef)

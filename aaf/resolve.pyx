@@ -1,6 +1,8 @@
 from base cimport AAFBase, AAFObject
 from util cimport lookup_object
 
+from metadef cimport MetaDef, TypeDef, ClassDef, PropertyDef, resolve_typedef
+
 cdef object isA(AAFBase obj1,obj2):
     try:
         obj2(obj1)
@@ -10,7 +12,9 @@ cdef object isA(AAFBase obj1,obj2):
     return True
 
 def resolve_object(AAFBase obj):
-    
+    """
+    resolve any AAFBase object into it highest level class
+    """
     
     if isA(obj, AAFObject):
         
@@ -22,6 +26,18 @@ def resolve_object(AAFBase obj):
         except:
             #print "no lookup for %s" % AAFObj.class_name
             return AAFObj
+    elif isA(obj, MetaDef):
+        
+        if isA(obj, TypeDef):
+            return resolve_typedef(TypeDef(obj))
+        elif isA(obj, ClassDef):
+            return ClassDef(obj)
+        elif isA(obj, PropertyDef):
+            return PropertyDef(obj)
+        else:        
+            raise ValueError("Unknown Metadef")
+        
+
     
     return obj
         
