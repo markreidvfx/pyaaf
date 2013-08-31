@@ -535,6 +535,16 @@ cdef extern from "AAF.h":
             aafSourceRef_t  sourceRef
         )
         HRESULT ResolveRef(IAAFMob ** ppMob)
+
+    cdef aafUID_t AUID_AAFOperationGroup
+    cdef GUID IID_IAAFOperationGroup
+    cdef cppclass IAAFOperationGroup(IUnknown):
+        HRESULT CountSourceSegments(aafUInt32 *  pResult)
+        HRESULT GetInputSegmentAt(
+            aafUInt32  index,
+            IAAFSegment ** ppInputSegment
+        )
+        
         
     cdef aafUID_t AUID_AAFNestedScope
     cdef GUID IID_IAAFNestedScope

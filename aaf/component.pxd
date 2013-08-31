@@ -30,7 +30,7 @@ cdef class SourceClip(SourceReference):
     cdef lib.IAAFSourceClip *ptr
     
 cdef class OperationGroup(Segment):
-    pass
+    cdef lib.IAAFOperationGroup *ptr
 
 cdef class NestedScope(Segment):
     cdef lib.IAAFNestedScope *ptr

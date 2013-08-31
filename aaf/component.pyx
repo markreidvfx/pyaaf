@@ -119,6 +119,37 @@ cdef class SourceClip(SourceReference):
         error_check(self.ptr.ResolveRef(&mob.ptr))
         return Mob(mob).resolve()
     
+cdef class OperationGroup(Segment):
+    def __init__(self, AAFBase obj = None):
+        super(OperationGroup, self).__init__(obj)
+        self.iid = lib.IID_IAAFOperationGroup
+        self.auid = lib.AUID_AAFOperationGroup
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+    def input_segments(self):
+        cdef Segment seg
+        for i in xrange(self.nb_input_segments):
+            seg = Segment()
+            error_check(self.ptr.GetInputSegmentAt(i, &seg.seg_ptr))
+            yield Segment(seg).resolve()
+    
+    property nb_input_segments:
+        def __get__(self):
+            cdef lib.aafUInt32 value
+            error_check(self.ptr.CountSourceSegments(&value))
+            return value
+        
+    
 cdef class NestedScope(Segment):
     def __init__(self, AAFBase obj = None):
         super(NestedScope, self).__init__(obj)
@@ -147,4 +178,5 @@ register_object(Segment)
 register_object(Sequence)
 register_object(SourceReference)
 register_object(SourceClip)
+register_object(OperationGroup)
 register_object(NestedScope)
