@@ -401,7 +401,9 @@ cdef class TypeDefObjectRef(TypeDef):
     def value(self, PropertyValue p_value ):
         cdef AAFBase obj = AAFBase()
         error_check(self.ref_ptr.GetObject(p_value.ptr, lib.IID_IUnknown, &obj.base_ptr))
-        return obj
+        
+        return obj.resolve()
+
     
     
 cdef class TypeDefStrongObjRef(TypeDefObjectRef):

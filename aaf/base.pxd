@@ -11,6 +11,7 @@ cdef class AUID(object):
 cdef class AAFBase(object):
     cdef lib.IUnknown *base_ptr
     cdef lib.IUnknown **get(self)
+    cdef resolve(self)
     cdef lib.GUID iid
 
 cdef class AAFObject(AAFBase):

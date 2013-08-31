@@ -528,3 +528,11 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
             cdef lib.aafUInt32 value
             error_check(self.ptr.GetColorRange(&value))
             return value
+        
+        
+register_object(Locator)
+register_object(EssenceDescriptor)
+register_object(FileDescriptor)
+register_object(WAVEDescriptor)
+register_object(DigitalImageDescriptor)
+register_object(CDCIDescriptor)

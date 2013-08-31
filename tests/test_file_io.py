@@ -286,14 +286,33 @@ class TestFile(unittest.TestCase):
                     #print size ,enumExDef
                     for key,value in enumExDef.value(value).items():
                         pass
-                        #print key,'=', value
-                    
-                    #for i in xrange(size):
-                        #print enumExDef.element_name(i)
-                    #print '   ',p.name, stringDef.value(value)
-                #print p, p.definition().name, value, value.typedef().name, value.typedef().category
+    def test_walk_file(self):
+        test_file = main_test_file
         
-                
+        f = aaf.open(test_file)
+    
+        header = f.header()
+        
+        def walk_properties(space, obj):
+            iter_prop =obj
+            if isinstance(obj, aaf.base.AAFObject):
+                iter_prop = obj.properties()
+
+            for p in iter_prop:
+                value= p.value
+                #print space ,value
+                if isinstance(value, aaf.base.AAFObject):
+                    #print space, value.class_name
+                    s = space + '   '
+                    walk_properties(s, value)
+                if isinstance(value, aaf.iterator.BaseIterator):
+         
+                    s = space + '   '
+                    walk_properties(s, value)
+                    #print "iterator!"
+        
+        walk_properties("", header)
+        
 
 if __name__ == '__main__':
     unittest.main()

@@ -10,6 +10,8 @@ from fractions import Fraction
 
 HRESULTS = lib.get_hrmap()
 
+cdef object resolver = None
+
 cdef dict OBJECT_MAP = {}
 
 cdef object error_check(int ret):
@@ -58,6 +60,13 @@ cdef object register_object(object obj):
 cdef object lookup_object(bytes name):
     global OBJECT_MAP
     return OBJECT_MAP[name]
+
+def set_resolver(object obj):
+    global resolver
+    resolver = obj
+
+cdef object resolve_object(object obj): 
+    return resolver(obj)
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r):
     

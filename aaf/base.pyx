@@ -1,9 +1,10 @@
 
 cimport lib
-from .util cimport error_check, query_interface
+from .util cimport error_check, query_interface, resolve_object
 
 from .metadef cimport ClassDef
 from .iterator cimport PropIter
+#from .resolve import resolve_object
 
 from dictionary cimport Dictionary
 
@@ -48,6 +49,9 @@ cdef class AAFBase(object):
     cdef lib.IUnknown **get(self):
         return &self.base_ptr
     
+    cdef resolve(self):
+        return resolve_object(self)
+
     def __dealloc__(self):
         if self.base_ptr:
             self.base_ptr.Release()
@@ -108,5 +112,3 @@ cdef class AAFObject(AAFBase):
         def __get__(self):
             obj_def = self.definition()
             return obj_def.name
-        
-            

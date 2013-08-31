@@ -14,6 +14,8 @@ cdef char* toChar(lib.aafCharacter* s)
 cdef object register_object(object obj)
 cdef object lookup_object(bytes name)
 
+cdef object resolve_object(object obj)
+
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r)
 
 cdef fused aaf_integral:
