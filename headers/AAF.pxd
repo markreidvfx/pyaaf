@@ -536,6 +536,11 @@ cdef extern from "AAF.h":
         )
         HRESULT ResolveRef(IAAFMob ** ppMob)
         
+    cdef aafUID_t AUID_AAFNestedScope
+    cdef GUID IID_IAAFNestedScope
+    cdef cppclass IAAFNestedScope(IUnknown):
+        HRESULT GetSegments(IEnumAAFSegments ** ppEnum)
+        
     ## IEnumAAFs
     
     cdef GUID IID_IEnumAAFComponents
@@ -558,6 +563,10 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFPropertyValues
     cdef cppclass IEnumAAFPropertyValues(IUnknown):
         HRESULT NextOne(IAAFPropertyValue ** ppPropertyValue)
+        
+    cdef GUID IID_IEnumAAFSegments
+    cdef cppclass IEnumAAFSegments(IUnknown):
+        HRESULT NextOne(IAAFSegment ** ppSegment)
         
     # File Functions
         

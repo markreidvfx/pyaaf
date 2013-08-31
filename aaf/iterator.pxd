@@ -86,7 +86,7 @@ cdef class RIFFChunkIter(BaseIterator):
     pass
     
 cdef class SegmentIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFSegments *ptr
     
 cdef class TaggedValueDefIter(BaseIterator):
     pass

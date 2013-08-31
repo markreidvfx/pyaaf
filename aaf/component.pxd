@@ -33,7 +33,7 @@ cdef class OperationGroup(Segment):
     pass
 
 cdef class NestedScope(Segment):
-    pass
+    cdef lib.IAAFNestedScope *ptr
 
 cdef class ScopeReference(Segment):
     pass

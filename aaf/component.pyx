@@ -5,7 +5,7 @@ from .util cimport error_check, query_interface, register_object
 from base cimport AAFObject, AAFBase, AUID
 from mob cimport Mob 
 from datadef cimport DataDef
-from iterator cimport ComponentIter
+from iterator cimport ComponentIter, SegmentIter
 
 cdef class Component(AAFObject):
     def __init__(self, AAFBase obj = None):
@@ -24,6 +24,12 @@ cdef class Component(AAFObject):
     def __dealloc__(self):
         if self.comp_ptr:
             self.comp_ptr.Release()
+            
+    property length:
+        def __get__(self):
+            cdef lib.aafLength_t length
+            error_check(self.comp_ptr.GetLength(&length))
+            return length
             
             
 cdef class Segment(Component):
@@ -113,8 +119,32 @@ cdef class SourceClip(SourceReference):
         error_check(self.ptr.ResolveRef(&mob.ptr))
         return Mob(mob).resolve()
     
+cdef class NestedScope(Segment):
+    def __init__(self, AAFBase obj = None):
+        super(NestedScope, self).__init__(obj)
+        self.iid = lib.IID_IAAFNestedScope
+        self.auid = lib.AUID_AAFNestedScope
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+    def segments(self):
+        cdef SegmentIter seg_iter = SegmentIter()
+        error_check(self.ptr.GetSegments(&seg_iter.ptr))
+        return seg_iter
+    
 register_object(Component)
 register_object(Segment)
 register_object(Sequence)
 register_object(SourceReference)
 register_object(SourceClip)
+register_object(NestedScope)
