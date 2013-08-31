@@ -2,6 +2,8 @@ import aaf
 import aaf.mob
 import aaf.metadef
 import aaf.iterator
+import aaf.dictionary
+import aaf.storage
 
 import unittest
 import traceback
@@ -313,6 +315,22 @@ class TestFile(unittest.TestCase):
         
         walk_properties("", header)
         
+    def test_lookup_index(self):
+        test_file = main_test_file
+        f = aaf.open(test_file)
+        header = f.header()
+        
+        d = header['Dictionary']
+        storage = header['Content']
+        self.assertIsInstance(d, aaf.dictionary.Dictionary)
+        self.assertIsInstance(storage, aaf.storage.ContentStorage)
+        
+        with self.assertRaises(KeyError):
+            header["header doesn't have this key"]
+            
+        keys = d.keys()
+        for item in d['OperationDefinitions']:
+            pass
 
 if __name__ == '__main__':
     unittest.main()

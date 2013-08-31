@@ -78,6 +78,15 @@ cdef class AAFObject(AAFBase):
     cdef lib.IUnknown **get(self):
         return <lib.IUnknown **> &self.obj_ptr
     
+    def __getitem__(self, x):
+        for p in self.properties():
+            if p.name == x:
+                return p.value
+        raise KeyError("Key not found")
+    
+    def keys(self):
+        return [p.name for p in self.properties()]
+    
     def initialize(self, *args, **kwargs):
         raise NotImplementedError("initialize not implemented for object")
     
