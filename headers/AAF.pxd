@@ -598,6 +598,7 @@ cdef extern from "AAF.h":
             IAAFSegment ** ppInputSegment
         )
         HRESULT GetOperationDefinition(IAAFOperationDef **ppOperationDef)
+        HRESULT GetParameters(IEnumAAFParameters **ppEnum)
         
 
     cdef aafUID_t AUID_AAFNestedScope
@@ -692,6 +693,10 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFSegments
     cdef cppclass IEnumAAFSegments(IUnknown):
         HRESULT NextOne(IAAFSegment ** ppSegment)
+     
+    cdef GUID IID_IEnumAAFParameters
+    cdef cppclass IEnumAAFParameters(IUnknown):
+        HRESULT NextOne(IAAFParameter ** ppParameter)
         
     cdef GUID IID_IEnumAAFClassDefs
     cdef cppclass IEnumAAFClassDefs(IUnknown):

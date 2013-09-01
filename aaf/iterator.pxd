@@ -65,7 +65,7 @@ cdef class ParamDefIter(BaseIterator):
     pass
     
 cdef class ParamIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFParameters* ptr
     
 cdef class PluginDefIter(BaseIterator):
     cdef lib.IEnumAAFPluginDefs* ptr

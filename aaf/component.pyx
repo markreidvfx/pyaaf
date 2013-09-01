@@ -5,7 +5,7 @@ from .util cimport error_check, query_interface, register_object
 from base cimport AAFObject, AAFBase, AUID
 from mob cimport Mob 
 from datadef cimport DataDef, OperationDef
-from iterator cimport ComponentIter, SegmentIter
+from iterator cimport ComponentIter, SegmentIter, ParamIter
 
 cdef class Component(AAFObject):
     def __init__(self, AAFBase obj = None):
@@ -233,6 +233,11 @@ cdef class OperationGroup(Segment):
         error_check(self.ptr.GetOperationDefinition(&op_def.ptr))
         return OperationDef(op_def)
     
+    def parameters(self):
+        cdef ParamIter param_iter = ParamIter()
+        error_check(self.ptr.GetParameters(&param_iter.ptr))
+        return param_iter
+    
     property nb_input_segments:
         def __get__(self):
             cdef lib.aafUInt32 value
@@ -400,6 +405,9 @@ cdef class DescriptiveMarker(CommentMarker):
             self.ptr.Release()
             
 cdef class Parameter(AAFObject):
+    """
+    A Parameter is an effect control. They are only on OperationGroups.
+    """
     def __init__(self, AAFBase obj = None):
         super(Parameter, self).__init__(obj)
         self.iid = lib.IID_IAAFParameter

@@ -3,7 +3,7 @@ cimport lib
 from .util cimport error_check
 from .mob cimport Mob,MobSlot
 from .property cimport Property,PropertyValue
-from .component cimport Component, Segment
+from .component cimport Component, Segment, Parameter
 from .datadef cimport CodecDef, PluginDef, KLVDataDef
 from .metadef cimport ClassDef, TypeDef
 
@@ -139,6 +139,28 @@ cdef class MobIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             return Mob(mob).resolve()
+        else:
+            error_check(ret)
+
+cdef class ParamIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef Parameter param = Parameter()
+        ret = self.ptr.NextOne(&param.param_ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return Parameter(param).resolve()
         else:
             error_check(ret)
 
