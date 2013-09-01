@@ -1,7 +1,7 @@
 
 cimport lib
 from .base cimport AAFBase, AAFObject, AUID
-from .util cimport error_check, query_interface, aaf_integral, register_object
+from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolver_func
 from .property cimport PropertyValue
 
 cimport iterator
@@ -11,6 +11,48 @@ from libcpp.string cimport string
 from libcpp.pair cimport pair
 from libcpp.map cimport map
 from wstring cimport  wstring, wideToString
+
+
+cdef object isA(AAFBase obj1,obj2):
+    try:
+        obj2(obj1)
+    except:
+        return False
+    
+    return True
+
+def resolve_object_func(AAFBase obj):
+    """
+    resolve any AAFBase object into it highest level class
+    """
+    if isA(obj, AAFObject):
+        
+        AAFObj = AAFObject(obj)
+        try:
+            obj_type = lookup_object(AAFObj.class_name)
+        
+            return obj_type(AAFObj)
+        except:
+            #print traceback.format_exc()
+            #print "no lookup for %s" % AAFObj.class_name
+            if isinstance(obj, AAFObject):
+                return obj
+            else:
+                return AAFObj
+    elif isA(obj, MetaDef):
+        
+        if isA(obj, TypeDef):
+            return resolve_typedef(TypeDef(obj))
+        elif isA(obj, ClassDef):
+            return ClassDef(obj)
+        elif isA(obj, PropertyDef):
+            return PropertyDef(obj)
+        else:        
+            raise ValueError("Unknown Metadef")
+    return obj
+
+# set the resolve object function
+set_resolver_func(resolve_object_func)
 
 cdef class MetaDef(AAFBase):
     def __init__(self, AAFBase obj = None):

@@ -15,6 +15,7 @@ cdef object register_object(object obj)
 cdef object lookup_object(bytes name)
 
 cdef object resolve_object(object obj)
+cdef object set_resolver_func(object obj)
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r)
 
