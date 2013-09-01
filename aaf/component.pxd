@@ -9,7 +9,7 @@ cdef class Segment(Component):
     cdef lib.IAAFSegment *seg_ptr
     
 cdef class Transition(Component):
-    pass
+    cdef lib.IAAFTransition *ptr
     
 cdef class Sequence(Segment):
     cdef lib.IAAFSequence *ptr

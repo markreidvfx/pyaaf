@@ -542,6 +542,11 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFSegment(IUnknown):
         pass
         
+    cdef aafUID_t AUID_AAFTransition
+    cdef GUID IID_IAAFTransition
+    cdef cppclass IAAFTransition(IUnknown):
+        pass
+        
     cdef aafUID_t AUID_AAFSequence
     cdef GUID IID_IAAFSequence
     cdef cppclass IAAFSequence(IUnknown):

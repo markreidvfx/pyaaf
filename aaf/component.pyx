@@ -49,6 +49,24 @@ cdef class Segment(Component):
         if self.seg_ptr:
             self.seg_ptr.Release()
             
+cdef class Transition(Component):
+    def __init__(self, AAFBase obj = None):
+        super(Transition, self).__init__(obj)
+        self.iid = lib.IID_IAAFTransition
+        self.auid = lib.AUID_AAFTransition
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
 cdef class Sequence(Segment):
     def __init__(self, AAFBase obj = None):
         super(Sequence, self).__init__(obj)
@@ -231,6 +249,7 @@ cdef class EssenceGroup(Segment):
     
 register_object(Component)
 register_object(Segment)
+register_object(Transition)
 register_object(Sequence)
 register_object(Filler)
 register_object(SourceReference)
