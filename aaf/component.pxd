@@ -15,7 +15,7 @@ cdef class Sequence(Segment):
     cdef lib.IAAFSequence *ptr
     
 cdef class Timecode(Segment):
-    pass
+    cdef lib.IAAFTimecode *ptr
 
 cdef class Filler(Segment):
     cdef lib.IAAFFiller *ptr

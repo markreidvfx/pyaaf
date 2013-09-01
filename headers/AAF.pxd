@@ -553,6 +553,11 @@ cdef extern from "AAF.h":
         HRESULT Initialize(IAAFDataDef * pDataDef)
         HRESULT GetComponents(IEnumAAFComponents ** ppEnum)
         
+    cdef aafUID_t AUID_AAFTimecode
+    cdef GUID IID_IAAFTimecode
+    cdef cppclass IAAFTimecode(IUnknown):
+        pass
+        
     cdef aafUID_t AUID_AAFFiller
     cdef GUID IID_IAAFFiller
     cdef cppclass IAAFFiller(IUnknown):

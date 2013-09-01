@@ -94,6 +94,24 @@ cdef class Sequence(Segment):
         cdef ComponentIter comp_inter = ComponentIter()
         error_check(self.ptr.GetComponents(&comp_inter.ptr))
         return comp_inter
+    
+cdef class Timecode(Segment):
+    def __init__(self, AAFBase obj = None):
+        super(Timecode, self).__init__(obj)
+        self.iid = lib.IID_IAAFTimecode
+        self.auid = lib.AUID_AAFTimecode
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
 
 cdef class Filler(Segment):
     def __init__(self, AAFBase obj = None):
@@ -344,6 +362,7 @@ register_object(Component)
 register_object(Segment)
 register_object(Transition)
 register_object(Sequence)
+register_object(Timecode)
 register_object(Filler)
 register_object(Pulldown)
 register_object(SourceReference)
