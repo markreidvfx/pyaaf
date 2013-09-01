@@ -398,6 +398,78 @@ cdef class DescriptiveMarker(CommentMarker):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+cdef class Parameter(AAFObject):
+    def __init__(self, AAFBase obj = None):
+        super(Parameter, self).__init__(obj)
+        self.iid = lib.IID_IAAFParameter
+        self.auid = lib.AUID_AAFParameter
+        self.param_ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.param_ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.param_ptr
+    
+    def __dealloc__(self):
+        if self.param_ptr:
+            self.param_ptr.Release()
+            
+cdef class ConstantValue(Parameter):
+    def __init__(self, AAFBase obj = None):
+        super(ConstantValue, self).__init__(obj)
+        self.iid = lib.IID_IAAFConstantValue
+        self.auid = lib.AUID_AAFConstantValue
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+cdef class VaryingValue(Parameter):
+    def __init__(self, AAFBase obj = None):
+        super(VaryingValue, self).__init__(obj)
+        self.iid = lib.IID_IAAFVaryingValue
+        self.auid = lib.AUID_AAFVaryingValue
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+cdef class ControlPoint(AAFObject):
+    def __init__(self, AAFBase obj = None):
+        super(ControlPoint, self).__init__(obj)
+        self.iid = lib.IID_IAAFControlPoint
+        self.auid = lib.AUID_AAFControlPoint
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
     
 register_object(Component)
 register_object(Segment)
@@ -417,3 +489,7 @@ register_object(EdgeCode)
 register_object(Event)
 register_object(CommentMarker)
 register_object(DescriptiveMarker)
+register_object(Parameter)
+register_object(ConstantValue)
+register_object(VaryingValue)
+register_object(ControlPoint)

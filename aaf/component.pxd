@@ -65,3 +65,15 @@ cdef class TimecodeStream(Segment):
     
 cdef class TimecodeStream12M(TimecodeStream):
     pass
+    
+cdef class Parameter(AAFObject):
+    cdef lib.IAAFParameter *param_ptr
+
+cdef class ConstantValue(Parameter):
+    cdef lib.IAAFConstantValue *ptr
+
+cdef class VaryingValue(Parameter):
+    cdef lib.IAAFVaryingValue *ptr
+
+cdef class ControlPoint(AAFObject):
+    cdef lib.IAAFControlPoint *ptr

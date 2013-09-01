@@ -645,6 +645,27 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFDescriptiveMarker(IUnknown):
         pass
         
+    ## Parameters
+    
+    cdef aafUID_t AUID_AAFParameter
+    cdef GUID IID_IAAFParameter
+    cdef cppclass IAAFParameter(IUnknown):
+        pass
+
+    cdef aafUID_t AUID_AAFConstantValue
+    cdef GUID IID_IAAFConstantValue
+    cdef cppclass IAAFConstantValue(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFVaryingValue
+    cdef GUID IID_IAAFVaryingValue
+    cdef cppclass IAAFVaryingValue(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFControlPoint
+    cdef GUID IID_IAAFControlPoint
+    cdef cppclass IAAFControlPoint(IUnknown):
+        pass
         
     ## IEnumAAFs
     
