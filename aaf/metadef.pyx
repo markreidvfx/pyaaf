@@ -526,7 +526,7 @@ cdef class TypeDefRename(TypeDef):
         
         out_value = PropertyValue(out_value)
         value =  out_value.value
-        if not value:
+        if value is None:
             raise NotImplementedError("typedef rename of value type %s not implemented" % str(out_value.typedef()))
         return value
         
