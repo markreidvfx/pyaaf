@@ -1,7 +1,7 @@
-``aaf.metadef``
+``aaf.define``
 ===============
 
-.. automodule:: aaf.metadef
+.. automodule:: aaf.define
 
    .. autoclass:: MetaDef
        :members:
@@ -144,6 +144,56 @@
        :show-inheritance:
        
    .. autoclass:: TypeDefVariableArray
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: DefObject
+       :members:
+       :undoc-members:
+       :show-inheritance:
+
+   .. autoclass:: DataDef
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: ContainerDef
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: InterpolationDef
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: ParameterDef
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: PluginDef
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: CodecDef
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: OperationDef
+       :members:
+       :undoc-members:
+       :show-inheritance:
+
+   .. autoclass:: KLVDataDef
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: TaggedValueDef
        :members:
        :undoc-members:
        :show-inheritance:

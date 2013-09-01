@@ -45,9 +45,9 @@ Contents:
    api/storage
    api/dictionary
    api/components
-   api/metadef
    api/component
    api/essence
+   api/define
    api/base
 
 
