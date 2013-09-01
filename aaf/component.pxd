@@ -43,9 +43,10 @@ cdef class EssenceGroup(Segment):
     
 cdef class Selector(Segment):
     cdef lib.IAAFSelector *ptr
-    
-cdef class Edgecode(Segment):
-    pass
+ 
+#Note Edgecode renamed to EdgeCode
+cdef class EdgeCode(Segment):
+    cdef lib.IAAFEdgecode *ptr
     
 cdef class Event(Segment):
     cdef lib.IAAFEvent *event_ptr

@@ -617,6 +617,11 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFSelector(IUnknown):
         pass
         
+    cdef aafUID_t AUID_AAFEdgecode
+    cdef GUID IID_IAAFEdgecode
+    cdef cppclass IAAFEdgecode(IUnknown):
+        pass
+        
     cdef aafUID_t AUID_AAFEvent
     cdef GUID IID_IAAFEvent
     cdef cppclass IAAFEvent(IUnknown):

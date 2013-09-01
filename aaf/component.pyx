@@ -304,6 +304,24 @@ cdef class Selector(Segment):
         if self.ptr:
             self.ptr.Release()
             
+cdef class EdgeCode(Segment):
+    def __init__(self, AAFBase obj = None):
+        super(EdgeCode, self).__init__(obj)
+        self.iid = lib.IID_IAAFEdgecode
+        self.auid = lib.AUID_AAFEdgecode
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
 cdef class Event(Segment):
     def __init__(self, AAFBase obj = None):
         super(Event, self).__init__(obj)
@@ -372,6 +390,7 @@ register_object(NestedScope)
 register_object(ScopeReference)
 register_object(EssenceGroup)
 register_object(Selector)
+register_object(EdgeCode)
 register_object(Event)
 register_object(CommentMarker)
 register_object(DescriptiveMarker)
