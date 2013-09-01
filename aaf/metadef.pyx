@@ -518,6 +518,18 @@ cdef class TypeDefRename(TypeDef):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def value(self, PropertyValue p_value):
+        cdef PropertyValue out_value = PropertyValue()
+        
+        error_check(self.ptr.GetBaseValue(p_value.ptr, &out_value.ptr))
+        
+        out_value = PropertyValue(out_value)
+        value =  out_value.value
+        if not value:
+            raise NotImplementedError("typedef rename of value type %s not implemented" % str(out_value.typedef()))
+        return value
+        
 
 cdef class TypeDefSet(TypeDef):
     def __init__(self, AAFBase obj = None):

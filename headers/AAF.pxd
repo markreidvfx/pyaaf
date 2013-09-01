@@ -220,7 +220,10 @@ cdef extern from "AAF.h":
         
     cdef GUID IID_IAAFTypeDefRename
     cdef cppclass IAAFTypeDefRename(IUnknown):
-        pass
+        HRESULT GetBaseValue(
+            IAAFPropertyValue * pInPropVal,
+            IAAFPropertyValue ** ppOutPropVal
+        )
 
     cdef GUID IID_IAAFTypeDefSet
     cdef cppclass IAAFTypeDefSet(IUnknown):

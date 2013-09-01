@@ -27,10 +27,9 @@ cdef class Component(AAFObject):
             
     property length:
         def __get__(self):
-            cdef lib.aafLength_t length
-            error_check(self.comp_ptr.GetLength(&length))
-            return length
-            
+            if self.has_key("Length"):
+                return self['Length']
+            return None
             
 cdef class Segment(Component):
     def __init__(self, AAFBase obj = None):
