@@ -322,11 +322,16 @@ class TestFile(unittest.TestCase):
         
         d = header['Dictionary']
         storage = header['Content']
-        self.assertIsInstance(d, aaf.dictionary.Dictionary)
-        self.assertIsInstance(storage, aaf.storage.ContentStorage)
         
-        with self.assertRaises(KeyError):
+        self.assertTrue(isinstance(d, aaf.dictionary.Dictionary))
+        self.assertTrue(isinstance(storage, aaf.storage.ContentStorage))
+        
+        try:
             header["header doesn't have this key"]
+        except KeyError as e:
+            pass
+        else:
+            raise
             
         keys = d.keys()
         print keys
