@@ -1,7 +1,7 @@
 cimport lib
 from .util cimport error_check, query_interface
 
-from .metadef cimport PropertyDef, TypeDef,resolve_typedef
+from .define cimport PropertyDef, TypeDef,resolve_typedef
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string

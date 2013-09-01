@@ -1,7 +1,9 @@
-from base cimport AAFBase, AAFObject
-from util cimport lookup_object
+from .base cimport AAFBase, AAFObject
+from .util cimport lookup_object
 
-from metadef cimport MetaDef, TypeDef, ClassDef, PropertyDef, resolve_typedef
+from .define cimport MetaDef, TypeDef, ClassDef, PropertyDef, resolve_typedef
+
+import traceback
 
 cdef object isA(AAFBase obj1,obj2):
     try:
@@ -24,8 +26,8 @@ def resolve_object(AAFBase obj):
         
             return obj_type(AAFObj)
         except:
+            #print traceback.format_exc()
             #print "no lookup for %s" % AAFObj.class_name
-            
             if isinstance(obj, AAFObject):
                 return obj
             else:

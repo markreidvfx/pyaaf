@@ -1,6 +1,6 @@
 import aaf
 import aaf.mob
-import aaf.metadef
+import aaf.define
 import aaf.iterator
 import aaf.dictionary
 import aaf.storage
@@ -226,27 +226,27 @@ class TestFile(unittest.TestCase):
                 #print p,valuedef.name,
                 #print valuedef.category
                 if valuedef.category == 1:
-                    intDef = aaf.metadef.TypeDefInt(valuedef)
+                    intDef = aaf.define.TypeDefInt(valuedef)
                     size = intDef.size()
                     signed = intDef.is_signed()
                     v = intDef.value(value)
                    # print v,size
                     
                 if valuedef.category == 3:
-                    strongRef = aaf.metadef.TypeDefStrongObjRef(valuedef)
+                    strongRef = aaf.define.TypeDefStrongObjRef(valuedef)
                     obj = strongRef.value(value)
                     obj_type = strongRef.object_type()
                     #print strongRef
                     #print strongRef.value(value),strongRef.object_type().name
                     
                 if valuedef.category == 6:
-                    enum = aaf.metadef.TypeDefEnum(valuedef)
+                    enum = aaf.define.TypeDefEnum(valuedef)
                     element_typdef = enum.element_typedef()
                     value = enum.value(value)
                       
                     
                 if valuedef.category == 7:
-                    VariableArrayDef = aaf.metadef.TypeDefFixedArray(valuedef)
+                    VariableArrayDef = aaf.define.TypeDefFixedArray(valuedef)
                     
                     count = VariableArrayDef.count(value)
                     typedef = VariableArrayDef.type()
@@ -256,7 +256,7 @@ class TestFile(unittest.TestCase):
                         #rint '  ', item, name
                     
                 if valuedef.category == 8:
-                    VariableArrayDef = aaf.metadef.TypeDefVariableArray(valuedef)
+                    VariableArrayDef = aaf.define.TypeDefVariableArray(valuedef)
                     
                     size = VariableArrayDef.size(value)
                     typedef = VariableArrayDef.type()
@@ -267,7 +267,7 @@ class TestFile(unittest.TestCase):
                     #print '   ', p.name, intDef,signed, '=',v
                 
                 if valuedef.category == 10:
-                    recordDef = aaf.metadef.TypeDefRecord(valuedef)
+                    recordDef = aaf.define.TypeDefRecord(valuedef)
                     #print '   ',p.name, recordDef, recordDef.value(value)
                     #print p.name
                     for x in xrange(recordDef.size()):
@@ -280,10 +280,10 @@ class TestFile(unittest.TestCase):
                         #print '   ', key,value
                         #print '      ',recordDef.member_name(x),recordDef.member_type(x).name
                 if valuedef.category == 12:
-                    stringDef = aaf.metadef.TypeDefString(valuedef)
+                    stringDef = aaf.define.TypeDefString(valuedef)
                     
                 if valuedef.category == 13:
-                    enumExDef = aaf.metadef.TypeDefExtEnum(valuedef)
+                    enumExDef = aaf.define.TypeDefExtEnum(valuedef)
                     size = enumExDef.size()
                     #print size ,enumExDef
                     for key,value in enumExDef.value(value).items():

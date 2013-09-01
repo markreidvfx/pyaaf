@@ -2,7 +2,7 @@
 cimport lib
 from .util cimport error_check, query_interface, resolve_object
 
-from .metadef cimport ClassDef
+from .define cimport ClassDef
 from .iterator cimport PropIter
 #from .resolve import resolve_object
 

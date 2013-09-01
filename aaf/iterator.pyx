@@ -5,7 +5,7 @@ from .mob cimport Mob,MobSlot
 from .property cimport Property,PropertyValue
 from .component cimport Component, Segment, Parameter
 from .datadef cimport CodecDef, PluginDef, KLVDataDef
-from .metadef cimport ClassDef, TypeDef
+from .define cimport ClassDef, TypeDef
 
 cdef class BaseIterator(object):
     pass
