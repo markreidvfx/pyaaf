@@ -547,6 +547,11 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFSequence(IUnknown):
         HRESULT Initialize(IAAFDataDef * pDataDef)
         HRESULT GetComponents(IEnumAAFComponents ** ppEnum)
+        
+    cdef aafUID_t AUID_AAFFiller
+    cdef GUID IID_IAAFFiller
+    cdef cppclass IAAFFiller(IUnknown):
+        pass
     
     cdef aafUID_t AUID_AAFSourceReference
     cdef GUID IID_IAAFSourceReference

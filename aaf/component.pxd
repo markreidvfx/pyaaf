@@ -18,7 +18,7 @@ cdef class Timecode(Segment):
     pass
 
 cdef class Filler(Segment):
-    pass
+    cdef lib.IAAFFiller *ptr
 
 cdef class Pulldown(Segment):
     pass

@@ -77,6 +77,24 @@ cdef class Sequence(Segment):
         error_check(self.ptr.GetComponents(&comp_inter.ptr))
         return comp_inter
 
+cdef class Filler(Segment):
+    def __init__(self, AAFBase obj = None):
+        super(Filler, self).__init__(obj)
+        self.iid = lib.IID_IAAFFiller
+        self.auid = lib.AUID_AAFFiller
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+
 cdef class SourceReference(Segment):
     def __init__(self, AAFBase obj = None):
         super(SourceReference, self).__init__(obj)
@@ -214,6 +232,7 @@ cdef class EssenceGroup(Segment):
 register_object(Component)
 register_object(Segment)
 register_object(Sequence)
+register_object(Filler)
 register_object(SourceReference)
 register_object(SourceClip)
 register_object(OperationGroup)
