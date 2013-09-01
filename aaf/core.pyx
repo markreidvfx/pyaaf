@@ -1,5 +1,6 @@
 
 
-from .util cimport register
+from .util cimport register_all
 
-register()
+# Load DLLs and register plugins
+register_all()
