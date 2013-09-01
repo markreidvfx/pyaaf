@@ -21,7 +21,7 @@ cdef class Filler(Segment):
     cdef lib.IAAFFiller *ptr
 
 cdef class Pulldown(Segment):
-    pass
+    cdef lib.IAAFPulldown *ptr
 
 cdef class SourceReference(Segment):
     cdef lib.IAAFSourceReference *ref_ptr

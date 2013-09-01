@@ -112,6 +112,24 @@ cdef class Filler(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+cdef class Pulldown(Segment):
+    def __init__(self, AAFBase obj = None):
+        super(Pulldown, self).__init__(obj)
+        self.iid = lib.IID_IAAFPulldown
+        self.auid = lib.AUID_AAFPulldown
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
 
 cdef class SourceReference(Segment):
     def __init__(self, AAFBase obj = None):
@@ -327,6 +345,7 @@ register_object(Segment)
 register_object(Transition)
 register_object(Sequence)
 register_object(Filler)
+register_object(Pulldown)
 register_object(SourceReference)
 register_object(SourceClip)
 register_object(OperationGroup)

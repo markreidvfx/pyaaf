@@ -557,6 +557,11 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFFiller
     cdef cppclass IAAFFiller(IUnknown):
         pass
+        
+    cdef aafUID_t AUID_AAFPulldown
+    cdef GUID IID_IAAFPulldown
+    cdef cppclass IAAFPulldown(IUnknown):
+        pass
     
     cdef aafUID_t AUID_AAFSourceReference
     cdef GUID IID_IAAFSourceReference
