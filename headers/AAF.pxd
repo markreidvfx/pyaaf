@@ -311,6 +311,16 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFCodecDef
     cdef cppclass IAAFCodecDef(IUnknown):
         pass
+    
+    cdef aafUID_t AUID_AAFContainerDef
+    cdef GUID IID_IAAFContainerDef
+    cdef cppclass IAAFContainerDef(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFInterpolationDef
+    cdef GUID IID_IAAFInterpolationDef
+    cdef cppclass IAAFInterpolationDef(IUnknown):
+        pass
         
     cdef aafUID_t AUID_AAFParameterDef
     cdef GUID IID_IAAFParameterDef
@@ -330,6 +340,11 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFKLVDataDefinition
     cdef GUID IID_IAAFKLVDataDefinition
     cdef cppclass IAAFKLVDataDefinition(IUnknown):
+        pass
+
+    cdef aafUID_t AUID_AAFTaggedValueDefinition
+    cdef GUID IID_IAAFTaggedValueDefinition
+    cdef cppclass IAAFTaggedValueDefinition(IUnknown):
         pass
         
     # File Locators

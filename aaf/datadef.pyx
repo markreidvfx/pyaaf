@@ -140,6 +140,42 @@ cdef class CodecDef(DefObject):
         if self.ptr:
             self.ptr.Release()
             
+cdef class ContainerDef(DefObject):
+    def __init__(self, AAFBase obj = None):
+        super(ContainerDef, self).__init__(obj)
+        self.iid = lib.IID_IAAFContainerDef
+        self.auid = lib.AUID_AAFContainerDef
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+cdef class InterpolationDef(DefObject):
+    def __init__(self, AAFBase obj = None):
+        super(InterpolationDef, self).__init__(obj)
+        self.iid = lib.IID_IAAFInterpolationDef
+        self.auid = lib.AUID_AAFInterpolationDef
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
 cdef class OperationDef(DefObject):
     def __init__(self, AAFBase obj = None):
         super(OperationDef, self).__init__(obj)
@@ -175,11 +211,32 @@ cdef class KLVDataDef(DefObject):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+cdef class TaggedValueDef(DefObject):
+    def __init__(self, AAFBase obj = None):
+        super(TaggedValueDef, self).__init__(obj)
+        self.iid = lib.IID_IAAFTaggedValueDefinition
+        self.auid = lib.AUID_AAFTaggedValueDefinition
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
 
 register_object(DefObject)           
 register_object(DataDef)
 register_object(ParameterDef)
 register_object(PluginDef)
 register_object(CodecDef)
+register_object(ContainerDef)
+register_object(InterpolationDef)
 register_object(OperationDef)
 register_object(KLVDataDef)
+register_object(TaggedValueDef)

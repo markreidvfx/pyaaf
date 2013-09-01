@@ -14,10 +14,10 @@ cdef class DataDef(DefObject):
     cdef lib.IAAFDataDef *ptr
     
 cdef class ContainerDef(DefObject):
-    pass
+    cdef lib.IAAFContainerDef *ptr
     
 cdef class InterpolationDef(DefObject):
-    pass
+    cdef lib.IAAFInterpolationDef *ptr
     
 cdef class ParameterDef(DefObject):
     cdef lib.IAAFParameterDef *ptr
@@ -35,4 +35,4 @@ cdef class KLVDataDef(DefObject):
     cdef lib.IAAFKLVDataDefinition *ptr
     
 cdef class TaggedValueDef(DefObject):
-    pass
+    cdef lib.IAAFTaggedValueDefinition *ptr
