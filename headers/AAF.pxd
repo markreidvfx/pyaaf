@@ -309,6 +309,11 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFCodecDef(IUnknown):
         pass
         
+    cdef aafUID_t AUID_AAFParameterDef
+    cdef GUID IID_IAAFParameterDef
+    cdef cppclass IAAFParameterDef(IUnknown):
+        pass
+        
     cdef aafUID_t AUID_AAFPluginDef
     cdef GUID IID_IAAFPluginDef
     cdef cppclass IAAFPluginDef(IUnknown):
@@ -651,7 +656,8 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFParameter
     cdef GUID IID_IAAFParameter
     cdef cppclass IAAFParameter(IUnknown):
-        pass
+        HRESULT GetParameterDefinition(IAAFParameterDef **ppParmDef)
+        HRESULT GetTypeDefinition(IAAFTypeDef **ppTypeDef)
 
     cdef aafUID_t AUID_AAFConstantValue
     cdef GUID IID_IAAFConstantValue

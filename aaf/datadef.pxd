@@ -20,7 +20,7 @@ cdef class InterpolationDef(DefObject):
     pass
     
 cdef class ParameterDef(DefObject):
-    pass
+    cdef lib.IAAFParameterDef *ptr
     
 cdef class PluginDef(DefObject):
     cdef lib.IAAFPluginDef *ptr

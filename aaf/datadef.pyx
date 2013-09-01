@@ -85,6 +85,24 @@ cdef class DataDef(DefObject):
     
     def initialize(self, object def_type, bytes):
         pass
+    
+cdef class ParameterDef(DefObject):
+    def __init__(self, AAFBase obj = None):
+        super(ParameterDef, self).__init__(obj)
+        self.iid = lib.IID_IAAFParameterDef
+        self.auid = lib.AUID_AAFParameterDef
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
 
 cdef class PluginDef(DefObject):
     def __init__(self, AAFBase obj = None):
@@ -160,6 +178,7 @@ cdef class KLVDataDef(DefObject):
 
 register_object(DefObject)           
 register_object(DataDef)
+register_object(ParameterDef)
 register_object(PluginDef)
 register_object(CodecDef)
 register_object(OperationDef)

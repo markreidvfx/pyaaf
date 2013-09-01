@@ -4,7 +4,8 @@ from .util cimport error_check, query_interface, register_object
 
 from base cimport AAFObject, AAFBase, AUID
 from mob cimport Mob 
-from datadef cimport DataDef, OperationDef
+from metadef cimport TypeDef
+from datadef cimport DataDef, OperationDef, ParameterDef
 from iterator cimport ComponentIter, SegmentIter, ParamIter
 
 cdef class Component(AAFObject):
@@ -424,6 +425,16 @@ cdef class Parameter(AAFObject):
     def __dealloc__(self):
         if self.param_ptr:
             self.param_ptr.Release()
+    
+    def typedef(self):
+        cdef TypeDef type_def = TypeDef()
+        error_check(self.param_ptr.GetTypeDefinition(&type_def.typedef_ptr))
+        return TypeDef(type_def).resolve()
+        
+    def parameterdef(self):
+        cdef ParameterDef param_def = ParameterDef()
+        error_check(self.param_ptr.GetParameterDefinition(&param_def.ptr))
+        return ParameterDef(param_def)
             
 cdef class ConstantValue(Parameter):
     def __init__(self, AAFBase obj = None):
