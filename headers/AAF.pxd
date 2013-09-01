@@ -318,7 +318,7 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFOperationDef
     cdef cppclass IAAFOperationDef(IUnknown):
         pass
-        
+                
     cdef aafUID_t AUID_AAFKLVDataDefinition
     cdef GUID IID_IAAFKLVDataDefinition
     cdef cppclass IAAFKLVDataDefinition(IUnknown):
@@ -597,6 +597,8 @@ cdef extern from "AAF.h":
             aafUInt32  index,
             IAAFSegment ** ppInputSegment
         )
+        HRESULT GetOperationDefinition(IAAFOperationDef **ppOperationDef)
+        
 
     cdef aafUID_t AUID_AAFNestedScope
     cdef GUID IID_IAAFNestedScope

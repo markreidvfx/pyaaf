@@ -4,7 +4,7 @@ from .util cimport error_check, query_interface, register_object
 
 from base cimport AAFObject, AAFBase, AUID
 from mob cimport Mob 
-from datadef cimport DataDef
+from datadef cimport DataDef, OperationDef
 from iterator cimport ComponentIter, SegmentIter
 
 cdef class Component(AAFObject):
@@ -228,11 +228,20 @@ cdef class OperationGroup(Segment):
             error_check(self.ptr.GetInputSegmentAt(i, &seg.seg_ptr))
             yield Segment(seg).resolve()
     
+    def operationdef(self):
+        cdef OperationDef op_def = OperationDef()
+        error_check(self.ptr.GetOperationDefinition(&op_def.ptr))
+        return OperationDef(op_def)
+    
     property nb_input_segments:
         def __get__(self):
             cdef lib.aafUInt32 value
             error_check(self.ptr.CountSourceSegments(&value))
             return value
+    
+    property operation:
+        def __get__(self):
+            return self.operationdef().name
         
     
 cdef class NestedScope(Segment):
