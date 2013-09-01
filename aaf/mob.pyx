@@ -260,6 +260,22 @@ cdef class TimelineMobSlot(MobSlot):
         if self.ptr:
             self.ptr.Release()
             
+cdef class EventMobSlot(MobSlot):
+    def __init__(self, AAFBase obj = None):
+        super(EventMobSlot, self).__init__(obj)
+        self.iid = lib.IID_IAAFEventMobSlot
+        self.auid = lib.AUID_AAFEventMobSlot
+        self.ptr = NULL
+        if not obj:
+            return
+        query_interface(obj.get(), <lib.IUnknown**>&self.ptr, self.iid)
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+            
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
             
 register_object(Mob)           
 register_object(MasterMob)
@@ -267,3 +283,4 @@ register_object(CompositionMob)
 register_object(SourceMob)
 register_object(MobSlot)
 register_object(TimelineMobSlot)
+register_object(EventMobSlot)

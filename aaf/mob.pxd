@@ -23,7 +23,7 @@ cdef class TimelineMobSlot(MobSlot):
     cdef lib.IAAFTimelineMobSlot *ptr
 
 cdef class EventMobSlot(MobSlot):
-    pass
+    cdef lib.IAAFEventMobSlot *ptr
     
 cdef class StaticMobSlot(MobSlot):
     pass
