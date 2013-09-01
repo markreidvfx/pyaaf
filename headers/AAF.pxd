@@ -171,7 +171,10 @@ cdef extern from "AAF.h":
 
     cdef GUID IID_IAAFTypeDefIndirect
     cdef cppclass IAAFTypeDefIndirect(IUnknown):
-        pass
+        HRESULT GetActualValue(
+            IAAFPropertyValue * pIndirectPropertyValue,
+            IAAFPropertyValue ** ppActualPropertyValue
+        )
 
     cdef GUID IID_IAAFTypeDefInt
     cdef cppclass IAAFTypeDefInt(IUnknown):

@@ -300,6 +300,17 @@ cdef class TypeDefIndirect(TypeDef):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def value(self, PropertyValue p_value):
+        cdef PropertyValue out_value = PropertyValue()
+        
+        error_check(self.ptr.GetActualValue(p_value.ptr, &out_value.ptr))
+        
+        out_value = PropertyValue(out_value)
+        value =  out_value.value
+        if value is None:
+            raise NotImplementedError("typedef rename of value type %s not implemented" % str(out_value.typedef()))
+        return value
     
 # Note Opaque inherits TypeDefIndirect
 cdef class TypeDefOpaque(TypeDefIndirect):
@@ -348,8 +359,7 @@ cdef class TypeDefInt(TypeDef):
     def value(self, PropertyValue p_value ):
         
         cdef lib.aafUInt32 size = self.size()
-        
-        if self.is_signed:
+        if self.is_signed():
             if sizeof(lib.aafInt8) == size:
                 return get_int[lib.aafInt8](self, p_value, 0)
             elif sizeof(lib.aafInt16) == size:
