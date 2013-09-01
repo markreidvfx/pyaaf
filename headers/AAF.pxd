@@ -314,6 +314,11 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFPluginDef(IUnknown):
         pass
         
+    cdef aafUID_t AUID_AAFOperationDef
+    cdef GUID IID_IAAFOperationDef
+    cdef cppclass IAAFOperationDef(IUnknown):
+        pass
+        
     cdef aafUID_t AUID_AAFKLVDataDefinition
     cdef GUID IID_IAAFKLVDataDefinition
     cdef cppclass IAAFKLVDataDefinition(IUnknown):

@@ -29,7 +29,7 @@ cdef class CodecDef(DefObject):
     cdef lib.IAAFCodecDef *ptr
     
 cdef class OperationDef(DefObject):
-    pass
+    cdef lib.IAAFOperationDef *ptr
     
 cdef class KLVDataDef(DefObject):
     cdef lib.IAAFKLVDataDefinition *ptr
