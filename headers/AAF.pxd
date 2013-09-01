@@ -577,6 +577,11 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFNestedScope(IUnknown):
         HRESULT GetSegments(IEnumAAFSegments ** ppEnum)
         
+    cdef aafUID_t AUID_AAFScopeReference
+    cdef GUID IID_IAAFScopeReference
+    cdef cppclass IAAFScopeReference(IUnknown):
+        pass
+    
     cdef aafUID_t AUID_AAFEssenceGroup
     cdef GUID IID_IAAFEssenceGroup
     cdef cppclass IAAFEssenceGroup(IUnknown):

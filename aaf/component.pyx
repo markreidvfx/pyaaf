@@ -171,8 +171,29 @@ cdef class NestedScope(Segment):
         cdef SegmentIter seg_iter = SegmentIter()
         error_check(self.ptr.GetSegments(&seg_iter.ptr))
         return seg_iter
+    
+cdef class ScopeReference(Segment):
+    def __init__(self, AAFBase obj = None):
+        super(ScopeReference, self).__init__(obj)
+        self.iid = lib.IID_IAAFScopeReference
+        self.auid = lib.AUID_AAFScopeReference
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
 
 cdef class EssenceGroup(Segment):
+    """
+    Describes multiple digital representations of the same original content source.
+    """
     def __init__(self, AAFBase obj = None):
         super(EssenceGroup, self).__init__(obj)
         self.iid = lib.IID_IAAFEssenceGroup
@@ -197,4 +218,5 @@ register_object(SourceReference)
 register_object(SourceClip)
 register_object(OperationGroup)
 register_object(NestedScope)
+register_object(ScopeReference)
 register_object(EssenceGroup)

@@ -36,7 +36,7 @@ cdef class NestedScope(Segment):
     cdef lib.IAAFNestedScope *ptr
 
 cdef class ScopeReference(Segment):
-    pass
+    cdef lib.IAAFScopeReference *ptr
 
 cdef class EssenceGroup(Segment):
     cdef lib.IAAFEssenceGroup *ptr
