@@ -1,21 +1,16 @@
 cimport lib
 from base cimport AAFObject, AAFBase, AUID
 
-cimport datadef
-from essence cimport Locator, EssenceAccess
-
-from util cimport error_check, query_interface, register_object, fraction_to_aafRational, MobID
-
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from cpython cimport bool
 
-from cython.operator cimport dereference as deref
-
+from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, MobID
 from .iterator cimport MobSlotIter
 from .component cimport Segment
-from .essence cimport EssenceDescriptor
+from .essence cimport EssenceDescriptor, Locator, EssenceAccess
 from .component cimport Segment
+from .define cimport DataDef, CodecDefMap, ContainerDefMap
 
 from wstring cimport wstring, wideToString, toWideString
 
@@ -127,7 +122,7 @@ cdef class MasterMob(Mob):
                             Locator locator=None, 
                             bytes fileformat = b"aaf"):
         
-        cdef datadef.DataDef media_datadef        
+        cdef DataDef media_datadef        
         media_datadef = self.dictionary().lookup_datadef(media_kind)
 
         cdef lib.aafRational_t edit_rate_t
@@ -135,8 +130,8 @@ cdef class MasterMob(Mob):
         fraction_to_aafRational(edit_rate, edit_rate_t)
         fraction_to_aafRational(sample_rate, sample_rate_t)
         
-        cdef AUID codec = datadef.CodecDefMap[codec_name.lower()]
-        cdef AUID container = datadef.ContainerDefMap[fileformat.lower()]
+        cdef AUID codec = CodecDefMap[codec_name.lower()]
+        cdef AUID container = ContainerDefMap[fileformat.lower()]
         
         print edit_rate_t,sample_rate_t,codec,container
 

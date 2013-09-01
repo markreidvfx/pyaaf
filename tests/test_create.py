@@ -5,7 +5,7 @@ import os
 
 import aaf
 
-import aaf.datadef
+import aaf.define
 import aaf.component
 import aaf.mob
 import aaf.essence

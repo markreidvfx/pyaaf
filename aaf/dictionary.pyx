@@ -1,12 +1,11 @@
 
 cimport lib
 
-cimport datadef
-from base cimport AAFBase, AAFObject, AUID
+from .base cimport AAFBase, AAFObject, AUID
+from .define cimport DataDef, DataDefMap
 from .util cimport error_check, query_interface, register_object, lookup_object
-from wstring cimport wstring,toWideString
 from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter 
-
+from wstring cimport wstring,toWideString
 
 cdef class Dictionary(AAFObject):
     def __init__(self, AAFBase obj = None):
@@ -24,12 +23,12 @@ cdef class Dictionary(AAFObject):
         
     def lookup_datadef(self, bytes name):
         
-        cdef AUID auid = datadef.DataDefMap[name.lower()]
-        cdef datadef.DataDef definition = datadef.DataDef()
+        cdef AUID auid = DataDefMap[name.lower()]
+        cdef DataDef definition =  DataDef()
         
         error_check(self.ptr.LookupDataDef(auid.get_auid(), &definition.ptr ))
         
-        return datadef.DataDef(definition)
+        return DataDef(definition)
     
     def class_defs(self):
         cdef ClassDefIter def_iter = ClassDefIter()

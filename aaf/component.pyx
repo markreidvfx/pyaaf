@@ -4,8 +4,7 @@ from .util cimport error_check, query_interface, register_object
 
 from .base cimport AAFObject, AAFBase, AUID
 from .mob cimport Mob 
-from .define cimport TypeDef
-from .datadef cimport DataDef, OperationDef, ParameterDef
+from .define cimport TypeDef, DataDef, OperationDef, ParameterDef
 from .iterator cimport ComponentIter, SegmentIter, ParamIter
 
 cdef class Component(AAFObject):
