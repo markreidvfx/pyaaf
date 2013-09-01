@@ -1,7 +1,7 @@
 
 cimport lib
 from .base cimport AAFBase, AAFObject, AUID
-from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolver_func
+from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func
 from .property cimport PropertyValue
 
 cimport iterator
@@ -52,7 +52,7 @@ def resolve_object_func(AAFBase obj):
     return obj
 
 # set the resolve object function
-set_resolver_func(resolve_object_func)
+set_resolve_object_func(resolve_object_func)
 
 cdef class MetaDef(AAFBase):
     def __init__(self, AAFBase obj = None):

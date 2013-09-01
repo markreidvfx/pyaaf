@@ -13,7 +13,7 @@ HRESULTS = lib.get_hrmap()
 
 # This function is defined in the define module
 # and set via set_resolver_func to avoid import base into this module
-cdef object RESOVLER_FUNC = None
+cdef object RESOLVE_OBJECT_FUNC = None
 
 cdef dict OBJECT_MAP = {}
 
@@ -69,12 +69,12 @@ cdef object lookup_object(bytes name):
             return OBJECT_MAP[rename]
     raise KeyError("No object named %s" % name)
 
-cdef object set_resolver_func(object obj):
-    global RESOVLER_FUNC
-    RESOVLER_FUNC = obj
+cdef object set_resolve_object_func(object obj):
+    global RESOLVE_OBJECT_FUNC
+    RESOLVE_OBJECT_FUNC = obj
 
-cdef object resolve_object(object obj): 
-    return RESOVLER_FUNC(obj)
+cdef object resolve_object(object obj):
+    return RESOLVE_OBJECT_FUNC(obj)
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r):
     
