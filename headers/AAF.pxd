@@ -602,6 +602,11 @@ cdef extern from "AAF.h":
             IAAFSegment  ** ppChoice
         )
         
+    cdef aafUID_t AUID_AAFSelector
+    cdef GUID IID_IAAFSelector
+    cdef cppclass IAAFSelector(IUnknown):
+        pass
+        
     ## IEnumAAFs
     
     cdef GUID IID_IEnumAAFComponents

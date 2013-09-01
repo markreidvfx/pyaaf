@@ -42,7 +42,7 @@ cdef class EssenceGroup(Segment):
     cdef lib.IAAFEssenceGroup *ptr
     
 cdef class Selector(Segment):
-    pass
+    cdef lib.IAAFSelector *ptr
     
 cdef class Edgecode(Segment):
     pass

@@ -246,6 +246,27 @@ cdef class EssenceGroup(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+cdef class Selector(Segment):
+    """
+    Provides the value of a single Segment while preserving references to unused alternatives.
+    """
+    def __init__(self, AAFBase obj = None):
+        super(Selector, self).__init__(obj)
+        self.iid = lib.IID_IAAFSelector
+        self.auid = lib.AUID_AAFSelector
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
     
 register_object(Component)
 register_object(Segment)
@@ -258,3 +279,4 @@ register_object(OperationGroup)
 register_object(NestedScope)
 register_object(ScopeReference)
 register_object(EssenceGroup)
+register_object(Selector)
