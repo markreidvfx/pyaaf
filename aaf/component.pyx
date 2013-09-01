@@ -267,6 +267,60 @@ cdef class Selector(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+cdef class Event(Segment):
+    def __init__(self, AAFBase obj = None):
+        super(Event, self).__init__(obj)
+        self.iid = lib.IID_IAAFEvent
+        self.auid = lib.AUID_AAFEvent
+        self.event_ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.event_ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.event_ptr
+    
+    def __dealloc__(self):
+        if self.event_ptr:
+            self.event_ptr.Release()
+            
+cdef class CommentMarker(Event):
+    def __init__(self, AAFBase obj = None):
+        super(CommentMarker, self).__init__(obj)
+        self.iid = lib.IID_IAAFCommentMarker
+        self.auid = lib.AUID_AAFCommentMarker
+        self.comment_ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.comment_ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.comment_ptr
+    
+    def __dealloc__(self):
+        if self.comment_ptr:
+            self.comment_ptr.Release()
+            
+cdef class DescriptiveMarker(CommentMarker):
+    def __init__(self, AAFBase obj = None):
+        super(DescriptiveMarker, self).__init__(obj)
+        self.iid = lib.IID_IAAFDescriptiveMarker
+        self.auid = lib.AUID_AAFDescriptiveMarker
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
     
 register_object(Component)
 register_object(Segment)
@@ -280,3 +334,6 @@ register_object(NestedScope)
 register_object(ScopeReference)
 register_object(EssenceGroup)
 register_object(Selector)
+register_object(Event)
+register_object(CommentMarker)
+register_object(DescriptiveMarker)

@@ -48,13 +48,13 @@ cdef class Edgecode(Segment):
     pass
     
 cdef class Event(Segment):
-    pass
+    cdef lib.IAAFEvent *event_ptr
     
 cdef class CommentMarker(Event):
-    pass
+    cdef lib.IAAFCommentMarker *comment_ptr
     
 cdef class DescriptiveMarker(CommentMarker):
-    pass
+    cdef lib.IAAFDescriptiveMarker *ptr
 
 cdef class GPITrigger(Event):
     pass

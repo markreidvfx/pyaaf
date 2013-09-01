@@ -607,6 +607,22 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFSelector(IUnknown):
         pass
         
+    cdef aafUID_t AUID_AAFEvent
+    cdef GUID IID_IAAFEvent
+    cdef cppclass IAAFEvent(IUnknown):
+        pass
+    
+    cdef aafUID_t AUID_AAFCommentMarker
+    cdef GUID IID_IAAFCommentMarker
+    cdef cppclass IAAFCommentMarker(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFDescriptiveMarker
+    cdef GUID IID_IAAFDescriptiveMarker
+    cdef cppclass IAAFDescriptiveMarker(IUnknown):
+        pass
+        
+        
     ## IEnumAAFs
     
     cdef GUID IID_IEnumAAFComponents
