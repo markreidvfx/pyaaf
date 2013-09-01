@@ -536,6 +536,7 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFComponent(IUnknown):
         HRESULT SetLength(aafLength_t& pLength)
         HRESULT GetLength(aafLength_t * pLength)
+        HRESULT GetDataDef(IAAFDataDef ** ppDatadef)
     
     cdef aafUID_t AUID_AAFSegment
     cdef GUID IID_IAAFSegment
@@ -545,7 +546,7 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFTransition
     cdef GUID IID_IAAFTransition
     cdef cppclass IAAFTransition(IUnknown):
-        pass
+        HRESULT GetCutPoint(aafPosition_t *cutPoint)
         
     cdef aafUID_t AUID_AAFSequence
     cdef GUID IID_IAAFSequence

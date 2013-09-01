@@ -24,12 +24,20 @@ cdef class Component(AAFObject):
     def __dealloc__(self):
         if self.comp_ptr:
             self.comp_ptr.Release()
-            
+    
+    def datadef(self):
+        cdef DataDef data_def = DataDef()
+        error_check(self.comp_ptr.GetDataDef(&data_def.ptr))
+        return DataDef(data_def)
+        
     property length:
         def __get__(self):
             if self.has_key("Length"):
                 return self['Length']
             return None
+    property media_kind:
+        def __get__(self):
+            return self.datadef().name
             
 cdef class Segment(Component):
     def __init__(self, AAFBase obj = None):
@@ -66,6 +74,12 @@ cdef class Transition(Component):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    property cutpoint:
+        def __get__(self):
+            cdef lib.aafPosition_t value
+            error_check(self.ptr.GetCutPoint(&value))
+            return value
             
 cdef class Sequence(Segment):
     def __init__(self, AAFBase obj = None):
