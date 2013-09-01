@@ -435,6 +435,23 @@ cdef class Parameter(AAFObject):
         cdef ParameterDef param_def = ParameterDef()
         error_check(self.param_ptr.GetParameterDefinition(&param_def.ptr))
         return ParameterDef(param_def)
+    
+    property name:
+        def __get__(self):
+            param_def = self.parameterdef()
+            return param_def.name
+        
+    property value:
+        def __get__(self):
+            props = list(self.properties())
+            if len(props) == 2:
+                return props[1].value
+            values = []
+            for p in props[1:]:
+                values.append(p.value)
+            return values
+            
+        
             
 cdef class ConstantValue(Parameter):
     def __init__(self, AAFBase obj = None):
