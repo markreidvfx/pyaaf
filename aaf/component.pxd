@@ -39,7 +39,7 @@ cdef class ScopeReference(Segment):
     pass
 
 cdef class EssenceGroup(Segment):
-    pass
+    cdef lib.IAAFEssenceGroup *ptr
     
 cdef class Selector(Segment):
     pass

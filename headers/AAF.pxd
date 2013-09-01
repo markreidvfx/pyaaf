@@ -571,12 +571,21 @@ cdef extern from "AAF.h":
             aafUInt32  index,
             IAAFSegment ** ppInputSegment
         )
-        
-        
+
     cdef aafUID_t AUID_AAFNestedScope
     cdef GUID IID_IAAFNestedScope
     cdef cppclass IAAFNestedScope(IUnknown):
         HRESULT GetSegments(IEnumAAFSegments ** ppEnum)
+        
+    cdef aafUID_t AUID_AAFEssenceGroup
+    cdef GUID IID_IAAFEssenceGroup
+    cdef cppclass IAAFEssenceGroup(IUnknown):
+        HRESULT GetStillFrame(IAAFSourceClip **ppStillFrame)
+        HRESULT CountChoices(aafUInt32 *pCount)
+        HRESULT GetChoiceAt(
+            aafUInt32  index,
+            IAAFSegment  ** ppChoice
+        )
         
     ## IEnumAAFs
     
