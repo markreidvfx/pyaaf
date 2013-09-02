@@ -49,10 +49,10 @@ cdef class FilmDescriptor(EssenceDescriptor):
     pass
     
 cdef class PhysicalDescriptor(EssenceDescriptor):
-    pass
+    cdef lib.IAAFPhysicalDescriptor *phys_ptr
     
 cdef class ImportDescriptor(PhysicalDescriptor):
-    pass
+    cdef lib.IAAFImportDescriptor *ptr
     
 cdef class RecordingDescriptor(PhysicalDescriptor):
     pass

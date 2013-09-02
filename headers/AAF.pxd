@@ -496,6 +496,31 @@ cdef extern from "AAF.h":
         HRESULT GetVerticalSubsampling(aafUInt32 *pVerticalSubsampling)
         HRESULT SetColorRange(aafUInt32 ColorRange)
         HRESULT GetColorRange(aafUInt32 *  pColorRange)
+
+    cdef aafUID_t AUID_AAFRGBADescriptor
+    cdef GUID IID_IAAFRGBADescriptor
+    cdef cppclass IAAFRGBADescriptor(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFSoundDescriptor
+    cdef GUID IID_IAAFSoundDescriptor
+    cdef cppclass IAAFSoundDescriptor(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFPCMDescriptor
+    cdef GUID IID_IAAFPCMDescriptor
+    cdef cppclass IAAFPCMDescriptor(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFPhysicalDescriptor
+    cdef GUID IID_IAAFPhysicalDescriptor
+    cdef cppclass IAAFPhysicalDescriptor(IUnknown):
+        pass
+        
+    cdef aafUID_t AUID_AAFImportDescriptor
+    cdef GUID IID_IAAFImportDescriptor
+    cdef cppclass IAAFImportDescriptor(IUnknown):
+        pass
         
     # Mobs
     

@@ -547,6 +547,42 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
             error_check(self.ptr.GetColorRange(&value))
             return value
         
+cdef class PhysicalDescriptor(EssenceDescriptor):
+    def __init__(self, AAFBase obj = None):
+        super(PhysicalDescriptor, self).__init__(obj)
+        self.iid = lib.IID_IAAFPhysicalDescriptor
+        self.auid = lib.AUID_AAFPhysicalDescriptor
+        self.phys_ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.phys_ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.phys_ptr
+    
+    def __dealloc__(self):
+        if self.phys_ptr:
+            self.phys_ptr.Release()
+            
+cdef class ImportDescriptor(PhysicalDescriptor):
+    def __init__(self, AAFBase obj = None):
+        super(ImportDescriptor, self).__init__(obj)
+        self.iid = lib.IID_IAAFImportDescriptor
+        self.auid = lib.AUID_AAFImportDescriptor
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
         
 register_object(Locator)
 register_object(NetworkLocator)
@@ -555,3 +591,5 @@ register_object(FileDescriptor)
 register_object(WAVEDescriptor)
 register_object(DigitalImageDescriptor)
 register_object(CDCIDescriptor)
+register_object(PhysicalDescriptor)
+register_object(ImportDescriptor)
