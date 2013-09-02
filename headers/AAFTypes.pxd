@@ -23,7 +23,9 @@ cdef extern from *:
     ctypedef int SCODE
     ctypedef int HRESULT
     
-    ctypedef wchar_t aafCharacter    
+    ctypedef wchar_t aafCharacter
+    
+    ctypedef unsigned char UChar "unsigned char"
     
     ctypedef unsigned char * aafMemPtr_t "unsigned char *"
     ctypedef aafUInt8 * aafDataBuffer_t "aafUInt8 *"

@@ -221,7 +221,7 @@ class TestFile(unittest.TestCase):
                 
                 if valuedef.value(value) is None:
                     #pass
-                    print valuedef,valuedef.category
+                    print "** missing", valuedef,valuedef.category
                 #print valuedef
                 #print p,valuedef.name,
                 #print valuedef.category
@@ -262,7 +262,8 @@ class TestFile(unittest.TestCase):
                     typedef = VariableArrayDef.type()
                     #print VariableArrayDef.count(value), VariableArrayDef,VariableArrayDef.name,typedef.name
                     for item in VariableArrayDef.value(value):
-                        print item
+                        pass
+                        #print item
                         #print '  ', item, name
                     #print '   ', p.name, intDef,signed, '=',v
                 
@@ -295,27 +296,28 @@ class TestFile(unittest.TestCase):
     
         header = f.header()
         
-        def walk_properties(space, obj):
-            iter_prop =obj
-            if isinstance(obj, aaf.base.AAFObject):
-                iter_prop = obj.properties()
+        def walk_properties(space, iter_item):
 
-            for p in iter_prop:
-                value = p
-                if isinstance(p, aaf.property.Property):
-                    value= p.value
-                #print space ,value
+            for item in iter_item:
+                value = item
+                if isinstance(item, aaf.property.Property):
+                    value = item.value
+                name = ""
+                if hasattr(item, 'name'):
+                    name = item.name or ""
+                
+                #print space,name, value
+                s = space + '   '
                 if isinstance(value, aaf.base.AAFObject):
                     #print space, value.class_name
-                    s = space + '   '
-                    walk_properties(s, value)
+                    walk_properties(s, value.properties())
                 if isinstance(value, aaf.iterator.BaseIterator):
          
-                    s = space + '   '
+                    
                     walk_properties(s, value)
                     #print "iterator!"
         
-        walk_properties("", header)
+        walk_properties("", header.properties())
         
     def test_lookup_index(self):
         test_file = main_test_file

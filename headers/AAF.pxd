@@ -237,7 +237,16 @@ cdef extern from "AAF.h":
 
     cdef GUID IID_IAAFTypeDefStream
     cdef cppclass IAAFTypeDefStream(IUnknown):
-        pass
+        HRESULT GetSize(
+            IAAFPropertyValue * pStreamPropertyValue,
+            aafInt64 *  pSize
+        )
+        HRESULT Read(
+            IAAFPropertyValue * pStreamPropertyValue,
+            aafUInt32  dataSize,
+            aafMemPtr_t  pData,
+            aafUInt32 *  bytesRead
+        )
 
     cdef GUID IID_IAAFTypeDefString
     cdef cppclass IAAFTypeDefString(IUnknown):

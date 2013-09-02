@@ -12,6 +12,8 @@ from libcpp.pair cimport pair
 from libcpp.map cimport map
 from wstring cimport  wstring, wideToString
 
+import traceback
+import array
 
 cdef object isA(AAFBase obj1,obj2):
     try:
@@ -137,7 +139,7 @@ cdef class TypeDef(MetaDef):
             self.typedef_ptr.Release()
     
     def value(self, PropertyValue p_value ):
-        pass
+        raise NotImplementedError("Value not implemented for type %s" %(str(self)))
     
     property category:
         def __get__(self):
@@ -630,6 +632,33 @@ cdef class TypeDefStream(TypeDef):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def size(self, PropertyValue p_value):
+        """
+        Returns number of bytes contained in the referenced property value
+        """
+        cdef lib.aafInt64 size
+        error_check(self.ptr.GetSize(p_value.ptr, &size))
+        return size
+            
+    def value(self,PropertyValue p_value):
+        """
+        Note this might be slow and use alot of memory
+        """
+        cdef lib.aafUInt32 sizeInBytes = self.size(p_value)
+        
+        
+        cdef int sizeInChars = (sizeInBytes / sizeof(lib.UChar)) + 1
+        
+        cdef vector[lib.UChar] buf = vector[lib.UChar](sizeInChars)
+        cdef lib.aafUInt32 bytes_read
+        
+        error_check(self.ptr.Read(p_value.ptr,
+                                  sizeInBytes,
+                                  <lib.aafMemPtr_t> &buf[0],
+                                  &bytes_read
+                                  ))
+        return array.array("B",buf).tostring()
 
 cdef class TypeDefString(TypeDef):
     def __init__(self, AAFBase obj = None):
