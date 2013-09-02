@@ -323,11 +323,14 @@ cdef class TypeDefFixedArray(TypeDef):
         if self.ptr:
             self.ptr.Release()
     
-    def value(self, PropertyValue p_value):
+    def iter_property_value(self, PropertyValue p_value):
         cdef iterator.PropValueIter prop_iter = iterator.PropValueIter()
-        
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
-        
+        return prop_iter
+    
+    def value(self, PropertyValue p_value):
+        cdef iterator.PropValueResolveIter prop_iter = iterator.PropValueResolveIter()
+        error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
         return prop_iter
 
 cdef class TypeDefIndirect(TypeDef):
@@ -602,11 +605,14 @@ cdef class TypeDefSet(TypeDef):
         if self.ptr:
             self.ptr.Release()
             
-    def value(self, PropertyValue p_value):
+    def iter_property_value(self, PropertyValue p_value):
         cdef iterator.PropValueIter prop_iter = iterator.PropValueIter()
-        
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
-        
+        return prop_iter
+    
+    def value(self, PropertyValue p_value):
+        cdef iterator.PropValueResolveIter prop_iter = iterator.PropValueResolveIter()
+        error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
         return prop_iter
 
 cdef class TypeDefStream(TypeDef):
@@ -684,11 +690,14 @@ cdef class TypeDefVariableArray(TypeDef):
         error_check(self.ptr.GetCount(p_value.ptr, &count))
         return count
     
-    def value(self, PropertyValue p_value):
+    def iter_property_value(self, PropertyValue p_value):
         cdef iterator.PropValueIter prop_iter = iterator.PropValueIter()
-        
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
-        
+        return prop_iter
+    
+    def value(self, PropertyValue p_value):
+        cdef iterator.PropValueResolveIter prop_iter = iterator.PropValueResolveIter()
+        error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
         return prop_iter
 
 cdef object resolve_typedef(TypeDef typedef):

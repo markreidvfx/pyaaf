@@ -77,8 +77,8 @@ def dump_avid_titles(header):
                 for param in component.parameters():
                     if param.name == "AvidGraphicFXAttr":
 
-                        # This parameters value is a PropValueIter object
-                        AvidBagOfBits = [p.value for p in param.value]
+                        # This parameters value is a iterator object
+                        AvidBagOfBits = [v for v in param.value]
                             
                         # convert list of ints to unsigned char data
                         string_data = array.array("B",AvidBagOfBits).tostring()

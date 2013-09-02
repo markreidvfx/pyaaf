@@ -80,7 +80,10 @@ cdef class PropertyDefsIter(BaseIterator):
     pass
     
 cdef class PropValueIter(BaseIterator):
-    cdef lib.IEnumAAFPropertyValues *ptr  
+    cdef lib.IEnumAAFPropertyValues *ptr
+    
+cdef class PropValueResolveIter(BaseIterator):
+    cdef lib.IEnumAAFPropertyValues *ptr 
     
 cdef class RIFFChunkIter(BaseIterator):
     pass

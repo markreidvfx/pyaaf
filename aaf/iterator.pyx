@@ -228,6 +228,28 @@ cdef class PropValueIter(BaseIterator):
             return PropertyValue(value)
         else:
             error_check(ret)
+
+cdef class PropValueResolveIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef PropertyValue value = PropertyValue()
+        ret = self.ptr.NextOne(&value.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return PropertyValue(value).value
+        else:
+            error_check(ret)
             
 cdef class SegmentIter(BaseIterator):
     def __init__(self):

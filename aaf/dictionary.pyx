@@ -21,6 +21,13 @@ cdef class Dictionary(AAFObject):
         query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFDictionary)
         query_interface(obj.get(), <lib.IUnknown **> &self.ptr2, lib.IID_IAAFDictionary2)
         
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
     def lookup_datadef(self, bytes name):
         
         cdef AUID auid = DataDefMap[name.lower()]
@@ -56,30 +63,22 @@ cdef class Dictionary(AAFObject):
         return def_iter
      
     def operation_defs(self):
-        for p in self['OperationDefinitions']:
-            yield p.value
+        return self['OperationDefinitions']
+
     def parameter_defs(self):
-        for p in self['ParameterDefinitions']:
-            yield p.value
+        return self['ParameterDefinitions']
+
     def data_defs(self):
-        for p in self['DataDefinitions']:
-            yield p.value
+        return self['DataDefinitions']
+
     def container_defs(self):
-        for p in self['ContainerDefinitions']:
-            yield p.value
+        return self['ContainerDefinitions']
+
     def interpolation_defs(self):
-        for p in self['InterpolationDefinitions']:
-            yield p.value
+        return self['InterpolationDefinitions']
+            
     def taggedvalue_defs(self):
-        for p in self['TaggedValueDefinitions']:
-            yield p.value
-    
-    cdef lib.IUnknown **get(self):
-        return <lib.IUnknown **> &self.ptr
-    
-    def __dealloc__(self):
-        if self.ptr:
-            self.ptr.Release()
+        return self['TaggedValueDefinitions']
             
 cdef class CreateInstance(object):
 

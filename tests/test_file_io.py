@@ -262,7 +262,7 @@ class TestFile(unittest.TestCase):
                     typedef = VariableArrayDef.type()
                     #print VariableArrayDef.count(value), VariableArrayDef,VariableArrayDef.name,typedef.name
                     for item in VariableArrayDef.value(value):
-                        name = item.typedef().name
+                        print item
                         #print '  ', item, name
                     #print '   ', p.name, intDef,signed, '=',v
                 
@@ -301,7 +301,9 @@ class TestFile(unittest.TestCase):
                 iter_prop = obj.properties()
 
             for p in iter_prop:
-                value= p.value
+                value = p
+                if isinstance(p, aaf.property.Property):
+                    value= p.value
                 #print space ,value
                 if isinstance(value, aaf.base.AAFObject):
                     #print space, value.class_name
