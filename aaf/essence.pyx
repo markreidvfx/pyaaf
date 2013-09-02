@@ -547,6 +547,60 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
             error_check(self.ptr.GetColorRange(&value))
             return value
         
+cdef class RGBADescriptor(DigitalImageDescriptor):
+    def __init__(self, AAFBase obj = None):
+        super(RGBADescriptor, self).__init__(obj)
+        self.iid = lib.IID_IAAFRGBADescriptor
+        self.auid = lib.AUID_AAFRGBADescriptor
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+cdef class SoundDescriptor(FileDescriptor):
+    def __init__(self, AAFBase obj = None):
+        super(SoundDescriptor, self).__init__(obj)
+        self.iid = lib.IID_IAAFSoundDescriptor
+        self.auid = lib.AUID_AAFSoundDescriptor
+        self.snd_ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.snd_ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.snd_ptr
+    
+    def __dealloc__(self):
+        if self.snd_ptr:
+            self.snd_ptr.Release()
+            
+cdef class PCMDescriptor(SoundDescriptor):
+    def __init__(self, AAFBase obj = None):
+        super(PCMDescriptor, self).__init__(obj)
+        self.iid = lib.IID_IAAFPCMDescriptor
+        self.auid = lib.AUID_AAFPCMDescriptor
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
 cdef class PhysicalDescriptor(EssenceDescriptor):
     def __init__(self, AAFBase obj = None):
         super(PhysicalDescriptor, self).__init__(obj)
@@ -591,5 +645,8 @@ register_object(FileDescriptor)
 register_object(WAVEDescriptor)
 register_object(DigitalImageDescriptor)
 register_object(CDCIDescriptor)
+register_object(RGBADescriptor)
+register_object(SoundDescriptor)
+register_object(PCMDescriptor)
 register_object(PhysicalDescriptor)
 register_object(ImportDescriptor)

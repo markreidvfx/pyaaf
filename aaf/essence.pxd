@@ -34,13 +34,13 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
     cdef lib.IAAFCDCIDescriptor *ptr
     
 cdef class RGBADescriptor(DigitalImageDescriptor):
-    pass
+    cdef lib.IAAFRGBADescriptor *ptr
     
 cdef class SoundDescriptor(FileDescriptor):
-    pass
+    cdef lib.IAAFSoundDescriptor *snd_ptr
 
 cdef class PCMDescriptor(SoundDescriptor):
-    pass
+    cdef lib.IAAFPCMDescriptor *ptr
 
 cdef class TapeDescriptor(EssenceDescriptor):
     pass
