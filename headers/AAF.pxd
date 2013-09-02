@@ -369,6 +369,11 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFLocator(IUnknown):
         pass
         
+    cdef aafUID_t AUID_AAFNetworkLocator
+    cdef GUID IID_IAAFNetworkLocator
+    cdef cppclass IAAFNetworkLocator(IUnknown):
+        pass
+        
     # EssenceAccess
     
     cdef GUID IID_IAAFEssenceFormat

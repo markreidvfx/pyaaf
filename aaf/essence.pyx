@@ -215,6 +215,24 @@ cdef class Locator(AAFObject):
         if self.loc_ptr:
             self.loc_ptr.Release()
             
+cdef class NetworkLocator(Locator):
+    def __init__(self, AAFBase obj = None):
+        super(NetworkLocator, self).__init__(obj)
+        self.iid = lib.IID_IAAFNetworkLocator
+        self.auid = lib.AUID_AAFNetworkLocator
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.loc_ptr
+    
+    def __dealloc__(self):
+        if self.loc_ptr:
+            self.loc_ptr.Release()
+            
 cdef class EssenceDescriptor(AAFObject):
     def __init__(self, AAFBase obj = None):
         super(EssenceDescriptor, self).__init__(obj)
@@ -531,6 +549,7 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
         
         
 register_object(Locator)
+register_object(NetworkLocator)
 register_object(EssenceDescriptor)
 register_object(FileDescriptor)
 register_object(WAVEDescriptor)

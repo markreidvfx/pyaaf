@@ -16,7 +16,7 @@ cdef class Locator(AAFObject):
     cdef lib.IAAFLocator *loc_ptr
     
 cdef class NetworkLocator(Locator):
-    pass
+    cdef lib.IAAFNetworkLocator *ptr
     
 cdef class EssenceDescriptor(AAFObject):
     cdef lib.IAAFEssenceDescriptor *essence_ptr
@@ -34,6 +34,12 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
     cdef lib.IAAFCDCIDescriptor *ptr
     
 cdef class RGBADescriptor(DigitalImageDescriptor):
+    pass
+    
+cdef class SoundDescriptor(FileDescriptor):
+    pass
+
+cdef class PCMDescriptor(SoundDescriptor):
     pass
 
 cdef class TapeDescriptor(EssenceDescriptor):
