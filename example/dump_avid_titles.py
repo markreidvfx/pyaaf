@@ -51,7 +51,13 @@ def get_transition_offset(index,component_list):
         offset -= prevousItem.cutpoint
         
     return offset
-    
+
+def print_text_data(string_data, track_nb, in_frame, out_frame):
+    print "Track: V%i Title_2 in: %i out: %i" % (track_nb, in_frame, out_frame)
+    data = pct_parser(string_data)
+    for item in data:
+        if item['type'] == "TitleText":
+            print '  ', item['text'].replace("\r",'\n   ')
     
 
 def dump_avid_titles(header):
@@ -74,6 +80,7 @@ def dump_avid_titles(header):
             out_frame = length +component_length + transition_offset
             
             if isinstance(component,  aaf.component.OperationGroup) and  component.operation == "Title_2":
+
                 for param in component.parameters():
                     if param.name == "AvidGraphicFXAttr":
 
@@ -82,20 +89,15 @@ def dump_avid_titles(header):
                             
                         # convert list of ints to unsigned char data
                         string_data = array.array("B",AvidBagOfBits).tostring()
-                        
-                        print "Track: V%i Title_2 in: %i out: %i" % (i+1, in_frame, out_frame)
-                        
-                        #converts data to list of dictionaries
-                        data = pct_parser(string_data)
-                        for item in data:
+                        print_text_data(string_data, i+1, in_frame, out_frame)
 
-                            if item['type'] == "TitleText":
-
-                                print '  ', item['text'].replace("\r",'\n   ')
-                                    
+                if component.has_key("OpGroupGraphicsParamStream"):
+                    string_data = component['OpGroupGraphicsParamStream']
+                    print_text_data(string_data, i+1, in_frame, out_frame)
                                     
             if not isinstance(component,  aaf.component.Transition):
                 length += component_length
+
 
 if __name__ == "__main__":
     from pprint import pprint
