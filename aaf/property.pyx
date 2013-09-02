@@ -1,5 +1,5 @@
 cimport lib
-from .util cimport error_check, query_interface
+from .util cimport error_check, query_interface, register_object
 
 from .define cimport PropertyDef, TypeDef,resolve_typedef
 
@@ -68,4 +68,23 @@ cdef class PropertyValue(AAFBase):
             typedef = self.typedef()
             return typedef.value(self)
         
+cdef class TaggedValue(AAFObject):
+    def __init__(self, AAFBase obj = None):
+        super(TaggedValue, self).__init__(obj)
+        self.iid = lib.IID_IAAFTaggedValue
+        self.auid = lib.AUID_AAFTaggedValue
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+
+register_object(TaggedValue)
         

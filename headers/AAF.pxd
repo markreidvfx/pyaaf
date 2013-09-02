@@ -81,6 +81,24 @@ cdef extern from "AAF.h":
             aafMobID_t &mobID,
             IAAFMob ** ppMob
         )
+        
+    # Properties
+    
+    cdef GUID IID_IAAFProperty
+    cdef cppclass IAAFProperty(IUnknown):
+        HRESULT GetDefinition(IAAFPropertyDef **ppPropDef)
+        HRESULT GetValue(IAAFPropertyValue **ppValue)
+    
+    cdef GUID IID_IAAFPropertyValue
+    cdef cppclass IAAFPropertyValue(IUnknown):
+        HRESULT GetType(IAAFTypeDef **ppTypeDef)
+        
+    cdef aafUID_t AUID_AAFTaggedValue
+    cdef GUID IID_IAAFTaggedValue
+    cdef cppclass IAAFTaggedValue(IUnknown):
+        pass
+        
+        
     # MetaDefinitions
     
     cdef GUID IID_IAAFMetaDefinition
@@ -259,7 +277,6 @@ cdef extern from "AAF.h":
             aafMemPtr_t  pBuffer,
             aafUInt32  bufferSize,
         )
-            
 
     cdef GUID IID_IAAFTypeDefStrongObjRef
     cdef cppclass IAAFTypeDefStrongObjRef(IUnknown):
@@ -284,17 +301,6 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFTypeDefWeakObjRef
     cdef cppclass IAAFTypeDefWeakObjRef(IUnknown):
         pass
-        
-    # Properties
-    
-    cdef GUID IID_IAAFProperty
-    cdef cppclass IAAFProperty(IUnknown):
-        HRESULT GetDefinition(IAAFPropertyDef **ppPropDef)
-        HRESULT GetValue(IAAFPropertyValue **ppValue)
-    
-    cdef GUID IID_IAAFPropertyValue
-    cdef cppclass IAAFPropertyValue(IUnknown):
-        HRESULT GetType(IAAFTypeDef **ppTypeDef)
         
     # Def Objects
     
