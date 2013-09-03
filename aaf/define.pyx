@@ -585,6 +585,11 @@ cdef class TypeDefRecord(TypeDef):
         
         if self.auid == auid_typdef:
             return get_time(self, p_value)
+        
+        auid_typdef.from_auid(lib.kAAFTypeID_TimeStamp)
+        
+        if self.auid == auid_typdef:
+            return get_timestamp(self, p_value)
 
         for i in xrange(self.size()):
             value_prop = self.member_value(p_value, i)
@@ -641,6 +646,10 @@ cdef object get_date(TypeDefRecord record, PropertyValue value):
     day = record.member_value(value,2).value
     
     return "%d-%02d-%02d" % (year, month, day)
+
+cdef object get_timestamp(TypeDefRecord record, PropertyValue value):
+    
+    return "%s %s" % ( record.member_value(value, 0).value, record.member_value(value, 1).value)
     
     
 cdef class TypeDefRename(TypeDef):
