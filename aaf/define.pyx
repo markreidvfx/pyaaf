@@ -1,7 +1,7 @@
 
 cimport lib
 from .base cimport AAFBase, AAFObject, AUID
-from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func
+from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func, MobID
 from .property cimport PropertyValue
 
 cimport iterator
@@ -567,6 +567,11 @@ cdef class TypeDefRecord(TypeDef):
         if self.auid == auid_typdef:
             return auid_from_prop_value(self, p_value)
         
+        auid_typdef.from_auid(lib.kAAFTypeID_MobIDType)
+        
+        if self.auid == auid_typdef:
+            return mobid_from_prop_value(self, p_value)
+        
         auid_typdef.from_auid(lib.kAAFTypeID_DateStruct)
         
         if self.auid == auid_typdef:
@@ -595,6 +600,27 @@ cdef object auid_from_prop_value(TypeDefRecord record, PropertyValue value ):
         auid.Data4[i] = v
     retAUID.auid = auid
     return retAUID
+
+cdef object mobid_from_prop_value(TypeDefRecord record, PropertyValue value):
+    cdef MobID mobID_obj = MobID()
+
+    cdef lib.aafMobID_t mobID_t
+    
+    for i,v in enumerate(record.member_value(value, 0).value):
+        mobID_t.SMPTELabel[i] = v
+    
+    mobID_t.length = record.member_value(value, 1).value
+    mobID_t.instanceHigh = record.member_value(value, 2).value
+    mobID_t.instanceMid = record.member_value(value, 3).value
+    mobID_t.instanceLow = record.member_value(value, 4).value
+    
+    cdef AUID auid = record.member_value(value, 5).value
+    
+    mobID_t.material = auid.auid
+    
+    mobID_obj.mobID = mobID_t
+    return mobID_obj
+    
 
 cdef object get_time(TypeDefRecord record, PropertyValue value):
     hour = record.member_value(value, 0).value

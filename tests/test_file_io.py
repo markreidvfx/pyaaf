@@ -276,8 +276,8 @@ class TestFile(unittest.TestCase):
                         member_type = recordDef.member_type(x)
                         
                     record_value = recordDef.value(value)
-                    for key,value in record_value.items():
-                        pass
+                    #for key,value in record_value.items():
+                        #pass
                         #print '   ', key,value
                         #print '      ',recordDef.member_name(x),recordDef.member_type(x).name
                 if valuedef.category == 12:
