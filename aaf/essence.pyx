@@ -600,6 +600,24 @@ cdef class PCMDescriptor(SoundDescriptor):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+cdef class TapeDescriptor(EssenceDescriptor):
+    def __init__(self, AAFBase obj = None):
+        super(TapeDescriptor, self).__init__(obj)
+        self.iid = lib.IID_IAAFTapeDescriptor
+        self.auid = lib.AUID_AAFTapeDescriptor
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get_ptr(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
         
 cdef class PhysicalDescriptor(EssenceDescriptor):
     def __init__(self, AAFBase obj = None):
@@ -648,5 +666,6 @@ register_object(CDCIDescriptor)
 register_object(RGBADescriptor)
 register_object(SoundDescriptor)
 register_object(PCMDescriptor)
+register_object(TapeDescriptor)
 register_object(PhysicalDescriptor)
 register_object(ImportDescriptor)

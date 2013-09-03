@@ -43,7 +43,7 @@ cdef class PCMDescriptor(SoundDescriptor):
     cdef lib.IAAFPCMDescriptor *ptr
 
 cdef class TapeDescriptor(EssenceDescriptor):
-    pass
+    cdef lib.IAAFTapeDescriptor *ptr
     
 cdef class FilmDescriptor(EssenceDescriptor):
     pass

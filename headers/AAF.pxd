@@ -523,6 +523,11 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFPCMDescriptor(IUnknown):
         pass
         
+    cdef aafUID_t AUID_AAFTapeDescriptor
+    cdef GUID IID_IAAFTapeDescriptor
+    cdef cppclass IAAFTapeDescriptor(IUnknown):
+        pass
+        
     cdef aafUID_t AUID_AAFPhysicalDescriptor
     cdef GUID IID_IAAFPhysicalDescriptor
     cdef cppclass IAAFPhysicalDescriptor(IUnknown):
