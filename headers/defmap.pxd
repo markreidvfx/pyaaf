@@ -15,6 +15,7 @@ cdef extern from "AAFTypeDefUIDs.h":
     cdef aafUID_t kAAFTypeID_TimeStruct
     cdef aafUID_t kAAFTypeID_TimeStamp
     cdef aafUID_t kAAFTypeID_Boolean
+    cdef aafUID_t kAAFTypeID_Rational
 
 
 cdef extern from "defmap.h":

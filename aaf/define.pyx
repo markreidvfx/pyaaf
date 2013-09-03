@@ -14,6 +14,7 @@ from wstring cimport  wstring, wideToString
 
 import traceback
 import array
+from fractions import Fraction
 
 cdef object isA(AAFBase obj1,obj2):
     try:
@@ -590,6 +591,11 @@ cdef class TypeDefRecord(TypeDef):
         
         if self.auid == auid_typdef:
             return get_timestamp(self, p_value)
+        
+        auid_typdef.from_auid(lib.kAAFTypeID_Rational)
+        
+        if self.auid == auid_typdef:
+            return Fraction(self.member_value(p_value, 0).value, self.member_value(p_value, 1).value)
 
         for i in xrange(self.size()):
             value_prop = self.member_value(p_value, i)
