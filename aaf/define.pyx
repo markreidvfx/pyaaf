@@ -567,6 +567,15 @@ cdef class TypeDefRecord(TypeDef):
         if self.auid == auid_typdef:
             return auid_from_prop_value(self, p_value)
         
+        auid_typdef.from_auid(lib.kAAFTypeID_DateStruct)
+        
+        if self.auid == auid_typdef:
+            return get_date(self, p_value)
+        
+        auid_typdef.from_auid(lib.kAAFTypeID_TimeStruct)
+        
+        if self.auid == auid_typdef:
+            return get_time(self, p_value)
 
         for i in xrange(self.size()):
             value_prop = self.member_value(p_value, i)
@@ -576,9 +585,7 @@ cdef class TypeDefRecord(TypeDef):
         return value_dict
             
 cdef object auid_from_prop_value(TypeDefRecord record, PropertyValue value ):
-    
     cdef AUID retAUID = AUID()
-    
     cdef lib.aafUID_t auid
     
     auid.Data1 = record.member_value(value, 0).value
@@ -588,6 +595,23 @@ cdef object auid_from_prop_value(TypeDefRecord record, PropertyValue value ):
         auid.Data4[i] = v
     retAUID.auid = auid
     return retAUID
+
+cdef object get_time(TypeDefRecord record, PropertyValue value):
+    hour = record.member_value(value, 0).value
+    minute = record.member_value(value, 1).value
+    second = record.member_value(value,2).value
+    fraction = record.member_value(value,3).value
+    
+    return "%02d:%02d:%02d.%02d" % (hour, minute, second, fraction)
+
+cdef object get_date(TypeDefRecord record, PropertyValue value):
+    
+    year = record.member_value(value, 0).value
+    month = record.member_value(value, 1).value
+    day = record.member_value(value,2).value
+    
+    return "%d-%02d-%02d" % (year, month, day)
+    
     
 cdef class TypeDefRename(TypeDef):
     def __init__(self, AAFBase obj = None):
