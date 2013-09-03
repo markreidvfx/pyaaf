@@ -243,6 +243,8 @@ class TestFile(unittest.TestCase):
                     enum = aaf.define.TypeDefEnum(valuedef)
                     element_typdef = enum.element_typedef()
                     value = enum.value(value)
+                    for key,value in enum.elements().items():
+                        pass
                       
                     
                 if valuedef.category == 7:
@@ -287,7 +289,7 @@ class TestFile(unittest.TestCase):
                     enumExDef = aaf.define.TypeDefExtEnum(valuedef)
                     size = enumExDef.size()
                     #print size ,enumExDef
-                    for key,value in enumExDef.value(value).items():
+                    for key,value in enumExDef.elements().items():
                         pass
     def test_walk_file(self):
         test_file = main_test_file
@@ -306,7 +308,7 @@ class TestFile(unittest.TestCase):
                 if hasattr(item, 'name'):
                     name = item.name or ""
                 
-                print space,name, value
+                #print space,name, value
                 s = space + '   '
                 if isinstance(value, aaf.base.AAFObject):
                     #print space, value.class_name

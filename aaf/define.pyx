@@ -232,18 +232,16 @@ cdef class TypeDefEnum(TypeDef):
         error_check(self.ptr.GetElementValue(index, &value))
         return value
     
-    def value(self, PropertyValue p_value):
-        d= {}
-        d['name_from_value'] = self.element_name_from_value(p_value)
+    def elements(self):
+        d = {}
         
         for i in xrange(self.size()):
             name =self.element_name(i)
             value = self.element_value(i)
-            
-            d[name] = value
-            
         return d
     
+    def value(self, PropertyValue p_value):
+        return self.element_name_from_value(p_value)
 
 cdef class TypeDefExtEnum(TypeDef):
     def __init__(self, AAFBase obj = None):
@@ -299,21 +297,21 @@ cdef class TypeDefExtEnum(TypeDef):
         return wideToString(value)
     
     def element_value(self, lib.aafUInt32 index):
-        cdef lib.aafUID_t auid
-        error_check(self.ptr.GetElementValue(index, &auid))
+
+        cdef AUID auid = AUID()
+        error_check(self.ptr.GetElementValue(index, &auid.auid))
         return auid
     
-    def value(self, PropertyValue p_value):
-        d= {}
-        d['name_from_value'] = self.element_name_from_value(p_value)
-        
+    def elements(self):
+        d = {}
         for i in xrange(self.size()):
             name =self.element_name(i)
             value = self.element_value(i)
-            
-            d[name] = value
-            
+            d[name]= value
         return d
+    
+    def value(self, PropertyValue p_value):
+        return self.element_name_from_value(p_value)
 
 cdef class TypeDefFixedArray(TypeDef):
     def __init__(self, AAFBase obj = None):
