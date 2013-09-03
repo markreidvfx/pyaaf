@@ -22,15 +22,22 @@ cdef class AUID(object):
     cdef void from_iid(self, lib.GUID iid):
         self.iid = iid
         
+    def __richcmp__(x, y, int op):
+        if op == 2:
+            if str(x) == str(y):
+                return True
+            return False
+        raise NotImplemented("richcmp %d not not Implemented" % op)
+        
     def __repr__(self):
         return '<%s.%s of %s at 0x%x>' % (
             self.__class__.__module__,
             self.__class__.__name__,
-            self.to_string(),
+            str(self),
             id(self),
         )
         
-    def to_string(self):
+    def __str__(self):
         return "urn:uuid:%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x" % (
         self.auid.Data1, self.auid.Data2, self.auid.Data3,
         self.auid.Data4[0], self.auid.Data4[1], self.auid.Data4[2], self.auid.Data4[3],

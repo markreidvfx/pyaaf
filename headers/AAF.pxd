@@ -108,6 +108,12 @@ cdef extern from "AAF.h":
             aafCharacter *pName,
             aafUInt32  bufSize
         )
+        HRESULT GetAUID(aafUID_t *  pAuid)
+        HRESULT GetDescription(
+            aafCharacter *pDescription,
+            aafUInt32  bufSize
+        )
+        HRESULT GetDescriptionBufLen(aafUInt32 *  pBufSize)
     
     cdef GUID IID_IAAFClassDef
     cdef cppclass IAAFClassDef(IUnknown):

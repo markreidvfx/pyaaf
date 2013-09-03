@@ -8,6 +8,11 @@ cdef extern from "AAFCodecDefs.h":
 cdef extern from "AAFContainerDefs.h":
     cdef aafUID_t kAAFContainerDef_AAF
 
+cdef extern from "AAFTypeDefUIDs.h":
+    cdef aafUID_t kAAFTypeID_AUID
+    cdef aafUID_t kAAFTypeID_TimeStruct
+    cdef aafUID_t kAAFTypeID_DateStruct
+
 cdef extern from "defmap.h":
     cdef map[string, aafUID_t] get_datadef_map()
     cdef map[string, aafUID_t] get_codecdef_map()

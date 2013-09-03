@@ -89,6 +89,12 @@ cdef class MetaDef(AAFBase):
         def __get__(self):
             pass
     
+    property auid:
+        def __get__(self):
+            cdef AUID auid = AUID()
+            error_check(self.meta_ptr.GetAUID(&auid.auid))
+            return auid
+        
 cdef class ClassDef(MetaDef):
     def __init__(self, AAFBase obj = None):
         super(ClassDef, self).__init__(obj)
@@ -554,6 +560,14 @@ cdef class TypeDefRecord(TypeDef):
     
     def value(self, PropertyValue p_value):
         value_dict = {}
+        
+        cdef AUID auid_typdef = AUID()
+        auid_typdef.from_auid(lib.kAAFTypeID_AUID)
+        
+        if self.auid == auid_typdef:
+            return auid_from_prop_value(self, p_value)
+        
+
         for i in xrange(self.size()):
             value_prop = self.member_value(p_value, i)
             value_type = self.member_type(i)
@@ -561,7 +575,19 @@ cdef class TypeDefRecord(TypeDef):
         
         return value_dict
             
+cdef object auid_from_prop_value(TypeDefRecord record, PropertyValue value ):
     
+    cdef AUID retAUID = AUID()
+    
+    cdef lib.aafUID_t auid
+    
+    auid.Data1 = record.member_value(value, 0).value
+    auid.Data2 = record.member_value(value, 1).value
+    auid.Data3 = record.member_value(value, 2).value
+    for i,v in  enumerate(record.member_value(value, 3).value):
+        auid.Data4[i] = v
+    retAUID.auid = auid
+    return retAUID
     
 cdef class TypeDefRename(TypeDef):
     def __init__(self, AAFBase obj = None):
