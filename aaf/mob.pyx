@@ -24,9 +24,9 @@ cdef class Mob(AAFObject):
         if not obj:
             return
 
-        query_interface(obj.get(), <lib.IUnknown**>&self.ptr, lib.IID_IAAFMob)
+        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, lib.IID_IAAFMob)
 
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
             
     def __dealloc__(self):
@@ -103,10 +103,10 @@ cdef class MasterMob(Mob):
         if not obj:
             return
 
-        query_interface(obj.get(), <lib.IUnknown**>&self.mastermob_ptr, lib.IID_IAAFMasterMob)
-        query_interface(obj.get(), <lib.IUnknown**>&self.mastermob2_ptr, lib.IID_IAAFMasterMob2)
+        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mastermob_ptr, lib.IID_IAAFMasterMob)
+        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mastermob2_ptr, lib.IID_IAAFMasterMob2)
 
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.mastermob_ptr
     
     def initialize(self, bytes name):
@@ -175,10 +175,10 @@ cdef class CompositionMob(Mob):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown**>&self.compositionmob_ptr, lib.IID_IAAFCompositionMob)
-        query_interface(obj.get(), <lib.IUnknown**>&self.compositionmob2_ptr, lib.IID_IAAFCompositionMob2)
+        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.compositionmob_ptr, lib.IID_IAAFCompositionMob)
+        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.compositionmob2_ptr, lib.IID_IAAFCompositionMob2)
 
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.compositionmob_ptr
     
     def initialize(self, bytes name):
@@ -203,9 +203,9 @@ cdef class SourceMob(Mob):
         if not obj:
             return
 
-        query_interface(obj.get(), <lib.IUnknown**>&self.src_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.src_ptr, self.iid)
 
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.src_ptr
             
     def __dealloc__(self):
@@ -226,8 +226,8 @@ cdef class MobSlot(AAFObject):
         self.slot_ptr = NULL
         if not obj:
             return
-        query_interface(obj.get(), <lib.IUnknown**>&self.slot_ptr, self.iid)
-    cdef lib.IUnknown **get(self):
+        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.slot_ptr, self.iid)
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.slot_ptr
             
     def __dealloc__(self):
@@ -247,8 +247,8 @@ cdef class TimelineMobSlot(MobSlot):
         self.ptr = NULL
         if not obj:
             return
-        query_interface(obj.get(), <lib.IUnknown**>&self.ptr, self.iid)
-    cdef lib.IUnknown **get(self):
+        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, self.iid)
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
             
     def __dealloc__(self):
@@ -263,8 +263,8 @@ cdef class EventMobSlot(MobSlot):
         self.ptr = NULL
         if not obj:
             return
-        query_interface(obj.get(), <lib.IUnknown**>&self.ptr, self.iid)
-    cdef lib.IUnknown **get(self):
+        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, self.iid)
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
             
     def __dealloc__(self):

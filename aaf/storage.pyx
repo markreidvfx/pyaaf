@@ -18,7 +18,7 @@ cdef class IAAFFileProxy(AAFBase):
     cdef object setup(self):
         super(IAAFFileProxy, self).__init__(self)
 
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -149,9 +149,9 @@ cdef class Header(AAFObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFHeader)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFHeader)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -189,9 +189,9 @@ cdef class ContentStorage(AAFObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFContentStorage)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFContentStorage)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):

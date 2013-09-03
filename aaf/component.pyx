@@ -16,9 +16,9 @@ cdef class Component(AAFObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.comp_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.comp_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.comp_ptr
     
     def __dealloc__(self):
@@ -48,9 +48,9 @@ cdef class Segment(Component):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.seg_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.seg_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.seg_ptr
     
     def __dealloc__(self):
@@ -66,9 +66,9 @@ cdef class Transition(Component):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -90,9 +90,9 @@ cdef class Sequence(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -118,9 +118,9 @@ cdef class Timecode(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -136,9 +136,9 @@ cdef class Filler(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -154,9 +154,9 @@ cdef class Pulldown(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -172,9 +172,9 @@ cdef class SourceReference(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ref_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ref_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ref_ptr
     
     def __dealloc__(self):
@@ -190,9 +190,9 @@ cdef class SourceClip(SourceReference):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -213,9 +213,9 @@ cdef class OperationGroup(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -258,9 +258,9 @@ cdef class NestedScope(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -281,9 +281,9 @@ cdef class ScopeReference(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -302,9 +302,9 @@ cdef class EssenceGroup(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -323,9 +323,9 @@ cdef class Selector(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -341,9 +341,9 @@ cdef class EdgeCode(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -359,9 +359,9 @@ cdef class Event(Segment):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.event_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.event_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.event_ptr
     
     def __dealloc__(self):
@@ -377,9 +377,9 @@ cdef class CommentMarker(Event):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.comment_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.comment_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.comment_ptr
     
     def __dealloc__(self):
@@ -395,9 +395,9 @@ cdef class DescriptiveMarker(CommentMarker):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -416,9 +416,9 @@ cdef class Parameter(AAFObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.param_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.param_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.param_ptr
     
     def __dealloc__(self):
@@ -461,9 +461,9 @@ cdef class ConstantValue(Parameter):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -479,9 +479,9 @@ cdef class VaryingValue(Parameter):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -497,9 +497,9 @@ cdef class ControlPoint(AAFObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):

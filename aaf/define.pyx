@@ -63,9 +63,9 @@ cdef class MetaDef(AAFBase):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.meta_ptr, lib.IID_IAAFMetaDefinition)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.meta_ptr, lib.IID_IAAFMetaDefinition)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.meta_ptr
     
     def __dealloc__(self):
@@ -96,9 +96,9 @@ cdef class ClassDef(MetaDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFClassDef)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFClassDef)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -112,9 +112,9 @@ cdef class PropertyDef(MetaDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPropertyDef)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPropertyDef)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
 
     def __dealloc__(self):
@@ -129,9 +129,9 @@ cdef class TypeDef(MetaDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.typedef_ptr, lib.IID_IAAFTypeDef)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.typedef_ptr, lib.IID_IAAFTypeDef)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.typedef_ptr
     
     def __dealloc__(self):
@@ -154,9 +154,9 @@ cdef class TypeDefCharacter(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefCharacter)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefCharacter)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
 
     def __dealloc__(self):
@@ -170,9 +170,9 @@ cdef class TypeDefEnum(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefEnum)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefEnum)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -246,9 +246,9 @@ cdef class TypeDefExtEnum(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefExtEnum)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefExtEnum)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -316,9 +316,9 @@ cdef class TypeDefFixedArray(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefFixedArray)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefFixedArray)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -342,9 +342,9 @@ cdef class TypeDefIndirect(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefIndirect)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefIndirect)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -370,9 +370,9 @@ cdef class TypeDefOpaque(TypeDefIndirect):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.opaque_ptr, lib.IID_IAAFTypeDefOpaque)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.opaque_ptr, lib.IID_IAAFTypeDefOpaque)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.opaque_ptr
     
     def __dealloc__(self):
@@ -387,9 +387,9 @@ cdef class TypeDefInt(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefInt)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefInt)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -444,9 +444,9 @@ cdef class TypeDefObjectRef(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ref_ptr, lib.IID_IAAFTypeDefObjectRef)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ref_ptr, lib.IID_IAAFTypeDefObjectRef)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ref_ptr
     
     def __dealloc__(self):
@@ -473,9 +473,9 @@ cdef class TypeDefStrongObjRef(TypeDefObjectRef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefStrongObjRef)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefStrongObjRef)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -489,9 +489,9 @@ cdef class TypeDefWeakObjRef(TypeDefObjectRef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefWeakObjRef)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefWeakObjRef)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -505,9 +505,9 @@ cdef class TypeDefRecord(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefRecord)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefRecord)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -570,9 +570,9 @@ cdef class TypeDefRename(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefRename)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefRename)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -598,9 +598,9 @@ cdef class TypeDefSet(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefSet)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefSet)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -624,9 +624,9 @@ cdef class TypeDefStream(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefStream)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefStream)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -667,9 +667,9 @@ cdef class TypeDefString(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefString)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefString)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -700,9 +700,9 @@ cdef class TypeDefVariableArray(TypeDef):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefVariableArray)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefVariableArray)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -795,9 +795,9 @@ cdef class DefObject(AAFObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.defobject_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.defobject_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.defobject_ptr
     
     def __dealloc__(self):
@@ -827,9 +827,9 @@ cdef class DataDef(DefObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -848,9 +848,9 @@ cdef class ParameterDef(DefObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -866,9 +866,9 @@ cdef class PluginDef(DefObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -884,9 +884,9 @@ cdef class CodecDef(DefObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -902,9 +902,9 @@ cdef class ContainerDef(DefObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -920,9 +920,9 @@ cdef class InterpolationDef(DefObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -938,9 +938,9 @@ cdef class OperationDef(DefObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -956,9 +956,9 @@ cdef class KLVDataDef(DefObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -974,9 +974,9 @@ cdef class TaggedValueDef(DefObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):

@@ -14,9 +14,9 @@ cdef class Property(AAFBase):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFProperty)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFProperty)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def property_def(self):
@@ -53,9 +53,9 @@ cdef class PropertyValue(AAFBase):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPropertyValue)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPropertyValue)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def typedef(self):
@@ -77,9 +77,9 @@ cdef class TaggedValue(AAFObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):

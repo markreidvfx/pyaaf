@@ -44,9 +44,9 @@ cdef class AAFBase(object):
         if not obj:
             return
         
-        query_interface(obj.get(), &self.base_ptr, lib.IID_IUnknown)
+        query_interface(obj.get_ptr(), &self.base_ptr, lib.IID_IUnknown)
 
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return &self.base_ptr
     
     cdef resolve(self):
@@ -73,9 +73,9 @@ cdef class AAFObject(AAFBase):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.obj_ptr, lib.IID_IAAFObject)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.obj_ptr, lib.IID_IAAFObject)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.obj_ptr
     
     def __getitem__(self, x):

@@ -62,9 +62,9 @@ cdef class EssenceFormat(AAFBase):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -118,9 +118,9 @@ cdef class EssenceMultiAccess(AAFBase):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.essence_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.essence_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.essence_ptr
     
     def __dealloc__(self):
@@ -135,9 +135,9 @@ cdef class EssenceAccess(EssenceMultiAccess):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -206,9 +206,9 @@ cdef class Locator(AAFObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.loc_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.loc_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.loc_ptr
     
     def __dealloc__(self):
@@ -224,9 +224,9 @@ cdef class NetworkLocator(Locator):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.loc_ptr
     
     def __dealloc__(self):
@@ -242,9 +242,9 @@ cdef class EssenceDescriptor(AAFObject):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.essence_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.essence_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.essence_ptr
     
     def __dealloc__(self):
@@ -260,9 +260,9 @@ cdef class FileDescriptor(EssenceDescriptor):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.file_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.file_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.file_ptr
     
     def __dealloc__(self):
@@ -285,9 +285,9 @@ cdef class WAVEDescriptor(FileDescriptor):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -310,9 +310,9 @@ cdef class DigitalImageDescriptor(FileDescriptor):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.im_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.im_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.im_ptr
     
     def __dealloc__(self):
@@ -473,9 +473,9 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -556,9 +556,9 @@ cdef class RGBADescriptor(DigitalImageDescriptor):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -574,9 +574,9 @@ cdef class SoundDescriptor(FileDescriptor):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.snd_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.snd_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.snd_ptr
     
     def __dealloc__(self):
@@ -592,9 +592,9 @@ cdef class PCMDescriptor(SoundDescriptor):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
@@ -610,9 +610,9 @@ cdef class PhysicalDescriptor(EssenceDescriptor):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.phys_ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.phys_ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.phys_ptr
     
     def __dealloc__(self):
@@ -628,9 +628,9 @@ cdef class ImportDescriptor(PhysicalDescriptor):
         if not obj:
             return
         
-        query_interface(obj.get(), <lib.IUnknown **> &self.ptr, self.iid)
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
-    cdef lib.IUnknown **get(self):
+    cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
     def __dealloc__(self):
