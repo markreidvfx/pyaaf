@@ -16,3 +16,6 @@ cdef class Header(AAFObject):
     
 cdef class ContentStorage(AAFObject):
     cdef lib.IAAFContentStorage *ptr
+
+cdef class Identification(AAFObject):
+    cdef lib.IAAFIdentification *ptr

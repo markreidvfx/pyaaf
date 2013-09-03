@@ -184,7 +184,7 @@ cdef class ContentStorage(AAFObject):
     def __init__(self, AAFBase obj = None):
         super(ContentStorage, self).__init__(obj)
         self.iid = lib.IID_IAAFContentStorage
-        self.auid = lib.AUID_AAFMasterMob
+        self.auid = lib.AUID_AAFContentStorage
         self.ptr = NULL
         if not obj:
             return
@@ -247,9 +247,28 @@ cdef class ContentStorage(AAFObject):
         error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
         return mob_iter
     
+cdef class Identification(AAFObject):
+    def __init__(self, AAFBase obj = None):
+        super(Identification, self).__init__(obj)
+        self.iid = lib.IID_IAAFIdentification
+        self.auid = lib.AUID_AAFIdentification
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get_ptr(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+    
         
 register_object(Header)
 register_object(ContentStorage)
+register_object(Identification)
 
 # Handy alias.
 open = File

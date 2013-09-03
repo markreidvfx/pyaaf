@@ -82,6 +82,11 @@ cdef extern from "AAF.h":
             IAAFMob ** ppMob
         )
         
+    cdef aafUID_t AUID_AAFIdentification
+    cdef GUID IID_IAAFIdentification
+    cdef cppclass IAAFIdentification(IUnknown):
+        pass
+        
     # Properties
     
     cdef GUID IID_IAAFProperty
