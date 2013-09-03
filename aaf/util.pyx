@@ -91,11 +91,11 @@ cdef class MobID(object):
         return '<%s.%s of %s at 0x%x>' % (
             self.__class__.__module__,
             self.__class__.__name__,
-            self.to_string(),
+            str(self),
             id(self),
         )
 
-    def to_string(self):
+    def __str__(self):
         
         f = b"urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
              "%02x"  + \
