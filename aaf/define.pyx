@@ -241,7 +241,13 @@ cdef class TypeDefEnum(TypeDef):
         return d
     
     def value(self, PropertyValue p_value):
-        return self.element_name_from_value(p_value)
+        v = self.element_name_from_value(p_value)
+        if v == "True":
+            return True
+        if v == "False":
+            return False
+        
+        return v
 
 cdef class TypeDefExtEnum(TypeDef):
     def __init__(self, AAFBase obj = None):
