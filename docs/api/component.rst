@@ -73,7 +73,7 @@
        :undoc-members:
        :show-inheritance:
        
-   .. autoclass:: Edgecode
+   .. autoclass:: EdgeCode
        :members:
        :undoc-members:
        :show-inheritance:

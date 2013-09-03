@@ -85,44 +85,72 @@ cdef class AAFObject(AAFBase):
         raise KeyError("Key not found")
     
     def keys(self):
+        """
+        Return a list of the AAFObjects property names
+        """
         return [p.name for p in self.properties()]
     
     def has_key(self, bytes key):
+        """
+        Test for the presence of key in the AAFObject property names
+        """
         if key in self.keys():
             return True
         return False
     
+    def get(self, key, default=None):
+        """
+        Return the property value for key if key is in the AAFObject, else default. 
+        If default is not given, it defaults to None, so that this method never raises a KeyError.
+        """
+        if self.has_key(key):
+            return self[key]
+        return default
+    
     def initialize(self, *args, **kwargs):
+        """
+        This method gets call when a new instance of a AAFObject is created.
+        """
         raise NotImplementedError("initialize not implemented for object")
     
     def dictionary(self):
+        """
+        Returns the Dictionary Object the AAFObject belongs to.
+        """
         cdef Dictionary d = Dictionary()
         error_check(self.obj_ptr.GetDictionary(&d.ptr))
         return d
     
-    def definition(self):
+    def classdef(self):
+        """
+        Returns the Class Definition
+        """
         cdef ClassDef class_def = ClassDef()
         error_check(self.obj_ptr.GetDefinition(&class_def.ptr))
         
         return ClassDef(class_def)
     
     def properties(self):
+        """
+        Returns a property Iterator
+        """
         cdef PropIter prop_iter = PropIter()
         error_check(self.obj_ptr.GetProperties(&prop_iter.ptr))
         return prop_iter
     
-    def count_properties(self):
-        cdef lib.aafUInt32 count
-        error_check(self.obj_ptr.CountProperties(&count))
-        return count
-    
     property class_auid:
+        """
+        The AUID of the AAFObject
+        """
         def __get__(self):
             cdef AUID auid = AUID()
             auid.auid = self.auid
             return auid
         
     property name:
+        """
+        The name of the AAFObject, None if Object doesn't have a "Name" property.
+        """
         def __get__(self):
             for p in self.properties():
                 if p.name == "Name":
@@ -132,6 +160,9 @@ cdef class AAFObject(AAFBase):
             return None
     
     property class_name:
+        """
+        Resolved class name for AAFOBject from its ClassDef.
+        """
         def __get__(self):
-            obj_def = self.definition()
+            obj_def = self.classdef()
             return obj_def.name

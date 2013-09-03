@@ -93,9 +93,9 @@ class TestFile(unittest.TestCase):
         print storage.count_mobs()
         
         for mob in storage.master_mobs():
-            mob.count_properties()
+            #mob.count_properties()
             masterMob = aaf.mob.MasterMob(mob)
-            masterMob.count_properties()
+            #masterMob.count_properties()
             #print "*master", masterMob
             #print "*master name", masterMob.name
             reg_mob = aaf.mob.Mob(masterMob)
@@ -115,7 +115,7 @@ class TestFile(unittest.TestCase):
         #print storage.count_mobs()
         
         for mob in storage.composition_mobs():
-            mob.count_properties()
+            #mob.count_properties()
             compMob = aaf.mob.CompositionMob(mob)
             #print "*compMob", compMob
             #print "*compMob name", compMob.name
@@ -137,12 +137,12 @@ class TestFile(unittest.TestCase):
         
         for mob in storage.toplevel_mobs():
             compMob = aaf.mob.CompositionMob(mob)
-            definition = compMob.definition()
+            definition = compMob.classdef()
             print definition, definition.name
-            print "*compMob", compMob, compMob.count_properties()
+            print "*compMob", compMob
             print "*compMob name", compMob.name
             reg_mob = aaf.mob.Mob(compMob)
-            print "converted back", reg_mob,reg_mob.name,reg_mob.count_properties(), reg_mob.definition().name
+            print "converted back", reg_mob,reg_mob.name, reg_mob.classdef().name
     
     def test_file_properties(self):
         test_file = main_test_file
@@ -306,7 +306,7 @@ class TestFile(unittest.TestCase):
                 if hasattr(item, 'name'):
                     name = item.name or ""
                 
-                #print space,name, value
+                print space,name, value
                 s = space + '   '
                 if isinstance(value, aaf.base.AAFObject):
                     #print space, value.class_name
