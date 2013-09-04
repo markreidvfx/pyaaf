@@ -35,9 +35,15 @@ cdef class Mob(AAFObject):
             
     def slots(self):
         cdef MobSlotIter slot_iter = MobSlotIter()
-        error_check(self.ptr.GetSlots(&slot_iter.ptr))
-        
+        error_check(self.ptr.GetSlots(&slot_iter.ptr))    
         return slot_iter
+    
+    def slot_at(self, lib.aafSlotID_t slotID):
+        for slot in self.slots():
+            if slot.slotID == slotID:
+                return slot
+        raise IndexError("Invalid slot number: %d" % slotID)
+     
     def add_timeline_slot(self, edit_rate, Segment seg, lib.aafSlotID_t slotID = 0, 
                             bytes slot_name = None, lib.aafPosition_t origin = 0):
         
@@ -247,6 +253,11 @@ cdef class MobSlot(AAFObject):
     property media_kind:
         def __get__(self):
             return self.datadef().name
+    property slotID:
+        def __get__(self):
+            cdef lib.aafSlotID_t slotID
+            error_check(self.slot_ptr.GetSlotID(&slotID))
+            return slotID
     
 cdef class TimelineMobSlot(MobSlot):
     def __init__(self, AAFBase obj = None):

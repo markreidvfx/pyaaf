@@ -1,11 +1,12 @@
 cimport lib
 
-from .util cimport error_check, query_interface, register_object
+from .util cimport error_check, query_interface, register_object, MobID
 
 from .base cimport AAFObject, AAFBase, AUID
 from .mob cimport Mob 
 from .define cimport TypeDef, DataDef, OperationDef, ParameterDef
 from .iterator cimport ComponentIter, SegmentIter, ParamIter
+from .mob cimport MasterMob 
 
 cdef class Component(AAFObject):
     def __init__(self, AAFBase obj = None):
@@ -198,6 +199,25 @@ cdef class SourceClip(SourceReference):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+    
+    def initialize(self, MasterMob mob, lib.aafSlotID_t slotID, 
+                      lib.aafLength_t length, lib.aafPosition_t start_time ):
+        
+        cdef lib.aafSourceRef_t source_ref
+        cdef MobID mobID = mob.mobID
+        
+        source_ref.sourceID = mobID.mobID
+        source_ref.sourceSlotID = slotID
+        source_ref.startTime = start_time
+        
+        slot = mob.slot_at(slotID)
+        
+        cdef DataDef data_def = slot.datadef()
+        
+        error_check(self.ptr.Initialize(data_def.ptr,
+                                        length,
+                                        source_ref
+                                        ))
             
     def resolve_ref(self):
         cdef Mob mob = Mob()
