@@ -8,6 +8,7 @@ from libcpp.string cimport string
 from libcpp.pair cimport pair
 from libcpp.vector cimport vector
 
+from wstring cimport wstring, wideToString, toWideString
 
 cpdef dict EssenceFormatDefMap = {}
 
@@ -215,6 +216,15 @@ cdef class Locator(AAFObject):
         if self.loc_ptr:
             self.loc_ptr.Release()
             
+    property path:
+        def __get__(self):
+            return self.get("URLString")
+        def __set__(self, bytes value):
+            
+            cdef wstring w_value = toWideString(value)
+            error_check(self.loc_ptr.SetPath(w_value.c_str()))
+            
+            
 cdef class NetworkLocator(Locator):
     def __init__(self, AAFBase obj = None):
         super(NetworkLocator, self).__init__(obj)
@@ -232,6 +242,9 @@ cdef class NetworkLocator(Locator):
     def __dealloc__(self):
         if self.loc_ptr:
             self.loc_ptr.Release()
+            
+    def initialize(self):
+        error_check(self.ptr.Initialize())
             
 cdef class EssenceDescriptor(AAFObject):
     def __init__(self, AAFBase obj = None):

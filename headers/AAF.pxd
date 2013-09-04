@@ -378,12 +378,12 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFLocator
     cdef GUID IID_IAAFLocator
     cdef cppclass IAAFLocator(IUnknown):
-        pass
+        HRESULT SetPath(aafCharacter* pPath)
         
     cdef aafUID_t AUID_AAFNetworkLocator
     cdef GUID IID_IAAFNetworkLocator
     cdef cppclass IAAFNetworkLocator(IUnknown):
-        pass
+        HRESULT Initialize()
         
     # EssenceAccess
     
