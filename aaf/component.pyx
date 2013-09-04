@@ -6,7 +6,7 @@ from .base cimport AAFObject, AAFBase, AUID
 from .mob cimport Mob 
 from .define cimport TypeDef, DataDef, OperationDef, ParameterDef
 from .iterator cimport ComponentIter, SegmentIter, ParamIter
-from .mob cimport MasterMob 
+from .mob cimport Mob 
 
 cdef class Component(AAFObject):
     def __init__(self, AAFBase obj = None):
@@ -36,6 +36,9 @@ cdef class Component(AAFObject):
             if self.has_key("Length"):
                 return self['Length']
             return None
+        def __set__(self, lib.aafLength_t value):
+            error_check(self.comp_ptr.SetLength(value))
+            
     property media_kind:
         def __get__(self):
             return self.datadef().name
@@ -109,6 +112,10 @@ cdef class Sequence(Segment):
         cdef ComponentIter comp_inter = ComponentIter()
         error_check(self.ptr.GetComponents(&comp_inter.ptr))
         return comp_inter
+    
+    def append(self, Component component):
+        error_check(self.ptr.AppendComponent(component.comp_ptr))
+        
     
 cdef class Timecode(Segment):
     def __init__(self, AAFBase obj = None):
@@ -200,7 +207,7 @@ cdef class SourceClip(SourceReference):
         if self.ptr:
             self.ptr.Release()
     
-    def initialize(self, MasterMob mob, lib.aafSlotID_t slotID, 
+    def initialize(self, Mob mob, lib.aafSlotID_t slotID, 
                       lib.aafLength_t length, lib.aafPosition_t start_time ):
         
         cdef lib.aafSourceRef_t source_ref

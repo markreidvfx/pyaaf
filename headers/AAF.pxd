@@ -607,7 +607,8 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFTimelineMobSlot
     cdef GUID IID_IAAFTimelineMobSlot
     cdef cppclass IAAFTimelineMobSlot(IUnknown):
-        pass
+        HRESULT GetOrigin(aafPosition_t *pOrigin)
+        HRESULT SetOrigin(aafPosition_t origin)
     
     cdef aafUID_t AUID_AAFEventMobSlot
     cdef GUID IID_IAAFEventMobSlot
@@ -644,6 +645,7 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFSequence(IUnknown):
         HRESULT Initialize(IAAFDataDef * pDataDef)
         HRESULT GetComponents(IEnumAAFComponents ** ppEnum)
+        HRESULT AppendComponent(IAAFComponent * pComponent)
         
     cdef aafUID_t AUID_AAFTimecode
     cdef GUID IID_IAAFTimecode

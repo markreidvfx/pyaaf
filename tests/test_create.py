@@ -187,15 +187,34 @@ class TestFile(unittest.TestCase):
         timeline_slot = comp.add_timeline_slot(edit_rate, video_sequence)
         
         
-        #clip = picture_mastermob1.create_clip(start =0 , length =10)
-        #video_sequence.append_component(clip)
-        #clip = picture_mastermob2.create_clip(start = 10, lenght = 10)
-        #video_sequence.append_component(clip)
+        rate = "25/1"
+        picture_essence = picture_mastermob1.create_essence(1,
+                                                             media_kind= "picture",
+                                                             codec_name="JPEG",
+                                                             edit_rate = rate,
+                                                             sample_rate = rate, 
+                                                             compress=True)
         
-        #print timeline_slot
+        slot = list(picture_mastermob1.slots())[0]
         
+        print slot.media_kind, slot.slotID
         
+        slot.segment().length = 100
+        print slot.segment().length
         
+        #clip = d.create.SourceClip(picture_mastermob1,slot.slotID, 10, 0 )
+        
+        clip = picture_mastermob1.create_clip(slot.slotID, 10, 0)
+        clip2 = picture_mastermob1.create_clip(slot.slotID)
+        clip3 = picture_mastermob1.create_clip(slot.slotID, 20, 10)
+        clip4 = picture_mastermob1.create_clip()
+        clip5 = picture_mastermob1.create_clip(length = 60)
+        video_sequence.append(clip)
+        video_sequence.append(clip2)
+        video_sequence.append(clip3)
+        video_sequence.append(clip4)
+        video_sequence.append(clip5)
+
         f.save()
         f.save(output_xml)
         f.close()

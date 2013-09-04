@@ -43,7 +43,24 @@ cdef class Mob(AAFObject):
             if slot.slotID == slotID:
                 return slot
         raise IndexError("Invalid slot number: %d" % slotID)
-     
+    
+    def create_clip(self, slotID=None, length=None, start_time=None):
+        
+        d = self.dictionary()
+        
+        if slotID is None:
+            slotID = list(self.slots())[0].slotID
+            
+        source_slot = self.slot_at(slotID)
+        
+        if length is None:
+            length = source_slot.segment().length
+        
+        if start_time is None:
+            start_time = source_slot.origin
+            
+        return d.create.SourceClip(self, slotID, length, start_time)
+        
     def add_timeline_slot(self, edit_rate, Segment seg, lib.aafSlotID_t slotID = 0, 
                             bytes slot_name = None, lib.aafPosition_t origin = 0):
         
@@ -274,6 +291,12 @@ cdef class TimelineMobSlot(MobSlot):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+    
+    property origin:
+        def __get__(self):
+            cdef lib.aafPosition_t origin
+            error_check(self.ptr.GetOrigin(&origin))
+            return origin
             
 cdef class EventMobSlot(MobSlot):
     def __init__(self, AAFBase obj = None):
