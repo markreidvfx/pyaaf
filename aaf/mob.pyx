@@ -233,11 +233,20 @@ cdef class MobSlot(AAFObject):
     def __dealloc__(self):
         if self.slot_ptr:
             self.slot_ptr.Release()
+            
+    def datadef(self):
+        cdef DataDef data_def = DataDef()
+        error_check(self.slot_ptr.GetDataDef(&data_def.ptr))
+        return DataDef(data_def)
     
     def segment(self):
         cdef Segment seg = Segment()
         error_check(self.slot_ptr.GetSegment(&seg.seg_ptr))
         return Segment(seg).resolve()
+    
+    property media_kind:
+        def __get__(self):
+            return self.datadef().name
     
 cdef class TimelineMobSlot(MobSlot):
     def __init__(self, AAFBase obj = None):

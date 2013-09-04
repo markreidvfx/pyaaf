@@ -601,6 +601,7 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFMobSlot
     cdef cppclass IAAFMobSlot(IUnknown):
         HRESULT GetSegment(IAAFSegment ** ppResult)
+        HRESULT GetDataDef(IAAFDataDef ** ppResult)
     
     cdef aafUID_t AUID_AAFTimelineMobSlot
     cdef GUID IID_IAAFTimelineMobSlot
