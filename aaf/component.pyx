@@ -1,5 +1,7 @@
 cimport lib
 
+from libc.string cimport memset 
+
 from .util cimport error_check, query_interface, register_object, MobID
 
 from .base cimport AAFObject, AAFBase, AUID
@@ -207,19 +209,29 @@ cdef class SourceClip(SourceReference):
         if self.ptr:
             self.ptr.Release()
     
-    def initialize(self, Mob mob, lib.aafSlotID_t slotID, 
-                      lib.aafLength_t length, lib.aafPosition_t start_time ):
+    def initialize(self, Mob mob =None, lib.aafSlotID_t slotID = 0, 
+                      lib.aafLength_t length = 0, lib.aafPosition_t start_time = 0,
+                      bytes media_kind = None):
         
         cdef lib.aafSourceRef_t source_ref
-        cdef MobID mobID = mob.mobID
         
-        source_ref.sourceID = mobID.mobID
-        source_ref.sourceSlotID = slotID
-        source_ref.startTime = start_time
         
-        slot = mob.slot_at(slotID)
+        cdef MobID mobID
+        cdef DataDef data_def
         
-        cdef DataDef data_def = slot.datadef()
+        if mob:
+        
+            mobID = mob.mobID
+            source_ref.sourceID = mobID.mobID
+            source_ref.sourceSlotID = slotID
+            source_ref.startTime = start_time
+            
+            slot = mob.slot_at(slotID)
+            data_def = slot.datadef()
+        
+        else:
+            memset(&source_ref,0 , sizeof(source_ref))
+            data_def = self.dictionary().lookup_datadef(media_kind)
         
         error_check(self.ptr.Initialize(data_def.ptr,
                                         length,

@@ -610,8 +610,11 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFTimelineMobSlot
     cdef GUID IID_IAAFTimelineMobSlot
     cdef cppclass IAAFTimelineMobSlot(IUnknown):
+        HRESULT Initialize()
         HRESULT GetOrigin(aafPosition_t *pOrigin)
         HRESULT SetOrigin(aafPosition_t origin)
+        HRESULT GetEditRate(aafRational_t* rate)
+        HRESULT SetEditRate(aafRational_t& editRate)
     
     cdef aafUID_t AUID_AAFEventMobSlot
     cdef GUID IID_IAAFEventMobSlot

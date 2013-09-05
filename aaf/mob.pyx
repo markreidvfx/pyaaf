@@ -14,6 +14,8 @@ from .define cimport DataDef, CodecDefMap, ContainerDefMap
 
 from wstring cimport wstring, wideToString, toWideString
 
+from fractions import Fraction
+
 cdef class Mob(AAFObject):
     def __init__(self, AAFBase obj=None):
         super(Mob, self).__init__(obj)
@@ -297,12 +299,26 @@ cdef class TimelineMobSlot(MobSlot):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+
+    def initialize(self):
+        error_check(self.ptr.Initialize())
     
     property origin:
         def __get__(self):
             cdef lib.aafPosition_t origin
             error_check(self.ptr.GetOrigin(&origin))
             return origin
+        def __set__(self, lib.aafPosition_t value):
+            error_check(self.ptr.SetOrigin(value))
+    property editrate:
+        def __get__(self):
+            cdef lib.aafRational_t rate
+            error_check(self.ptr.GetEditRate(&rate))
+            return Fraction(rate.numerator, rate.denominator)
+        def __set__(self,value):
+            cdef lib.aafRational_t rate
+            fraction_to_aafRational(value,rate)
+            error_check(self.ptr.SetEditRate(rate))
             
 cdef class EventMobSlot(MobSlot):
     def __init__(self, AAFBase obj = None):
