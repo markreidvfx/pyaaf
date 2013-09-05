@@ -13,7 +13,7 @@ def get_video_tracks(mob):
     tracks = []
     
     for slot in mob.slots():
-        segment = slot.segment()
+        segment = slot.segment
 
         if segment.media_kind == "Picture":
             if isinstance(segment, aaf.component.NestedScope):

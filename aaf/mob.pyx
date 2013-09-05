@@ -56,7 +56,7 @@ cdef class Mob(AAFObject):
         source_slot = self.slot_at(slotID)
         
         if length is None:
-            length = source_slot.segment().length
+            length = source_slot.segment.length
         
         if start_time is None:
             start_time = source_slot.origin
@@ -270,10 +270,11 @@ cdef class MobSlot(AAFObject):
         error_check(self.slot_ptr.GetDataDef(&data_def.ptr))
         return DataDef(data_def)
     
-    def segment(self):
-        cdef Segment seg = Segment()
-        error_check(self.slot_ptr.GetSegment(&seg.seg_ptr))
-        return Segment(seg).resolve()
+    property segment:
+        def __get__(self):
+            cdef Segment seg = Segment()
+            error_check(self.slot_ptr.GetSegment(&seg.seg_ptr))
+            return Segment(seg).resolve()
     
     property media_kind:
         def __get__(self):

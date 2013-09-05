@@ -665,7 +665,7 @@ def get_tracks(mob,trackType= 'Picture'):
     tracks = []
     
     for slot in mob.slots():
-        segment = slot.segment()
+        segment = slot.segment
 
         if segment.media_kind == trackType:
             if isinstance(segment, aaf.component.NestedScope):

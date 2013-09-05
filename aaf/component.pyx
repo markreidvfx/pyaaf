@@ -215,7 +215,6 @@ cdef class SourceClip(SourceReference):
         
         cdef lib.aafSourceRef_t source_ref
         
-        
         cdef MobID mobID
         cdef DataDef data_def
         
@@ -230,6 +229,7 @@ cdef class SourceClip(SourceReference):
             data_def = slot.datadef()
         
         else:
+            # no predecesor - AAF spec. says null aafSourceRef_t for this
             memset(&source_ref,0 , sizeof(source_ref))
             data_def = self.dictionary().lookup_datadef(media_kind)
         

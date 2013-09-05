@@ -47,7 +47,7 @@ class TestFile(unittest.TestCase):
                                                              compress=True)
         
         slot = list(picture_mastermob.slots())[0]
-        clip = slot.segment()
+        clip = slot.segment
         source_mob = clip.resolve_ref()
         cdci_desc = source_mob.essence_descriptor
         
@@ -128,7 +128,7 @@ class TestFile(unittest.TestCase):
          
         
         slot = list(sound_mastermob.slots())[0]
-        clip = slot.segment()
+        clip = slot.segment
         source_mob = clip.resolve_ref()
         WAVEDesc = source_mob.essence_descriptor
         
@@ -145,6 +145,89 @@ class TestFile(unittest.TestCase):
         
         sound_essence.complete_write()
 
+        f.save()
+        f.save(output_xml)
+        f.close()
+        
+    def test_tape(self):
+        output_aaf = os.path.join(sandbox, 'tape_essence_create.aaf')
+        output_xml = os.path.join(sandbox, 'tape_essence_create.xml')
+        
+        if os.path.exists(output_aaf):
+            os.remove(output_aaf)
+        f = aaf.open(output_aaf, 'rw')
+        
+        header = f.header()
+        d = header.dictionary()
+        
+        tape_name = "tape_01"
+
+        mob = d.create.MasterMob("clip1")
+        header.append(mob)
+        
+        source_mob = d.create.SourceMob()
+        source_mob.name = "bob"
+        tape_desc = d.create.TapeDescriptor()
+        
+        source_mob.essence_descriptor = tape_desc
+        header.append(source_mob)
+        
+        timeline = d.create.TimelineMobSlot()
+        
+        timeline.editrate = "23976/1000"
+        timeline.origin = 0
+        
+        clip = d.create.SourceClip(length= 100, media_kind='picture')
+        
+        
+        #timeline.segment = clip
+        
+        
+        f.save()
+        f.save(output_xml)
+        f.close()
+        
+        
+    def test_external_mob(self):
+        output_aaf = os.path.join(sandbox, 'external_essence_create.aaf')
+        output_xml = os.path.join(sandbox, 'external_essence_create.xml')
+        
+        if os.path.exists(output_aaf):
+            os.remove(output_aaf)
+        f = aaf.open(output_aaf, 'rw')
+        
+        header = f.header()
+        storage = header.storage()
+        d = header.dictionary()
+        
+        mastermob = d.create.MasterMob("Picture Mob 1")
+        header.append(mastermob)
+        locator = d.create.NetworkLocator()
+        
+        #locator.path = "file:///Giraffe/Avid%20MediaFiles/MXF/1/IMG_4945.JPG13783365227BE81.mxf"
+        locator.path = "/Volumes/Giraffe/Avid MediaFiles/MXF/1/IMG_4945.JPG13783365227BE81.mxf"
+        print locator.path
+        rate = "23976/1000"
+        essence = mastermob.create_essence(1,
+                                 media_kind = "picture",
+                                 codec_name = "DNxHD",
+                                 edit_rate = rate,
+                                 sample_rate = rate,
+                                 compress = True,
+                                 locator = locator,
+                                 fileformat = "AAF"
+                                 )
+        
+        
+        slot = list(mastermob.slots())[0]
+        clip = slot.segment
+        source_mob = clip.resolve_ref()
+        desc = source_mob.essence_descriptor
+        
+        print desc['ContainerFormat']['Name']
+        
+        desc
+        
         f.save()
         f.save(output_xml)
         f.close()
@@ -199,8 +282,8 @@ class TestFile(unittest.TestCase):
         
         print slot.media_kind, slot.slotID
         
-        slot.segment().length = 100
-        print slot.segment().length
+        slot.segment.length = 100
+        print slot.segment.length
         
         #clip = d.create.SourceClip(picture_mastermob1,slot.slotID, 10, 0 )
         

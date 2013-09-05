@@ -115,7 +115,7 @@ class TreeItem(object):
             self.extendChildItems(list(item.slots()))
 
         elif isinstance(item, aaf.mob.MobSlot):
-             self.extendChildItems([item.segment()])
+             self.extendChildItems([item.segment])
         elif isinstance(item, aaf.component.NestedScope):
             self.extendChildItems(list(item.segments()))           
         elif isinstance(item, aaf.component.Sequence):
