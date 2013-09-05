@@ -631,6 +631,9 @@ cdef class TapeDescriptor(EssenceDescriptor):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+    
+    def initialize(self):
+        error_check(self.ptr.Initialize())
         
 cdef class PhysicalDescriptor(EssenceDescriptor):
     def __init__(self, AAFBase obj = None):

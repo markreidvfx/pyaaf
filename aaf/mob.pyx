@@ -218,7 +218,7 @@ cdef class CompositionMob(Mob):
             
 cdef class SourceMob(Mob):
     def __init__(self, AAFBase obj=None):
-        super(Mob, self).__init__(obj)
+        super(SourceMob, self).__init__(obj)
         self.iid = lib.IID_IAAFSourceMob
         self.auid = lib.AUID_AAFSourceMob
         self.src_ptr = NULL
@@ -235,11 +235,17 @@ cdef class SourceMob(Mob):
         if self.src_ptr:
             self.src_ptr.Release()
     
+    def initialize(self):
+        error_check(self.src_ptr.Initialize())
+    
     property essence_descriptor:
         def __get__(self):
             cdef EssenceDescriptor descriptor = EssenceDescriptor()
             error_check(self.src_ptr.GetEssenceDescriptor(&descriptor.essence_ptr))
             return EssenceDescriptor(descriptor).resolve()
+        
+        def __set__(self, EssenceDescriptor descriptor):
+            error_check(self.src_ptr.SetEssenceDescriptor(descriptor.essence_ptr))
 
 cdef class MobSlot(AAFObject):
     def __init__(self, AAFBase obj = None):

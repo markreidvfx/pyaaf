@@ -499,6 +499,7 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFCDCIDescriptor
     cdef GUID IID_IAAFCDCIDescriptor
     cdef cppclass IAAFCDCIDescriptor(IUnknown):
+        HRESULT Initialize()
         HRESULT SetComponentWidth(aafInt32  ComponentWidth)
         HRESULT GetComponentWidth(aafInt32  *pComponentWidth)
         HRESULT SetHorizontalSubsampling(aafUInt32 HorizontalSubsampling)
@@ -511,7 +512,7 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFRGBADescriptor
     cdef GUID IID_IAAFRGBADescriptor
     cdef cppclass IAAFRGBADescriptor(IUnknown):
-        pass
+        HRESULT Initialize()
         
     cdef aafUID_t AUID_AAFSoundDescriptor
     cdef GUID IID_IAAFSoundDescriptor
@@ -526,7 +527,7 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFTapeDescriptor
     cdef GUID IID_IAAFTapeDescriptor
     cdef cppclass IAAFTapeDescriptor(IUnknown):
-        pass
+        HRESULT Initialize()
         
     cdef aafUID_t AUID_AAFPhysicalDescriptor
     cdef GUID IID_IAAFPhysicalDescriptor
@@ -595,7 +596,9 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFSourceMob
     cdef GUID IID_IAAFSourceMob
     cdef cppclass IAAFSourceMob(IUnknown):
+        HRESULT Initialize()
         HRESULT GetEssenceDescriptor(IAAFEssenceDescriptor ** ppEssence)
+        HRESULT SetEssenceDescriptor(IAAFEssenceDescriptor * pEssence)
     
     cdef aafUID_t AUID_AAFMobSlot
     cdef GUID IID_IAAFMobSlot
