@@ -561,6 +561,10 @@ cdef extern from "AAF.h":
             aafPosition_t  origin,
             IAAFTimelineMobSlot ** ppNewSlot
         )
+        HRESULT InsertSlotAt(
+            aafUInt32  index,
+            IAAFMobSlot * pSlot
+        )
         
     cdef aafUID_t AUID_AAFMasterMob
     cdef GUID IID_IAAFMasterMob
@@ -604,8 +608,12 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFMobSlot
     cdef cppclass IAAFMobSlot(IUnknown):
         HRESULT GetSegment(IAAFSegment ** ppResult)
+        HRESULT SetSegment(IAAFSegment * pSegment)
         HRESULT GetDataDef(IAAFDataDef ** ppResult)
         HRESULT GetSlotID(aafSlotID_t *  pResult)
+        HRESULT SetSlotID(aafSlotID_t pSlotID)
+        HRESULT GetPhysicalNum(aafUInt32  *number)
+        HRESULT SetPhysicalNum(aafUInt32  number)
     
     cdef aafUID_t AUID_AAFTimelineMobSlot
     cdef GUID IID_IAAFTimelineMobSlot

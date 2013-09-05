@@ -179,9 +179,12 @@ class TestFile(unittest.TestCase):
         
         clip = d.create.SourceClip(length= 100, media_kind='picture')
         
+        track = 0
+        timeline.segment = clip
+        timeline.slotID = track + 1
+        timeline.physical_num = track
         
-        #timeline.segment = clip
-        
+        source_mob.insert_slot(track, timeline)
         
         f.save()
         f.save(output_xml)

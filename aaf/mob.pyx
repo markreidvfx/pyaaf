@@ -46,6 +46,15 @@ cdef class Mob(AAFObject):
                 return slot
         raise IndexError("Invalid slot number: %d" % slotID)
     
+    def insert_slot(self, lib.aafUInt32 index, MobSlot slot):
+        """
+        Inserts the given slot into this mob at the given index.  All
+        existing slots at the given and higher index will be moved up one
+        index to accommodate.
+        """
+        slot.slotID = index
+        error_check(self.ptr.InsertSlotAt(index, slot.slot_ptr))
+        
     def create_clip(self, slotID=None, length=None, start_time=None):
         
         d = self.dictionary()
@@ -275,15 +284,33 @@ cdef class MobSlot(AAFObject):
             cdef Segment seg = Segment()
             error_check(self.slot_ptr.GetSegment(&seg.seg_ptr))
             return Segment(seg).resolve()
+        
+        def __set__(self, Segment value):
+            error_check(self.slot_ptr.SetSegment(value.seg_ptr))
     
     property media_kind:
         def __get__(self):
             return self.datadef().name
+        
     property slotID:
         def __get__(self):
             cdef lib.aafSlotID_t slotID
             error_check(self.slot_ptr.GetSlotID(&slotID))
             return slotID
+        def __set__(self, lib.aafSlotID_t value):
+            error_check(self.slot_ptr.SetSlotID(value))
+    
+    property physical_num:
+        """
+        Audio channel, audio 1 = left 2 = right (leave video as 0)
+        """
+        def __get__(self):
+            cdef lib.aafUInt32 value
+            error_check(self.slot_ptr.GetPhysicalNum(&value))
+            return value
+        def __set__(self, lib.aafUInt32 value):
+            error_check(self.slot_ptr.SetPhysicalNum(value))
+        
     
 cdef class TimelineMobSlot(MobSlot):
     def __init__(self, AAFBase obj = None):
