@@ -27,6 +27,16 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFPluginManager
     cdef cppclass IAAFPluginManager(IUnknown):
         HRESULT RegisterSharedPlugins()
+        HRESULT EnumLoadedPlugins(
+            aafUID_t &categoryID,
+            IEnumAAFLoadedPlugins ** ppEnum
+        )
+        HRESULT CreatePluginDefinition(
+            aafUID_t&  pluginDefID,
+            IAAFDictionary * pDictionary,
+            IAAFDefObject**  ppPluginDef,
+        )
+   
     
     cdef aafUID_t AUID_AAFFile
     cdef GUID IID_IAAFFile
@@ -56,6 +66,11 @@ cdef extern from "AAF.h":
             aafUID_t &dataDefinitionId,
             IAAFDataDef ** ppDataDef
         )
+        HRESULT LookupCodecDef(
+            aafUID_t &dataDefinitionId,
+            IAAFCodecDef ** ppParmDef
+        )
+        HRESULT RegisterCodecDef(IAAFCodecDef *pParmDef)  
         HRESULT GetClassDefs(IEnumAAFClassDefs ** ppEnum)
         HRESULT GetCodecDefs(IEnumAAFCodecDefs ** ppEnum)
         HRESULT GetTypeDefs(IEnumAAFTypeDefs ** ppEnum)
@@ -440,7 +455,8 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFFileDescriptor
     cdef GUID IID_IAAFFileDescriptor
     cdef cppclass IAAFFileDescriptor(IUnknown):
-        pass
+        HRESULT GetCodecDef(IAAFCodecDef **pCodecDef)
+        HRESULT SetCodecDef(IAAFCodecDef * codecDef)
         
     cdef aafUID_t AUID_AAFWAVEDescriptor
     cdef GUID IID_IAAFWAVEDescriptor
@@ -783,6 +799,10 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFComponents
     cdef cppclass IEnumAAFComponents(IUnknown):
         HRESULT NextOne(IAAFComponent ** ppComponent)
+    
+    cdef GUID IID_IEnumAAFLoadedPlugins
+    cdef cppclass IEnumAAFLoadedPlugins(IUnknown):
+        HRESULT NextOne(aafUID_t*  ppAAFPluginID)
         
     cdef GUID IID_IEnumAAFMobs
     cdef cppclass IEnumAAFMobs(IUnknown):
