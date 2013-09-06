@@ -435,7 +435,7 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFEssenceDescriptor 
     cdef GUID IID_IAAFEssenceDescriptor
     cdef cppclass IAAFEssenceDescriptor(IUnknown):
-        pass
+        HRESULT AppendLocator(IAAFLocator * pLocator)
         
     cdef aafUID_t AUID_AAFFileDescriptor
     cdef GUID IID_IAAFFileDescriptor

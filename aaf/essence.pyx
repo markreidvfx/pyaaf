@@ -263,6 +263,9 @@ cdef class EssenceDescriptor(AAFObject):
     def __dealloc__(self):
         if self.essence_ptr:
             self.essence_ptr.Release()
+    
+    def append_locator(self, Locator loc):
+        error_check(self.essence_ptr.AppendLocator(loc.loc_ptr))
             
 cdef class FileDescriptor(EssenceDescriptor):
     def __init__(self, AAFBase obj = None):
@@ -494,6 +497,9 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def initialize(self):
+        error_check(self.ptr.Initialize())
             
     property component_width:
         """
