@@ -204,50 +204,6 @@ class TestFile(unittest.TestCase):
         f.close()
         
         
-    def test_external_mob(self):
-        output_aaf = os.path.join(sandbox, 'external_essence_create.aaf')
-        output_xml = os.path.join(sandbox, 'external_essence_create.xml')
-        
-        if os.path.exists(output_aaf):
-            os.remove(output_aaf)
-        f = aaf.open(output_aaf, 'rw')
-        
-        header = f.header()
-        storage = header.storage()
-        d = header.dictionary()
-        
-        mastermob = d.create.MasterMob("Picture Mob 1")
-        header.append(mastermob)
-        locator = d.create.NetworkLocator()
-        
-        #locator.path = "file:///Giraffe/Avid%20MediaFiles/MXF/1/IMG_4945.JPG13783365227BE81.mxf"
-        locator.path = "/Volumes/Giraffe/Avid MediaFiles/MXF/1/IMG_4945.JPG13783365227BE81.mxf"
-        print locator.path
-        rate = "23976/1000"
-        essence = mastermob.create_essence(1,
-                                 media_kind = "picture",
-                                 codec_name = "DNxHD",
-                                 edit_rate = rate,
-                                 sample_rate = rate,
-                                 compress = True,
-                                 locator = locator,
-                                 fileformat = "AAF"
-                                 )
-        
-        
-        slot = list(mastermob.slots())[0]
-        clip = slot.segment
-        source_mob = clip.resolve_ref()
-        desc = source_mob.essence_descriptor
-        
-        print desc['ContainerFormat']['Name']
-        
-        desc
-        
-        f.save()
-        f.save(output_xml)
-        f.close()
-        
     def test_create_comp(self):
         
         output_aaf = os.path.join(sandbox, 'comp_essence_create.aaf')
