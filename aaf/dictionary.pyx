@@ -2,7 +2,7 @@
 cimport lib
 
 from .base cimport AAFBase, AAFObject, AUID
-from .define cimport DataDef, DataDefMap
+from .define cimport DataDef, ContainerDef, ContainerDefMap, DataDefMap
 from .util cimport error_check, query_interface, register_object, lookup_object
 from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter 
 from wstring cimport wstring,toWideString
@@ -29,14 +29,17 @@ cdef class Dictionary(AAFObject):
             self.ptr.Release()
         
     def lookup_datadef(self, bytes name):
-        
         cdef AUID auid = DataDefMap[name.lower()]
         cdef DataDef definition =  DataDef()
-        
         error_check(self.ptr.LookupDataDef(auid.get_auid(), &definition.ptr ))
-        
         return DataDef(definition)
     
+    def lookup_containerdef(self, bytes name):
+        cdef AUID auid = ContainerDefMap[name.lower()]
+        cdef ContainerDef definition = ContainerDef()
+        error_check(self.ptr.LookupContainerDef(auid.get_auid(), &definition.ptr ))
+        return ContainerDef(definition)
+        
     def class_defs(self):
         cdef ClassDefIter def_iter = ClassDefIter()
         error_check(self.ptr.GetClassDefs(&def_iter.ptr))

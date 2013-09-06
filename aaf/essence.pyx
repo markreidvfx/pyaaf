@@ -1,8 +1,8 @@
 cimport lib
 
-from .util cimport error_check, query_interface, register_object, aaf_integral
+from .util cimport error_check, query_interface, register_object, aaf_integral, fraction_to_aafRational
 from .base cimport AAFObject, AAFBase, AUID
-from .define cimport CodecDefMap
+from .define cimport ContainerDef, ContainerDefMap, CodecDefMap
 
 from libcpp.map cimport map
 from libcpp.string cimport string
@@ -285,6 +285,30 @@ cdef class FileDescriptor(EssenceDescriptor):
     def __dealloc__(self):
         if self.file_ptr:
             self.file_ptr.Release()
+    
+    property sample_rate:
+        def __set__(self, value):
+            cdef lib.aafRational_t rate
+            fraction_to_aafRational(value, rate)
+            error_check(self.file_ptr.SetSampleRate(rate))
+        def __get__(self):
+            return self['SampleRate']
+            
+    property container_format:
+        def __set__(self, bytes value):
+            cdef ContainerDef cont_def = self.dictionary().lookup_containerdef(value)
+            error_check(self.file_ptr.SetContainerFormat(cont_def.ptr))
+        def __get__(self):
+            cdef ContainerDef cont_def = ContainerDef()
+            error_check(self.file_ptr.GetContainerFormat(&cont_def.ptr))
+            cont_def = ContainerDef(cont_def)
+            
+            auid = cont_def['Identification']
+            
+            for key,value in ContainerDefMap.items():
+                if value == auid:
+                    return key
+            return cont_def.name
             
 cdef class WAVEDescriptor(FileDescriptor):
     """
@@ -412,6 +436,18 @@ cdef class DigitalImageDescriptor(FileDescriptor):
             cdef lib.aafInt32 y_offset
             error_check(self.im_ptr.GetDisplayView(&height, &width, &x_offset, &y_offset))
             return (width, height, x_offset, y_offset)
+    property aspect_ratio:
+        """
+        Image Aspect Ratio.  This ratio describes the
+        ratio between the horizontal size and the vertical size in the
+        intended final image.
+        """
+        def __set__(self, value):
+            cdef lib.aafRational_t ratio
+            fraction_to_aafRational(value, ratio)
+            error_check(self.im_ptr.SetImageAspectRatio(ratio))
+        def __get__(self):
+            return self['ImageAspectRatio']
         
     property layout:
         """

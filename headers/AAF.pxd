@@ -70,6 +70,10 @@ cdef extern from "AAF.h":
             aafUID_t &dataDefinitionId,
             IAAFCodecDef ** ppParmDef
         )
+        HRESULT LookupContainerDef(
+            aafUID_t &dataDefinitionId,
+            IAAFContainerDef ** ppParmDef
+        )
         HRESULT RegisterCodecDef(IAAFCodecDef *pParmDef)  
         HRESULT GetClassDefs(IEnumAAFClassDefs ** ppEnum)
         HRESULT GetCodecDefs(IEnumAAFCodecDefs ** ppEnum)
@@ -457,6 +461,10 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFFileDescriptor(IUnknown):
         HRESULT GetCodecDef(IAAFCodecDef **pCodecDef)
         HRESULT SetCodecDef(IAAFCodecDef * codecDef)
+        HRESULT SetSampleRate(aafRational_t &rate)
+        HRESULT GetSampleRate(aafRational_t *rate)
+        HRESULT SetContainerFormat(IAAFContainerDef * format)
+        HRESULT GetContainerFormat(IAAFContainerDef ** pFormat)
         
     cdef aafUID_t AUID_AAFWAVEDescriptor
     cdef GUID IID_IAAFWAVEDescriptor
@@ -513,6 +521,8 @@ cdef extern from "AAF.h":
         HRESULT GetVideoLineMapSize(
             aafUInt32* pNumberElements
         )
+        HRESULT SetImageAspectRatio(aafRational_t  ImageAspectRatio)
+        HRESULT GetImageAspectRatio(aafRational_t  *pImageAspectRatio)
 
     cdef aafUID_t AUID_AAFCDCIDescriptor
     cdef GUID IID_IAAFCDCIDescriptor

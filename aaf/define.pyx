@@ -595,7 +595,10 @@ cdef class TypeDefRecord(TypeDef):
         auid_typdef.from_auid(lib.kAAFTypeID_Rational)
         
         if self.auid == auid_typdef:
-            return Fraction(self.member_value(p_value, 0).value, self.member_value(p_value, 1).value)
+            try:
+                return Fraction(self.member_value(p_value, 0).value, self.member_value(p_value, 1).value)
+            except:
+                pass
 
         for i in xrange(self.size()):
             value_prop = self.member_value(p_value, i)
