@@ -581,6 +581,13 @@ cdef extern from "AAF.h":
             aafUID_constref fileFormat,
             IAAFEssenceAccess **access
         )
+        HRESULT AddMasterSlot(
+            IAAFDataDef * pDataDef,
+            aafSlotID_t  sourceSlotID,
+            IAAFSourceMob * pSourceMob,
+            aafSlotID_t  masterSlotID,
+            aafCharacter *pSlotName
+        )
     
     cdef aafUID_t AUID_AAFMasterMob2
     cdef GUID IID_IAAFMasterMob2

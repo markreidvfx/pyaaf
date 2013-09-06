@@ -52,7 +52,6 @@ cdef class Mob(AAFObject):
         existing slots at the given and higher index will be moved up one
         index to accommodate.
         """
-        slot.slotID = index
         error_check(self.ptr.InsertSlotAt(index, slot.slot_ptr))
         
     def create_clip(self, slotID=None, length=None, start_time=None):
@@ -192,6 +191,25 @@ cdef class MasterMob(Mob):
                                                       &access.ptr
                                                       ))
         return access
+    
+    def add_master_slot(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
+                        lib.aafSlotID_t master_slotID, bytes slot_name=None):
+        """
+        Add a slot that references the specified a slot in the specified Source Mob.
+        """
+        cdef DataDef media_datadef        
+        media_datadef = self.dictionary().lookup_datadef(media_kind)
+        
+        if not slot_name:
+            slot_name = b""
+        
+        cdef wstring w_slot_name = toWideString(slot_name)
+
+        error_check(self.mastermob_ptr.AddMasterSlot(media_datadef.ptr,
+                                                     source_slotID,
+                                                     source_mob.src_ptr,
+                                                     master_slotID,
+                                                     w_slot_name.c_str()))
         
     def __dealloc__(self):
         if self.mastermob_ptr:

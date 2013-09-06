@@ -162,8 +162,8 @@ class TestFile(unittest.TestCase):
         
         tape_name = "tape_01"
 
-        mob = d.create.MasterMob("clip1")
-        header.append(mob)
+        master_mob = d.create.MasterMob("clip1")
+        header.append(master_mob)
         
         source_mob = d.create.SourceMob()
         source_mob.name = "bob"
@@ -185,6 +185,7 @@ class TestFile(unittest.TestCase):
         timeline.physical_num = track
         
         source_mob.insert_slot(track, timeline)
+        master_mob.add_master_slot("picture", track+1, source_mob, track+1)
         
         f.save()
         f.save(output_xml)
