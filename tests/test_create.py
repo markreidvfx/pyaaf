@@ -166,26 +166,38 @@ class TestFile(unittest.TestCase):
         header.append(master_mob)
         
         source_mob = d.create.SourceMob()
-        source_mob.name = "bob"
+        source_mob.name = tape_name
         tape_desc = d.create.TapeDescriptor()
-        
         source_mob.essence_descriptor = tape_desc
         header.append(source_mob)
         
-        timeline = d.create.TimelineMobSlot()
-        
-        timeline.editrate = "23976/1000"
-        timeline.origin = 0
-        
-        clip = d.create.SourceClip(length= 100, media_kind='picture')
-        
-        track = 0
-        timeline.segment = clip
-        timeline.slotID = track + 1
-        timeline.physical_num = track
-        
-        source_mob.insert_slot(track, timeline)
-        master_mob.add_master_slot("picture", track+1, source_mob, track+1)
+        # Now add Video and Audio Tracks
+        for track in xrange(3):
+            
+            # Create A New Slot
+            timeline = d.create.TimelineMobSlot()
+            timeline.editrate = "23976/1000"
+            timeline.origin = 0
+            timeline.slotID = track + 1
+            
+            # set the audio channel, zero if video
+            timeline.physical_num = track
+            
+            media_kind = "sound"
+            if track == 0:
+                media_kind = 'picture'
+            
+            # Create a clip NULL clip
+            clip = d.create.SourceClip(length= 100, media_kind=media_kind)
+            
+            # Set the Segemnt to the clip
+            timeline.segment = clip
+            
+            # Add the timeline to the Source Mob
+            source_mob.insert_slot(track, timeline)
+            
+            # Add the SourceMob slot to the Master Mob Slot
+            master_mob.add_master_slot(media_kind, track+1, source_mob, track+1)
         
         f.save()
         f.save(output_xml)
