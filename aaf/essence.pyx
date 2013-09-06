@@ -2,6 +2,7 @@ cimport lib
 
 from .util cimport error_check, query_interface, register_object, aaf_integral
 from .base cimport AAFObject, AAFBase, AUID
+from .define cimport CodecDefMap
 
 from libcpp.map cimport map
 from libcpp.string cimport string
@@ -334,6 +335,21 @@ cdef class DigitalImageDescriptor(FileDescriptor):
     def __dealloc__(self):
         if self.im_ptr:
             self.im_ptr.Release()
+    
+    property compression:
+        def __set__(self, bytes value):
+            cdef AUID auid = CodecDefMap[value.lower()]
+            error_check(self.im_ptr.SetCompression(auid.get_auid()))
+        
+        def __get__(self):
+            cdef AUID auid = AUID()
+            error_check(self.im_ptr.GetCompression(&auid.auid))
+            
+            for key,value in CodecDefMap.items():
+                if value == auid:
+                    return key
+            
+            raise ValueError("Unknown Compression")
     
     property stored_view:
         """

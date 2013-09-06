@@ -466,6 +466,8 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFDigitalImageDescriptor
     cdef GUID IID_IAAFDigitalImageDescriptor
     cdef cppclass IAAFDigitalImageDescriptor(IUnknown):
+        HRESULT SetCompression(aafUID_t& compression)
+        HRESULT GetCompression(aafUID_t* compression)
         HRESULT SetStoredView(
             aafUInt32  StoredHeight,
             aafUInt32  StoredWidth
