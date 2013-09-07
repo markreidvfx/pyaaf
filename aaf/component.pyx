@@ -139,7 +139,22 @@ cdef class Timecode(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def initialize(self, lib.aafLength_t length, 
+                   lib.aafFrameOffset_t start_frame, 
+                   lib.aafUInt16 fps,
+                   drop = False):
 
+        cdef lib.aafTimecode_t timecode
+        timecode.startFrame = start_frame
+        if drop:
+            timecode.drop = lib.kAAFTcDrop
+        else:
+            timecode.drop = lib.kAAFTcNonDrop
+        timecode.fps = fps
+        
+        error_check(self.ptr.Initialize(length, &timecode))
+        
 cdef class Filler(Segment):
     def __init__(self, AAFBase obj = None):
         super(Filler, self).__init__(obj)
@@ -176,8 +191,16 @@ cdef class Pulldown(Segment):
         if self.ptr:
             self.ptr.Release()
             
-    def initialize(self):
-        pass
+    def initialize(self, media_kind):
+        self.media_kind = media_kind
+    
+    property segment:
+        def __get__(self):
+            cdef Segment seg = Segment()
+            error_check(self.ptr.GetInputSegment(&seg.seg_ptr))
+            return Segment(seg).resolve()
+        def __set__(self, Segment value):
+             error_check(self.ptr.SetInputSegment(value.seg_ptr))
 
 cdef class SourceReference(Segment):
     def __init__(self, AAFBase obj = None):

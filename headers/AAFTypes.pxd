@@ -75,6 +75,17 @@ cdef extern from "AAFTypes.h":
         aafCharacter * platform #optional
         aafProductVersion_t * productVersion #optional
         
+    ctypedef aafInt64 aafFrameOffset_t
+    ctypedef aafInt32 aafDropType_t
+    
+    cdef enum aafDropType_e:
+        kAAFTcNonDrop
+        kAAFTcDrop
+        
+    ctypedef struct aafTimecode_t:
+        aafFrameOffset_t startFrame
+        aafDropType_t  drop
+        aafUInt16 fps
         
     # Mob specific data types
     

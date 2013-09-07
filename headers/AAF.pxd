@@ -731,7 +731,10 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFTimecode
     cdef GUID IID_IAAFTimecode
     cdef cppclass IAAFTimecode(IUnknown):
-        pass
+        HRESULT Initialize(
+            aafLength_t  length,
+            aafTimecode_t*  pTimecode
+        )
         
     cdef aafUID_t AUID_AAFFiller
     cdef GUID IID_IAAFFiller
