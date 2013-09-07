@@ -193,6 +193,18 @@ cdef class Pulldown(Segment):
             
     def initialize(self, media_kind):
         self.media_kind = media_kind
+        
+    property pulldown_kind:
+        def __get__(self):
+            return self['PulldownKind']
+        
+    property pulldown_direction:
+        def __get__(self):
+            return self['PulldownDirection']
+    
+    property phase_frame:
+        def __get__(self):
+            return self['PhaseFrame']
     
     property segment:
         def __get__(self):
