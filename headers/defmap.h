@@ -1,6 +1,7 @@
 #include <AAFDataDefs.h>
 #include <AAFCodecDefs.h>
 #include <AAFContainerDefs.h>
+#include <AAFCompressionDefs.h>
 #include <AAFTypes.h>
 #include <AAFEssenceFormats.h>
 #include <map>
@@ -179,6 +180,36 @@ std::map<std::string, aafUID_t> get_container_def_map()
     MAP_ADD(kAAFContainerDef_MXFGC_Avid_DNX_145_720p)
     #undef MAP_ADD
     
+    return def_map;
+}
+
+std::map<std::string, aafUID_t> get_compressiondef_map()
+{
+    std::map<std::string, aafUID_t> def_map;
+    #define MAP_ADD( NAME ) def_map[ #NAME ] = NAME;
+
+    MAP_ADD(kAAFCompressionDef_AAF_CMPR_FULL_JPEG)
+    MAP_ADD(kAAFCompressionDef_AAF_CMPR_AUNC422)
+    MAP_ADD(kAAFCompressionDef_LegacyDV)
+    MAP_ADD(kAAFCompressionDef_SMPTE_D10_50Mbps_625x50I)
+    MAP_ADD(kAAFCompressionDef_SMPTE_D10_50Mbps_525x5994I)
+    MAP_ADD(kAAFCompressionDef_SMPTE_D10_40Mbps_625x50I)
+    MAP_ADD(kAAFCompressionDef_SMPTE_D10_40Mbps_525x5994I)
+    MAP_ADD(kAAFCompressionDef_SMPTE_D10_30Mbps_625x50I)
+    MAP_ADD(kAAFCompressionDef_SMPTE_D10_30Mbps_525x5994I)
+    MAP_ADD(kAAFCompressionDef_IEC_DV_525_60)
+    MAP_ADD(kAAFCompressionDef_IEC_DV_625_50)
+    MAP_ADD(kAAFCompressionDef_DV_Based_25Mbps_525_60)
+    MAP_ADD(kAAFCompressionDef_DV_Based_25Mbps_625_50)
+    MAP_ADD(kAAFCompressionDef_DV_Based_50Mbps_525_60)
+    MAP_ADD(kAAFCompressionDef_DV_Based_50Mbps_625_50)
+    MAP_ADD(kAAFCompressionDef_DV_Based_100Mbps_1080x5994I)
+    MAP_ADD(kAAFCompressionDef_DV_Based_100Mbps_1080x50I)
+    MAP_ADD(kAAFCompressionDef_DV_Based_100Mbps_720x5994P)
+    MAP_ADD(kAAFCompressionDef_DV_Based_100Mbps_720x50P)
+    MAP_ADD(kAAFCompressionDef_VC3_1)
+    MAP_ADD(kAAFCompressionDef_Avid_DNxHD_Legacy)
+    #undef MAP_ADD
     return def_map;
 }
 

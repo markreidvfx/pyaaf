@@ -74,7 +74,7 @@ cdef object resolve_typedef(TypeDef typedef)
 cpdef dict DataDefMap
 cpdef dict CodecDefMap
 cpdef dict ContainerDefMap
-
+cpdef dict CompressionDefMap
 cdef class DefObject(AAFObject):
     cdef lib.IAAFDefObject *defobject_ptr
     
