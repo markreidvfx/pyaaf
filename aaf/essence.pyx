@@ -728,6 +728,9 @@ cdef class ImportDescriptor(PhysicalDescriptor):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+    
+    def initialize(self):
+        error_check(self.ptr.Initialize())
         
         
 register_object(Locator)

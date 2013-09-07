@@ -545,12 +545,12 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFSoundDescriptor
     cdef GUID IID_IAAFSoundDescriptor
     cdef cppclass IAAFSoundDescriptor(IUnknown):
-        pass
+        HRESULT Initialize()
         
     cdef aafUID_t AUID_AAFPCMDescriptor
     cdef GUID IID_IAAFPCMDescriptor
     cdef cppclass IAAFPCMDescriptor(IUnknown):
-        pass
+        HRESULT Initialize()
         
     cdef aafUID_t AUID_AAFTapeDescriptor
     cdef GUID IID_IAAFTapeDescriptor
@@ -565,7 +565,7 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFImportDescriptor
     cdef GUID IID_IAAFImportDescriptor
     cdef cppclass IAAFImportDescriptor(IUnknown):
-        pass
+        HRESULT Initialize()
         
     # Mobs
     
