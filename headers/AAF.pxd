@@ -709,7 +709,14 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFPulldown
     cdef GUID IID_IAAFPulldown
     cdef cppclass IAAFPulldown(IUnknown):
-        pass
+        HRESULT GetInputSegment(IAAFSegment ** ppInputSegment)
+        HRESULT SetInputSegment(IAAFSegment * pInputSegment)
+        HRESULT GetPulldownKind(aafPulldownKind_t *  pPulldownKind)
+        HRESULT SetPulldownKind(aafPulldownKind_t  pulldownKind)
+        HRESULT GetPulldownDirection(aafPulldownDir_t *  pPulldownDirection)
+        HRESULT SetPulldownDirection(aafPulldownDir_t  pulldownDirection)
+        HRESULT GetPhaseFrame(aafPhaseFrame_t *  pPhaseFrame)
+        HRESULT SetPhaseFrame(aafPhaseFrame_t phaseFrame)
     
     cdef aafUID_t AUID_AAFSourceReference
     cdef GUID IID_IAAFSourceReference

@@ -158,6 +158,26 @@ cdef extern from "AAFTypes.h":
         kAAFColorSpaceYDrDb
         kAAFColorSpaceCMYK
         
+    ctypedef aafInt32 aafPulldownKind_t
+    
+    cdef enum aafPulldownKind_e:
+        kAAFTwoThreePD
+        kAAFPALPD
+        kAAFOneToOneNTSC
+        kAAFOneToOnePAL
+        kAAFVideoTapNTSC
+        kAAFOneToOneHDSixty
+        kAAFTwentyFourToSixtyPD
+        kAAFTwoToOnePD
+    
+    ctypedef aafInt32 aafPulldownDir_t
+    
+    cdef enum aafPulldownDir_e:
+        kAAFTapeToFilmSpeed
+        kAAFFilmToTapeSpeed
+        
+    ctypedef aafInt32 aafPhaseFrame_t
+        
     ctypedef aafInt32 aafFrameLayout_t
     
     cdef enum aafFrameLayout_e:
