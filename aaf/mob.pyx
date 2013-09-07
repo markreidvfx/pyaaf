@@ -14,7 +14,7 @@ from .define cimport DataDef, CodecDefMap, ContainerDefMap
 
 from wstring cimport wstring, wideToString, toWideString
 
-from fractions import Fraction
+from .fraction_util import AAFFraction
 
 cdef class Mob(AAFObject):
     def __init__(self, AAFBase obj=None):
@@ -266,6 +266,9 @@ cdef class SourceMob(Mob):
     
     def initialize(self):
         error_check(self.src_ptr.Initialize())
+        
+    def add_pulldown(self):
+        pass
     
     property essence_descriptor:
         def __get__(self):
@@ -360,7 +363,7 @@ cdef class TimelineMobSlot(MobSlot):
         def __get__(self):
             cdef lib.aafRational_t rate
             error_check(self.ptr.GetEditRate(&rate))
-            return Fraction(rate.numerator, rate.denominator)
+            return AAFFraction(rate.numerator, rate.denominator)
         def __set__(self,value):
             cdef lib.aafRational_t rate
             fraction_to_aafRational(value,rate)

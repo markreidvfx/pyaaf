@@ -14,7 +14,7 @@ from wstring cimport  wstring, wideToString
 
 import traceback
 import array
-from fractions import Fraction
+from fraction_util import AAFFraction
 
 cdef object isA(AAFBase obj1,obj2):
     try:
@@ -596,7 +596,7 @@ cdef class TypeDefRecord(TypeDef):
         
         if self.auid == auid_typdef:
             try:
-                return Fraction(self.member_value(p_value, 0).value, self.member_value(p_value, 1).value)
+                return AAFFraction(self.member_value(p_value, 0).value, self.member_value(p_value, 1).value)
             except:
                 pass
 

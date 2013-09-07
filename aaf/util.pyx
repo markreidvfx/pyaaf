@@ -5,7 +5,7 @@ from wstring cimport wstring, toWideString,wideToString
 from libcpp.string cimport string
 from libc.stddef cimport wchar_t
 
-from fractions import Fraction
+from .fraction_util import AAFFraction
 
 
 HRESULTS = lib.get_hrmap()
@@ -81,7 +81,7 @@ cdef object resolve_object(object obj):
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r):
     
-    f = Fraction(obj)
+    f = AAFFraction(obj)
     r.numerator = f.numerator
     r.denominator = f.denominator
     
