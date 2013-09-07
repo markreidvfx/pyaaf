@@ -532,6 +532,8 @@ cdef extern from "AAF.h":
         )
         HRESULT SetImageAspectRatio(aafRational_t  ImageAspectRatio)
         HRESULT GetImageAspectRatio(aafRational_t  *pImageAspectRatio)
+        HRESULT SetImageAlignmentFactor(aafUInt32  ImageAlignmentFactor)
+        HRESULT GetImageAlignmentFactor(aafUInt32 *pImageAlignmentFactor)
 
     cdef aafUID_t AUID_AAFCDCIDescriptor
     cdef GUID IID_IAAFCDCIDescriptor

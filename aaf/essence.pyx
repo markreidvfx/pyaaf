@@ -523,6 +523,23 @@ cdef class DigitalImageDescriptor(FileDescriptor):
                 l.append(line_map[i])
                 
             return tuple(l)
+        
+    property image_alignment:
+        """
+        Specifies the alignment when storing the digital essence.  For example, a value of 16
+        means that the image is stored on 16-byte boundaries.  The
+        starting point for a field will always be a multiple of 16 bytes.
+        If the field does not end on a 16-byte boundary, it is padded
+        out to the next 16-byte boundary.
+        """
+        def __get__(self):
+            cdef lib.aafUInt32 value
+            error_check(self.im_ptr.GetImageAlignmentFactor(&value))
+            return value
+        def __set__(self, lib.aafUInt32 value):
+            error_check(self.im_ptr.SetImageAlignmentFactor(value))
+        
+        
 
 cdef class CDCIDescriptor(DigitalImageDescriptor):
     """
