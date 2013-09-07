@@ -66,22 +66,22 @@ cdef class Dictionary(AAFObject):
         return def_iter
      
     def operation_defs(self):
-        return self['OperationDefinitions']
+        return self.get('OperationDefinitions', [])
 
     def parameter_defs(self):
-        return self['ParameterDefinitions']
+        return self.get('ParameterDefinitions', [])
 
     def data_defs(self):
-        return self['DataDefinitions']
+        return self.get('DataDefinitions', [])
 
     def container_defs(self):
-        return self['ContainerDefinitions']
+        return self.get('ContainerDefinitions', [])
 
     def interpolation_defs(self):
-        return self['InterpolationDefinitions']
+        return self.get('InterpolationDefinitions', [])
             
     def taggedvalue_defs(self):
-        return self['TaggedValueDefinitions']
+        return self.get('TaggedValueDefinitions', [])
             
 cdef class CreateInstance(object):
 
