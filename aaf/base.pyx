@@ -89,7 +89,15 @@ cdef class AAFObject(AAFBase):
         for p in self.properties():
             if p.name == x:
                 return p.value
-        raise KeyError("Key not found")
+        raise KeyError("Key %s not found" % x)
+    
+    def __setitem__(self, x, y):
+        for p in self.properties():
+            if p.name == x:
+                p.value = y
+                return
+            
+        raise KeyError("Key %s not found" % x)
     
     def keys(self):
         """

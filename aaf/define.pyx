@@ -146,7 +146,10 @@ cdef class TypeDef(MetaDef):
             self.typedef_ptr.Release()
     
     def value(self, PropertyValue p_value ):
-        raise NotImplementedError("Value not implemented for type %s" %(str(self)))
+        raise NotImplementedError("value method not implemented for type %s" %(str(self)))
+    
+    def set_value(self, PropertyValue p_value, value):
+        raise NotImplementedError("set value method not implemented for type %s" %(str(self)))
     
     property category:
         def __get__(self):
@@ -239,7 +242,17 @@ cdef class TypeDefEnum(TypeDef):
         for i in xrange(self.size()):
             name =self.element_name(i)
             value = self.element_value(i)
+            d[name] = value
         return d
+    
+    def set_value(self, PropertyValue p_value, bytes value):
+
+        for key,enum_value in self.elements().items():
+            if key.lower() == value.lower():
+                error_check(self.ptr.SetIntegerValue(p_value.ptr, enum_value))
+                return
+            
+        raise ValueError("Invalid TypeDefEnum Key %s" % value)
     
     def value(self, PropertyValue p_value):
         v = self.element_name_from_value(p_value)

@@ -43,6 +43,8 @@ cdef class Property(AAFBase):
     property value:
         def __get__(self):
             return self.property_value().value
+        def __set__(self, value):
+            self.property_value().value = value
 
             
     
@@ -67,6 +69,10 @@ cdef class PropertyValue(AAFBase):
         def __get__(self):
             typedef = self.typedef()
             return typedef.value(self)
+        
+        def __set__(self, value):
+            typedef = self.typedef()
+            typedef.set_value(self, value)
         
 cdef class TaggedValue(AAFObject):
     def __init__(self, AAFBase obj = None):

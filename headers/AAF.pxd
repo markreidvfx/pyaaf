@@ -181,6 +181,10 @@ cdef extern from "AAF.h":
             IAAFPropertyValue * pValue,
             aafUInt32 *  pLen
         )
+        HRESULT SetIntegerValue(
+            IAAFPropertyValue *pPropValToSet,
+            aafInt64  valueIn
+        )
 
     cdef GUID IID_IAAFTypeDefExtEnum
     cdef cppclass IAAFTypeDefExtEnum(IUnknown):
