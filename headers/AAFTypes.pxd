@@ -158,6 +158,12 @@ cdef extern from "AAFTypes.h":
         kAAFColorSpaceYDrDb
         kAAFColorSpaceCMYK
         
+    ctypedef aafInt32 aafAppendOption_t
+    
+    cdef enum aafAppendOption_e:
+        kAAFAppend
+        kAAFForceOverwrite
+        
     ctypedef aafInt32 aafPulldownKind_t
     
     cdef enum aafPulldownKind_e:

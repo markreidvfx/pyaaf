@@ -638,6 +638,17 @@ cdef extern from "AAF.h":
         HRESULT Initialize()
         HRESULT GetEssenceDescriptor(IAAFEssenceDescriptor ** ppEssence)
         HRESULT SetEssenceDescriptor(IAAFEssenceDescriptor * pEssence)
+        HRESULT AddPulldownRef(
+            aafAppendOption_t  addType,
+            aafRational_t  editrate,
+            aafSlotID_t  aMobSlot,
+            IAAFDataDef * pEssenceKind,
+            aafSourceRef_t  ref,
+            aafLength_t  srcRefLength,
+            aafPulldownKind_t  pulldownKind,
+            aafPhaseFrame_t  phaseFrame,
+            aafPulldownDir_t  direction
+        )
     
     cdef aafUID_t AUID_AAFMobSlot
     cdef GUID IID_IAAFMobSlot
