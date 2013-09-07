@@ -237,6 +237,11 @@ cdef extern from "AAF.h":
             aafMemPtr_t  pVal,
             aafUInt32 valSize
         )
+        HRESULT SetInteger(
+            IAAFPropertyValue * pPropVal,
+            aafMemPtr_t  pVal,
+            aafUInt32  valSize
+        )
 
     cdef GUID IID_IAAFTypeDefObjectRef
     cdef cppclass IAAFTypeDefObjectRef(IUnknown):

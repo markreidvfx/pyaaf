@@ -429,6 +429,30 @@ cdef class TypeDefInt(TypeDef):
         cdef lib.aafBoolean_t sign
         error_check(self.ptr.IsSigned(&sign))
         return bool(sign)
+    
+    def set_value(self, PropertyValue p_value, value):
+        
+        cdef lib.aafUInt32 size = self.size()
+        if self.is_signed():
+            if sizeof(lib.aafInt8) == size:
+                set_int[lib.aafInt8](self, p_value, value)
+            elif sizeof(lib.aafInt16) == size:
+                set_int[lib.aafInt16](self, p_value, value)
+            elif sizeof(lib.aafInt32) == size:
+                set_int[lib.aafInt32](self, p_value, value)
+            else:
+                set_int[lib.aafInt64](self, p_value, value)
+        else:
+            if sizeof(lib.aafUInt8) == size:
+                set_int[lib.aafUInt8](self, p_value, value)
+            elif sizeof(lib.aafUInt16) == size:
+                set_int[lib.aafUInt16](self, p_value, value)
+            elif sizeof(lib.aafUInt32) == size:
+                set_int[lib.aafUInt32](self, p_value, value)
+            else:
+                set_int[lib.aafUInt64](self, p_value, value)
+        if value != self.value(p_value):
+            raise ValueError("unable to set value")
 
     def value(self, PropertyValue p_value ):
         
@@ -458,6 +482,12 @@ cdef aaf_integral get_int(TypeDefInt typdef, PropertyValue value,aaf_integral i)
                                        sizeof(aaf_integral)))
 
     return i
+
+cdef aaf_integral set_int(TypeDefInt typdef, PropertyValue value,aaf_integral i):
+    error_check(typdef.ptr.SetInteger(value.ptr, 
+                                       <lib.aafMemPtr_t>&i, 
+                                       sizeof(aaf_integral)))
+
 
 
 # Note TypeDefWeakObjRef and TypeDefWeakObjRef inherit
@@ -689,13 +719,19 @@ cdef class TypeDefRename(TypeDef):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+    
+    def resolve_rename(self, PropertyValue p_value):
+        cdef PropertyValue out_value = PropertyValue()
+        error_check(self.ptr.GetBaseValue(p_value.ptr, &out_value.ptr))
+        return PropertyValue(out_value)
+            
+    def set_value(self, PropertyValue p_value, value):        
+        self.resolve_rename(p_value).value = value
+
             
     def value(self, PropertyValue p_value):
-        cdef PropertyValue out_value = PropertyValue()
+        cdef PropertyValue out_value = self.resolve_rename(p_value)
         
-        error_check(self.ptr.GetBaseValue(p_value.ptr, &out_value.ptr))
-        
-        out_value = PropertyValue(out_value)
         value =  out_value.value
         if value is None:
             raise NotImplementedError("typedef rename of value type %s not implemented" % str(out_value.typedef()))

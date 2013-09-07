@@ -206,9 +206,12 @@ cdef class Pulldown(Segment):
         def __set__(self, bytes value):
             self['PulldownDirection'] = value
     
-    property phase_frame:
+    property phase:
         def __get__(self):
             return self['PhaseFrame']
+        def __set__(self, lib.aafPhaseFrame_t value):
+            self['PhaseFrame'] = value
+    
     
     property segment:
         def __get__(self):
