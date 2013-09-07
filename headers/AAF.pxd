@@ -638,6 +638,26 @@ cdef extern from "AAF.h":
         HRESULT Initialize()
         HRESULT GetEssenceDescriptor(IAAFEssenceDescriptor ** ppEssence)
         HRESULT SetEssenceDescriptor(IAAFEssenceDescriptor * pEssence)
+        HRESULT AddNilReference(
+            aafSlotID_t  slotID,
+            aafLength_t  length,
+            IAAFDataDef * pDataDef,
+            aafRational_t  editRate
+        )
+        HRESULT AppendPhysSourceRef(
+            aafRational_t  editrate,
+            aafSlotID_t  aMobSlot,
+            IAAFDataDef * pEssenceKind,
+            aafSourceRef_t  ref,
+            aafLength_t  srcRefLength
+        )
+        HRESULT NewPhysSourceRef(
+            aafRational_t  editrate,
+            aafSlotID_t  aMobSlot,
+            IAAFDataDef * pEssenceKind,
+            aafSourceRef_t  ref,
+            aafLength_t  srcRefLength
+        )
         HRESULT AddPulldownRef(
             aafAppendOption_t  addType,
             aafRational_t  editrate,
@@ -689,7 +709,8 @@ cdef extern from "AAF.h":
         HRESULT SetLength(aafLength_t& pLength)
         HRESULT GetLength(aafLength_t * pLength)
         HRESULT GetDataDef(IAAFDataDef ** ppDatadef)
-    
+        HRESULT SetDataDef(IAAFDataDef * pDataDef)
+        
     cdef aafUID_t AUID_AAFSegment
     cdef GUID IID_IAAFSegment
     cdef cppclass IAAFSegment(IUnknown):

@@ -267,8 +267,48 @@ cdef class SourceMob(Mob):
     def initialize(self):
         error_check(self.src_ptr.Initialize())
         
-    def add_pulldown(self):
-        pass
+    def add_nil_ref(self, lib.aafSlotID_t slotID, lib.aafLength_t length, media_kind, edit_rate):
+        cdef lib.aafRational_t edit_rate_t
+        fraction_to_aafRational(edit_rate, edit_rate_t)
+        cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
+        
+        error_check(self.src_ptr.AddNilReference(slotID, length, data_def.ptr, edit_rate_t))
+        
+    def add_pulldown(self, edit_rate, 
+                     lib.aafSlotID_t slotID, media_kind, 
+                     Mob ref_mob, lib.aafSlotID_t ref_slotID, lib.aafLength_t ref_start_time,
+                     lib.aafLength_t src_ref_length):
+        
+        cdef lib.aafAppendOption_t addType = lib.kAAFForceOverwrite
+        cdef lib.aafRational_t edit_rate_t
+        
+        cdef lib.aafPulldownKind_t pulldown_kind = lib.kAAFTwentyFourToSixtyPD
+        
+        cdef lib.aafPhaseFrame_t phase_frame = 0
+        cdef lib.aafPulldownDir_t direction = lib.kAAFTapeToFilmSpeed
+        
+        cdef lib.aafSourceRef_t ref
+        
+        cdef MobID mobID
+        cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
+        
+        mobID = ref_mob.mobID
+        ref.sourceID = mobID.mobID
+        ref.sourceSlotID = ref_slotID
+        ref.startTime = ref_start_time
+        
+        fraction_to_aafRational(edit_rate, edit_rate_t)
+        
+        error_check(self.src_ptr.AddPulldownRef(addType,
+                                                 edit_rate_t,
+                                                 slotID,
+                                                 data_def.ptr,
+                                                 ref,
+                                                 src_ref_length,
+                                                 pulldown_kind,
+                                                 phase_frame,
+                                                 direction
+                                                 ))            
     
     property essence_descriptor:
         def __get__(self):

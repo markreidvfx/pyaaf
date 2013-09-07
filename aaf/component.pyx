@@ -44,6 +44,9 @@ cdef class Component(AAFObject):
     property media_kind:
         def __get__(self):
             return self.datadef().name
+        def __set__(self, bytes value):
+            cdef DataDef data_def = self.dictionary().lookup_datadef(value)
+            self.comp_ptr.SetDataDef(data_def.ptr)
             
 cdef class Segment(Component):
     def __init__(self, AAFBase obj = None):
@@ -172,6 +175,9 @@ cdef class Pulldown(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def initialize(self):
+        pass
 
 cdef class SourceReference(Segment):
     def __init__(self, AAFBase obj = None):
