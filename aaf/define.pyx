@@ -89,7 +89,16 @@ cdef class MetaDef(AAFBase):
         
     property description:
         def __get__(self):
-            pass
+            cdef lib.aafUInt32 sizeInBytes = 0
+            error_check(self.meta_ptr.GetDescriptionBufLen(&sizeInBytes))
+            
+            cdef int sizeInChars = (sizeInBytes / sizeof(lib.aafCharacter)) + 1
+            cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter](sizeInChars)
+            
+            error_check(self.meta_ptr.GetDescription(&buf[0], sizeInChars*sizeof(lib.aafCharacter) ))
+            
+            cdef wstring name = wstring(&buf[0])
+            return wideToString(name)
     
     property auid:
         def __get__(self):
