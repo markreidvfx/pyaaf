@@ -4,7 +4,7 @@ from .util cimport error_check
 from .mob cimport Mob,MobSlot
 from .property cimport Property,PropertyValue
 from .component cimport Component, Segment, Parameter
-from .define cimport ClassDef, TypeDef, CodecDef, PluginDef, KLVDataDef
+from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVDataDef
 
 cdef class BaseIterator(object):
     pass
@@ -204,6 +204,28 @@ cdef class PropIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             return Property(prop)
+        else:
+            error_check(ret)
+            
+cdef class PropertyDefsIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef PropertyDef propdef = PropertyDef()
+        ret = self.ptr.NextOne(&propdef.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return PropertyDef(propdef)
         else:
             error_check(ret)
 

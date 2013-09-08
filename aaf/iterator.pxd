@@ -77,7 +77,7 @@ cdef class PropIter(BaseIterator):
     cdef lib.IEnumAAFProperties *ptr 
      
 cdef class PropertyDefsIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFPropertyDefs *ptr
     
 cdef class PropValueIter(BaseIterator):
     cdef lib.IEnumAAFPropertyValues *ptr

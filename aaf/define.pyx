@@ -5,6 +5,7 @@ from .util cimport error_check, query_interface, aaf_integral, register_object, 
 from .property cimport PropertyValue
 
 cimport iterator
+from .iterator cimport PropertyDefsIter
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -111,6 +112,11 @@ cdef class ClassDef(MetaDef):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def propertydefs(self):
+        cdef PropertyDefsIter propdefs_iter = PropertyDefsIter()
+        error_check(self.ptr.GetPropertyDefs(&propdefs_iter.ptr))
+        return propdefs_iter
     
 cdef class PropertyDef(MetaDef):
     def __init__(self, AAFBase obj = None):
@@ -128,6 +134,13 @@ cdef class PropertyDef(MetaDef):
         if self.ptr:
             self.ptr.Release()
     
+    property optional:
+        def __get__(self):
+            cdef lib.aafBoolean_t value
+            error_check(self.ptr.GetIsOptional(&value))
+            if value:
+                return True
+            return False
 
 cdef class TypeDef(MetaDef):
     def __init__(self, AAFBase obj = None):

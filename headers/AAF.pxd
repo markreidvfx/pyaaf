@@ -141,11 +141,11 @@ cdef extern from "AAF.h":
     
     cdef GUID IID_IAAFClassDef
     cdef cppclass IAAFClassDef(IUnknown):
-        pass
+        HRESULT GetPropertyDefs(IEnumAAFPropertyDefs ** ppEnum)
         
     cdef GUID IID_IAAFPropertyDef
     cdef cppclass IAAFPropertyDef(IUnknown):
-        pass
+        HRESULT GetIsOptional(aafBoolean_t *  pIsOptional)
     
     cdef GUID IID_IAAFTypeDef
     cdef cppclass IAAFTypeDef(IUnknown):
@@ -892,6 +892,10 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFParameters
     cdef cppclass IEnumAAFParameters(IUnknown):
         HRESULT NextOne(IAAFParameter ** ppParameter)
+        
+    cdef GUID IID_IEnumAAFPropertyDefs
+    cdef cppclass IEnumAAFPropertyDefs(IUnknown):
+        HRESULT NextOne(IAAFPropertyDef ** ppParameter)
         
     cdef GUID IID_IEnumAAFClassDefs
     cdef cppclass IEnumAAFClassDefs(IUnknown):
