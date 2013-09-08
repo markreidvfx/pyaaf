@@ -217,7 +217,7 @@ std::map<std::string, std::pair< aafUID_t, std::string > > get_essenceformats_de
 {
     std::map<std::string, std::pair< aafUID_t, std::string > > def_map;
     #define MAP_ADD( NAME, TYPE) def_map[ #NAME ] =  std::pair<aafUID_t, std::string >(NAME, #TYPE) ;
-    MAP_ADD(kAAFCompression, operand.expPixelFormat)
+    MAP_ADD(kAAFCompression, operand.expAuid)
     MAP_ADD(kAAFPixelFormat, operand.expPixelFormat)
     MAP_ADD(kAAFFrameLayout, operand.expFrameLayout)
     MAP_ADD(kAAFFieldDominance, operand.expFieldDom)
@@ -251,7 +251,7 @@ std::map<std::string, std::pair< aafUID_t, std::string > > get_essenceformats_de
     MAP_ADD(kAAFFieldEndOffset, ?operand.expUInt32)
     //Legacy
     MAP_ADD(kAAFLegacyCDCI, ?operand.expUInt32)
-    MAP_ADD(kAAFResolutionID, ?operand.expUInt32)
+    MAP_ADD(kAAFResolutionID, operand.expUInt32)
     MAP_ADD(kAAFAudioSampleBits, operand.expInt32)
     MAP_ADD(kAAFMaxSampleBytes, ?operand.expUInt32)
     MAP_ADD(kAAFSampleRate, ?operand.expUInt32)

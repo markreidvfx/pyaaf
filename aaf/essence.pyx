@@ -31,7 +31,15 @@ FrameLayout['onefield'] = lib.kAAFOneField
 FrameLayout['mixedfields'] = lib.kAAFMixedFields
 FrameLayout['segmentedframe'] = lib.kAAFSegmentedFrame
 
+cpdef dict ColorSiting = {}
 
+
+ColorSiting['cositing'] = lib.kAAFCoSiting
+ColorSiting['averaging'] = lib.kAAFAveraging
+ColorSiting['threetap'] = lib.kAAFThreeTap
+ColorSiting['quincunx'] = lib.kAAFQuincunx
+ColorSiting['rec601'] = lib.kAAFRec601
+ColorSiting['unknownsiting'] = lib.kAAFUnknownSiting
 
 cdef register_formatdefs(map[string, pair[ lib.aafUID_t, string] ] def_map, dict d, replace=[]):
     cdef pair[string, pair[lib.aafUID_t, string] ] def_pair
@@ -55,6 +63,8 @@ cdef fused format_specifier:
     lib.aafColorSpace_t
     lib.aafRect_t 
     lib.aafFrameLayout_t
+    lib.aafColorSiting_t
+    lib.aafUID_t
     
 cdef class EssenceFormat(AAFBase):
     def __init__(self, AAFBase obj = None):
@@ -79,6 +89,7 @@ cdef class EssenceFormat(AAFBase):
 
         specifier = specifier.lower()
         cdef AUID auid_obj = EssenceFormatDefMap[specifier][0]
+        cdef AUID audi_operand_obj
         cdef lib.aafUID_t auid = auid_obj.get_auid()
         
         specifier_type = EssenceFormatDefMap[specifier][1]
@@ -99,7 +110,12 @@ cdef class EssenceFormat(AAFBase):
             rect.yOffset = value[3]
             set_format_specifier[lib.aafRect_t](self,auid, rect)
         elif specifier_type == 'operand.expFrameLayout':
-            set_format_specifier[lib.aafFrameLayout_t](self,auid, FrameLayout[value])
+            set_format_specifier[lib.aafFrameLayout_t](self,auid, FrameLayout[value.lower()])
+        elif specifier_type == 'operand.expColorSiting':
+            set_format_specifier[lib.aafColorSiting_t](self,auid, ColorSiting[value.lower()])
+        elif specifier_type == "operand.expAuid":
+            audi_operand_obj = CompressionDefMap[value.lower()]
+            set_format_specifier[lib.aafUID_t](self, auid, audi_operand_obj.get_auid())
         elif specifier_type == "operand.expLineMap":
             length = len(value)
             for i,value in enumerate(value):

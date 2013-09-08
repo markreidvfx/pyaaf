@@ -169,6 +169,16 @@ cdef extern from "AAFTypes.h":
         kAAFColorSpaceYDrDb
         kAAFColorSpaceCMYK
         
+    ctypedef aafInt32 aafColorSiting_t
+    
+    cdef enum aafColorSiting_e:
+        kAAFCoSiting
+        kAAFAveraging 
+        kAAFThreeTap
+        kAAFQuincunx 
+        kAAFRec601 
+        kAAFUnknownSiting
+
     ctypedef aafInt32 aafAppendOption_t
     
     cdef enum aafAppendOption_e:
