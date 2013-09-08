@@ -23,6 +23,11 @@
        :undoc-members:
        :show-inheritance:
 
+   .. autoclass:: NetworkLocator
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
    .. autoclass:: EssenceDescriptor
        :members:
        :undoc-members:
@@ -44,6 +49,51 @@
        :show-inheritance:
        
    .. autoclass:: CDCIDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: RGBADescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: SoundDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+
+   .. autoclass:: PCMDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+
+   .. autoclass:: TapeDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+    
+   .. autoclass:: FilmDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+    
+   .. autoclass:: PhysicalDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+    
+   .. autoclass:: ImportDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+    
+   .. autoclass:: RecordingDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+    
+   .. autoclass:: AuxiliaryDescriptor
        :members:
        :undoc-members:
        :show-inheritance:

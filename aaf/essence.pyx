@@ -218,6 +218,12 @@ cdef class Locator(AAFObject):
             self.loc_ptr.Release()
             
     property path:
+        """
+        Absolute Uniform Resource Locator (URL) complying with RFC 1738 or 
+        relative Uniform Resource Identifier (URI) complying with RFC 2396 
+        for file containing the essence. If it is a relative URI, 
+        the base URI is determined from the URI of the AAF file itself.
+        """
         def __get__(self):
             return self.get("URLString")
         def __set__(self, bytes value):
