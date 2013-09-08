@@ -136,7 +136,7 @@ class TestFile(unittest.TestCase):
         format['AudioSampleBits'] =  16
         sound_essence.set_fileformat(format)
         
-        numSamples = 2 * rateHz / 25 # 2 pal frames in duration.
+        numSamples = 20 * rateHz / 25 # 2 pal frames in duration.
         samplesToWrite = 10
         
         for c in chunks([1 for i in xrange(numSamples)], samplesToWrite):
@@ -148,6 +148,116 @@ class TestFile(unittest.TestCase):
         f.save()
         f.save(output_xml)
         f.close()
+        
+    def test_pulldown(self):
+        output_aaf = os.path.join(sandbox, 'pulldown_create.aaf')
+        output_xml = os.path.join(sandbox, 'pulldown_create.xml')
+        if os.path.exists(output_aaf):
+            os.remove(output_aaf)
+        f = aaf.open(output_aaf, 'rw')
+        
+        header = f.header()
+        d = header.dictionary()
+        
+
+        source_mob = d.create.SourceMob()
+        source_mob.name = "IMG"
+        
+        source_mob.add_nil_ref(1, 39, 'picture',"23976/1000" )
+        header.append(source_mob)
+        
+        desc = d.create.ImportDescriptor()
+        source_mob.essence_descriptor = desc
+        
+        timeline = d.create.TimelineMobSlot()
+        timeline.editrate = "23976/1000"
+        timeline.origin = 0
+        timeline.slotID = 2
+        timeline.physical_num = 1
+        
+        pulldown = d.create.Pulldown("Picture")
+        
+        timecode = d.create.Timecode(98, 216000, 60)
+        timecode.media_kind = "Timecode"
+        
+        pulldown.segment = timecode
+        pulldown.length = 39
+        
+        pulldown.kind = "TwentyFourToSixtyPD"
+        pulldown.direction = "TapeToFilmSpeed"
+        pulldown.phase = 0
+        
+        print pulldown.kind
+        print pulldown.direction
+        print pulldown.phase
+        
+        timeline.segment = pulldown
+
+        source_mob.insert_slot(1, timeline)
+        
+        f.save()
+        f.save(output_xml)
+        f.close()
+        
+    def test_external_mob(self):
+        output_aaf = os.path.join(sandbox, 'external_essence_create.aaf')
+        output_xml = os.path.join(sandbox, 'external_essence_create.xml')
+        if os.path.exists(output_aaf):
+            os.remove(output_aaf)
+        f = aaf.open(output_aaf, 'rw')
+        
+        header = f.header()
+        d = header.dictionary()
+        
+        master_mob = d.create.MasterMob("external_mob")
+        header.append(master_mob)
+        
+        media_kind = "picture"
+        
+        phys_source_mob = d.create.SourceMob()
+        phys_source_mob.name = "IMG.PHYS"
+        desc = d.create.CDCIDescriptor()
+        
+        for item in desc.classdef().propertydefs():
+            print '  ', item.name, item.optional
+        
+        loc = d.create.NetworkLocator()
+        loc.path = "file:///Giraffe/Avid%20MediaFiles/MXF/1/IMG_4943.JPG1378511522A699C.mxf"
+        
+        desc.append_locator(loc)
+        desc.sample_rate = "23976/1000"
+        desc.container_format = "AAFKLV"
+        print desc.container_format
+        desc.compression = "Avid_DNxHD_Legacy"
+        print desc.compression
+        width,height = 1280, 720
+        
+        desc.stored_view = (width, height)
+        desc.sampled_view = (width, height, 0, 0)
+        desc.display_view = (width, height, 0, 0)
+        desc.aspect_ratio = "16/9"
+        
+        desc.line_map = (26,0)
+        desc.color_range = 255
+        desc.horizontal_subsampling = 2
+        desc.vertical_subsampling = 1
+        desc.component_width = 8
+        
+        desc.image_alignment = 8192
+        
+        
+        phys_source_mob.essence_descriptor = desc
+        header.append(phys_source_mob)
+        
+        phys_source_mob.add_nil_ref(1, 39, 'picture',"23976/1000" )
+        
+        master_mob.add_master_slot(media_kind, 1, phys_source_mob, 1)
+
+        
+        f.save()
+        f.save(output_xml)
+        f.close()
+        
         
     def test_tape(self):
         output_aaf = os.path.join(sandbox, 'tape_essence_create.aaf')
