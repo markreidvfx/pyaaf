@@ -364,7 +364,7 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFCodecDef
     cdef GUID IID_IAAFCodecDef
     cdef cppclass IAAFCodecDef(IUnknown):
-        pass
+        HRESULT EnumCodecFlavours(IEnumAAFCodecFlavours ** ppEnum)
     
     cdef aafUID_t AUID_AAFContainerDef
     cdef GUID IID_IAAFContainerDef
@@ -904,6 +904,10 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFCodecDefs
     cdef cppclass IEnumAAFCodecDefs(IUnknown):
         HRESULT NextOne(IAAFCodecDef ** ppCodecDefs)
+        
+    cdef GUID IID_IEnumAAFCodecFlavours
+    cdef cppclass IEnumAAFCodecFlavours(IUnknown):
+        HRESULT NextOne(aafUID_t *  pAAFCodecFlavour)
     
     cdef GUID IID_IEnumAAFTypeDefs
     cdef cppclass IEnumAAFTypeDefs(IUnknown):

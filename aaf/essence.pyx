@@ -187,12 +187,41 @@ cdef class EssenceAccess(EssenceMultiAccess):
         """
         data_type = data_type.lower()
         cdef lib.aafUInt32 samples2
+        
+        if isinstance(data, bytes):
+            return essence_write_bytes(self, data, samples)
+        
+        
         if data_type == 'uint16':
             return essence_write_samples[lib.aafUInt16](self, data, samples, 0)
         elif data_type == 'uint8':
             return essence_write_samples[lib.aafUInt8](self, data, samples, 0)
         else:
             raise ValueError("data_type: %s not supported" % str(data_type))
+        
+cdef object essence_write_bytes(EssenceAccess essence, bytes data, lib.aafUInt32 samples):
+    cdef lib.aafUInt32 size = len(data)
+    cdef lib.aafUInt32 byte_size = sizeof(lib.UChar) * size
+    cdef lib.aafUInt32 samples_written =0
+    cdef lib.aafUInt32 bytes_written =0
+    
+    cdef vector[lib.aafUInt8] buf = vector[lib.aafUInt8](size)
+    
+    cdef char *c
+    for i,v in enumerate(data):
+        c = v
+        buf[i] = <lib.aafUInt8> c[0]
+        
+    print len(buf), byte_size, buf.size(),samples
+
+    error_check(essence.ptr.WriteSamples(samples,
+                                         byte_size,
+                                         <lib.aafUInt8 *> &buf[0],
+                                         &samples_written,
+                                         &bytes_written
+                                         ))
+    print 'wrote', samples_written,bytes_written
+    return samples_written,bytes_written
 
 cdef object essence_write_samples(EssenceAccess essence, data, lib.aafUInt32 samples, aaf_integral data_type):
     
