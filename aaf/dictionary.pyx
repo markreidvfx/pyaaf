@@ -2,7 +2,7 @@
 cimport lib
 
 from .base cimport AAFBase, AAFObject, AUID
-from .define cimport DataDef, ContainerDef, ContainerDefMap, DataDefMap
+from .define cimport DataDef, ContainerDef, ContainerDefMap, DataDefMap, ExtEnumDefMap
 from .util cimport error_check, query_interface, register_object, lookup_object
 from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter, LoadedPluginIter
 from wstring cimport wstring,toWideString
@@ -92,8 +92,15 @@ cdef class PluginManager(object):
             self.ptr.Release()
             
     def loaded_plugins(self, bytes category):
+        """
+        categories are:
+            -codec
+            -effect
+            -interpolation
+        """
+
         cdef LoadedPluginIter plugin_iter = LoadedPluginIter()
-        cdef AUID cat = DataDefMap[category.lower()]
+        cdef AUID cat = ExtEnumDefMap["plugincategory_%s" % category.lower()]
         error_check(self.ptr.EnumLoadedPlugins(cat.get_auid(), &plugin_iter.ptr))
         
         return plugin_iter

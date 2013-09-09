@@ -2,6 +2,7 @@
 #include <AAFCodecDefs.h>
 #include <AAFContainerDefs.h>
 #include <AAFCompressionDefs.h>
+#include <AAFExtEnum.h>
 #include <AAFTypes.h>
 #include <AAFEssenceFormats.h>
 #include <map>
@@ -212,6 +213,36 @@ std::map<std::string, aafUID_t> get_compressiondef_map()
     #undef MAP_ADD
     return def_map;
 }
+
+std::map<std::string, aafUID_t> get_extenumdef_map()
+{
+    std::map<std::string, aafUID_t> def_map;
+    #define MAP_ADD( NAME ) def_map[ #NAME ] = NAME;
+    MAP_ADD(kAAFOperationCategory_Effect)
+    MAP_ADD(kAAFTransferCharacteristic_ITU470_PAL)
+    MAP_ADD(kAAFTransferCharacteristic_ITU709)
+    MAP_ADD(kAAFTransferCharacteristic_SMPTE240M)
+    MAP_ADD(kAAFTransferCharacteristic_274M_296M)
+    MAP_ADD(kAAFTransferCharacteristic_ITU1361)
+    MAP_ADD(kAAFTransferCharacteristic_linear)
+    MAP_ADD(kAAFPluginCategory_Effect)
+    MAP_ADD(kAAFPluginCategory_Codec)
+    MAP_ADD(kAAFPluginCategory_Interpolation)
+    MAP_ADD(kAAFUsage_SubClip)
+    MAP_ADD(kAAFUsage_AdjustedClip)
+    MAP_ADD(kAAFUsage_TopLevel)
+    MAP_ADD(kAAFUsage_LowerLevel)
+    MAP_ADD(kAAFUsage_Template)
+    MAP_ADD(kAAFColorPrimaries_SMPTE170M)
+    MAP_ADD(kAAFColorPrimaries_ITU470_PAL)
+    MAP_ADD(kAAFColorPrimaries_ITU709)
+    MAP_ADD(kAAFCodingEquations_ITU601)
+    MAP_ADD(kAAFCodingEquations_ITU709)
+    MAP_ADD(kAAFCodingEquations_SMPTE240M)
+    #undef MAP_ADD
+    return def_map;
+}
+
 
 std::map<std::string, std::pair< aafUID_t, std::string > > get_essenceformats_def_map()
 {

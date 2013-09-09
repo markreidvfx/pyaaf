@@ -387,7 +387,7 @@ class TestFile(unittest.TestCase):
     def test_plugin_manager(self):
         manager = aaf.dictionary.PluginManager()
         
-        print list(manager.loaded_plugins('picture'))
+        print list(manager.loaded_plugins('codec'))
 
 if __name__ == '__main__':
     unittest.main()

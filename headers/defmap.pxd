@@ -23,4 +23,5 @@ cdef extern from "defmap.h":
     cdef map[string, aafUID_t] get_codecdef_map()
     cdef map[string, aafUID_t] get_container_def_map()
     cdef map[string, aafUID_t] get_compressiondef_map()
+    cdef map[string, aafUID_t] get_extenumdef_map()
     cdef map[string, pair[aafUID_t, string] ] get_essenceformats_def_map()

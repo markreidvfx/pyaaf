@@ -939,6 +939,7 @@ cpdef dict DataDefMap = {}
 cpdef dict CodecDefMap = {}
 cpdef dict ContainerDefMap = {}
 cpdef dict CompressionDefMap = {}
+cpdef dict ExtEnumDefMap = {}
 
 
 cdef register_defs(map[string, lib.aafUID_t] def_map, dict d, replace=[]):
@@ -956,6 +957,8 @@ register_defs(lib.get_datadef_map(), DataDefMap, ["kAAFDataDef_"])
 register_defs(lib.get_codecdef_map(), CodecDefMap, ["kAAFCodecDef_",'kAAFCodec'])
 register_defs(lib.get_container_def_map(), ContainerDefMap, ["kAAFContainerDef_"])
 register_defs(lib.get_compressiondef_map(), CompressionDefMap, ["kAAFCompressionDef_"])
+register_defs(lib.get_extenumdef_map(), ExtEnumDefMap, ["kAAF"])
+
 
 cdef class DefObject(AAFObject):
     def __init__(self, AAFBase obj = None):
