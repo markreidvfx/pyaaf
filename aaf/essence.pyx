@@ -65,6 +65,7 @@ cdef fused format_specifier:
     lib.aafFrameLayout_t
     lib.aafColorSiting_t
     lib.aafUID_t
+    lib.aafBoolean_t
     
 cdef class EssenceFormat(AAFBase):
     def __init__(self, AAFBase obj = None):
@@ -97,10 +98,14 @@ cdef class EssenceFormat(AAFBase):
         cdef lib.aafRect_t rect
         cdef lib.aafInt32 line_map[5]
         
+        print auid_obj.auid,specifier_type
+        
         if specifier_type == 'operand.expInt32':
             set_format_specifier[lib.aafInt32](self,auid, value)
-        elif specifier_type == 'operand.expUInt32':
+        elif specifier_type in ('operand.expUInt32', '?operand.expUInt32'):
             set_format_specifier[lib.aafUInt32](self,auid, value)
+        elif specifier_type == 'operand.expBoolean':
+            set_format_specifier[lib.aafBoolean_t](self,auid, value)
         elif specifier_type == 'operand.expPixelFormat':
             set_format_specifier[lib.aafColorSpace_t](self, auid, ColorSpace[value.lower()])
         elif specifier_type == 'operand.expRect':

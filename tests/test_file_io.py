@@ -384,7 +384,10 @@ class TestFile(unittest.TestCase):
         for item in d.taggedvalue_defs():
             c,name =  item.class_name, item.name
             #print c,name
+    def test_plugin_manager(self):
+        manager = aaf.dictionary.PluginManager()
         
+        print list(manager.loaded_plugins('picture'))
 
 if __name__ == '__main__':
     unittest.main()

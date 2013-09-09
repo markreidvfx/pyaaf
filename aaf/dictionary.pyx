@@ -4,7 +4,7 @@ cimport lib
 from .base cimport AAFBase, AAFObject, AUID
 from .define cimport DataDef, ContainerDef, ContainerDefMap, DataDefMap
 from .util cimport error_check, query_interface, register_object, lookup_object
-from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter 
+from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter, LoadedPluginIter
 from wstring cimport wstring,toWideString
 
 cdef class Dictionary(AAFObject):
@@ -82,6 +82,21 @@ cdef class Dictionary(AAFObject):
             
     def taggedvalue_defs(self):
         return self.get('TaggedValueDefinitions', [])
+    
+cdef class PluginManager(object):
+    def __init__(self):
+        error_check(lib.AAFGetPluginManager(&self.ptr))
+
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+    def loaded_plugins(self, bytes category):
+        cdef LoadedPluginIter plugin_iter = LoadedPluginIter()
+        cdef AUID cat = DataDefMap[category.lower()]
+        error_check(self.ptr.EnumLoadedPlugins(cat.get_auid(), &plugin_iter.ptr))
+        
+        return plugin_iter
             
 cdef class CreateInstance(object):
 

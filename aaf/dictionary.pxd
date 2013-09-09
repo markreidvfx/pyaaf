@@ -7,6 +7,9 @@ cdef class Dictionary(AAFObject):
     cdef lib.IAAFDictionary2 *ptr2
     cdef readonly CreateInstance create
     
+cdef class PluginManager(object):
+    cdef lib.IAAFPluginManager *ptr
+    
 cdef class CreateInstance(object):
    cdef bytes class_name
    cdef Dictionary dictionary

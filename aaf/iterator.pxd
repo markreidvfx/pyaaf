@@ -47,7 +47,7 @@ cdef class KLVDataDefIter(BaseIterator):
     cdef lib.IEnumAAFKLVDataDefs *ptr
     
 cdef class LoadedPluginIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFLoadedPlugins *ptr
     
 cdef class LocatorIter(BaseIterator):
     pass
