@@ -2,7 +2,7 @@ cimport lib
 
 from .util cimport error_check, query_interface, register_object, aaf_integral, fraction_to_aafRational
 from .base cimport AAFObject, AAFBase, AUID
-from .define cimport ContainerDef, CompressionDefMap, ContainerDefMap
+from .define cimport DataDef, DataDefMap, ContainerDef, CompressionDefMap, ContainerDefMap, CodecDefMap
 
 from libcpp.map cimport map
 from libcpp.string cimport string
@@ -184,7 +184,7 @@ cdef class EssenceAccess(EssenceMultiAccess):
         """
         error_check(self.ptr.CompleteWrite())
         
-    def write(self, data, lib.aafUInt32 samples, bytes data_type = b'uint8'):
+    def write(self, data, lib.aafUInt32 samples=1, bytes data_type = b'uint8'):
         """
         Writes data to the given essence stream.
         A single video frame is ONE sample.
@@ -203,6 +203,22 @@ cdef class EssenceAccess(EssenceMultiAccess):
             return essence_write_samples[lib.aafUInt8](self, data, samples, 0)
         else:
             raise ValueError("data_type: %s not supported" % str(data_type))
+    
+    def max_sample_size(self, DataDef media_def):
+        """
+        Returns the size in bytes of the largest sample for a given essence type.
+        """
+        cdef lib.aafLength_t max_size
+        error_check(self.ptr.GetLargestSampleSize(media_def.ptr, &max_size))
+        return max_size
+    
+    property codec_flavour:
+        def __set__(self, bytes value):
+            cdef AUID auid = CodecDefMap[value.lower()]
+            error_check(self.ptr.SetEssenceCodecFlavour(auid.get_auid()))
+    
+
+        
         
 cdef object essence_write_bytes(EssenceAccess essence, bytes data, lib.aafUInt32 samples):
     cdef lib.aafUInt32 size = len(data)
@@ -225,7 +241,7 @@ cdef object essence_write_bytes(EssenceAccess essence, bytes data, lib.aafUInt32
                                          &samples_written,
                                          &bytes_written
                                          ))
-    print 'wrote', samples_written,bytes_written
+    print 'wrote', samples_written,bytes_written,samples
     return samples_written,bytes_written
 
 cdef object essence_write_samples(EssenceAccess essence, data, lib.aafUInt32 samples, aaf_integral data_type):

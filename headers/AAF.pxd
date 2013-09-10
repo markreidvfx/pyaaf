@@ -459,7 +459,11 @@ cdef extern from "AAF.h":
         )
         
         HRESULT CompleteWrite()
-        
+        HRESULT SetEssenceCodecFlavour(aafUID_t& flavour)
+        HRESULT GetLargestSampleSize(
+            IAAFDataDef * pDataDef,
+            aafLength_t*  maxSize
+        )
     cdef aafUID_t AUID_AAFEssenceDescriptor 
     cdef GUID IID_IAAFEssenceDescriptor
     cdef cppclass IAAFEssenceDescriptor(IUnknown):
