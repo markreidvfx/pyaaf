@@ -233,7 +233,7 @@ cdef object essence_write_bytes(EssenceAccess essence, bytes data, lib.aafUInt32
         c = v
         buf[i] = <lib.aafUInt8> c[0]
         
-    print len(buf), byte_size, buf.size(),samples
+    #print len(buf), byte_size, buf.size(),samples
 
     error_check(essence.ptr.WriteSamples(samples,
                                          byte_size,
@@ -241,7 +241,7 @@ cdef object essence_write_bytes(EssenceAccess essence, bytes data, lib.aafUInt32
                                          &samples_written,
                                          &bytes_written
                                          ))
-    print 'wrote', samples_written,bytes_written,samples
+    #print 'wrote', samples_written,bytes_written,samples
     return samples_written,bytes_written
 
 cdef object essence_write_samples(EssenceAccess essence, data, lib.aafUInt32 samples, aaf_integral data_type):

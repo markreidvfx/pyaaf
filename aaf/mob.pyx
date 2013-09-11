@@ -166,8 +166,6 @@ cdef class MasterMob(Mob):
         cdef AUID codec = CodecDefMap[codec_name.lower()]
         cdef AUID container = ContainerDefMap[fileformat.lower()]
         
-        print edit_rate_t,sample_rate_t,codec,container
-
         cdef Locator loc
         if locator:
             loc = locator

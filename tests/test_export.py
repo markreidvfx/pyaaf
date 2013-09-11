@@ -56,16 +56,16 @@ DNxHD_Formats =[
 { "size":"1920x1080p", "bitrate":75,  "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
 { "size":"1920x1080p", "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"}]
 
-def encode_dnxhd(size, bit_rate, pix_fmt, frame_rate, seconds, name, iterlaced=False):
+
+#generate auid
+#ffmpeg -f lavfi -i aevalsrc="sin(440*2*PI*t)::s=4800:d=5,aconvert=s16:stereo:packed" out.wav
+#stero
+#ffplay -f lavfi -i "aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=4800"
+
+def encode_dnxhd(size, bit_rate, pix_fmt, frame_rate, frames, name, iterlaced=False):
     
     outfile = os.path.join(sandbox, "%s.dnxhd" % name )
-    x =0 
-    #magick_cmd = ['convert',  'logo:','-rotate', str(x*10), '-resize', '%dx%d!' % ( size[0], size[1]), 'ppm:-']
-    #magick_p = subprocess.Popen(magick_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    #frame,stderr = magick_p.communicate()
-    
-    #cmd = ['ffmpeg', '-y', '-vcodec', 'ppm','-r', frame_rate , '-f', 'image2pipe','-i', '-']
-    cmd = ['ffmpeg', '-y', '-f', 'lavfi', '-i', 'testsrc=size=%dx%d:duration=%d:rate=%s' % (size[0],size[1], seconds, frame_rate)]
+    cmd = ['ffmpeg', '-y', '-f', 'lavfi', '-i', 'testsrc=size=%dx%d:rate=%s' % (size[0],size[1], frame_rate), '-frames:v', str(frames)]
     cmd.extend(['-vcodec', 'dnxhd','-pix_fmt', pix_fmt, '-vb', '%dM' % bit_rate ])
     
     if iterlaced:
@@ -80,26 +80,7 @@ def encode_dnxhd(size, bit_rate, pix_fmt, frame_rate, seconds, name, iterlaced=F
     
     if p.returncode < 0:
         print stderr
-        return Exception("error making footage")
-    
-#     print subprocess.list2cmdline(cmd)
-#     p = None
-#     for x in xrange(frames):
-# 
-#         
-#         if p is None:
-#             p = subprocess.Popen(cmd,stdin=subprocess.PIPE)
-# 
-#         p.stdin.write(frame)
-#         p.stdin.flush()
-#             
-#     p.stdin.close()
-#     
-#     p.wait()
-    
-    #if p.returncode < 0:
-        #raise Exception("error making footage")
-    
+        return Exception("error encoding footage")
     return outfile
 
 class TestFile(unittest.TestCase):
@@ -215,7 +196,7 @@ class TestFile(unittest.TestCase):
                 essence.codec_flavour = "Flavour_VC3_1253"
 
             
-            dnx_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, 2, name, interlaced)
+            dnx_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, 10, name, interlaced)
     
             dnx = open(dnx_path)
             
