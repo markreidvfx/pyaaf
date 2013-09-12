@@ -88,14 +88,14 @@ def encode_dnxhd(size, bit_rate, pix_fmt, frame_rate, frames, name, iterlaced=Fa
     return outfile
 
 
-def generate_pcm_audio(name):
+def generate_pcm_audio_mono(name, sample_rate = 48000, duration = 2):
     
     outfile = os.path.join(sandbox, '%s.pcm' % name)
     
     #cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=48000:d=10']
     
     #mono
-    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=48000:d=2']
+    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=%d:d=%d' % (sample_rate, duration)]
     
     cmd.extend([ '-f','s16le', '-acodec', 'pcm_s16le'])
     
@@ -109,11 +109,11 @@ def generate_pcm_audio(name):
         return Exception("error encoding footage")
     return outfile
 
-def generate_pcm_audio_stereo(name):
+def generate_pcm_audio_stereo(name, sample_rate = 48000, duration = 2):
     
     outfile = os.path.join(sandbox, '%s.pcm' % name)
     
-    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=48000:d=2']
+    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=%d:d=%d'% ( sample_rate, duration)]
     
     #mono
     #cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=48000:d=10']
@@ -273,8 +273,10 @@ class TestFile(unittest.TestCase):
         
         mastermob = d.create.MasterMob(name)
         header.append(mastermob)
-
-        sampe_rate = "%d/1" % 48000
+        
+        rate = 48000
+        
+        sampe_rate = "%d/1" % rate
         
         essence = mastermob.create_essence(1,
                                            "sound",
@@ -295,7 +297,7 @@ class TestFile(unittest.TestCase):
         
         del format
         
-        pcm_file = generate_pcm_audio(name)
+        pcm_file = generate_pcm_audio_mono(name, rate, 2)
         pcm = open(pcm_file)
         
         readsize= essence.max_sample_size(d.lookup_datadef('sound'))
@@ -327,8 +329,10 @@ class TestFile(unittest.TestCase):
         
         mastermob = d.create.MasterMob(name)
         header.append(mastermob)
-
-        sampe_rate = "%d/1" % 48000
+        
+        rate = 48000
+        
+        sampe_rate = "%d/1" % rate
         
         essence_left = mastermob.create_essence(1,
                                            "sound",
@@ -359,7 +363,7 @@ class TestFile(unittest.TestCase):
         format['NumChannels'] = 1
         essence_right.set_fileformat(format)
         
-        pcm_file = generate_pcm_audio_stereo(name)
+        pcm_file = generate_pcm_audio_stereo(name, rate, 2)
         
         # readsize should be 2 UInt16_t or unsigned short is 2 bytes
         readsize= essence_left.max_sample_size(d.lookup_datadef('sound'))
