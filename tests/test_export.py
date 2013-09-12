@@ -14,6 +14,7 @@ if not os.path.exists(sandbox):
 UNC_PAL_FRAME_SIZE = 720*576*2
 UNC_NTSC_FRAME_SIZE = 720*480*2 
 
+import array
 
 DNxHD_Formats =[
 { "size":"1920x1080p", "bitrate":175, "pix_fmt":"yuv422p10", "frame_rate":"24000/1001"},
@@ -62,6 +63,9 @@ DNxHD_Formats =[
 #stero
 #ffplay -f lavfi -i "aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=4800"
 
+#raw output
+#ffmpeg -i <input> -f s16le -acodec pcm_s16le output.raw
+
 def encode_dnxhd(size, bit_rate, pix_fmt, frame_rate, frames, name, iterlaced=False):
     
     outfile = os.path.join(sandbox, "%s.dnxhd" % name )
@@ -77,16 +81,59 @@ def encode_dnxhd(size, bit_rate, pix_fmt, frame_rate, frames, name, iterlaced=Fa
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,stderr = subprocess.PIPE)
     
     stdout,stderr = p.communicate()
-    
+    print stderr
     if p.returncode < 0:
-        print stderr
+        
+        return Exception("error encoding footage")
+    return outfile
+
+
+def generate_pcm_audio(name):
+    
+    outfile = os.path.join(sandbox, '%s.pcm' % name)
+    
+    #cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=48000:d=10']
+    
+    #mono
+    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=48000:d=2']
+    
+    cmd.extend([ '-f','s16le', '-acodec', 'pcm_s16le'])
+    
+    cmd.extend([outfile])
+    
+    print subprocess.list2cmdline(cmd)
+    p = subprocess.Popen(cmd, stdout = subprocess.PIPE,stderr = subprocess.PIPE)
+    stdout,stderr = p.communicate()
+    print stderr
+    if p.returncode < 0:
+        return Exception("error encoding footage")
+    return outfile
+
+def generate_pcm_audio_stereo(name):
+    
+    outfile = os.path.join(sandbox, '%s.pcm' % name)
+    
+    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=48000:d=2']
+    
+    #mono
+    #cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=48000:d=10']
+    
+    cmd.extend([ '-f','s16le', '-acodec', 'pcm_s16le'])
+    
+    cmd.extend([outfile])
+    
+    print subprocess.list2cmdline(cmd)
+    p = subprocess.Popen(cmd, stdout = subprocess.PIPE,stderr = subprocess.PIPE)
+    stdout,stderr = p.communicate()
+    print stderr
+    if p.returncode < 0:
         return Exception("error encoding footage")
     return outfile
 
 class TestFile(unittest.TestCase):
     
 
-    def test_export_ffmpeg(self):
+    def test_dnxhd_export(self):
         """
         ffmpeg -i <input_file> -vcodec dnxhd -b <bitrate> -an output.dnxhd
         
@@ -132,8 +179,8 @@ class TestFile(unittest.TestCase):
         Flavour_VC3_1254 = DNX_50_1080i 50M 8bit
 
         """
-        output_aaf = os.path.join(sandbox, 'ffmpeg_export.aaf')
-        output_xml = os.path.join(sandbox, 'ffmpeg_export.xml')
+        output_aaf = os.path.join(sandbox, 'dnxhd_export.aaf')
+        output_xml = os.path.join(sandbox, 'dnxhd_export.xml')
                 
         f= aaf.open(output_aaf, 'rw')
         
@@ -141,9 +188,14 @@ class TestFile(unittest.TestCase):
         header = f.header()
         d = header.dictionary()
         
-        
+        count = 0
         
         for item in DNxHD_Formats:
+            
+            if count > 1:
+                pass
+                #break
+            
             frame_rate = item['frame_rate']
             pix_fmt = item['pix_fmt']
             bitrate = item['bitrate']
@@ -168,18 +220,10 @@ class TestFile(unittest.TestCase):
             name = "%s_%dM_%s_%0.3ffps" % (item['size'], bitrate, pix_fmt, float(Fraction(frame_rate)))
             
             print name
-            
-        
-        #raise Exception()
-        
-        
-        #for name, size, frame_rate,bit_rate in [["720p90", (1280,720), "23976/1000", 90],
-        #                                        ["720p175M50", (1280,720), "50/1", 120],
-        #                                        ["1080p115", (1920,1080), "23976/1000", 115],]:
-        
+
             mastermob = d.create.MasterMob(name)
             header.append(mastermob)
-            
+
             essence = mastermob.create_essence(1,
                                                "picture",
                                                "DNxHD",
@@ -196,8 +240,7 @@ class TestFile(unittest.TestCase):
                 essence.codec_flavour = "Flavour_VC3_1253"
 
             
-            dnx_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, 10, name, interlaced)
-    
+            dnx_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, 20, name, interlaced)
             dnx = open(dnx_path)
             
             readsize = essence.max_sample_size(d.lookup_datadef('picture'))
@@ -209,10 +252,137 @@ class TestFile(unittest.TestCase):
                     break
                 essence.write(data, 1)
             essence.complete_write()
-        
+            
+            count += 1
         f.save()
         f.save(output_xml)
+    
+    def test_audio_mono(self):
+        output_aaf = os.path.join(sandbox, 'mono_audio_export.aaf')
+        output_xml = os.path.join(sandbox, 'mono_audio_export.xml')
+                
+        f= aaf.open(output_aaf, 'rw')
+        
+        
+        header = f.header()
+        d = header.dictionary()
+        
+        count = 0
+        
+        name = "mono_audio_export"
+        
+        mastermob = d.create.MasterMob(name)
+        header.append(mastermob)
 
+        sampe_rate = "%d/1" % 48000
+        
+        essence = mastermob.create_essence(1,
+                                           "sound",
+                                           "PCM",
+                                           sampe_rate,
+                                           sampe_rate,
+                                           compress = False,
+                                           #fileformat = 'RIFFWAVE'
+                                           )
+        essence.codec_flavour = "Flavour_None"
+        format = essence.get_emptyfileformat()
+        
+        format['AudioSampleBits'] = 16
+        format['NumChannels'] = 1
+        
+        
+        essence.set_fileformat(format)
+        
+        del format
+        
+        pcm_file = generate_pcm_audio(name)
+        pcm = open(pcm_file)
+        
+        readsize= essence.max_sample_size(d.lookup_datadef('sound'))
+
+        while True:
+            chunk = pcm.read(readsize)
+            if not chunk:
+                break
+            essence.write(chunk)
+            
+        
+        essence.complete_write()
+        f.save()
+        f.save(output_xml)
+        
+    def test_audio_stereo(self):
+        output_aaf = os.path.join(sandbox, 'stereo_audio_export.aaf')
+        output_xml = os.path.join(sandbox, 'stereo_audio_export.xml')
+                
+        f= aaf.open(output_aaf, 'rw')
+        
+        
+        header = f.header()
+        d = header.dictionary()
+        
+        count = 0
+        
+        name = "stereo_audio_export"
+        
+        mastermob = d.create.MasterMob(name)
+        header.append(mastermob)
+
+        sampe_rate = "%d/1" % 48000
+        
+        essence_left = mastermob.create_essence(1,
+                                           "sound",
+                                           "PCM",
+                                           sampe_rate,
+                                           sampe_rate,
+                                           compress = False,
+                                           #fileformat = 'RIFFWAVE'
+                                           )
+        essence_right = mastermob.create_essence(2,
+                                           "sound",
+                                           "PCM",
+                                           sampe_rate,
+                                           sampe_rate,
+                                           compress = False,
+                                           )
+        essence_left.codec_flavour = "Flavour_None"
+        essence_right.codec_flavour = "Flavour_None"
+        format = essence_left.get_emptyfileformat()
+        
+        format['AudioSampleBits'] = 16
+        format['NumChannels'] = 1
+        essence_left.set_fileformat(format)
+        
+        format = essence_right.get_emptyfileformat()
+        
+        format['AudioSampleBits'] = 16
+        format['NumChannels'] = 1
+        essence_right.set_fileformat(format)
+        
+        pcm_file = generate_pcm_audio_stereo(name)
+        
+        # readsize should be 2 UInt16_t or unsigned short is 2 bytes
+        readsize= essence_left.max_sample_size(d.lookup_datadef('sound'))
+        #readsize = 1000
+        print "max",readsize
+
+        pcm = open(pcm_file)
+        
+
+        while True:
+            chunk = pcm.read(readsize)
+            chunk2 = pcm.read(readsize)
+            
+            if not chunk:
+                break
+            
+            essence_left.write(chunk)
+            essence_right.write(chunk2)
+
+        essence_left.complete_write()
+        essence_right.complete_write()
+        f.save()
+        f.save(output_xml)
     
 if __name__ == '__main__':
     unittest.main()
