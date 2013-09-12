@@ -135,6 +135,7 @@ class TestFile(unittest.TestCase):
 
     def test_dnxhd_export(self):
         """
+        
         ffmpeg -i <input_file> -vcodec dnxhd -b <bitrate> -an output.dnxhd
         
         # haven't tried this
@@ -155,28 +156,28 @@ class TestFile(unittest.TestCase):
             23976/1000
         
         # 1920x1080p 
-        Flavour_VC3_1235 = DNX_220X_1080p 220M 10bit
-        Flavour_VC3_1237 = DNX_145_1080p  145M 8bit 
-        Flavour_VC3_1238 = DNX_220_1080p  220M 8bit 
+        Flavour_VC3_1235 = DNX_220X_1080p 220M 10bit 917504 bytes per sample
+        Flavour_VC3_1237 = DNX_145_1080p  145M 8bit  606208 bytes per sample
+        Flavour_VC3_1238 = DNX_220_1080p  220M 8bit  917504 bytes per sample
         
         # 1920x1080i
-        Flavour_VC3_1241 = DNX_220X_1080i 220M 10bit
-        Flavour_VC3_1242 = DNX_145_1080i 145M 8bit 
-        Flavour_VC3_1243 = DNX_220_1080i 220M 8bit 
+        Flavour_VC3_1241 = DNX_220X_1080i 220M 10bit 917504 bytes per sample
+        Flavour_VC3_1242 = DNX_145_1080i 145M 8bit 606208 bytes per sample
+        Flavour_VC3_1243 = DNX_220_1080i 220M 8bit  917504 bytes per sample
         
         # 1440x1080i
-        Flavour_VC3_1244 = DNX_145_1440_1080i 145M 8bit 
+        Flavour_VC3_1244 = DNX_145_1440_1080i 145M 8bit 606208 bytes per sample
         
         # 1280x720p
-        Flavour_VC3_1250 = DNX_220X_720p  220M 10bit
-        Flavour_VC3_1251 = DNX_220_720p  220M 8bit
-        Flavour_VC3_1252 = DNX_145_720p  145M 8bit
+        Flavour_VC3_1250 = DNX_220X_720p  220M 10bit 458752 bytes per sample
+        Flavour_VC3_1251 = DNX_220_720p  220M 8bit 458752 bytes per sample
+        Flavour_VC3_1252 = DNX_145_720p  145M 8bit 303104 bytes per sample
         
         # 1920x1080p
-        Flavour_VC3_1253 = DNX_36_1080p 36M 8bit 
+        Flavour_VC3_1253 = DNX_36_1080p 36M 8bit 188416 bytes per sample
         
         # 1920x1080i
-        Flavour_VC3_1254 = DNX_50_1080i 50M 8bit
+        Flavour_VC3_1254 = DNX_50_1080i 50M 8bit 131072 bytes per sample note: might be wrong
 
         """
         output_aaf = os.path.join(sandbox, 'dnxhd_export.aaf')
