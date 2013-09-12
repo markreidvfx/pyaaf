@@ -204,13 +204,14 @@ cdef class EssenceAccess(EssenceMultiAccess):
         else:
             raise ValueError("data_type: %s not supported" % str(data_type))
     
-    def max_sample_size(self, DataDef media_def):
+    property max_sample_size:
         """
         Returns the size in bytes of the largest sample for a given essence type.
         """
-        cdef lib.aafLength_t max_size
-        error_check(self.ptr.GetLargestSampleSize(media_def.ptr, &max_size))
-        return max_size
+        def __get__(self):
+            cdef lib.aafLength_t max_size
+            error_check(self.ptr.GetLargestSampleSize(self.datadef.ptr, &max_size))
+            return max_size
     
     property codec_flavour:
         def __set__(self, bytes value):

@@ -188,6 +188,8 @@ cdef class MasterMob(Mob):
                                                       container.get_auid(),
                                                       &access.ptr
                                                       ))
+        
+        access.datadef = media_datadef
         return access
     
     def add_master_slot(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 

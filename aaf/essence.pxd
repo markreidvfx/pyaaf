@@ -1,6 +1,7 @@
 cimport lib
 
 from .base cimport AAFObject,AAFBase
+from .define cimport DataDef
 
 
 cdef class EssenceFormat(AAFBase):
@@ -11,6 +12,7 @@ cdef class EssenceMultiAccess(AAFBase):
 
 cdef class EssenceAccess(EssenceMultiAccess):
     cdef lib.IAAFEssenceAccess *ptr
+    cdef DataDef datadef
 
 cdef class Locator(AAFObject):
     cdef lib.IAAFLocator *loc_ptr

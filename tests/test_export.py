@@ -95,7 +95,7 @@ def generate_pcm_audio_mono(name, sample_rate = 48000, duration = 2):
     #cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=48000:d=10']
     
     #mono
-    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=%d:d=%d' % (sample_rate, duration)]
+    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=%d:d=%f' % (sample_rate, duration)]
     
     cmd.extend([ '-f','s16le', '-acodec', 'pcm_s16le'])
     
@@ -113,7 +113,7 @@ def generate_pcm_audio_stereo(name, sample_rate = 48000, duration = 2):
     
     outfile = os.path.join(sandbox, '%s.pcm' % name)
     
-    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=%d:d=%d'% ( sample_rate, duration)]
+    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=%d:d=%f'% ( sample_rate, duration)]
     
     #mono
     #cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=48000:d=10']
@@ -200,6 +200,7 @@ class TestFile(unittest.TestCase):
             pix_fmt = item['pix_fmt']
             bitrate = item['bitrate']
             
+            nb_frames = 10
             
             width, height_inter = item['size'].split('x')
             interlaced = False
@@ -238,12 +239,13 @@ class TestFile(unittest.TestCase):
                 essence.codec_flavour = "Flavour_VC3_1242"
             else:
                 essence.codec_flavour = "Flavour_VC3_1253"
-
+                
             
-            dnx_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, 20, name, interlaced)
+            
+            dnx_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, nb_frames, name, interlaced)
             dnx = open(dnx_path)
             
-            readsize = essence.max_sample_size(d.lookup_datadef('picture'))
+            readsize = essence.max_sample_size
             
             print "readsize =",readsize
             while True:
@@ -253,7 +255,70 @@ class TestFile(unittest.TestCase):
                 essence.write(data, 1)
             essence.complete_write()
             
+            
+            #add audio tracks
+            
+            rate = 48000
+            sampe_rate = "%d/1" % rate
+                
+            duration = nb_frames / float(Fraction(frame_rate))
+            audio_essences = []
+            
+            for i in xrange(2):
+
+                essence = mastermob.create_essence(i + 2,
+                                           "sound",
+                                           "PCM",
+                                           sampe_rate,
+                                           sampe_rate,
+                                           compress = False,
+                                           )
+                essence.codec_flavour = "Flavour_None"
+                format = essence.get_emptyfileformat()
+        
+                format['AudioSampleBits'] = 16
+                format['NumChannels'] = 1
+        
+                essence.set_fileformat(format)
+                
+                audio_essences.append(essence)
+                
+            pcm_file = generate_pcm_audio_stereo(name, rate, duration)
+            pcm = open(pcm_file)
+            
+            readsize = 2
+            
+            data = None
+            
+            print "writing audio data"
+            
+            count = 0
+            while True:
+                for essence in audio_essences:
+                    data = pcm.read(readsize)
+                    
+                    if not data:
+                        break
+                    #print "read", len(data)
+                    essence.write(data)
+                if not data:
+                    break
+                
+                # emergency break
+                if count > 48000*10:
+                    pass
+                    break
+                
+                count += 1
+                
+            for essence in audio_essences:
+                essence.complete_write()
+                    
+            
             count += 1
+            
+        print "wrote", count/2, "audio samples"
+            
         f.save()
         f.save(output_xml)
     
@@ -300,7 +365,7 @@ class TestFile(unittest.TestCase):
         pcm_file = generate_pcm_audio_mono(name, rate, 2)
         pcm = open(pcm_file)
         
-        readsize= essence.max_sample_size(d.lookup_datadef('sound'))
+        readsize= essence.max_sample_size
 
         while True:
             chunk = pcm.read(readsize)
@@ -366,7 +431,7 @@ class TestFile(unittest.TestCase):
         pcm_file = generate_pcm_audio_stereo(name, rate, 2)
         
         # readsize should be 2 UInt16_t or unsigned short is 2 bytes
-        readsize= essence_left.max_sample_size(d.lookup_datadef('sound'))
+        readsize= essence_left.max_sample_size
         #readsize = 1000
         print "max",readsize
 
