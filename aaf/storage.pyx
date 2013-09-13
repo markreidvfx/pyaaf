@@ -90,10 +90,10 @@ cdef class File(object):
         cdef wstring w_path = toWideString(path)
         cdef lib.aafUID_t kind = lib.kAAFFileKind_Aaf4KBinary
         
-        if mode == 'rw':
+        if mode == 'rw' and os.path.exists(path):
             #d = dict(productUID)
-            error_check(lib.AAFFileOpenNewModifyEx(w_path.c_str(),
-                                                      &kind, 0, &productInfo,
+            error_check(lib.AAFFileOpenExistingModify(w_path.c_str(),
+                                                      0, &productInfo,
                                                       &self.proxy.ptr))
             return
         
