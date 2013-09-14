@@ -193,6 +193,9 @@ cdef class MasterMob(Mob):
         return access
     
     def import_video_essence(self, path, frame_rate):
+        """
+        Import raw dnxhd video stream from file.
+        """
         
         slot_index = 0
         
@@ -223,6 +226,9 @@ cdef class MasterMob(Mob):
         essence.complete_write()
     
     def import_audio_essence(self, path, channels, sample_rate):
+        """
+        Import raw PCM audio stream from file.
+        """
         
         slot_index = 0
         for slot in self.slots():

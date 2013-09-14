@@ -175,8 +175,10 @@ def create_aaf(path, media_streams):
 
     for stream in media_streams:
         if stream['type'] == 'video':
+            print "importing video"
             mastermob.import_video_essence(stream['path'], stream['frame_rate'])
         if stream['type'] == 'audio':
+            print "importing audio"
             mastermob.import_audio_essence(stream['path'], stream['channels'], stream['sample_rate'])
 
     f.save()

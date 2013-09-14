@@ -133,7 +133,7 @@ def generate_pcm_audio_stereo(name, sample_rate = 48000, duration = 2):
 class TestFile(unittest.TestCase):
     
 
-    def skip_test_dnxhd_export(self):
+    def test_dnxhd_export(self):
         """
         width, height = unpack(">24xhh", s[:28])
         cid = unpack(">40xi", s[:44])

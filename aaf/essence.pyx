@@ -98,7 +98,7 @@ cdef class EssenceFormat(AAFBase):
         cdef lib.aafRect_t rect
         cdef lib.aafInt32 line_map[5]
         
-        print auid_obj.auid,specifier_type
+        #print auid_obj.auid,specifier_type
         
         if specifier_type == 'operand.expInt32':
             set_format_specifier[lib.aafInt32](self,auid, value)
