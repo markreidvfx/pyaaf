@@ -133,8 +133,10 @@ def generate_pcm_audio_stereo(name, sample_rate = 48000, duration = 2):
 class TestFile(unittest.TestCase):
     
 
-    def test_dnxhd_export(self):
+    def skip_test_dnxhd_export(self):
         """
+        width, height = unpack(">24xhh", s[:28])
+        cid = unpack(">40xi", s[:44])
         
         ffmpeg -i <input_file> -vcodec dnxhd -b <bitrate> -an output.dnxhd
         
@@ -451,6 +453,48 @@ class TestFile(unittest.TestCase):
 
         essence_left.complete_write()
         essence_right.complete_write()
+        f.save()
+        f.save(output_xml)
+        
+    def test_mob_import_method(self):
+        output_aaf = os.path.join(sandbox, 'mob_import_essence.aaf')
+        output_xml = os.path.join(sandbox, 'mob_import_essence.xml')
+                
+        f= aaf.open(output_aaf, 'rw')
+        
+        
+        header = f.header()
+        d = header.dictionary()
+        
+        count = 0
+        
+        name = "mob_import_essence"
+        
+        mastermob = d.create.MasterMob(name)
+        header.append(mastermob)
+        
+        
+        size = (1920, 1080)
+        bitrate = 36
+        pix_fmt = "yuv422p"
+        frame_rate = "24000/1001"
+        nb_frames = 20
+        
+        video_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, nb_frames, name, False)
+        
+        mastermob.import_video_essence(video_path, frame_rate)
+        
+        
+        duration = nb_frames / float(Fraction(frame_rate))
+        sample_rate = 48000
+        pcm_file_path = generate_pcm_audio_stereo(name, sample_rate, duration)
+        
+        mastermob.import_audio_essence(pcm_file_path, 2, sample_rate)
+        
+        pcm_file_path = generate_pcm_audio_mono(name, sample_rate, duration)
+        
+        mastermob.import_audio_essence(pcm_file_path, 1, sample_rate)
+        
         f.save()
         f.save(output_xml)
     

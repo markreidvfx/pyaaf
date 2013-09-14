@@ -192,6 +192,78 @@ cdef class MasterMob(Mob):
         access.datadef = media_datadef
         return access
     
+    def import_video_essence(self, path, frame_rate):
+        
+        slot_index = 0
+        
+        for slot in self.slots():
+            slot_index = max(slot_index, slot.slotID)
+            
+        slot_index += 1
+        
+        essence = self.create_essence(slot_index,
+                                     'picture',
+                                     "DNxHD",
+                                     frame_rate,
+                                     frame_rate,
+                                     compress = False)
+        
+        essence.codec_flavour = "Flavour_VC3_1253"
+        
+        video = open(path)
+        readsize = essence.max_sample_size
+        
+    
+        while True:
+            data = video.read(readsize)
+            if not data:
+                break
+            essence.write(data, 1)
+            
+        essence.complete_write()
+    
+    def import_audio_essence(self, path, channels, sample_rate):
+        
+        slot_index = 0
+        for slot in self.slots():
+            slot_index = max(slot_index, slot.slotID)
+        slot_index += 1
+
+        audio_essences = []
+    
+        # Add essences for each audio channel
+        for i in xrange(channels):
+            essence = self.create_essence(slot_index+i,
+                                         'sound',
+                                         "PCM",
+                                         sample_rate,
+                                         sample_rate,
+                                         compress = False)
+            
+            essence.codec_flavour = "Flavour_None"
+            format = essence.get_emptyfileformat()
+            format['AudioSampleBits'] = 16
+            format['NumChannels'] = 1
+            essence.set_fileformat(format)
+            audio_essences.append(essence)
+            
+        audio = open(path)
+        
+        # each sample is 2 bytes
+        readsize = 2
+        
+        while True:
+            for essence in audio_essences:
+                data = audio.read(readsize)
+                if not data:
+                    break
+                essence.write(data)
+            if not data:
+                break
+            
+        for essence in audio_essences:
+            essence.complete_write()
+    
     def add_master_slot(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
                         lib.aafSlotID_t master_slotID, bytes slot_name=None):
         """
