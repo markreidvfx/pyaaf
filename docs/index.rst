@@ -43,7 +43,7 @@ Contents:
    
    api/storage
    api/dictionary
-   api/components
+   api/mob
    api/component
    api/essence
    api/define

@@ -32,3 +32,13 @@
        :members:
        :undoc-members:
        :show-inheritance:
+       
+   .. autoclass:: EventMobSlot
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: StaticMobSlot
+       :members:
+       :undoc-members:
+       :show-inheritance:
