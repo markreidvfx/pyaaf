@@ -206,6 +206,8 @@ cdef class MasterMob(Mob):
             
         slot_index += 1
         
+        cdef EssenceAccess essence
+        
         essence = self.create_essence(slot_index,
                                      'picture',
                                      "DNxHD",
@@ -218,19 +220,36 @@ cdef class MasterMob(Mob):
         video = open(path)
         readsize = essence.max_sample_size
         
-        cdef bytes data
+        
+        cdef FILE* cfile
+    
+        cfile = fopen(path, 'rb')
+        if cfile == NULL:
+            raise ValueError()
+        
+        cdef unsigned char data[1024]
+        
+        cdef size_t buffer_size = 1024
+        cdef size_t result =0
+        
+        cdef lib.aafUInt32 samples_written =0
+        cdef lib.aafUInt32 bytes_written =0
         
         try:
             while True:
-                data = video.read(readsize)
-                if not data:
+                result = fread(data, 1, buffer_size, cfile)
+                if result == 0:
                     break
-                essence.write(data)
+                
+                error_check(essence.ptr.WriteSamples(1,
+                                                     result,
+                                                     data,
+                                                     &samples_written,
+                                                     &bytes_written))
             essence.complete_write()
         finally:
-            video.close()
-        #video.close()
-    
+            fclose(cfile)
+
     def import_audio_essence(self, bytes path, lib.aafUInt32 channels, object sample_rate):
         """
         Import raw PCM audio stream from file.
