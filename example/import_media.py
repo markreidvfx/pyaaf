@@ -5,6 +5,8 @@ import json
 import os
 import datetime
 import sys
+import tempfile
+import shutil
 
 from pprint import pprint
 
@@ -108,7 +110,7 @@ def seconds_to_timecode(seconds):
  
     return str(t)
         
-def conform_media(path, start=None, end=None, duration=None, video_profile=None, audio_profile=None):
+def conform_media(path,output_dir, start=None, end=None, duration=None, video_profile=None, audio_profile=None):
     
     if not video_profile:
         video_profile = '1080p_36_23.97'
@@ -193,7 +195,7 @@ def conform_media(path, start=None, end=None, duration=None, video_profile=None,
             
             cmd.extend(['-vf', vfilter])
             
-            out_file = 'out_%d.dnxhd' % (stream_index)
+            out_file = os.path.join(output_dir, 'out_%d.dnxhd' % (stream_index))
             
             cmd.extend([out_file])
             
@@ -212,7 +214,7 @@ def conform_media(path, start=None, end=None, duration=None, video_profile=None,
             if not duration is None:
                 cmd.extend(['-t', str(duration)])
             
-            out_file = 'out_%d_%d_%d.pcm' % (stream_index, sample_rate, channels)
+            out_file = os.path.join(output_dir, 'out_%d_%d_%d.pcm' % (stream_index, sample_rate, channels))
             
             cmd.extend([out_file])
             
@@ -314,8 +316,13 @@ if __name__ == "__main__":
         parser.error("No such video profile: %s" % options.video_profile)
         
     aaf_file = args[0]
+    
+    
+    tempdir = tempfile.mkdtemp("-aaf_import")
+    print tempdir
     try:
-        media_streams =  conform_media(args[1], 
+        media_streams =  conform_media(args[1],
+                                       output_dir=tempdir,
                                        start=options.start,
                                        end=options.end, 
                                        duration=options.duration,
@@ -323,9 +330,13 @@ if __name__ == "__main__":
                                        audio_profile = options.audio_profile.lower())
     except:
         print traceback.format_exc()
+        shutil.rmtree(tempdir)
         parser.error("error conforming media")
     
-    basename = os.path.basename(args[1])
-    name,ext = os.path.splitext(basename)
+    try:
+        basename = os.path.basename(args[1])
+        name,ext = os.path.splitext(basename)
+        create_aaf(aaf_file, media_streams,name)
+    finally:
+        shutil.rmtree(tempdir)
     
-    create_aaf(aaf_file, media_streams,name)
