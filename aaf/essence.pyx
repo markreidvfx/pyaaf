@@ -176,6 +176,34 @@ cdef class EssenceAccess(EssenceMultiAccess):
         
         error_check(self.ptr.PutFileFormat(format.ptr))
         
+    def index_sample_size(self,lib.aafPosition_t index):
+        """
+        The size in bytes of the given sample
+        """
+        cdef lib.aafLength_t sample_size
+        error_check(self.ptr.GetIndexedSampleSize(self.datadef.ptr, index, &sample_size))
+        return sample_size
+    
+    def seek(self, lib.aafPosition_t index):
+        """
+        Seek to Given frame index in essence, Useful only on reading, you can't seek aound while writing
+        essence.
+        """
+        error_check(self.ptr.Seek(index))
+        
+    def read(self, lib.aafUInt32 nb_samples):
+        """
+        Read a given number of samples from an opened essence stream.
+        This call will only return a single channel of essence from an
+        interleaved stream.
+        A video sample is a frame.
+        """
+        
+        cdef lib.aafUInt32 samplesRead
+        cdef lib.aafUInt32 bytesRead
+        
+        raise NotImplementedError()
+        
     def complete_write(self):
         """
         Handle any format related writing at the end and adjust mob
@@ -203,10 +231,19 @@ cdef class EssenceAccess(EssenceMultiAccess):
             return essence_write_samples[lib.aafUInt8](self, data, samples, 0)
         else:
             raise ValueError("data_type: %s not supported" % str(data_type))
+        
+    property samples:
+        """
+        The number of samples in the essence
+        """
+        def __get__(self):
+            cdef lib.aafLength_t result
+            error_check(self.ptr.CountSamples(self.datadef.ptr, &result))
+            return result
     
     property max_sample_size:
         """
-        Returns the size in bytes of the largest sample for a given essence type.
+        The size in bytes of the largest sample in the essence.
         """
         def __get__(self):
             cdef lib.aafLength_t max_size
@@ -217,7 +254,20 @@ cdef class EssenceAccess(EssenceMultiAccess):
         def __set__(self, bytes value):
             cdef AUID auid = CodecDefMap[value.lower()]
             error_check(self.ptr.SetEssenceCodecFlavour(auid.get_auid()))
-    
+            
+    property codec_name:
+        def __get__(self):
+            cdef lib.aafCharacter name[1024]
+            error_check(self.ptr.GetCodecName(1024, name))
+            cdef wstring w_name = wstring(name)
+            return wideToString(w_name)
+            
+    property codecID:
+        def __get__(self):
+            cdef AUID auid = AUID()
+            error_check(self.ptr.GetCodecID(&auid.auid))
+            return auid
+            
 
         
         

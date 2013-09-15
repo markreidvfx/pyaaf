@@ -258,6 +258,7 @@ class TestFile(unittest.TestCase):
                 essence.write(data, 1)
             essence.complete_write()
             
+            codec_name,codeID = essence.codec_name, essence.codecID
             
             #add audio tracks
             

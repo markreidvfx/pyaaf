@@ -443,6 +443,11 @@ cdef extern from "AAF.h":
     
     cdef GUID IID_IAAFEssenceAccess
     cdef cppclass IAAFEssenceAccess(IUnknown):
+        HRESULT GetCodecName(
+            aafUInt32  namelen,
+            aafCharacter *  name
+        )
+        HRESULT GetCodecID(aafUID_t *codecID)
         HRESULT GetEmptyFileFormat(IAAFEssenceFormat ** ops)
         HRESULT PutFileFormat(IAAFEssenceFormat * ops)
         HRESULT GetFileFormatParameterList(IAAFEssenceFormat ** ops)
@@ -464,6 +469,24 @@ cdef extern from "AAF.h":
             IAAFDataDef * pDataDef,
             aafLength_t*  maxSize
         )
+        HRESULT Seek(aafPosition_t  sampleFrameNum)
+        HRESULT GetIndexedSampleSize(
+            IAAFDataDef * pDataDef,
+            aafPosition_t  frameNum,
+            aafLength_t*  frameSize
+        )
+        HRESULT CountSamples(
+            IAAFDataDef * pDataDef,
+            aafLength_t *  result
+        )
+        HRESULT ReadSamples(
+            aafUInt32  nSamples,
+            aafUInt32  buflen,
+            aafDataBuffer_t  buffer,
+            aafUInt32 *  samplesRead,
+            aafUInt32 *  bytesRead
+        )
+        
     cdef aafUID_t AUID_AAFEssenceDescriptor 
     cdef GUID IID_IAAFEssenceDescriptor
     cdef cppclass IAAFEssenceDescriptor(IUnknown):
