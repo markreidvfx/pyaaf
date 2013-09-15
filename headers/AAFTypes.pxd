@@ -98,8 +98,16 @@ cdef extern from "AAFTypes.h":
     ctypedef aafUInt32 aafSlotID_t
     
     ctypedef aafUInt32 aafNumSlots_t
+    
+    ctypedef struct aafMediaCriteria_t:
+        pass
+    
+    ctypedef aafInt32 aafMediaOpenMode_t
+    
+    cdef enum aafMediaOpenMode_e:
+        kAAFMediaOpenReadOnly
+        kAAFMediaOpenAppend
 
-        
     ctypedef aafInt32 aafMobKind_t
     
     cdef enum aafMobKind_e:

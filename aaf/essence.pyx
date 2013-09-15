@@ -191,7 +191,7 @@ cdef class EssenceAccess(EssenceMultiAccess):
         """
         error_check(self.ptr.Seek(index))
         
-    def read(self, lib.aafUInt32 nb_samples):
+    def read(self, lib.aafUInt32 nb_samples=1):
         """
         Read a given number of samples from an opened essence stream.
         This call will only return a single channel of essence from an
@@ -199,10 +199,26 @@ cdef class EssenceAccess(EssenceMultiAccess):
         A video sample is a frame.
         """
         
-        cdef lib.aafUInt32 samplesRead
-        cdef lib.aafUInt32 bytesRead
+        cdef lib.aafUInt32 samples_read
+        cdef lib.aafUInt32 bytes_read
+        cdef lib.aafUInt32 sample_size = self.max_sample_size
+        cdef vector[lib.UChar] buf = vector[lib.UChar](sample_size*nb_samples)
         
-        raise NotImplementedError()
+        cdef string s
+        
+        hr = self.ptr.ReadSamples(nb_samples,
+                                 sample_size*nb_samples,
+                                 &buf[0],
+                                 &samples_read,
+                                 &bytes_read)
+        
+        if hr == lib.AAFRESULT_EOF:
+            return None
+        else:
+            error_check(hr)
+                    
+        s = string(<char * > &buf[0], bytes_read)
+        return s
         
     def complete_write(self):
         """

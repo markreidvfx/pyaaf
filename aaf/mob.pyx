@@ -148,6 +148,22 @@ cdef class MasterMob(Mob):
         error_check(self.mastermob_ptr.Initialize())
         if name:
             self.name = name
+            
+    def open_essence(self, lib.aafSlotID_t  slotID):
+        
+        slot = self.slot_at(slotID)
+        
+        cdef EssenceAccess access = EssenceAccess()
+        
+        error_check(self.mastermob_ptr.OpenEssence(slotID,
+                                                   NULL,
+                                                   lib.kAAFMediaOpenReadOnly,
+                                                   lib.kAAFCompressionDisable,
+                                                   &access.ptr))
+        
+        access = EssenceAccess(access)
+        access.datadef = slot.datadef()
+        return access
     
     def create_essence(self,lib.aafSlotID_t slot_index, 
                             bytes media_kind,
@@ -190,7 +206,7 @@ cdef class MasterMob(Mob):
                                                       container.get_auid(),
                                                       &access.ptr
                                                       ))
-        
+        access = EssenceAccess(access)
         access.datadef = media_datadef
         return access
     

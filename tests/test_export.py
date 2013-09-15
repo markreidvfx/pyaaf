@@ -185,7 +185,7 @@ class TestFile(unittest.TestCase):
         output_aaf = os.path.join(sandbox, 'dnxhd_export.aaf')
         output_xml = os.path.join(sandbox, 'dnxhd_export.xml')
                 
-        f= aaf.open(output_aaf, 'rw')
+        f= aaf.open(output_aaf, 'w')
         
         
         header = f.header()
@@ -325,6 +325,28 @@ class TestFile(unittest.TestCase):
             
         f.save()
         f.save(output_xml)
+        f.close()
+        
+        
+        # test reading
+        f = aaf.open(output_aaf)
+        
+        header = f.header()
+        storage = header.storage()
+        
+        for mob in storage.master_mobs():
+        
+            essence = mob.open_essence(1)
+            c= 0
+            while True:
+                data = essence.read()
+                if not data:
+                    break
+                c += 1
+    
+            assert c == nb_frames
+        
+        f.close()
     
     def test_audio_mono(self):
         output_aaf = os.path.join(sandbox, 'mono_audio_export.aaf')

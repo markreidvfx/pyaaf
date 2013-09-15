@@ -636,6 +636,13 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFMasterMob
     cdef cppclass IAAFMasterMob(IUnknown):
         HRESULT Initialize()
+        HRESULT OpenEssence(
+            aafSlotID_t  slotID,
+            aafMediaCriteria_t*  mediaCrit,
+            aafMediaOpenMode_t  openMode,
+            aafCompressEnable_t  compEnable,
+            IAAFEssenceAccess ** access
+        )
         HRESULT CreateEssence(
             aafSlotID_t masterSlotID,
             IAAFDataDef * pMediaKind,
