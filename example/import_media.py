@@ -7,6 +7,7 @@ import datetime
 import sys
 import tempfile
 import shutil
+import time
 
 from pprint import pprint
 
@@ -239,14 +240,19 @@ def create_aaf(path, media_streams, mobname):
     
     mastermob = d.create.MasterMob(mobname)
     header.append(mastermob)
-
+    
     for stream in media_streams:
         if stream['type'] == 'video':
-            print "importing video"
+            print "importing video..."
+            start = time.time()
             mastermob.import_video_essence(stream['path'], stream['frame_rate'])
+            print "imported video in %d secs" % (time.time()- start)
         if stream['type'] == 'audio':
-            print "importing audio"
+            print "importing audio..."
+            start = time.time()
             mastermob.import_audio_essence(stream['path'], stream['channels'], stream['sample_rate'])
+            
+            print "imported audio in %d secs" % (time.time()- start)
 
     f.save()
     f.close()
