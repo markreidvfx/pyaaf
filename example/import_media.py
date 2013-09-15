@@ -4,11 +4,64 @@ import subprocess
 import json
 import os
 import datetime
+import sys
 
 from pprint import pprint
+
+FFMPEG_EXEC = "ffmpeg"
+FFPROBE_EXEC = "ffprobe"
+
+Audio_Profiles = {
+'pcm_32000':{'sample_fmt':'s16le','sample_rate':32000},
+'pcm_44100':{'sample_fmt':'s16le','sample_rate':44100},
+'pcm_48000':{'sample_fmt': 's16le','sample_rate':48000}
+}
+
+Video_Profiles ={
+'1080p_175x_23.97': { "size":"1920x1080p", "bitrate":175, "pix_fmt":"yuv422p10", "frame_rate":"24000/1001"},
+'1080p_365x_50'   : { "size":"1920x1080p", "bitrate":185, "pix_fmt":"yuv422p10", "frame_rate":"25/1"},
+'1080p_365x_60'   : { "size":"1920x1080p", "bitrate":365, "pix_fmt":"yuv422p10", "frame_rate":"50/1"},
+'1080p_440x_23.97': { "size":"1920x1080p", "bitrate":440, "pix_fmt":"yuv422p10", "frame_rate":"60000/1001"},
+'1080p_115_23.97' : { "size":"1920x1080p", "bitrate":115, "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
+'1080p_120_25'    : { "size":"1920x1080p", "bitrate":120, "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
+'1080p_145_29.97' : { "size":"1920x1080p", "bitrate":145, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
+'1080p_240_50'    : { "size":"1920x1080p", "bitrate":240, "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
+'1080p_290_59.94' : { "size":"1920x1080p", "bitrate":290, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"},
+'1080p_175_23.97' : { "size":"1920x1080p", "bitrate":175, "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
+'1080p_185_25'    : { "size":"1920x1080p", "bitrate":185, "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
+'1080p_220_29.97' : { "size":"1920x1080p", "bitrate":220, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
+'1080p_365_50'    : { "size":"1920x1080p", "bitrate":365, "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
+'1080p_440_59.94' : { "size":"1920x1080p", "bitrate":440, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"},
+'1080i_185x_25'   : { "size":"1920x1080i", "bitrate":185, "pix_fmt":"yuv422p10", "frame_rate":"25/1"},
+'1080i_220x_29.97': { "size":"1920x1080i", "bitrate":220, "pix_fmt":"yuv422p10", "frame_rate":"30000/1001"},
+'1080i_120_25'    : { "size":"1920x1080i", "bitrate":120, "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
+'1080i_145_29.97' : { "size":"1920x1080i", "bitrate":145, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
+'1080i_185_25'    : { "size":"1920x1080i", "bitrate":185, "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
+'1080i_220_29.97' : { "size":"1920x1080i", "bitrate":220, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
+'720p_90x_23.97'  : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p10", "frame_rate":"24000/1001"},
+'720p_90x_25'     : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p10", "frame_rate":"25/1"},
+'720p_180x_50'    : { "size":"1280x720p",  "bitrate":180, "pix_fmt":"yuv422p10", "frame_rate":"50/1"},
+'720p_220x_59.94' : { "size":"1280x720p",  "bitrate":220, "pix_fmt":"yuv422p10", "frame_rate":"60000/1001"},
+'720p_90_23.97'   : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
+'720p_90_25'      : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
+'720p_110_29.97'  : { "size":"1280x720p",  "bitrate":110, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
+'720p_180_50'     : { "size":"1280x720p",  "bitrate":180, "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
+'720p_220_59.94'  : { "size":"1280x720p",  "bitrate":220, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"},
+'720p_60_23.97'   : { "size":"1280x720p",  "bitrate":60,  "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
+'720p_60_25'      : { "size":"1280x720p",  "bitrate":60,  "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
+'720p_75_29.97'   : { "size":"1280x720p",  "bitrate":75,  "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
+'720p_120_50'     : { "size":"1280x720p",  "bitrate":120, "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
+'720p_145_59.94'  : { "size":"1280x720p",  "bitrate":145, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"},
+'1080p_36_23.97'  : { "size":"1920x1080p", "bitrate":36,  "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
+'1080p_36_25'     : { "size":"1920x1080p", "bitrate":36,  "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
+'1080p_45_29.97'  : { "size":"1920x1080p", "bitrate":45,  "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
+'1080p_75_50'     : { "size":"1920x1080p", "bitrate":75,  "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
+'1080p_90_59.94'  : { "size":"1920x1080p", "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"}}
+
+
 def probe(path):
     
-    cmd = ['ffprobe', '-of','json', '-show_streams', path]
+    cmd = [FFPROBE_EXEC, '-of','json', '-show_streams', path]
     print subprocess.list2cmdline(cmd)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
@@ -55,13 +108,21 @@ def seconds_to_timecode(seconds):
  
     return str(t)
         
-def conform_media(path, start=None, end=None, duration=None):
-
+def conform_media(path, start=None, end=None, duration=None, video_profile=None, audio_profile=None):
+    
+    if not video_profile:
+        video_profile = '1080p_36_23.97'
+    if not audio_profile:
+        audio_profile = 'pcm_48000'
+        
+    video_profile = Video_Profiles[video_profile]
+    audio_profile = Audio_Profiles[audio_profile]
+        
     format = probe(path)
     
     out_files = []
     
-    cmd = ['ffmpeg', '-y']
+    cmd = [FFMPEG_EXEC,'-y', '-nostdin']
     
     if end:
         duration = timecode_to_seconds(end) - timecode_to_seconds(start)
@@ -72,24 +133,28 @@ def conform_media(path, start=None, end=None, duration=None):
         start_seconds = timecode_to_seconds(start)
         
         fast_start = max(0,int(start_seconds-30))
-        
-        #fast_start = seconds_to_timecode(fast_start)
-        #raise Exception
-        
+
         if fast_start:
             start = seconds_to_timecode(start_seconds - fast_start)
             cmd.extend(['-ss', seconds_to_timecode(fast_start)])
-    
 
-    
-    #start = None
-    
-    
     cmd.extend([ '-i', path])
     
-    frame_rate = '24000/1001'
+    frame_rate = video_profile['frame_rate']
+    pix_fmt = video_profile['pix_fmt']
+    bitrate = video_profile['bitrate']
+    
+    width, height = video_profile['size'].split('x')
+    
+    interlaced = False
+    
+    if height[-1] == 'i':
+        interlaced = True
+    width = int(width)
+    height = int(height[:-1])
+    
     #sample_rate =44100
-    sample_rate = 48000
+    sample_rate = audio_profile['sample_rate']
     
     for stream in format['streams']:
         
@@ -101,8 +166,8 @@ def conform_media(path, start=None, end=None, duration=None):
             input_height = stream['height']
             
             
-            max_width = 1920
-            max_height = 1080
+            max_width = width
+            max_height = height
             
             scale = min(max_width/ float(input_width), max_height/float(input_height) )
             
@@ -118,7 +183,7 @@ def conform_media(path, start=None, end=None, duration=None):
             
             print vfilter
             
-            cmd.extend(['-an','-vcodec', 'dnxhd', '-vb', '36M', '-r', frame_rate])
+            cmd.extend(['-an','-vcodec', 'dnxhd', '-vb', '%dM' % bitrate, '-r', frame_rate])
             
             if not start is None:
                 cmd.extend(['-ss', str(start)])
@@ -162,7 +227,7 @@ def conform_media(path, start=None, end=None, duration=None):
     return out_files
         
         
-def create_aaf(path, media_streams):
+def create_aaf(path, media_streams, mobname):
     
     f = aaf.open(path, 'rw')
 
@@ -170,7 +235,7 @@ def create_aaf(path, media_streams):
     d = header.dictionary()
     
     
-    mastermob = d.create.MasterMob("mastermob")
+    mastermob = d.create.MasterMob(mobname)
     header.append(mastermob)
 
     for stream in media_streams:
@@ -192,14 +257,47 @@ if __name__ == "__main__":
     usage = "usage: %prog [options] output_aaf_file media_file"
     parser = OptionParser(usage=usage)
     parser.add_option('-s', '--start', type="string", dest="start",default=None,
-                      help = "start recording at, in timecode or seconds [default]")
+                      help = "start recording at, in timecode or seconds")
     parser.add_option('-e', '--end', type="string", dest='end',default=None,
-                      help = "end recording at in timecode or seconds [default]")
+                      help = "end recording at in timecode or seconds")
     parser.add_option('-d', '--duration', type="string", dest='duration',default=None,
-                      help = "record duration in timecode or seconds [default]")
+                      help = "record duration in timecode or seconds")
+    
+    parser.add_option("-v", '--video-profile', type='string', dest = 'video_profile', default="1080p_36_23.97",
+                      help = "encoding profile for video [default: 1080p_36_23.97]")
+    parser.add_option("-a", '--audio-profile', type='string', dest = 'audio_profile',default='pcm_48000',
+                      help = 'encoding profile for audio [default: pcm_48000]')
+    
+    parser.add_option('--list-profiles', dest='list_profiles',
+                      action="store_true",default=False,
+                      help = "lists profiles")
 
     (options, args) = parser.parse_args()
-
+    
+    
+    if options.list_profiles:
+        
+        titles = ['Audio Profile', 'Sample Rate', 'Sample Fmt']
+        row_format ="{:<20}{:<15}{:<15}"
+        
+        print ""
+        print row_format.format( *titles)
+        print ""
+        
+        for key,value in sorted(Audio_Profiles.items()):
+            print row_format.format(key, value['sample_rate'], value['sample_fmt'])
+        
+        titles = ['Video Profile', "Size", 'Frame Rate', "Bitrate", "Pix Fmt"]
+        row_format ="{:<20}{:<15}{:<15}{:<10}{:<10}"
+        print ""
+        print row_format.format( *titles)
+        print ""
+        for key, value in sorted(Video_Profiles.items()):
+            print row_format.format(key, value['size'], 
+                                    value['frame_rate'], value['bitrate'], value['pix_fmt'])
+        
+        sys.exit()
+        
     if len(args) < 2:
         parser.error("not enough args")
         
@@ -209,15 +307,25 @@ if __name__ == "__main__":
     if options.end and options.duration:
         parser.error("Can only use --duration or --end not both")
         
-    
+    if not Audio_Profiles.has_key(options.audio_profile.lower()):
+        parser.error("No such audio profile: %s" % options.audio_profile)
+        
+    if not Video_Profiles.has_key(options.video_profile.lower()):
+        parser.error("No such video profile: %s" % options.video_profile)
+        
     aaf_file = args[0]
     try:
         media_streams =  conform_media(args[1], 
-                                   start=options.start,
-                                   end=options.end, 
-                                   duration=options.duration)
+                                       start=options.start,
+                                       end=options.end, 
+                                       duration=options.duration,
+                                       video_profile = options.video_profile.lower(),
+                                       audio_profile = options.audio_profile.lower())
     except:
         print traceback.format_exc()
         parser.error("error conforming media")
     
-    create_aaf(aaf_file, media_streams)
+    basename = os.path.basename(args[1])
+    name,ext = os.path.splitext(basename)
+    
+    create_aaf(aaf_file, media_streams,name)
