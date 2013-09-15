@@ -5,6 +5,8 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from cpython cimport bool
 
+from libc.stdio cimport FILE, fopen, fclose, fread
+
 from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, MobID
 from .iterator cimport MobSlotIter
 from .component cimport Segment
@@ -192,7 +194,7 @@ cdef class MasterMob(Mob):
         access.datadef = media_datadef
         return access
     
-    def import_video_essence(self, path, frame_rate):
+    def import_video_essence(self, bytes path, object frame_rate):
         """
         Import raw dnxhd video stream from file.
         """
@@ -216,16 +218,20 @@ cdef class MasterMob(Mob):
         video = open(path)
         readsize = essence.max_sample_size
         
+        cdef bytes data
+        
+        try:
+            while True:
+                data = video.read(readsize)
+                if not data:
+                    break
+                essence.write(data)
+            essence.complete_write()
+        finally:
+            video.close()
+        #video.close()
     
-        while True:
-            data = video.read(readsize)
-            if not data:
-                break
-            essence.write(data, 1)
-            
-        essence.complete_write()
-    
-    def import_audio_essence(self, path, channels, sample_rate):
+    def import_audio_essence(self, bytes path, lib.aafUInt32 channels, object sample_rate):
         """
         Import raw PCM audio stream from file.
         """
@@ -236,6 +242,8 @@ cdef class MasterMob(Mob):
         slot_index += 1
 
         audio_essences = []
+        
+        cdef EssenceAccess essence
     
         # Add essences for each audio channel
         for i in xrange(channels):
@@ -253,22 +261,43 @@ cdef class MasterMob(Mob):
             essence.set_fileformat(format)
             audio_essences.append(essence)
             
-        audio = open(path)
+        #audio = open(path)
         
         # each sample is 2 bytes
         readsize = 2
         
-        while True:
-            for essence in audio_essences:
-                data = audio.read(readsize)
-                if not data:
+        cdef FILE* cfile
+        
+        cfile = fopen(path, 'rb')
+        if cfile == NULL:
+            raise ValueError()
+        
+        cdef unsigned char data[2]
+        cdef size_t result =0
+        
+        cdef lib.aafUInt32 samples_written =0
+        cdef lib.aafUInt32 bytes_written =0
+        
+        try:
+            while True:
+                for essence in audio_essences:
+                    result = fread(data, 1,2, cfile)
+                    if result != 2:
+                        break
+                    
+                    error_check(essence.ptr.WriteSamples(1,
+                                                     2,
+                                                     data,
+                                                     &samples_written,
+                                                     &bytes_written))
+                if result != 2:
                     break
-                essence.write(data)
-            if not data:
-                break
-            
-        for essence in audio_essences:
-            essence.complete_write()
+                
+            for essence in audio_essences:
+                essence.complete_write()
+        finally:            
+            fclose(cfile)
+
     
     def add_master_slot(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
                         lib.aafSlotID_t master_slotID, bytes slot_name=None):
