@@ -8,7 +8,7 @@ from cpython cimport bool
 from libc.stdio cimport FILE, fopen, fclose, fread
 
 from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, MobID
-from .iterator cimport MobSlotIter
+from .iterator cimport MobSlotIter, TaggedValueIter
 from .component cimport Segment
 from .essence cimport EssenceDescriptor, Locator, EssenceAccess
 from .component cimport Segment
@@ -95,7 +95,19 @@ cdef class Mob(AAFObject):
                                                   &timeline.ptr
                                                   ))
         return TimelineMobSlot(timeline)
-            
+    
+    def iter_comments(self):
+        cdef TaggedValueIter tags = TaggedValueIter()
+        
+        hr = self.ptr.GetComments(&tags.ptr)
+        
+        if hr == lib.AAFRESULT_PROP_NOT_PRESENT:
+            return []
+        else:
+            error_check(hr)
+        
+        return tags
+    
     property name:
         def __get__(self):
             for p in self.properties():

@@ -321,6 +321,17 @@ class TestFile(unittest.TestCase):
         
         walk_properties("", header.properties())
         
+    def test_iter_comments(self):
+        test_file = main_test_file
+        f = aaf.open(test_file)
+        header = f.header()
+        storage = header.storage()
+        
+        for mob in storage.master_mobs():
+            print mob.name
+            for c in mob.iter_comments():
+                print '  ', c
+        
     def test_lookup_index(self):
         test_file = main_test_file
         f = aaf.open(test_file)

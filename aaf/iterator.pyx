@@ -3,7 +3,7 @@ cimport lib
 from .util cimport error_check
 from .base cimport AUID
 from .mob cimport Mob,MobSlot
-from .property cimport Property,PropertyValue
+from .property cimport Property,PropertyValue, TaggedValue
 from .component cimport Component, Segment, Parameter
 from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVDataDef
 
@@ -315,6 +315,28 @@ cdef class SegmentIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             return Segment(seg).resolve()
+        else:
+            error_check(ret)
+            
+cdef class TaggedValueIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef TaggedValue tag = TaggedValue()
+        ret = self.ptr.NextOne(&tag.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return TaggedValue(tag)
         else:
             error_check(ret)
 

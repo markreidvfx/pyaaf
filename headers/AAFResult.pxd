@@ -13,3 +13,4 @@ cdef extern from "AAFResult.h":
     cdef int AAFRESULT_NO_MORE_OBJECTS
     cdef int AAFRESULT_EOF
     cdef int AAFRESULT_END_OF_DATA
+    cdef int AAFRESULT_PROP_NOT_PRESENT

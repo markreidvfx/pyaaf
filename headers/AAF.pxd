@@ -638,6 +638,12 @@ cdef extern from "AAF.h":
             aafUInt32  index,
             IAAFMobSlot * pSlot
         )
+        HRESULT AppendComment(
+            aafCharacter *  pCategory,
+            aafCharacter *  pComment
+        )
+        HRESULT CountComments(aafUInt32 *  pNumComments)
+        HRESULT GetComments(IEnumAAFTaggedValues ** ppEnum)
         
     cdef aafUID_t AUID_AAFMasterMob
     cdef GUID IID_IAAFMasterMob
@@ -961,6 +967,10 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFKLVDataDefs
     cdef cppclass IEnumAAFKLVDataDefs(IUnknown):
         HRESULT NextOne(IAAFKLVDataDefinition ** ppKLVDataDefs)
+    
+    cdef GUID IID_IEnumAAFTaggedValues
+    cdef cppclass IEnumAAFTaggedValues(IUnknown):
+        HRESULT NextOne(IAAFTaggedValue ** ppTaggedValues)
     
     # File Functions
         

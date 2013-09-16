@@ -98,7 +98,7 @@ cdef class TaggedValueDefIter(BaseIterator):
     pass
     
 cdef class TaggedValueIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFTaggedValues *ptr
     
 cdef class TypeDefIter(BaseIterator):
     cdef lib.IEnumAAFTypeDefs *ptr
