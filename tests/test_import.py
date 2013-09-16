@@ -330,8 +330,7 @@ class TestFile(unittest.TestCase):
         
         # test reading
         f = aaf.open(output_aaf)
-        
-        header = f.header
+
         storage = f.storage
         
         for mob in storage.master_mobs():
@@ -410,7 +409,6 @@ class TestFile(unittest.TestCase):
                 
         f= aaf.open(output_aaf, 'rw')
         
-        
         header = f.header
         d = f.dictionary
         
@@ -484,8 +482,7 @@ class TestFile(unittest.TestCase):
         output_xml = os.path.join(sandbox, 'mob_import_essence.xml')
                 
         f= aaf.open(output_aaf, 'rw')
-        
-        
+
         header = f.header
         d = f.dictionary
         
