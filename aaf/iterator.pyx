@@ -6,6 +6,7 @@ from .mob cimport Mob,MobSlot
 from .property cimport Property,PropertyValue, TaggedValue
 from .component cimport Component, Segment, Parameter
 from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVDataDef
+from .essence cimport EssenceData
 
 cdef class BaseIterator(object):
     pass
@@ -73,6 +74,28 @@ cdef class ComponentIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             return Component(comp).resolve()
+        else:
+            error_check(ret)
+            
+cdef class EssenceDataIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef EssenceData data = EssenceData()
+        ret = self.ptr.NextOne(&data.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return EssenceData(data)
         else:
             error_check(ret)
             

@@ -6,8 +6,8 @@ from base cimport AAFBase, AAFObject, AUID
 from dictionary cimport Dictionary
 
 from .util cimport error_check, query_interface, register_object, lookup_object
+from .iterator cimport EssenceDataIter
 from wstring cimport wstring,toWideString
-
 import os
 
 cdef class IAAFFileProxy(AAFBase):
@@ -213,6 +213,12 @@ cdef class ContentStorage(AAFObject):
         cdef lib.aafUInt32 mobCount
         error_check(self.ptr.CountMobs(lib.kAAFAllMob, &mobCount))
         return mobCount
+    
+    def essence_data(self):
+        cdef EssenceDataIter data_iter = EssenceDataIter()
+        
+        error_check(self.ptr.EnumEssenceData(&data_iter.ptr))
+        return data_iter
 
     def mobs(self):
         cdef iterator.MobIter mob_iter = iterator.MobIter()

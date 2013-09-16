@@ -3,6 +3,8 @@ cimport lib
 from .base cimport AAFObject,AAFBase
 from .define cimport DataDef
 
+cdef class EssenceData(AAFObject):
+    cdef lib.IAAFEssenceData *ptr
 
 cdef class EssenceFormat(AAFBase):
     cdef lib.IAAFEssenceFormat *ptr

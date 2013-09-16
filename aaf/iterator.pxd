@@ -29,7 +29,7 @@ cdef class DataDefIter(BaseIterator):
     pass
     
 cdef class EssenceDataIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFEssenceData *ptr
     
 cdef class FileDescriptorIter(BaseIterator):
     pass

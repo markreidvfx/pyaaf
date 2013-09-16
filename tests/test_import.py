@@ -344,6 +344,23 @@ class TestFile(unittest.TestCase):
                 c += 1
     
             assert c == nb_frames
+            
+        
+        for essence in f.storage.essence_data():
+            
+            mob = essence.source_mob
+            #print mob
+            
+            while True:
+                data = essence.read(1024)
+                
+                if not data:
+                    break
+                
+                position = essence.position
+                size = essence.size
+                #print mob, len(data), position, size
+        
         
         f.close()
     

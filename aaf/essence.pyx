@@ -3,6 +3,7 @@ cimport lib
 from .util cimport error_check, query_interface, register_object, aaf_integral, fraction_to_aafRational
 from .base cimport AAFObject, AAFBase, AUID
 from .define cimport DataDef, DataDefMap, ContainerDef, CompressionDefMap, ContainerDefMap, CodecDefMap
+from .mob cimport SourceMob 
 
 from libcpp.map cimport map
 from libcpp.string cimport string
@@ -66,6 +67,75 @@ cdef fused format_specifier:
     lib.aafColorSiting_t
     lib.aafUID_t
     lib.aafBoolean_t
+    
+cdef class EssenceData(AAFObject):
+    def __init__(self, AAFBase obj = None):
+        super(EssenceData, self).__init__(obj)
+        self.iid = lib.IID_IAAFEssenceData
+        self.auid = lib.AUID_AAFEssenceData
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get_ptr(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+    def initialize(self, SourceMob source_mob):
+        error_check(self.ptr.Initialize(source_mob.src_ptr))
+    
+    def read(self, lib.aafUInt32  bytes):
+        
+        cdef lib.aafUInt32 readsize = min(bytes, self.size - self.position)
+        
+        if readsize <= 0:
+            return None
+        
+        cdef vector[lib.UChar] buf = vector[lib.UChar](readsize)
+        cdef lib.aafUInt32 bytes_read = 0
+        
+        error_check(self.ptr.Read(readsize,
+                                  <lib.aafUInt8 *> &buf[0],
+                                  &bytes_read))
+        
+        cdef string s = string(<char *> &buf[0], bytes_read )
+        return s
+    
+    def write(self, bytes data):
+        cdef string s_data = string(data)
+        cdef lib.aafUInt32 bytes_written
+        
+        error_check(self.ptr.Write(len(data),
+                                   <lib.aafUInt8 *> s_data.c_str(),
+                                   &bytes_written
+                                   ))
+    
+    property position:
+        def __get__(self):
+            cdef lib.aafPosition_t value
+            error_check(self.ptr.GetPosition(&value))
+            return value
+        def __set__(self, lib.aafPosition_t  value):
+            error_check(self.ptr.SetPosition(value))
+        
+    property size:
+        def __get__(self):
+            cdef lib.aafLength_t value
+            error_check(self.ptr.GetSize(&value))
+            return value
+    property source_mob:
+        def __get__(self):
+            cdef SourceMob mob = SourceMob()
+            error_check(self.ptr.GetFileMob(&mob.src_ptr))
+            return SourceMob(mob)
+        def __set__(self, SourceMob mob):
+            error_check(self.ptr.SetFileMob(mob.src_ptr))
+            
     
 cdef class EssenceFormat(AAFBase):
     def __init__(self, AAFBase obj = None):
@@ -888,7 +958,7 @@ cdef class ImportDescriptor(PhysicalDescriptor):
     def initialize(self):
         error_check(self.ptr.Initialize())
         
-        
+register_object(EssenceData)
 register_object(Locator)
 register_object(NetworkLocator)
 register_object(EssenceDescriptor)

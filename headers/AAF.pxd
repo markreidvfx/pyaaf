@@ -88,6 +88,7 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFContentStorage
     cdef GUID IID_IAAFContentStorage
     cdef cppclass IAAFContentStorage(IUnknown):
+        HRESULT EnumEssenceData(IEnumAAFEssenceData ** ppEnum)
         HRESULT CountMobs(
             aafMobKind_t mobKind,
             aafNumSlots_t *pResult
@@ -421,6 +422,27 @@ cdef extern from "AAF.h":
         HRESULT Initialize()
         
     # EssenceAccess
+    
+    cdef aafUID_t AUID_AAFEssenceData
+    cdef GUID IID_IAAFEssenceData
+    cdef cppclass IAAFEssenceData(IUnknown):
+        HRESULT Initialize(IAAFSourceMob * pFileMob)
+        HRESULT Write(
+            aafUInt32  bytes,
+            aafDataBuffer_t  buffer,
+            aafUInt32 *  bytesWritten
+        )
+        HRESULT Read(
+            aafUInt32  bytes,
+            aafDataBuffer_t  buffer,
+            aafUInt32 *  bytesRead
+        )
+        HRESULT SetPosition(aafPosition_t  offset)
+        HRESULT GetPosition(aafPosition_t*  pOffset)
+        HRESULT GetSize(aafLength_t *  pSize)
+        HRESULT SetFileMob(IAAFSourceMob * pFileMob)
+        HRESULT GetFileMob(IAAFSourceMob ** ppFileMob)
+        HRESULT GetFileMobID(aafMobID_t *  pFileMobID)
     
     cdef GUID IID_IAAFEssenceFormat
     cdef cppclass IAAFEssenceFormat(IUnknown):
@@ -912,6 +934,10 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFComponents
     cdef cppclass IEnumAAFComponents(IUnknown):
         HRESULT NextOne(IAAFComponent ** ppComponent)
+        
+    cdef GUID IID_IEnumAAFEssenceData
+    cdef cppclass IEnumAAFEssenceData(IUnknown):
+        HRESULT NextOne(IAAFEssenceData ** ppEssenceData)
     
     cdef GUID IID_IEnumAAFLoadedPlugins
     cdef cppclass IEnumAAFLoadedPlugins(IUnknown):
