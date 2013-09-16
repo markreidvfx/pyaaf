@@ -5,7 +5,7 @@ from .util cimport error_check, query_interface, aaf_integral, register_object, 
 from .property cimport PropertyValue
 
 cimport iterator
-from .iterator cimport PropertyDefsIter
+from .iterator cimport PropertyDefsIter, TypeDefStreamDataIter
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -14,7 +14,6 @@ from libcpp.map cimport map
 from wstring cimport  wstring, wideToString
 
 import traceback
-import array
 from fraction_util import AAFFraction
 
 cdef object isA(AAFBase obj1,obj2):
@@ -809,25 +808,44 @@ cdef class TypeDefStream(TypeDef):
         cdef lib.aafInt64 size
         error_check(self.ptr.GetSize(p_value.ptr, &size))
         return size
-            
-    def value(self,PropertyValue p_value):
-        """
-        Note this might be slow and use alot of memory
-        """
-        cdef lib.aafUInt32 sizeInBytes = self.size(p_value)
+    
+    def position(self, PropertyValue p_value):
+        cdef lib.aafInt64 position
+        error_check(self.ptr.GetPosition(p_value.ptr, &position))
+        return position
+    
+    def set_position(self, PropertyValue p_value, lib.aafInt64 position):
+        error_check(self.ptr.SetPosition(p_value.ptr, position))
+    
+    def read(self, PropertyValue p_value, lib.aafUInt32 readsize):
         
         
-        cdef int sizeInChars = (sizeInBytes / sizeof(lib.UChar)) + 1
+        readsize = min(readsize, self.size(p_value) - self.position(p_value))
         
-        cdef vector[lib.UChar] buf = vector[lib.UChar](sizeInChars)
-        cdef lib.aafUInt32 bytes_read
+        if readsize <= 0:
+            return None
         
-        error_check(self.ptr.Read(p_value.ptr,
-                                  sizeInBytes,
+        cdef vector[lib.UChar] buf = vector[lib.UChar](readsize)
+        cdef lib.aafUInt32 bytes_read = 0 
+        cdef string s
+        hr = self.ptr.Read(p_value.ptr,
+                                  readsize,
                                   <lib.aafMemPtr_t> &buf[0],
                                   &bytes_read
-                                  ))
-        return array.array("B",buf).tostring()
+                                  )
+
+        error_check(hr)
+            
+        s = string(<char * > &buf[0], bytes_read)
+        return s
+         
+            
+    def value(self,PropertyValue p_value):
+        
+        cdef TypeDefStreamDataIter data_iter = TypeDefStreamDataIter()
+        data_iter.stream_typedef = self
+        data_iter.value = p_value
+        return data_iter
 
 cdef class TypeDefString(TypeDef):
     def __init__(self, AAFBase obj = None):

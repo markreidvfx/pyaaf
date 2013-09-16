@@ -1,6 +1,9 @@
 
 cimport lib
 
+from .define cimport TypeDefStream
+from .property cimport PropertyValue
+
 cdef class BaseIterator(object):
     pass
     
@@ -100,5 +103,9 @@ cdef class TaggedValueIter(BaseIterator):
 cdef class TypeDefIter(BaseIterator):
     cdef lib.IEnumAAFTypeDefs *ptr
     
+cdef class TypeDefStreamDataIter(BaseIterator):
+    cdef TypeDefStream stream_typedef
+    cdef PropertyValue value
+    cdef public lib.aafUInt32 readsize    
 
     

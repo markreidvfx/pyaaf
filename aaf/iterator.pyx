@@ -339,3 +339,19 @@ cdef class TypeDefIter(BaseIterator):
             return TypeDef(type_def).resolve()
         else:
             error_check(ret)
+            
+cdef class TypeDefStreamDataIter(BaseIterator):
+    def __init__(self):
+        self.readsize = 2048
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        data = self.stream_typedef.read(self.value, self.readsize)
+        if data:
+            return data
+        else:
+            #reset streams position
+            self.stream_typedef.set_position(self.value, 0)
+            raise StopIteration()

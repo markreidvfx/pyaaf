@@ -304,7 +304,14 @@ cdef extern from "AAF.h":
             aafMemPtr_t  pData,
             aafUInt32 *  bytesRead
         )
-
+        HRESULT GetPosition(
+            IAAFPropertyValue * pStreamPropertyValue,
+            aafInt64 *  pPosition
+        )
+        HRESULT SetPosition(
+            IAAFPropertyValue * pStreamPropertyValue,
+        aafInt64  newPosition
+        )
     cdef GUID IID_IAAFTypeDefString
     cdef cppclass IAAFTypeDefString(IUnknown):
         HRESULT GetCount(

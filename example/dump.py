@@ -3,7 +3,10 @@ import traceback
 from optparse import OptionParser
     
 parser = OptionParser()
-
+parser.add_option('--show_dictionary', action='store_true', default = False, dest='show_dict',
+                  help = "show dictionary properties")
+parser.add_option('--show_stream', action='store_true', default = False, dest='show_stream',
+                  help = "show binary stream data")
 (options, args) = parser.parse_args()
 
 if not args:
@@ -17,10 +20,18 @@ def walk_properties(space, iter_item):
         if isinstance(item, aaf.property.Property):
             value = item.value
         name = ""
+        
         if hasattr(item, 'name'):
             name = item.name or ""
         
         print space,name, value
+        
+        if isinstance(value, aaf.dictionary.Dictionary) and not options.show_dict:
+            continue
+        # don't dump out stream data, its ugly
+        if isinstance(value, aaf.iterator.TypeDefStreamDataIter) and not options.show_stream:
+            continue
+        
         s = space + '   '
         if isinstance(value, aaf.base.AAFObject):
             walk_properties(s, value.properties())
