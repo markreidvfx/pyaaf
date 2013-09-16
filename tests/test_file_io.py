@@ -327,10 +327,39 @@ class TestFile(unittest.TestCase):
         header = f.header()
         storage = header.storage()
         
-        for mob in storage.master_mobs():
-            print mob.name
-            for c in mob.iter_comments():
-                print '  ', c
+        for mob in storage.mobs():
+            
+            comments = list(mob.iter_comments())
+            if comments:
+                print mob.name
+                for c in comments:
+                    print '  ', c.name, c.value
+                    
+    def test_create_comments(self):
+        test_file = os.path.join(sandbox, 'comments_create.aaf')
+        f = aaf.open(test_file, 'w')
+        
+        header = f.header()
+        d = header.dictionary()
+        
+        mob = d.create.MasterMob("bob")
+        header.append(mob)
+        
+        d = {'comment1':'value1', 'comment2': "value2", 'comment3':"value3"}
+        for key, value in d.items():
+            mob.append_comment(key,value)
+            
+        for item in mob.iter_comments():
+            assert d[item.name] == item.value
+            
+        mob.remove_comment('comment3')
+        
+        for item in mob.iter_comments():
+            assert item.name != 'comment3'
+            
+        f.save()
+        f.close()
+        
         
     def test_lookup_index(self):
         test_file = main_test_file

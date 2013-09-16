@@ -13,6 +13,7 @@ from .component cimport Segment
 from .essence cimport EssenceDescriptor, Locator, EssenceAccess
 from .component cimport Segment
 from .define cimport DataDef, CodecDefMap, ContainerDefMap
+from .property cimport TaggedValue
 
 from wstring cimport wstring, wideToString, toWideString
 
@@ -96,17 +97,30 @@ cdef class Mob(AAFObject):
                                                   ))
         return TimelineMobSlot(timeline)
     
+    def append_comment(self, bytes name, bytes value):
+        cdef wstring w_name = toWideString(name)
+        cdef wstring w_value = toWideString(value)
+        
+        error_check(self.ptr.AppendComment(<lib.aafCharacter *> w_name.c_str(), w_value.c_str()))
+    
     def iter_comments(self):
         cdef TaggedValueIter tags = TaggedValueIter()
-        
         hr = self.ptr.GetComments(&tags.ptr)
-        
         if hr == lib.AAFRESULT_PROP_NOT_PRESENT:
             return []
         else:
             error_check(hr)
         
         return tags
+    def remove_comment(self, bytes name):
+        
+        cdef TaggedValue tag = TaggedValue()
+        
+        for tag in self.iter_comments():
+            if tag.name == name:
+                error_check(self.ptr.RemoveComment(tag.ptr))
+                return
+        raise KeyError("No comment with name: %s" % str(name))
     
     property name:
         def __get__(self):

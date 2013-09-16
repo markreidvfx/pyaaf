@@ -640,10 +640,11 @@ cdef extern from "AAF.h":
         )
         HRESULT AppendComment(
             aafCharacter *  pCategory,
-            aafCharacter *  pComment
+            const aafCharacter *  pComment
         )
         HRESULT CountComments(aafUInt32 *  pNumComments)
         HRESULT GetComments(IEnumAAFTaggedValues ** ppEnum)
+        HRESULT RemoveComment(IAAFTaggedValue * pComment)
         
     cdef aafUID_t AUID_AAFMasterMob
     cdef GUID IID_IAAFMasterMob

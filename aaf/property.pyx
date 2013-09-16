@@ -91,6 +91,17 @@ cdef class TaggedValue(AAFObject):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    property value:
+        def __get__(self):
+            return self['Value']
+        def __set__(self, value):
+            for p in self.properties():
+                if p.name == "Value":
+                    p.value = value
+                    return
+            raise KeyError("Property Value Not Found")
+            
 
 register_object(TaggedValue)
         
