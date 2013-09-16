@@ -21,45 +21,45 @@ Audio_Profiles = {
 }
 
 Video_Profiles ={
-'1080p_175x_23.97': { "size":"1920x1080p", "bitrate":175, "pix_fmt":"yuv422p10", "frame_rate":"24000/1001"},
-'1080p_365x_50'   : { "size":"1920x1080p", "bitrate":185, "pix_fmt":"yuv422p10", "frame_rate":"25/1"},
-'1080p_365x_60'   : { "size":"1920x1080p", "bitrate":365, "pix_fmt":"yuv422p10", "frame_rate":"50/1"},
-'1080p_440x_23.97': { "size":"1920x1080p", "bitrate":440, "pix_fmt":"yuv422p10", "frame_rate":"60000/1001"},
-'1080p_115_23.97' : { "size":"1920x1080p", "bitrate":115, "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
-'1080p_120_25'    : { "size":"1920x1080p", "bitrate":120, "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
-'1080p_145_29.97' : { "size":"1920x1080p", "bitrate":145, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
-'1080p_240_50'    : { "size":"1920x1080p", "bitrate":240, "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
-'1080p_290_59.94' : { "size":"1920x1080p", "bitrate":290, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"},
-'1080p_175_23.97' : { "size":"1920x1080p", "bitrate":175, "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
-'1080p_185_25'    : { "size":"1920x1080p", "bitrate":185, "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
-'1080p_220_29.97' : { "size":"1920x1080p", "bitrate":220, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
-'1080p_365_50'    : { "size":"1920x1080p", "bitrate":365, "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
-'1080p_440_59.94' : { "size":"1920x1080p", "bitrate":440, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"},
-'1080i_185x_25'   : { "size":"1920x1080i", "bitrate":185, "pix_fmt":"yuv422p10", "frame_rate":"25/1"},
-'1080i_220x_29.97': { "size":"1920x1080i", "bitrate":220, "pix_fmt":"yuv422p10", "frame_rate":"30000/1001"},
-'1080i_120_25'    : { "size":"1920x1080i", "bitrate":120, "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
-'1080i_145_29.97' : { "size":"1920x1080i", "bitrate":145, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
-'1080i_185_25'    : { "size":"1920x1080i", "bitrate":185, "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
-'1080i_220_29.97' : { "size":"1920x1080i", "bitrate":220, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
-'720p_90x_23.97'  : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p10", "frame_rate":"24000/1001"},
-'720p_90x_25'     : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p10", "frame_rate":"25/1"},
-'720p_180x_50'    : { "size":"1280x720p",  "bitrate":180, "pix_fmt":"yuv422p10", "frame_rate":"50/1"},
-'720p_220x_59.94' : { "size":"1280x720p",  "bitrate":220, "pix_fmt":"yuv422p10", "frame_rate":"60000/1001"},
-'720p_90_23.97'   : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
-'720p_90_25'      : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
-'720p_110_29.97'  : { "size":"1280x720p",  "bitrate":110, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
-'720p_180_50'     : { "size":"1280x720p",  "bitrate":180, "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
-'720p_220_59.94'  : { "size":"1280x720p",  "bitrate":220, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"},
-'720p_60_23.97'   : { "size":"1280x720p",  "bitrate":60,  "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
-'720p_60_25'      : { "size":"1280x720p",  "bitrate":60,  "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
-'720p_75_29.97'   : { "size":"1280x720p",  "bitrate":75,  "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
-'720p_120_50'     : { "size":"1280x720p",  "bitrate":120, "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
-'720p_145_59.94'  : { "size":"1280x720p",  "bitrate":145, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"},
-'1080p_36_23.97'  : { "size":"1920x1080p", "bitrate":36,  "pix_fmt":"yuv422p",   "frame_rate":"24000/1001"},
-'1080p_36_25'     : { "size":"1920x1080p", "bitrate":36,  "pix_fmt":"yuv422p",   "frame_rate":"25/1"},
-'1080p_45_29.97'  : { "size":"1920x1080p", "bitrate":45,  "pix_fmt":"yuv422p",   "frame_rate":"30000/1001"},
-'1080p_75_50'     : { "size":"1920x1080p", "bitrate":75,  "pix_fmt":"yuv422p",   "frame_rate":"50/1"},
-'1080p_90_59.94'  : { "size":"1920x1080p", "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"60000/1001"}}
+'dnx_1080p_175x_23.97': { "size":"1920x1080p", "bitrate":175, "pix_fmt":"yuv422p10", "frame_rate":"24000/1001", "codec": "dnxhd"},
+'dnx_1080p_365x_50'   : { "size":"1920x1080p", "bitrate":185, "pix_fmt":"yuv422p10", "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_1080p_365x_60'   : { "size":"1920x1080p", "bitrate":365, "pix_fmt":"yuv422p10", "frame_rate":"50/1",       "codec": "dnxhd"},
+'dnx_1080p_440x_23.97': { "size":"1920x1080p", "bitrate":440, "pix_fmt":"yuv422p10", "frame_rate":"60000/1001", "codec": "dnxhd"},
+'dnx_1080p_115_23.97' : { "size":"1920x1080p", "bitrate":115, "pix_fmt":"yuv422p",   "frame_rate":"24000/1001", "codec": "dnxhd"},
+'dnx_1080p_120_25'    : { "size":"1920x1080p", "bitrate":120, "pix_fmt":"yuv422p",   "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_1080p_145_29.97' : { "size":"1920x1080p", "bitrate":145, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001", "codec": "dnxhd"},
+'dnx_1080p_240_50'    : { "size":"1920x1080p", "bitrate":240, "pix_fmt":"yuv422p",   "frame_rate":"50/1",       "codec": "dnxhd"},
+'dnx_1080p_290_59.94' : { "size":"1920x1080p", "bitrate":290, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001", "codec": "dnxhd"},
+'dnx_1080p_175_23.97' : { "size":"1920x1080p", "bitrate":175, "pix_fmt":"yuv422p",   "frame_rate":"24000/1001", "codec": "dnxhd"},
+'dnx_1080p_185_25'    : { "size":"1920x1080p", "bitrate":185, "pix_fmt":"yuv422p",   "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_1080p_220_29.97' : { "size":"1920x1080p", "bitrate":220, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001", "codec": "dnxhd"},
+'dnx_1080p_365_50'    : { "size":"1920x1080p", "bitrate":365, "pix_fmt":"yuv422p",   "frame_rate":"50/1",       "codec": "dnxhd"},
+'dnx_1080p_440_59.94' : { "size":"1920x1080p", "bitrate":440, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001", "codec": "dnxhd"},
+'dnx_1080i_185x_25'   : { "size":"1920x1080i", "bitrate":185, "pix_fmt":"yuv422p10", "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_1080i_220x_29.97': { "size":"1920x1080i", "bitrate":220, "pix_fmt":"yuv422p10", "frame_rate":"30000/1001", "codec": "dnxhd"},
+'dnx_1080i_120_25'    : { "size":"1920x1080i", "bitrate":120, "pix_fmt":"yuv422p",   "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_1080i_145_29.97' : { "size":"1920x1080i", "bitrate":145, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001", "codec": "dnxhd"},
+'dnx_1080i_185_25'    : { "size":"1920x1080i", "bitrate":185, "pix_fmt":"yuv422p",   "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_1080i_220_29.97' : { "size":"1920x1080i", "bitrate":220, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001", "codec": "dnxhd"},
+'dnx_720p_90x_23.97'  : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p10", "frame_rate":"24000/1001", "codec": "dnxhd"},
+'dnx_720p_90x_25'     : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p10", "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_720p_180x_50'    : { "size":"1280x720p",  "bitrate":180, "pix_fmt":"yuv422p10", "frame_rate":"50/1",       "codec": "dnxhd"},
+'dnx_720p_220x_59.94' : { "size":"1280x720p",  "bitrate":220, "pix_fmt":"yuv422p10", "frame_rate":"60000/1001", "codec": "dnxhd"},
+'dnx_720p_90_23.97'   : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"24000/1001", "codec": "dnxhd"},
+'dnx_720p_90_25'      : { "size":"1280x720p",  "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_720p_110_29.97'  : { "size":"1280x720p",  "bitrate":110, "pix_fmt":"yuv422p",   "frame_rate":"30000/1001", "codec": "dnxhd"},
+'dnx_720p_180_50'     : { "size":"1280x720p",  "bitrate":180, "pix_fmt":"yuv422p",   "frame_rate":"50/1",       "codec": "dnxhd"},
+'dnx_720p_220_59.94'  : { "size":"1280x720p",  "bitrate":220, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001", "codec": "dnxhd"},
+'dnx_720p_60_23.97'   : { "size":"1280x720p",  "bitrate":60,  "pix_fmt":"yuv422p",   "frame_rate":"24000/1001", "codec": "dnxhd"},
+'dnx_720p_60_25'      : { "size":"1280x720p",  "bitrate":60,  "pix_fmt":"yuv422p",   "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_720p_75_29.97'   : { "size":"1280x720p",  "bitrate":75,  "pix_fmt":"yuv422p",   "frame_rate":"30000/1001", "codec": "dnxhd"},
+'dnx_720p_120_50'     : { "size":"1280x720p",  "bitrate":120, "pix_fmt":"yuv422p",   "frame_rate":"50/1",       "codec": "dnxhd"},
+'dnx_720p_145_59.94'  : { "size":"1280x720p",  "bitrate":145, "pix_fmt":"yuv422p",   "frame_rate":"60000/1001", "codec": "dnxhd"},
+'dnx_1080p_36_23.97'  : { "size":"1920x1080p", "bitrate":36,  "pix_fmt":"yuv422p",   "frame_rate":"24000/1001", "codec": "dnxhd"},
+'dnx_1080p_36_25'     : { "size":"1920x1080p", "bitrate":36,  "pix_fmt":"yuv422p",   "frame_rate":"25/1",       "codec": "dnxhd"},
+'dnx_1080p_45_29.97'  : { "size":"1920x1080p", "bitrate":45,  "pix_fmt":"yuv422p",   "frame_rate":"30000/1001", "codec": "dnxhd"},
+'dnx_1080p_75_50'     : { "size":"1920x1080p", "bitrate":75,  "pix_fmt":"yuv422p",   "frame_rate":"50/1",       "codec": "dnxhd"},
+'dnx_1080p_90_59.94'  : { "size":"1920x1080p", "bitrate":90,  "pix_fmt":"yuv422p",   "frame_rate":"60000/1001", "codec": "dnxhd"}}
 
 
 def probe(path):
@@ -114,7 +114,7 @@ def seconds_to_timecode(seconds):
 def conform_media(path,output_dir, start=None, end=None, duration=None, video_profile=None, audio_profile=None):
     
     if not video_profile:
-        video_profile = '1080p_36_23.97'
+        video_profile = 'dnx_1080p_36_23.97'
     if not audio_profile:
         audio_profile = 'pcm_48000'
         
@@ -267,7 +267,7 @@ if __name__ == "__main__":
     parser.add_option('-d', '--duration', type="string", dest='duration',default=None,
                       help = "record duration in timecode or seconds")
     
-    parser.add_option("-v", '--video-profile', type='string', dest = 'video_profile', default="1080p_36_23.97",
+    parser.add_option("-v", '--video-profile', type='string', dest = 'video_profile', default="dnx_1080p_36_23.97",
                       help = "encoding profile for video [default: 1080p_36_23.97]")
     parser.add_option("-a", '--audio-profile', type='string', dest = 'audio_profile',default='pcm_48000',
                       help = 'encoding profile for audio [default: pcm_48000]')
@@ -282,7 +282,7 @@ if __name__ == "__main__":
     if options.list_profiles:
         
         titles = ['Audio Profile', 'Sample Rate', 'Sample Fmt']
-        row_format ="{:<20}{:<15}{:<15}"
+        row_format ="{:<25}{:<15}{:<15}"
         
         print ""
         print row_format.format( *titles)
@@ -291,14 +291,14 @@ if __name__ == "__main__":
         for key,value in sorted(Audio_Profiles.items()):
             print row_format.format(key, value['sample_rate'], value['sample_fmt'])
         
-        titles = ['Video Profile', "Size", 'Frame Rate', "Bitrate", "Pix Fmt"]
-        row_format ="{:<20}{:<15}{:<15}{:<10}{:<10}"
+        titles = ['Video Profile', "Size", 'Frame Rate', "Bitrate", "Pix Fmt", "Codec"]
+        row_format ="{:<25}{:<15}{:<15}{:<10}{:<12}{:<10}"
         print ""
         print row_format.format( *titles)
         print ""
         for key, value in sorted(Video_Profiles.items()):
             print row_format.format(key, value['size'], 
-                                    value['frame_rate'], value['bitrate'], value['pix_fmt'])
+                                    value['frame_rate'], value['bitrate'], value['pix_fmt'], value['codec'])
         
         sys.exit()
         
