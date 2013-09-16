@@ -42,4 +42,4 @@ def walk_properties(space, iter_item):
 
 f = aaf.open(args[0])
 
-walk_properties("", f.header().properties())
+walk_properties("", f.header.properties())

@@ -807,8 +807,8 @@ if __name__ == "__main__":
     
     #layout = QtGui.QHBoxLayout()
     
-    header = f.header()
-    storage = header.storage()
+    header = f.header
+    storage = f.storage
     
     topLevelMobs = list(storage.toplevel_mobs())
 

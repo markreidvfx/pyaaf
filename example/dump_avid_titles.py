@@ -115,7 +115,4 @@ if __name__ == "__main__":
     
     
     f = aaf.open(args[0])
-        
-    header = f.header()
-        
-    dump_avid_titles(header)
+    dump_avid_titles(f.header)

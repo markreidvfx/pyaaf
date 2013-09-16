@@ -30,9 +30,9 @@ class TestFile(unittest.TestCase):
         f = aaf.open(output_aaf, 'rw')
         
         
-        header = f.header()
-        storage = header.storage()
-        d = header.dictionary()
+        header = f.header
+        storage = f.storage
+        d = f.dictionary
         
         picture_mastermob = d.create.MasterMob("Picture Mob 1")
         header.append(picture_mastermob)
@@ -107,9 +107,9 @@ class TestFile(unittest.TestCase):
         f = aaf.open(output_aaf, 'rw')
         
         
-        header = f.header()
-        storage = header.storage()
-        d = header.dictionary()
+        header = f.header
+        storage = f.storage
+        d = f.dictionary
         
         sound_mastermob = d.create.MasterMob("sound Mob 1")
 
@@ -156,8 +156,8 @@ class TestFile(unittest.TestCase):
             os.remove(output_aaf)
         f = aaf.open(output_aaf, 'rw')
         
-        header = f.header()
-        d = header.dictionary()
+        header = f.header
+        d = f.dictionary
         
 
         source_mob = d.create.SourceMob()
@@ -206,8 +206,8 @@ class TestFile(unittest.TestCase):
             os.remove(output_aaf)
         f = aaf.open(output_aaf, 'rw')
         
-        header = f.header()
-        d = header.dictionary()
+        header = f.header
+        d = f.dictionary
         
         master_mob = d.create.MasterMob("external_mob")
         header.append(master_mob)
@@ -267,8 +267,8 @@ class TestFile(unittest.TestCase):
             os.remove(output_aaf)
         f = aaf.open(output_aaf, 'rw')
         
-        header = f.header()
-        d = header.dictionary()
+        header = f.header
+        d = f.dictionary
         
         tape_name = "tape_01"
 
@@ -322,9 +322,9 @@ class TestFile(unittest.TestCase):
             os.remove(output_aaf)
         f = aaf.open(output_aaf, 'rw')
         
-        header = f.header()
-        storage = header.storage()
-        d = header.dictionary()
+        header = f.header
+        storage = f.storage
+        d = f.dictionary
         
         picture_mastermob1 = d.create.MasterMob("Picture Mob 1")
         picture_mastermob2 = d.create.MasterMob("Picture Mob 2")

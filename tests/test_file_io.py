@@ -85,10 +85,10 @@ class TestFile(unittest.TestCase):
         
         f = aaf.open(test_file)
     
-        header = f.header()
+        header = f.header
         
-        dictionary = header.dictionary()
-        storage = header.storage()
+        dictionary = f.dictionary
+        storage = f.storage
         
         print storage.count_mobs()
         
@@ -107,10 +107,10 @@ class TestFile(unittest.TestCase):
         
         f = aaf.open(test_file)
     
-        header = f.header()
+        header = f.header
         
-        dictionary = header.dictionary()
-        storage = header.storage()
+        dictionary = f.dictionary
+        storage = f.storage
         
         #print storage.count_mobs()
         
@@ -128,10 +128,10 @@ class TestFile(unittest.TestCase):
         
         f = aaf.open(test_file)
     
-        header = f.header()
+        header = f.header
         
-        dictionary = header.dictionary()
-        storage = header.storage()
+        dictionary = f.dictionary
+        storage = f.storage
         
         print storage.count_mobs()
         
@@ -157,7 +157,7 @@ class TestFile(unittest.TestCase):
         
         f = aaf.open(test_file)
     
-        header = f.header()
+        header = f.header
         
         for p in header.properties():
             pass
@@ -169,10 +169,10 @@ class TestFile(unittest.TestCase):
         
         f = aaf.open(test_file)
     
-        header = f.header()
+        header = f.header
         
-        dictionary = header.dictionary()
-        storage = header.storage()
+        dictionary = f.dictionary
+        storage = f.storage
         
         for p in storage.properties():
             pass
@@ -191,10 +191,10 @@ class TestFile(unittest.TestCase):
         
         f = aaf.open(test_file)
     
-        header = f.header()
+        header = f.header
         
-        dictionary = header.dictionary()
-        storage = header.storage()
+        dictionary = f.dictionary
+        storage = f.storage
         
         for p in dictionary.properties():
             pass
@@ -206,10 +206,10 @@ class TestFile(unittest.TestCase):
         
         f = aaf.open(test_file)
     
-        header = f.header()
+        header = f.header
         
-        dictionary = header.dictionary()
-        storage = header.storage()
+        dictionary = f.dictionary
+        storage = f.storage
         
         print storage.count_mobs()
         
@@ -296,7 +296,7 @@ class TestFile(unittest.TestCase):
         
         f = aaf.open(test_file)
     
-        header = f.header()
+        header = f.header
         
         def walk_properties(space, iter_item):
 
@@ -324,8 +324,8 @@ class TestFile(unittest.TestCase):
     def test_iter_comments(self):
         test_file = main_test_file
         f = aaf.open(test_file)
-        header = f.header()
-        storage = header.storage()
+        header = f.header
+        storage = f.storage
         
         for mob in storage.mobs():
             
@@ -339,8 +339,8 @@ class TestFile(unittest.TestCase):
         test_file = os.path.join(sandbox, 'comments_create.aaf')
         f = aaf.open(test_file, 'w')
         
-        header = f.header()
-        d = header.dictionary()
+        header = f.header
+        d = f.dictionary
         
         mob = d.create.MasterMob("bob")
         header.append(mob)
@@ -364,7 +364,7 @@ class TestFile(unittest.TestCase):
     def test_lookup_index(self):
         test_file = main_test_file
         f = aaf.open(test_file)
-        header = f.header()
+        header = f.header
         
         d = header['Dictionary']
         storage = header['Content']
@@ -386,8 +386,8 @@ class TestFile(unittest.TestCase):
     def test_dictionary_defs(self):
         test_file = main_test_file
         f = aaf.open(test_file)
-        header = f.header()
-        d = header.dictionary()
+        header = f.header
+        d = f.dictionary
         
         for item in d.class_defs():
             pass

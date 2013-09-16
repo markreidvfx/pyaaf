@@ -234,8 +234,8 @@ def create_aaf(path, media_streams, mobname):
     
     f = aaf.open(path, 'rw')
 
-    header = f.header()
-    d = header.dictionary()
+    header = f.header
+    d = f.dictionary
     
     
     mastermob = d.create.MasterMob(mobname)

@@ -132,13 +132,24 @@ cdef class File(object):
         
         return new_file
         
-    def header(self):
-        cdef Header header = Header()
-        error_check(self.proxy.ptr.GetHeader(&header.ptr))
-        return Header(header)
+
     
     def close(self):
         error_check(self.proxy.ptr.Close())
+        
+    property header:
+        def __get__(self):
+            cdef Header header = Header()
+            error_check(self.proxy.ptr.GetHeader(&header.ptr))
+            return Header(header)
+            
+    property storage:
+        def __get__(self):
+            return self.header.storage()
+    
+    property dictionary:
+        def __get__(self):
+            return self.header.dictionary()
 
 cdef class Header(AAFObject):
     def __init__(self, AAFBase obj = None):

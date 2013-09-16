@@ -188,8 +188,8 @@ class TestFile(unittest.TestCase):
         f= aaf.open(output_aaf, 'w')
         
         
-        header = f.header()
-        d = header.dictionary()
+        header = f.header
+        d = f.dictionary
         
         count = 0
         
@@ -331,8 +331,8 @@ class TestFile(unittest.TestCase):
         # test reading
         f = aaf.open(output_aaf)
         
-        header = f.header()
-        storage = header.storage()
+        header = f.header
+        storage = f.storage
         
         for mob in storage.master_mobs():
         
@@ -355,8 +355,8 @@ class TestFile(unittest.TestCase):
         f= aaf.open(output_aaf, 'rw')
         
         
-        header = f.header()
-        d = header.dictionary()
+        header = f.header
+        d = f.dictionary
         
         count = 0
         
@@ -411,8 +411,8 @@ class TestFile(unittest.TestCase):
         f= aaf.open(output_aaf, 'rw')
         
         
-        header = f.header()
-        d = header.dictionary()
+        header = f.header
+        d = f.dictionary
         
         count = 0
         
@@ -486,8 +486,8 @@ class TestFile(unittest.TestCase):
         f= aaf.open(output_aaf, 'rw')
         
         
-        header = f.header()
-        d = header.dictionary()
+        header = f.header
+        d = f.dictionary
         
         count = 0
         

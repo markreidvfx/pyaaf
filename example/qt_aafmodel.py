@@ -78,7 +78,7 @@ class TreeItem(object):
             self.extendChildItems(item)
             
         elif isinstance(item, aaf.storage.File):
-            self.extendChildItems([item.header()])
+            self.extendChildItems([item.header])
             
         elif isinstance(item, aaf.storage.Header):
             self.extendChildItems([item.storage()])
@@ -265,8 +265,8 @@ if __name__ == "__main__":
     f = aaf.open(file_path)
         
         #root = axfile
-    header = f.header()
-    storage = header.storage()
+    header = f.header
+    storage = f.storage
     root = storage
     if options.compmobs:
         root = list(storage.composition_mobs())
@@ -278,7 +278,7 @@ if __name__ == "__main__":
        # root = list(storage.GetSourceMobs())
         
     if options.dictionary:
-        root = header.dictionary()
+        root = f.dictionary
         
     if options.all:
         root = f
