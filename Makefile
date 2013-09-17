@@ -31,6 +31,7 @@ docs: build
 clean:
 	- rm -rf build
 	- find aaf -name '*.so' -delete
+	- find aaf -name '*.dylib' -delete
 
 clean-all: clean
 	- rm configure config.py
