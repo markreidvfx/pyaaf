@@ -7,7 +7,7 @@ python:
 # Get AAF-devel libs
 
 env:
-    - AAF_ROOT=AAF-devel LD_LIBRARY_PATH=$AAF_ROOT/bin/debug
+    - AAF_ROOT=AAF-devel
 
 before_install:
     - mkdir AAF-devel
@@ -30,5 +30,5 @@ before_install:
 install: pip install cython
 
 script:
-    - make build
-    - nosetests
+    - make install
+    - make test

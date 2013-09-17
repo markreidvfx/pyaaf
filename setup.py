@@ -6,7 +6,7 @@ import sys
 import shutil
 
 #os.environ['CXX'] = 'g++'
-os.environ['ARCHFLAGS'] ="-arch x86_64"
+#os.environ['ARCHFLAGS'] ="-arch x86_64"
 
 AAF_ROOT = os.environ.get("AAF_ROOT")
 

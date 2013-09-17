@@ -5,7 +5,7 @@ MOD_SOS = $(CYTHON_SRC:%.pyx=%.so)
 
 .PHONY: default build cythonize clean clean-all info test docs
 
-default: build
+default: build_dev
 
 info:
 	@ echo Cython sources: $(CYTHON_SRC)
@@ -16,14 +16,17 @@ build/cython/%.cpp: %.pyx
 	@ mkdir -p $(shell dirname $@)
 	cython --cplus -I. -Iheaders -o $@ $<
 
-build: cythonize
+build_dev: cythonize
 	python setup.py build_ext --inplace --debug
+
+build: cythonize
+	python setup.py build_ext
 
 install: build
 	python setup.py install
 	
 test:
-	nosetests
+	cd tests;nosetests
 
 docs: build
 	make -C docs html
