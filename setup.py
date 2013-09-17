@@ -8,8 +8,30 @@ import shutil
 #os.environ['CXX'] = 'g++'
 #os.environ['ARCHFLAGS'] ="-arch x86_64"
 
-AAF_ROOT = os.environ.get("AAF_ROOT")
+copy_args = sys.argv[1:]
+AAF_ROOT = None
+if '--aaf-root' in copy_args:
+    index = copy_args.index('--aaf-root')
+    AAF_ROOT = copy_args[index+1]
+    del copy_args[index]
+    del copy_args[index]
+else:
+    AAF_ROOT = os.environ.get("AAF_ROOT")
 
+space = '   '
+if AAF_ROOT is None:
+
+    print space, "Unable to locate AAF Development libraries."
+    print space, "Please specify with --aaf-root or AAF_ROOT env variable"
+    print space, "AAF SDK can be found from http://aaf.sourceforge.net"
+    print space, "Pre-built devel libraries can be found here"
+    print space, "http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6"
+    sys.exit(-1)
+    
+if not os.path.exists(AAF_ROOT):
+    print space, "AAF_ROOT direcotry does not exist: %s" % AAF_ROOT
+    sys.exit(-1)
+    
 AAF_INCLUDE = os.path.join(AAF_ROOT,'include')
 AAF_LIB = os.path.join(AAF_ROOT,'lib/debug')
 
@@ -114,8 +136,9 @@ def install_name_tool(path):
     subprocess.check_call(cmd)
         
 class build_pyaaf_ext(build_ext):
+
     def build_extensions(self):
-        com_api, libaafintp, libaafpgapi = copy_com_api()
+        com_api, libaafintp, libaafpgapi = copy_com_api(debug=self.debug)
         if sys.platform == 'darwin':
             name_tool_fix_com_api(com_api)
         
@@ -134,7 +157,7 @@ for item in (libaafintp, libaafpgapi):
 package_data = {'aaf':package_data}
 
 setup(
-
+    script_args=copy_args,
     name='aaf',
     version='0.2',
     description='Python Bindings for the Advanced Authoring Format (AAF)',
