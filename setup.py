@@ -21,6 +21,9 @@ ext_extra = {
     'libraries': ['aaflib','aafiid', 'com-api'],
 }
 
+if sys.platform.startswith('linux'):
+    ext_extra['extra_link_args'] = ['-Wl,-R$ORIGIN']
+
 print "AAF_ROOT =",AAF_ROOT
 
 # Construct the modules that we find in the "build/cython" directory.
