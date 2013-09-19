@@ -38,8 +38,6 @@ AAF_LIB = os.path.join(AAF_ROOT,'lib', 'debug')
 
 AAF_COM = os.path.join(AAF_ROOT,'bin', 'debug')
 
-WIN_ARCH = 'Win32'
-
 ext_extra = {
     'include_dirs': ['headers',AAF_INCLUDE],
     'library_dirs': [AAF_LIB, AAF_COM],
@@ -49,7 +47,12 @@ ext_extra = {
 if sys.platform.startswith('linux'):
     ext_extra['extra_link_args'] = ['-Wl,-R$ORIGIN']
 
+WIN_ARCH = 'Win32'
+
 if sys.platform.startswith('win'):
+    import platform
+    if platform.architecture()[0] == '64bit':
+        WIN_ARCH = 'x64'
     ext_extra['library_dirs'] = [os.path.join(AAF_ROOT,WIN_ARCH ,'Release','Refimpl')]
     ext_extra['libraries'] = ['AAF', 'AAFIID']
     
