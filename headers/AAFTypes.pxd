@@ -2,33 +2,33 @@ from libc.stddef cimport wchar_t
 from libc.stdint cimport int64_t, uint64_t
 
 cdef extern from *:
-    ctypedef signed char aafInt8 "signed char"
-    ctypedef signed short int aafInt16 "signed short int"
-    ctypedef signed int aafInt32 "signed int"
-    ctypedef int64_t aafInt64
+    ctypedef signed char aafInt8 "aafInt8"
+    ctypedef signed short int aafInt16 "aafInt16"
+    ctypedef signed int aafInt32 "aafInt32"
+    ctypedef int64_t aafInt64 "aafInt64"
     
-    ctypedef unsigned char aafUInt8 "unsigned char"
-    ctypedef unsigned short int aafUInt16 "unsigned short int"
-    ctypedef unsigned int aafUInt32 "unsigned int"
-    ctypedef uint64_t aafUInt64
+    ctypedef unsigned char aafUInt8 "aafUInt8"
+    ctypedef unsigned short int aafUInt16 "aafUInt16"
+    ctypedef unsigned int aafUInt32 "aafUInt32"
+    ctypedef uint64_t aafUInt64 "aafUInt64"
     
-    ctypedef aafInt32 aafBoolean_t 
+    ctypedef aafInt32 aafBoolean_t "aafBoolean_t"
     
-    ctypedef unsigned int DWORD "unsigned int"
-    ctypedef unsigned short WORD "unsigned short"
-    ctypedef unsigned char BYTE "unsigned char"
+    ctypedef unsigned int DWORD "DWORD"
+    ctypedef unsigned short WORD "WORD"
+    ctypedef unsigned char BYTE "BYTE"
     
-    ctypedef aafInt32 AAFRESULT
+    ctypedef aafInt32 AAFRESULT "AAFRESULT"
     
-    ctypedef int SCODE
-    ctypedef int HRESULT
+    ctypedef int SCODE "SCODE"
+    ctypedef int HRESULT "HRESULT"
     
-    ctypedef wchar_t aafCharacter
+    ctypedef wchar_t aafCharacter "aafCharacter"
     
     ctypedef unsigned char UChar "unsigned char"
     
-    ctypedef unsigned char * aafMemPtr_t "unsigned char *"
-    ctypedef aafUInt8 * aafDataBuffer_t "aafUInt8 *"
+    ctypedef aafUInt8 * aafMemPtr_t "aafMemPtr_t"
+    ctypedef aafUInt8 * aafDataBuffer_t "aafDataBuffer_t"
     
 
 cdef extern from "AAFTypes.h":
