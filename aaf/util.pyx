@@ -32,19 +32,6 @@ cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID gui
         raise Exception("src cannot be a null pointer")
     error_check(src[0].QueryInterface(guid, <void**> dst))
 
-cdef object register_all():
-
-    error_check(lib.AAFLoad(NULL))
-    cdef lib.IAAFPluginManager *plugin_manager
-    plugin_manager = NULL
-    try:
-        error_check(lib.AAFGetPluginManager(&plugin_manager))
-        error_check(plugin_manager.RegisterSharedPlugins())
-    finally:
-        if plugin_manager:
-            plugin_manager.Release()
-    
-
 cdef lib.aafCharacter* aafChar(char* s):
     
     cdef wstring wstr = toWideString(s)
