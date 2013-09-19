@@ -1,4 +1,4 @@
-from distutils.core import setup, Extension
+from distutils.core import setup, Extension, Command 
 from distutils.command.build_ext import build_ext
 import os
 import subprocess
@@ -66,13 +66,50 @@ for dirname, dirnames, filenames in os.walk(build_dir):
 
         path = os.path.join(dirname, filename)
         name = os.path.splitext(os.path.relpath(path, build_dir))[0].replace(os.sep, '.')
-        print name
         ext_modules.append(Extension(
             name,
             sources=[path],
             language="c++",
             **ext_extra
         ))
+        
+class cythonize_command(Command):
+    description = "Cythonize .pyx files into c++ .cpp files"
+    user_options = []
+
+    def initialize_options(self):
+        from Cython.Compiler.Main import main
+        self.main = main
+        
+    def cythonize(self, src):
+
+        cmd = ['--cplus']
+
+        for item in ext_extra['include_dirs']:
+            cmd.append('-I%s'% item)
+
+        name, ext = os.path.splitext(src)
+        dst = os.path.join(build_dir, name + '.cpp')
+
+        cmd.extend(['-o', dst, src])
+        cmd.insert(0,'cython')
+        print subprocess.list2cmdline(cmd)
+
+        dirname = os.path.dirname(dst)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+        sys.argv = cmd
+        self.main(command_line = 1)
+    
+    def finalize_options(self):
+        pass
+    def run(self):
+        dest_dir = os.path.join(build_dir, 'aaf')
+        for dirname, dirnames, filenames in os.walk('aaf'):
+            for filename in filenames:
+                if filename.startswith('.') or os.path.splitext(filename)[1] != '.pyx':
+                    continue
+                self.cythonize(os.path.join(dirname, filename))
         
 def get_com_api(debug=True):
     if sys.platform.startswith("win"):
@@ -156,6 +193,7 @@ class build_pyaaf_ext(build_ext):
             for item in self.get_outputs():
                 install_name_tool(item)
         print "done!"
+
         
 com_api, libaafintp, libaafpgapi = get_com_api()
 package_data = [os.path.basename(com_api)]
@@ -176,7 +214,8 @@ setup(
     url="https://github.com/markreidvfx/pyaaf",
     packages=['aaf'],
     ext_modules=ext_modules,
-    cmdclass = {'build_ext':build_pyaaf_ext},
+    cmdclass = {'build_ext':build_pyaaf_ext,
+                'cythonize':cythonize_command},
     package_data=package_data
 
 )
