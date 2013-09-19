@@ -207,7 +207,7 @@ package_data = {'aaf':package_data}
 
 setup(
     script_args=copy_args,
-    name='aaf',
+    name='PyAAF',
     version='0.2',
     description='Python Bindings for the Advanced Authoring Format (AAF)',
     
@@ -215,6 +215,7 @@ setup(
     author_email="mindmark@gmail.com",
     
     url="https://github.com/markreidvfx/pyaaf",
+    license='MIT',
     packages=['aaf'],
     ext_modules=ext_modules,
     cmdclass = {'build_ext':build_pyaaf_ext,
