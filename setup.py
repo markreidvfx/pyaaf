@@ -33,9 +33,12 @@ if not os.path.exists(AAF_ROOT):
     sys.exit(-1)
     
 AAF_INCLUDE = os.path.join(AAF_ROOT,'include')
-AAF_LIB = os.path.join(AAF_ROOT,'lib/debug')
 
-AAF_COM = os.path.join(AAF_ROOT,'bin/debug')
+AAF_LIB = os.path.join(AAF_ROOT,'lib', 'debug')
+
+AAF_COM = os.path.join(AAF_ROOT,'bin', 'debug')
+
+WIN_ARCH = 'Win32'
 
 ext_extra = {
     'include_dirs': ['headers',AAF_INCLUDE],
@@ -46,19 +49,24 @@ ext_extra = {
 if sys.platform.startswith('linux'):
     ext_extra['extra_link_args'] = ['-Wl,-R$ORIGIN']
 
+if sys.platform.startswith('win'):
+    ext_extra['library_dirs'] = [os.path.join(AAF_ROOT,WIN_ARCH ,'Release','Refimpl')]
+    ext_extra['libraries'] = ['AAF', 'AAFIID']
+    
 print "AAF_ROOT =",AAF_ROOT
 
 # Construct the modules that we find in the "build/cython" directory.
 ext_modules = []
-build_dir = os.path.abspath(os.path.join(__file__, '..', 'build', 'cython'))
+build_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'build', 'cython'))
+
 for dirname, dirnames, filenames in os.walk(build_dir):
     for filename in filenames:
         if filename.startswith('.') or os.path.splitext(filename)[1] != '.cpp':
             continue
 
         path = os.path.join(dirname, filename)
-        name = os.path.splitext(os.path.relpath(path, build_dir))[0].replace('/', '.')
-
+        name = os.path.splitext(os.path.relpath(path, build_dir))[0].replace(os.sep, '.')
+        print name
         ext_modules.append(Extension(
             name,
             sources=[path],
@@ -66,9 +74,9 @@ for dirname, dirnames, filenames in os.walk(build_dir):
             **ext_extra
         ))
         
-def get_com_api(debug=True, win_arch='64'):
+def get_com_api(debug=True):
     if sys.platform.startswith("win"):
-        dir = os.path.join(AAF_ROOT,'win%s' % str(win_arch))
+        dir = os.path.join(AAF_ROOT,'%s' % str(WIN_ARCH))
         if debug:
             dir = os.path.join(dir, "Debug")
         else:
@@ -147,7 +155,7 @@ class build_pyaaf_ext(build_ext):
         if sys.platform == 'darwin':
             for item in self.get_outputs():
                 install_name_tool(item)
-        #print "done!"
+        print "done!"
         
 com_api, libaafintp, libaafpgapi = get_com_api()
 package_data = [os.path.basename(com_api)]

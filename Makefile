@@ -35,6 +35,8 @@ clean:
 	- rm -rf build
 	- find aaf -name '*.so' -delete
 	- find aaf -name '*.dylib' -delete
+	- find aaf -name '*.pyd' -delete
+	- find aaf -name '*.dll' -delete
 
 clean-all: clean
 	- rm configure config.py
