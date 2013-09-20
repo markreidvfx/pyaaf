@@ -91,7 +91,7 @@ class TestFile(unittest.TestCase):
         frames = 4
         
         for i in xrange(frames):
-            data = [1 for x in range(width * height * 2)]
+            data = [1 for x in range(width * height * 3)] # Not sure how to calculate size, this is to big but works
             ret= picture_essence.write(data, 1,'UInt8')
             print 'wrote', ret
         picture_essence.complete_write()
