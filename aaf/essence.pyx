@@ -222,7 +222,7 @@ cdef class EssenceMultiAccess(AAFBase):
             
 cdef class EssenceAccess(EssenceMultiAccess):
     def __init__(self, AAFBase obj = None):
-        super(EssenceMultiAccess, self).__init__(obj)
+        super(EssenceAccess, self).__init__(obj)
         self.iid = lib.IID_IAAFEssenceAccess
         self.ptr = NULL
         if not obj:
