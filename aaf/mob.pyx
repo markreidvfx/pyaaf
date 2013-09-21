@@ -17,6 +17,8 @@ from .property cimport TaggedValue
 
 from wstring cimport wstring, wideToString, toWideString
 
+from struct import unpack
+
 from .fraction_util import AAFFraction
 
 cdef class Mob(AAFObject):
@@ -241,6 +243,21 @@ cdef class MasterMob(Mob):
         Import raw dnxhd video stream from file.
         """
         
+        f = open(path, 'rb')
+        dnx_header = f.read(640)
+        f.close()
+
+        if len(dnx_header) != 640:
+            raise ValueError("Invalid DNxHD file: header to Short")
+
+        header_prefix = (0x00, 0x00, 0x02, 0x80, 0x01)
+
+        if header_prefix != unpack(">BBBBB", dnx_header[:5]):
+            raise ValueError("Invalid DNxHD file: header magick number wrong")
+
+        width, height = unpack(">24xhh", dnx_header[:28])
+        codec_id = unpack(">40xi", dnx_header[:44])[0]
+        
         slot_index = 0
         
         for slot in self.slots():
@@ -257,7 +274,7 @@ cdef class MasterMob(Mob):
                                      frame_rate,
                                      compress = False)
         
-        essence.codec_flavour = "Flavour_VC3_1253"
+        essence.codec_flavour = "Flavour_VC3_%d" % codec_id
         
         video = open(path)
         readsize = essence.max_sample_size
