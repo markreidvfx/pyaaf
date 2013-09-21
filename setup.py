@@ -53,8 +53,15 @@ if sys.platform.startswith('win'):
     import platform
     if platform.architecture()[0] == '64bit':
         WIN_ARCH = 'x64'
-    ext_extra['library_dirs'] = [os.path.join(AAF_ROOT,WIN_ARCH ,'Release','Refimpl')]
-    ext_extra['libraries'] = ['AAF', 'AAFIID']
+    if '--debug' in copy_args:
+        ext_extra['library_dirs'] = [os.path.join(AAF_ROOT,WIN_ARCH ,'Debug','Refimpl')]
+        ext_extra['libraries'] = ['AAFD', 'AAFIIDD']
+    else:
+        ext_extra['library_dirs'] = [os.path.join(AAF_ROOT,WIN_ARCH ,'Release','Refimpl')]
+        ext_extra['libraries'] = ['AAF', 'AAFIID']
+
+    ext_extra['library_dirs'].extend([os.path.join(AAF_ROOT, 'lib'),
+                                        os.path.join(AAF_ROOT, 'bin')])
     
 print "AAF_ROOT =",AAF_ROOT
 
@@ -121,12 +128,15 @@ def get_com_api(debug=True):
             dir = os.path.join(dir, "Debug")
         else:
             dir = os.path.join(dir, "Release")
-            
-        com_api = os.path.join(dir,'Refimpl', 'AAFCOAPI.dll')
-        libaafintp =  os.path.join(dir,'Refimpl', 'aafext', 'AAFINTP.dll')
-        libaafpgapi =  os.path.join(dir,'Refimpl', 'aafext', 'AAFPGAPI.dll')
-        
-        return com_api, libaafintp, libaafpgapi
+
+        for dirname in ext_extra['library_dirs']:
+            com_api = os.path.join(dirname, 'AAFCOAPI.dll')
+            libaafintp =  os.path.join(dirname, 'aafext', 'AAFINTP.dll')
+            libaafpgapi =  os.path.join(dirname, 'aafext', 'AAFPGAPI.dll')
+            print com_api
+            if all([os.path.exists(item) for item in (com_api,libaafintp,libaafpgapi)]):
+                return com_api, libaafintp, libaafpgapi
+        raise Exception("Unable to find AAFCOAPI.dll, AAFINTP.dll, AAFPGAPI.dll")
     ext = '.so'
     if sys.platform == 'darwin':
         ext = '.dylib'

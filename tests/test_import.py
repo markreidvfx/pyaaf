@@ -2,10 +2,13 @@ import unittest
 import traceback
 import os
 import subprocess
+import time
 
+from struct import unpack
 from fractions import Fraction
 import aaf
 
+FFMPEG_EXEC='ffmpeg'
 
 sandbox = os.path.join(os.path.dirname(os.path.abspath(__file__)),'sandbox')
 if not os.path.exists(sandbox):
@@ -69,7 +72,7 @@ DNxHD_Formats =[
 def encode_dnxhd(size, bit_rate, pix_fmt, frame_rate, frames, name, iterlaced=False):
     
     outfile = os.path.join(sandbox, "%s.dnxhd" % name )
-    cmd = ['ffmpeg', '-y', '-f', 'lavfi', '-i', 'testsrc=size=%dx%d:rate=%s' % (size[0],size[1], frame_rate), '-frames:v', str(frames)]
+    cmd = [FFMPEG_EXEC, '-y', '-f', 'lavfi', '-i', 'testsrc=size=%dx%d:rate=%s' % (size[0],size[1], frame_rate), '-frames:v', str(frames)]
     cmd.extend(['-vcodec', 'dnxhd','-pix_fmt', pix_fmt, '-vb', '%dM' % bit_rate ])
     
     if iterlaced:
@@ -95,7 +98,7 @@ def generate_pcm_audio_mono(name, sample_rate = 48000, duration = 2):
     #cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=48000:d=10']
     
     #mono
-    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=%d:d=%f' % (sample_rate, duration)]
+    cmd = [FFMPEG_EXEC,'-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=%d:d=%f' % (sample_rate, duration)]
     
     cmd.extend([ '-f','s16le', '-acodec', 'pcm_s16le'])
     
@@ -113,7 +116,7 @@ def generate_pcm_audio_stereo(name, sample_rate = 48000, duration = 2):
     
     outfile = os.path.join(sandbox, '%s.pcm' % name)
     
-    cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=%d:d=%f'% ( sample_rate, duration)]
+    cmd = [FFMPEG_EXEC,'-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=%d:d=%f'% ( sample_rate, duration)]
     
     #mono
     #cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=48000:d=10']
@@ -130,10 +133,11 @@ def generate_pcm_audio_stereo(name, sample_rate = 48000, duration = 2):
         return Exception("error encoding footage")
     return outfile
 
-class TestFile(unittest.TestCase):
+class TestImport(unittest.TestCase):
     
 
     def test_dnxhd_export(self):
+
         """
         width, height = unpack(">24xhh", s[:28])
         cid = unpack(">40xi", s[:44])
@@ -192,8 +196,8 @@ class TestFile(unittest.TestCase):
         d = f.dictionary
         
         count = 0
-        
-        for item in DNxHD_Formats:
+        #time.sleep(10)
+        for num,item in enumerate(DNxHD_Formats):
             
             if count > 1:
                 pass
@@ -202,6 +206,7 @@ class TestFile(unittest.TestCase):
             frame_rate = item['frame_rate']
             pix_fmt = item['pix_fmt']
             bitrate = item['bitrate']
+            print num, item
             
             nb_frames = 10
             
@@ -246,16 +251,30 @@ class TestFile(unittest.TestCase):
             
             
             dnx_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, nb_frames, name, interlaced)
+
             dnx = open(dnx_path)
+            dnx_header = dnx.read(640)
             
+            
+            width, height = unpack(">24xhh", dnx_header[:28])
+            cid = unpack(">40xi", dnx_header[:44])[0]
+            print "header:", width, height ,'compression id:',cid
+            essence.codec_flavour = "Flavour_VC3_%d" % cid
+            dnx.close()
+            
+            dnx = open(dnx_path)
+            print "getting read size"
             readsize = essence.max_sample_size
             
             print "readsize =",readsize
+            count = 0
             while True:
+                print "count", count
                 data = dnx.read(readsize)
                 if not data:
                     break
                 essence.write(data, 1)
+                count += 1
             essence.complete_write()
             
             codec_name,codeID = essence.codec_name, essence.codecID
@@ -295,6 +314,7 @@ class TestFile(unittest.TestCase):
             data = None
             
             print "writing audio data"
+
             
             count = 0
             while True:
@@ -303,7 +323,10 @@ class TestFile(unittest.TestCase):
                     
                     if not data:
                         break
-                    #print "read", len(data)
+
+                    if len(data) != readsize:
+                        break
+                    #rint "read", len(data)
                     essence.write(data)
                 if not data:
                     break
@@ -324,27 +347,30 @@ class TestFile(unittest.TestCase):
         print "wrote", count/2, "audio samples"
             
         f.save()
+        print "save"
         f.save(output_xml)
         f.close()
         
-        
+        print "reading"
         # test reading
         f = aaf.open(output_aaf)
 
         storage = f.storage
-        
-        for mob in storage.master_mobs():
-        
-            essence = mob.open_essence(1)
-            c= 0
-            while True:
-                data = essence.read()
-                if not data:
-                    break
-                c += 1
-    
-            assert c == nb_frames
-            
+        #time.sleep(10)
+##        for mob in storage.master_mobs():
+##            print "Opening essence", mob.name
+##            essence = mob.open_essence(1)
+##            c= 0
+##            while True:
+##                print "reading data"
+##                data = essence.read()
+##                if not data:
+##                    break
+##                print "read", len(data), 'bytes'
+##                c += 1
+##    
+##            assert c == nb_frames
+##            
         
         for essence in f.storage.essence_data():
             
@@ -368,7 +394,7 @@ class TestFile(unittest.TestCase):
         output_aaf = os.path.join(sandbox, 'mono_audio_export.aaf')
         output_xml = os.path.join(sandbox, 'mono_audio_export.xml')
                 
-        f= aaf.open(output_aaf, 'rw')
+        f= aaf.open(output_aaf, 'w')
         
         
         header = f.header
@@ -413,6 +439,8 @@ class TestFile(unittest.TestCase):
             chunk = pcm.read(readsize)
             if not chunk:
                 break
+            if len(chunk) != readsize:
+                break
             essence.write(chunk)
             
         
@@ -424,7 +452,7 @@ class TestFile(unittest.TestCase):
         output_aaf = os.path.join(sandbox, 'stereo_audio_export.aaf')
         output_xml = os.path.join(sandbox, 'stereo_audio_export.xml')
                 
-        f= aaf.open(output_aaf, 'rw')
+        f= aaf.open(output_aaf, 'w')
         
         header = f.header
         d = f.dictionary
@@ -483,8 +511,12 @@ class TestFile(unittest.TestCase):
             chunk = pcm.read(readsize)
             chunk2 = pcm.read(readsize)
             
-            if not chunk:
+            if not chunk or not chunk2:
                 break
+
+            if len(chunk) != readsize or len(chunk2) != readsize:
+                break
+            
             
             essence_left.write(chunk)
             essence_right.write(chunk2)
@@ -498,7 +530,7 @@ class TestFile(unittest.TestCase):
         output_aaf = os.path.join(sandbox, 'mob_import_essence.aaf')
         output_xml = os.path.join(sandbox, 'mob_import_essence.xml')
                 
-        f= aaf.open(output_aaf, 'rw')
+        f= aaf.open(output_aaf, 'w')
 
         header = f.header
         d = f.dictionary
