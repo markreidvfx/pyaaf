@@ -1,11 +1,11 @@
 cimport lib
 from .util cimport error_check, query_interface, register_object
 
-from .define cimport PropertyDef, TypeDef,resolve_typedef
+from .define cimport PropertyDef, TypeDef,resolve_typedef, TypeDefString
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
-from wstring cimport  wstring, wideToString 
+from wstring cimport  wstring, wideToString, toWideString
 
 cdef class Property(AAFBase):
     def __init__(self, AAFBase obj = None):
@@ -91,17 +91,27 @@ cdef class TaggedValue(AAFObject):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+    
+    def typedef(self):
+        cdef TypeDef type_def = TypeDef()
+        error_check(self.ptr.GetTypeDefinition(&type_def.typedef_ptr))
+        return resolve_typedef(TypeDef(type_def))
             
     property value:
         def __get__(self):
             return self['Value']
         def __set__(self, value):
-            for p in self.properties():
-                if p.name == "Value":
-                    p.value = value
-                    return
-            raise KeyError("Property Value Not Found")
+            typedef = self.typedef()
+            if isinstance(typedef, TypeDefString):
+                set_tag_bytes(self, value)
+                return
             
+            raise NotImplementedError("set not implemented for %s", str(typedef))
+            
+cdef object set_tag_bytes(TaggedValue tag, bytes value):
+    cdef wstring w_value = toWideString(value)
+    cdef lib.aafUInt32 size_in_bytes = len(value) * sizeof(lib.aafCharacter)
+    error_check(tag.ptr.SetValue(size_in_bytes,<lib.aafDataBuffer_t> w_value.c_str()))
 
 register_object(TaggedValue)
         

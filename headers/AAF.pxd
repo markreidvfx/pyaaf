@@ -121,7 +121,11 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFTaggedValue
     cdef GUID IID_IAAFTaggedValue
     cdef cppclass IAAFTaggedValue(IUnknown):
-        pass
+        HRESULT GetTypeDefinition(IAAFTypeDef ** ppTypeDef)
+        HRESULT SetValue(
+            aafUInt32  valueSize,
+            aafDataBuffer_t  pValue
+        )
         
         
     # MetaDefinitions
@@ -315,6 +319,12 @@ cdef extern from "AAF.h":
         )
     cdef GUID IID_IAAFTypeDefString
     cdef cppclass IAAFTypeDefString(IUnknown):
+        HRESULT SetCString(
+            IAAFPropertyValue * pPropVal,
+            aafMemPtr_t  pData,
+            aafUInt32  dataSize
+        )
+        HRESULT GetType( IAAFTypeDef ** ppTypeDef)
         HRESULT GetCount(
             IAAFPropertyValue *pPropVal,
             aafUInt32 * pCount
@@ -761,6 +771,12 @@ cdef extern from "AAF.h":
         HRESULT SetSlotID(aafSlotID_t pSlotID)
         HRESULT GetPhysicalNum(aafUInt32  *number)
         HRESULT SetPhysicalNum(aafUInt32  number)
+        HRESULT SetName(aafCharacter* pName)
+        HRESULT GetNameBufLen(aafUInt32 *  pBufSize)
+        HRESULT GetName(
+            aafCharacter *  pName,
+            aafUInt32  bufSize
+        )
     
     cdef aafUID_t AUID_AAFTimelineMobSlot
     cdef GUID IID_IAAFTimelineMobSlot

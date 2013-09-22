@@ -11,7 +11,7 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.pair cimport pair
 from libcpp.map cimport map
-from wstring cimport  wstring, wideToString
+from wstring cimport  wstring, wideToString, toWideString
 
 import traceback
 from fraction_util import AAFFraction
@@ -396,12 +396,17 @@ cdef class TypeDefIndirect(TypeDef):
         if self.ptr:
             self.ptr.Release()
             
-    def value(self, PropertyValue p_value):
+    def indirect_value(self, PropertyValue p_value):
         cdef PropertyValue out_value = PropertyValue()
-        
         error_check(self.ptr.GetActualValue(p_value.ptr, &out_value.ptr))
-        
-        out_value = PropertyValue(out_value)
+        return PropertyValue(out_value)
+    
+    def set_value(self, PropertyValue p_value, object value):
+        cdef PropertyValue indirect_value = self.indirect_value(p_value)
+        indirect_value.value = value
+            
+    def value(self, PropertyValue p_value):
+        cdef PropertyValue out_value = self.indirect_value(p_value)
         value =  out_value.value
         if value is None:
             raise NotImplementedError("typedef rename of value type %s not implemented" % str(out_value.typedef()))
@@ -862,6 +867,22 @@ cdef class TypeDefString(TypeDef):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def typedef(self):
+        cdef TypeDef typedef = TypeDef()
+        error_check(self.ptr.GetType(&typedef.typedef_ptr))
+        return resolve_typedef(TypeDef(typedef))
+            
+    def set_value(self, PropertyValue p_value, bytes value):
+        
+        cdef wstring w_value = toWideString(value)
+        
+        cdef lib.aafUInt32 size_in_bytes =  len(value) * sizeof(lib.aafCharacter)
+        error_check(self.ptr.SetCString(p_value.ptr,
+                                        <lib.aafMemPtr_t> w_value.c_str(),
+                                        size_in_bytes))
+        
+        print self.value(p_value)
     
     def value(self, PropertyValue p_value ):
         

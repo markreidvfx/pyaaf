@@ -525,6 +525,25 @@ cdef class MobSlot(AAFObject):
         error_check(self.slot_ptr.GetDataDef(&data_def.ptr))
         return DataDef(data_def)
     
+    property name:
+        def __get__(self):
+            cdef lib.aafUInt32 sizeInBytes = 0
+            error_check(self.slot_ptr.GetNameBufLen(&sizeInBytes))
+            
+            cdef int sizeInChars = (sizeInBytes / sizeof(lib.aafCharacter)) + 1
+            cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter](sizeInChars)
+            
+            error_check(self.slot_ptr.GetName(&buf[0], sizeInChars*sizeof(lib.aafCharacter) ))
+            
+            cdef wstring name = wstring(&buf[0])
+            return wideToString(name)
+        
+        def __set__(self, bytes value):
+            
+            cdef wstring w_name = toWideString(value)
+            error_check(self.slot_ptr.SetName(w_name.c_str()))
+        
+    
     property segment:
         def __get__(self):
             cdef Segment seg = Segment()
