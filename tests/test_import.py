@@ -252,7 +252,7 @@ class TestImport(unittest.TestCase):
             
             dnx_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, nb_frames, name, interlaced)
 
-            dnx = open(dnx_path)
+            dnx = open(dnx_path, 'rb')
             dnx_header = dnx.read(640)
             
             
@@ -262,7 +262,7 @@ class TestImport(unittest.TestCase):
             essence.codec_flavour = "Flavour_VC3_%d" % cid
             dnx.close()
             
-            dnx = open(dnx_path)
+            dnx = open(dnx_path, 'rb')
             print "getting read size"
             readsize = essence.max_sample_size
             
@@ -307,7 +307,7 @@ class TestImport(unittest.TestCase):
                 audio_essences.append(essence)
                 
             pcm_file = generate_pcm_audio_stereo(name, rate, duration)
-            pcm = open(pcm_file)
+            pcm = open(pcm_file, 'rb')
             
             readsize = 2
             
@@ -357,20 +357,20 @@ class TestImport(unittest.TestCase):
 
         storage = f.storage
         #time.sleep(10)
-##        for mob in storage.master_mobs():
-##            print "Opening essence", mob.name
-##            essence = mob.open_essence(1)
-##            c= 0
-##            while True:
-##                print "reading data"
-##                data = essence.read()
-##                if not data:
-##                    break
-##                print "read", len(data), 'bytes'
-##                c += 1
-##    
-##            assert c == nb_frames
-##            
+        for mob in storage.master_mobs():
+            print "Opening essence", mob.name
+            essence = mob.open_essence(1)
+            c= 0
+            while True:
+                print "reading data"
+                data = essence.read()
+                if not data:
+                    break
+                print "read", len(data), 'bytes'
+                c += 1
+    
+            assert c == nb_frames
+            
         
         for essence in f.storage.essence_data():
             
@@ -431,7 +431,7 @@ class TestImport(unittest.TestCase):
         del format
         
         pcm_file = generate_pcm_audio_mono(name, rate, 2)
-        pcm = open(pcm_file)
+        pcm = open(pcm_file, 'rb')
         
         readsize= essence.max_sample_size
 
@@ -504,7 +504,7 @@ class TestImport(unittest.TestCase):
         #readsize = 1000
         print "max",readsize
 
-        pcm = open(pcm_file)
+        pcm = open(pcm_file, 'rb')
         
 
         while True:
