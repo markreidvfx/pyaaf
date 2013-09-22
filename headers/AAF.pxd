@@ -425,6 +425,11 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFLocator
     cdef cppclass IAAFLocator(IUnknown):
         HRESULT SetPath(aafCharacter* pPath)
+        HRESULT GetPathBufLen(aafUInt32 *  pBufSize)
+        HRESULT GetPath(
+            aafCharacter *  pPath,
+            aafUInt32  bufSize
+        )
         
     cdef aafUID_t AUID_AAFNetworkLocator
     cdef GUID IID_IAAFNetworkLocator

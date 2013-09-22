@@ -428,7 +428,16 @@ cdef class Locator(AAFObject):
         the base URI is determined from the URI of the AAF file itself.
         """
         def __get__(self):
-            return self.get("URLString")
+            
+            cdef lib.aafUInt32  size_in_bytes
+            error_check(self.loc_ptr.GetPathBufLen(&size_in_bytes))
+            cdef int size_in_chars = (size_in_bytes / sizeof(lib.aafCharacter)) + 1
+            cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter]( size_in_chars )
+            
+            error_check(self.loc_ptr.GetPath(&buf[0], size_in_bytes))            
+            cdef wstring w_name = wstring(&buf[0])
+            return wideToString(w_name)
+
         def __set__(self, bytes value):
             
             cdef wstring w_value = toWideString(value)
