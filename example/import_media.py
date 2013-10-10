@@ -64,7 +64,7 @@ Video_Profiles ={
 
 def probe(path):
     
-    cmd = [FFPROBE_EXEC, '-of','json', '-show_streams', path]
+    cmd = [FFPROBE_EXEC, '-of','json','-show_format','-show_streams', path]
     print subprocess.list2cmdline(cmd)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
@@ -141,11 +141,16 @@ def conform_media(path,output_dir, start=None, end=None, duration=None, video_pr
             start = seconds_to_timecode(start_seconds - fast_start)
             cmd.extend(['-ss', seconds_to_timecode(fast_start)])
 
-    cmd.extend([ '-i', path])
-    
     frame_rate = video_profile['frame_rate']
     pix_fmt = video_profile['pix_fmt']
     bitrate = video_profile['bitrate']
+
+    if format['format']['format_name'] == "image2":
+        cmd.extend([ '-r', frame_rate])
+
+    cmd.extend(['-i', path,])
+    
+    
     
     width, height = video_profile['size'].split('x')
     
@@ -186,7 +191,7 @@ def conform_media(path,output_dir, start=None, end=None, duration=None, video_pr
             
             print vfilter
             
-            cmd.extend(['-an','-vcodec', 'dnxhd', '-vb', '%dM' % bitrate, '-r', frame_rate])
+            cmd.extend(['-an','-vcodec', 'dnxhd', '-vb', '%dM' % bitrate, '-r', frame_rate, '-pix_fmt', pix_fmt])
             
             if not start is None:
                 cmd.extend(['-ss', str(start)])
@@ -304,9 +309,11 @@ if __name__ == "__main__":
         
     if len(args) < 2:
         parser.error("not enough args")
+    
+    details = probe(args[1])
         
-    if not os.path.exists(args[1]):
-        parser.error("No such file or directory: %s" % args[1])
+    #if not os.path.exists(args[1]):
+        #parser.error("No such file or directory: %s" % args[1])
         
     if options.end and options.duration:
         parser.error("Can only use --duration or --end not both")
@@ -338,6 +345,8 @@ if __name__ == "__main__":
     try:
         basename = os.path.basename(args[1])
         name,ext = os.path.splitext(basename)
+        if details['format']['format_name'] == 'image2':
+            name, padding = os.path.splitext(name)
         create_aaf(aaf_file, media_streams,name)
     finally:
         shutil.rmtree(tempdir)
