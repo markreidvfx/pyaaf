@@ -29,6 +29,13 @@ class TestFile(unittest.TestCase):
         mob = f.storage.lookup_mob(test_mobID)
         
         assert mob.mobID == test_mobID
+    
+    def test_lookup_richcmp(self):
+        f = aaf.open(main_test_file)
+        
+        for mob in f.storage.mobs():
+            assert mob == f.storage.lookup_mob(mob.mobID)
+            assert mob == f.storage.lookup_mob(mob.mobID).mobID
         
 if __name__ == '__main__':
     unittest.main()

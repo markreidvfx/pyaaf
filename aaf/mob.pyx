@@ -124,6 +124,37 @@ cdef class Mob(AAFObject):
                 return
         raise KeyError("No comment with name: %s" % str(name))
     
+    def __richcmp__(x, y, int op):
+        if op == 2:
+            
+            if isinstance(x, Mob):
+                x = x.mobID
+            
+            if isinstance(y, Mob):
+                y = y.mobID
+
+            if str(x) == str(y):
+                return True
+            return False
+        raise NotImplemented("richcmp %d not not Implemented" % op)
+        
+    def __repr__(self):
+        name = self.name
+        if name:
+            return '<%s.%s %s %s at 0x%x>' % (
+                self.__class__.__module__,
+                self.__class__.__name__,
+                name, str(self.mobID), 
+                id(self),
+                )
+        else:
+            return '<%s.%s %s at 0x%x>' % (
+                self.__class__.__module__,
+                self.__class__.__name__,
+                str(self.mobID), 
+                id(self),
+                )
+    
     property name:
         def __get__(self):
             for p in self.properties():
