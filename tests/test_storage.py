@@ -4,11 +4,14 @@ import aaf.define
 import aaf.iterator
 import aaf.dictionary
 import aaf.storage
+import aaf.base
 
 import unittest
 import traceback
 
 import os
+
+import uuid
 
 
 cur_dir = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +39,17 @@ class TestFile(unittest.TestCase):
         for mob in f.storage.mobs():
             assert mob == f.storage.lookup_mob(mob.mobID)
             assert mob == f.storage.lookup_mob(mob.mobID).mobID
+            
+    def test_auid(self):
+        
+        for x in range(10):
+            u = uuid.uuid4()
+            auid = aaf.base.AUID(u)
+            assert auid == u
+            assert u == auid
+            assert u == auid.to_UUID()
+        
+        
         
 if __name__ == '__main__':
     unittest.main()

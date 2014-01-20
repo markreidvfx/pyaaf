@@ -8,9 +8,31 @@ from .iterator cimport PropIter
 
 from dictionary cimport Dictionary
 
+import uuid
+
 cdef class AUID(object):
-    def __init__(self):
-        pass
+    def __init__(self, auid = None):
+    
+        if not auid:
+            return
+        
+        auid = uuid.UUID(str(auid))
+        items = auid.urn.replace('urn:uuid:', '').split('-')
+
+        self.auid.Data1 = int(items[0], 16)
+        self.auid.Data2 = int(items[1], 16)
+        self.auid.Data3 = int(items[2], 16)
+        
+        self.auid.Data4[0] = int(items[3][:2], 16)
+        self.auid.Data4[1] = int(items[3][2:4], 16)
+        
+        self.auid.Data4[2] = int(items[4][:2], 16)
+        self.auid.Data4[3] = int(items[4][2:4], 16)
+        self.auid.Data4[4] = int(items[4][4:6], 16)
+        self.auid.Data4[5] = int(items[4][6:8], 16)
+        self.auid.Data4[6] = int(items[4][8:10], 16)
+        self.auid.Data4[7] = int(items[4][10:12], 16)
+        
     cdef lib.aafUID_t get_auid(self):
         return self.auid
     cdef lib.GUID get_iid(self):
@@ -22,8 +44,17 @@ cdef class AUID(object):
     cdef void from_iid(self, lib.GUID iid):
         self.iid = iid
         
+    def to_UUID(self):
+        return uuid.UUID(str(self))
+        
     def __richcmp__(x, y, int op):
         if op == 2:
+            if isinstance(x, uuid.UUID):
+                x = x.urn
+                
+            if isinstance(y, uuid.UUID):
+                y = y.urn
+            
             if str(x) == str(y):
                 return True
             return False
