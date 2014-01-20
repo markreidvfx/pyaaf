@@ -5,8 +5,9 @@ cimport iterator
 from base cimport AAFBase, AAFObject, AUID
 from dictionary cimport Dictionary
 
-from .util cimport error_check, query_interface, register_object, lookup_object
+from .util cimport error_check, query_interface, register_object, lookup_object, MobID
 from .iterator cimport EssenceDataIter
+from .mob cimport Mob
 from wstring cimport wstring,toWideString
 import os
 
@@ -219,6 +220,19 @@ cdef class ContentStorage(AAFObject):
         
         error_check(self.ptr.EnumEssenceData(&data_iter.ptr))
         return data_iter
+        
+    def lookup_mob(self, mobID):
+        """
+        Looks up the Mob that matches the given mob id
+        """
+        
+        cdef Mob mob = Mob()
+        cdef MobID mobID_obj = MobID(mobID)
+        
+        error_check(self.ptr.LookupMob(mobID_obj.mobID, &mob.ptr))
+        
+        return Mob(mob).resolve()
+        
 
     def mobs(self):
         cdef iterator.MobIter mob_iter = iterator.MobIter()
