@@ -66,23 +66,41 @@ cdef class Dictionary(AAFObject):
         return def_iter
      
     def operation_defs(self):
-        return self.get('OperationDefinitions', [])
-
+        prop = self.get('OperationDefinitions', None)
+        if prop:
+            return prop.value
+        return []
+    
     def parameter_defs(self):
-        return self.get('ParameterDefinitions', [])
+        prop = self.get('ParameterDefinitions', [])
+        if prop:
+            return prop.value
+        return []
 
     def data_defs(self):
-        return self.get('DataDefinitions', [])
-
-    def container_defs(self):
-        return self.get('ContainerDefinitions', [])
-
-    def interpolation_defs(self):
-        return self.get('InterpolationDefinitions', [])
-            
-    def taggedvalue_defs(self):
-        return self.get('TaggedValueDefinitions', [])
+        prop = self.get('DataDefinitions', [])
+        if prop:
+            return prop.value
+        return []
     
+    def container_defs(self):
+        prop = self.get('ContainerDefinitions', [])
+        if prop:
+            return prop.value
+        return []
+    
+    def interpolation_defs(self):
+        prop = self.get('InterpolationDefinitions', [])
+        if prop:
+            return prop.value
+        return []
+                
+    def taggedvalue_defs(self):
+        prop = self.get('TaggedValueDefinitions', [])
+        if prop:
+            return prop.value
+        return []
+        
 cdef class PluginManager(object):
     def __init__(self):
         error_check(lib.AAFGetPluginManager(&self.ptr))

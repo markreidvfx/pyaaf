@@ -350,7 +350,8 @@ class TestFile(unittest.TestCase):
             mob.append_comment(key,value)
             
         for item in mob.iter_comments():
-            assert d[item.name] == item.value
+            print '**', item.name, item.value
+            assert d[item.name] == item.value.value
             
         mob.remove_comment('comment3')
         
@@ -366,8 +367,8 @@ class TestFile(unittest.TestCase):
         f = aaf.open(test_file)
         header = f.header
         
-        d = header['Dictionary']
-        storage = header['Content']
+        d = header['Dictionary'].value
+        storage = header['Content'].value
         
         self.assertTrue(isinstance(d, aaf.dictionary.Dictionary))
         self.assertTrue(isinstance(storage, aaf.storage.ContentStorage))
@@ -381,7 +382,7 @@ class TestFile(unittest.TestCase):
             
         keys = d.keys()
         print keys
-        for item in d['OperationDefinitions']:
+        for item in d['OperationDefinitions'].value:
             pass
     def test_dictionary_defs(self):
         test_file = main_test_file

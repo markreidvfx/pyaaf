@@ -368,7 +368,7 @@ class TestFile(unittest.TestCase):
         print slot.segment.length
         
         #clip = d.create.SourceClip(picture_mastermob1,slot.slotID, 10, 0 )
-        
+        print "****", slot.slotID
         clip = picture_mastermob1.create_clip(slot.slotID, 10, 0)
         clip2 = picture_mastermob1.create_clip(slot.slotID)
         clip3 = picture_mastermob1.create_clip(slot.slotID, 20, 10)

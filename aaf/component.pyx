@@ -36,7 +36,7 @@ cdef class Component(AAFObject):
     property length:
         def __get__(self):
             if self.has_key("Length"):
-                return self['Length']
+                return self['Length'].value
             return None
         def __set__(self, lib.aafLength_t value):
             error_check(self.comp_ptr.SetLength(value))
@@ -196,21 +196,21 @@ cdef class Pulldown(Segment):
         
     property kind:
         def __get__(self):
-            return self['PulldownKind']
+            return self['PulldownKind'].value
         def __set__(self, bytes value):
-            self['PulldownKind'] = value
+            self['PulldownKind'].value = value
         
     property direction:
         def __get__(self):
-            return self['PulldownDirection']
+            return self['PulldownDirection'].value
         def __set__(self, bytes value):
-            self['PulldownDirection'] = value
+            self['PulldownDirection'].value = value
     
     property phase:
         def __get__(self):
-            return self['PhaseFrame']
+            return self['PhaseFrame'].value
         def __set__(self, lib.aafPhaseFrame_t value):
-            self['PhaseFrame'] = value
+            self['PhaseFrame'].value = value
     
     
     property segment:

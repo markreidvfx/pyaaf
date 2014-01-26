@@ -93,7 +93,7 @@ def dump_avid_titles(header):
 
                 if component.has_key("OpGroupGraphicsParamStream"):
                     string_data = ""
-                    for data in component['OpGroupGraphicsParamStream']:
+                    for data in component['OpGroupGraphicsParamStream'].value:
                         string_data += data
                         
                     print_text_data(string_data, i+1, in_frame, out_frame)

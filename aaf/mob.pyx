@@ -60,7 +60,7 @@ cdef class Mob(AAFObject):
         error_check(self.ptr.InsertSlotAt(index, slot.slot_ptr))
         
     def create_clip(self, slotID=None, length=None, start_time=None):
-        
+
         d = self.dictionary()
         
         if slotID is None:
