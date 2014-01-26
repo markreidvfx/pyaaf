@@ -30,6 +30,8 @@ cdef extern from *:
     ctypedef aafUInt8 * aafMemPtr_t "aafMemPtr_t"
     ctypedef aafUInt8 * aafDataBuffer_t "aafDataBuffer_t"
     
+    ctypedef aafCharacter * aafString_t
+    
 
 cdef extern from "AAFTypes.h":
 
@@ -141,6 +143,10 @@ cdef extern from "AAFTypes.h":
     # Data Types for Search Criteria and Iterators
      
     ctypedef aafInt32 aafSearchTag_t
+    ctypedef aafInt32 aafDefinitionKind_t
+    ctypedef aafInt32 aafCriteriaType_t
+    ctypedef aafInt32 aafDefinitionCritType_t
+    ctypedef aafInt32 aafIdentificationCritType_t
     
     cdef enum aafSearchTag_e:
         kAAFNoSearch
@@ -155,16 +161,43 @@ cdef extern from "AAFTypes.h":
         kAAFBySourceMobUsageCode
         kAAFByCompositionMobUsageCode
     
+    cdef enum aafCriteriaType_e:
+        kAAFAnyRepresentation
+        kAAFFastestRepresentation
+        kAAFBestFidelityRepresentation
+        kAAFSmallestRepresentation
+    	
     cdef union tags_t:
         aafMobID_t mobID
         aafMobKind_t mobKind
+        aafString_t name
+        aafUID_t objClass
+        aafUID_t datadef
+        aafCriteriaType_t mediaCrit
         aafUID_t usageCode
         
     ctypedef struct aafSearchCrit_t:
         aafSearchTag_t searchTag
         tags_t tags
-    
- 
+        
+    cdef union def_tags_t:
+        aafDefinitionKind_t defKind
+        aafString_t name
+        aafUID_t objClass
+        
+    ctypedef struct aafDefinitionCrit_t:
+        aafDefinitionCritType_t type
+        def_tags_t tags
+        
+    cdef union identification_tags_t:
+        aafUID_t productID
+        aafUID_t generation       
+        aafProductVersion_t referenceImplementationVersion
+        
+    ctypedef struct aafIdentificationCrit_t:
+        aafIdentificationCritType_t type
+        identification_tags_t tags
+        
     ctypedef aafInt32 aafColorSpace_t
     
     cdef enum aafColorSpace_e: 
