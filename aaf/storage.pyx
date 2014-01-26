@@ -2,10 +2,10 @@
 cimport lib
 cimport mob
 cimport iterator
-from base cimport AAFBase, AAFObject, AUID
+from base cimport AAFBase, AAFObject
 from dictionary cimport Dictionary
 
-from .util cimport error_check, query_interface, register_object, lookup_object, MobID
+from .util cimport error_check, query_interface, register_object, lookup_object, AUID, MobID
 from .iterator cimport EssenceDataIter
 from .mob cimport Mob
 from wstring cimport wstring,toWideString

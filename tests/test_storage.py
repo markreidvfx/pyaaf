@@ -1,4 +1,5 @@
 import aaf
+import aaf.util
 import aaf.mob
 import aaf.define
 import aaf.iterator
@@ -44,7 +45,7 @@ class TestFile(unittest.TestCase):
         
         for x in range(10):
             u = uuid.uuid4()
-            auid = aaf.base.AUID(u)
+            auid = aaf.util.AUID(u)
             assert auid == u
             assert u == auid
             assert u == auid.to_UUID()

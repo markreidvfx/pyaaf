@@ -1,7 +1,6 @@
 cimport lib
 
-from .util cimport error_check
-from .base cimport AUID
+from .util cimport error_check, AUID
 from .mob cimport Mob,MobSlot
 from .property cimport Property,PropertyValue, TaggedValue
 from .component cimport Component, Segment, Parameter

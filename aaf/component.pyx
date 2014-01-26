@@ -2,9 +2,9 @@ cimport lib
 
 from libc.string cimport memset 
 
-from .util cimport error_check, query_interface, register_object, MobID
+from .util cimport error_check, query_interface, register_object, AUID, MobID
 
-from .base cimport AAFObject, AAFBase, AUID
+from .base cimport AAFObject, AAFBase
 from .mob cimport Mob 
 from .define cimport TypeDef, DataDef, OperationDef, ParameterDef
 from .iterator cimport ComponentIter, SegmentIter, ParamIter

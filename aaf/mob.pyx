@@ -1,5 +1,5 @@
 cimport lib
-from base cimport AAFObject, AAFBase, AUID
+from base cimport AAFObject, AAFBase
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -7,7 +7,7 @@ from cpython cimport bool
 
 from libc.stdio cimport FILE, fopen, fclose, fread
 
-from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, MobID
+from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, AUID, MobID
 from .iterator cimport MobSlotIter, TaggedValueIter
 from .component cimport Segment
 from .essence cimport EssenceDescriptor, Locator, EssenceAccess

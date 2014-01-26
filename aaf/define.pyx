@@ -1,7 +1,7 @@
 
 cimport lib
-from .base cimport AAFBase, AAFObject, AUID
-from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func, MobID
+from .base cimport AAFBase, AAFObject
+from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func, AUID, MobID
 from .property cimport PropertyValue
 
 cimport iterator

@@ -16,6 +16,14 @@ cdef object set_resolve_object_func(object obj)
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r)
 
+cdef class AUID(object):
+    cdef lib.aafUID_t auid
+    cdef lib.GUID iid
+    cdef lib.aafUID_t get_auid(self)
+    cdef lib.GUID get_iid(self)
+    cdef void from_auid(self, lib.aafUID_t auid)
+    cdef void from_iid(self, lib.GUID iid)
+    
 cdef class MobID(object):
     cdef lib.aafMobID_t mobID
 

@@ -1,9 +1,9 @@
 
 cimport lib
 
-from .base cimport AAFBase, AAFObject, AUID
+from .base cimport AAFBase, AAFObject
 from .define cimport DataDef, ContainerDef, ContainerDefMap, DataDefMap, ExtEnumDefMap
-from .util cimport error_check, query_interface, register_object, lookup_object
+from .util cimport error_check, query_interface, register_object, lookup_object, AUID
 from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter, LoadedPluginIter
 from wstring cimport wstring,toWideString
 
