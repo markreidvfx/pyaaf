@@ -99,13 +99,25 @@ cdef class AUID(object):
     cdef lib.aafUID_t get_auid(self):
         return self.auid
     cdef lib.GUID get_iid(self):
-        return self.iid
+        cdef lib.GUID iid
+        iid.Data1 = self.auid.Data1
+        iid.Data2 = self.auid.Data2
+        iid.Data3 = self.auid.Data3
+        
+        for i in xrange(8):
+            iid.Data4[i] = self.auid.Data4[i]
+        
+        return iid
     
     cdef void from_auid(self, lib.aafUID_t auid):
         self.auid = auid
         
     cdef void from_iid(self, lib.GUID iid):
-        self.iid = iid
+        self.auid.Data1 = iid.Data1
+        self.auid.Data2 = iid.Data2
+        self.auid.Data3 = iid.Data3
+        for i in xrange(8):
+            self.auid.Data4[i] = iid.Data4[i]
         
     def to_UUID(self):
         return uuid.UUID(str(self))

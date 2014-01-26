@@ -30,7 +30,7 @@ cdef class AAFBase(object):
     property class_iid:
         def __get__(self):
             cdef AUID auid = AUID()
-            auid.iid = self.iid
+            auid.from_iid(self.iid)
             return auid
             
             
@@ -115,7 +115,7 @@ cdef class AAFObject(AAFBase):
         """
         def __get__(self):
             cdef AUID auid = AUID()
-            auid.auid = self.auid
+            auid.from_auid(self.auid)
             return auid
         
     property name:

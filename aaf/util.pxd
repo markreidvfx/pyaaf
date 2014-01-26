@@ -18,7 +18,6 @@ cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r)
 
 cdef class AUID(object):
     cdef lib.aafUID_t auid
-    cdef lib.GUID iid
     cdef lib.aafUID_t get_auid(self)
     cdef lib.GUID get_iid(self)
     cdef void from_auid(self, lib.aafUID_t auid)
