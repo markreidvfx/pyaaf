@@ -8,6 +8,7 @@ from dictionary cimport Dictionary
 from .util cimport error_check, query_interface, register_object, lookup_object, AUID, MobID
 from .iterator cimport EssenceDataIter
 from .mob cimport Mob
+from .essence cimport EssenceData
 from wstring cimport wstring,toWideString
 import os
 
@@ -215,11 +216,11 @@ cdef class ContentStorage(AAFObject):
         error_check(self.ptr.CountMobs(lib.kAAFAllMob, &mobCount))
         return mobCount
     
-    def essence_data(self):
-        cdef EssenceDataIter data_iter = EssenceDataIter()
+    def add_mob(self, mob.Mob mob):
+        error_check(self.ptr.AddMob(mob.ptr))
         
-        error_check(self.ptr.EnumEssenceData(&data_iter.ptr))
-        return data_iter
+    def remove_mob(self, mob.Mob mob):
+        error_check(self.ptr.RemoveMob(mob.ptr))
         
     def lookup_mob(self, mobID):
         """
@@ -277,6 +278,17 @@ cdef class ContentStorage(AAFObject):
         
         error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
         return mob_iter
+    
+    def essence_data(self):
+        cdef EssenceDataIter data_iter = EssenceDataIter()
+        error_check(self.ptr.EnumEssenceData(&data_iter.ptr))
+        return data_iter
+    
+    def add_essence_data(self, EssenceData data):
+        error_check(self.ptr.AddEssenceData(data.ptr))
+    
+    def remove_essence_data(self, EssenceData data):
+        error_check(self.ptr.RemoveEssenceData(data.ptr))
     
 cdef class Identification(AAFObject):
     def __init__(self, AAFBase obj = None):

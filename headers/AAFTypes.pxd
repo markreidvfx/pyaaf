@@ -32,6 +32,8 @@ cdef extern from *:
     
     ctypedef aafCharacter * aafString_t
     
+    ctypedef aafInt32 aafFileFormat_t
+    
 
 cdef extern from "AAFTypes.h":
 

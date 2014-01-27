@@ -88,7 +88,6 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFContentStorage
     cdef GUID IID_IAAFContentStorage
     cdef cppclass IAAFContentStorage(IUnknown):
-        HRESULT EnumEssenceData(IEnumAAFEssenceData ** ppEnum)
         HRESULT CountMobs(
             aafMobKind_t mobKind,
             aafNumSlots_t *pResult
@@ -97,9 +96,24 @@ cdef extern from "AAF.h":
             aafSearchCrit_t *pSearchCriteria,
             IEnumAAFMobs **ppEnum
         )
+        HRESULT AddMob(IAAFMob * pMob)
+        HRESULT RemoveMob(IAAFMob * pMob)
         HRESULT LookupMob(
             aafMobID_t &mobID,
             IAAFMob ** ppMob
+        )
+        HRESULT CountEssenceData(aafUInt32 *pResult)
+        HRESULT IsEssenceDataPresent(
+            aafMobID_t &mobID,
+            aafFileFormat_t fmt,
+            aafBoolean_t *  pResult
+        )
+        HRESULT EnumEssenceData(IEnumAAFEssenceData ** ppEnum)
+        HRESULT AddEssenceData(IAAFEssenceData * pEssenceData)
+        HRESULT RemoveEssenceData(IAAFEssenceData * pEssenceData)
+        HRESULT LookupEssenceData(
+            aafMobID_t &mobID,
+            IAAFEssenceData ** ppEssenceData
         )
         
     cdef aafUID_t AUID_AAFIdentification
