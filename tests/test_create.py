@@ -35,7 +35,7 @@ class TestFile(unittest.TestCase):
         d = f.dictionary
         
         picture_mastermob = d.create.MasterMob("Picture Mob 1")
-        header.append(picture_mastermob)
+        storage.add_mob(picture_mastermob)
 
         
         rate = "25/1"
@@ -113,7 +113,7 @@ class TestFile(unittest.TestCase):
         
         sound_mastermob = d.create.MasterMob("sound Mob 1")
 
-        header.append(sound_mastermob)
+        storage.add_mob(sound_mastermob)
         
         
         rateHz = 44100
@@ -164,7 +164,7 @@ class TestFile(unittest.TestCase):
         source_mob.name = "IMG"
         
         source_mob.add_nil_ref(1, 39, 'picture',"23976/1000" )
-        header.append(source_mob)
+        f.storage.add_mob(source_mob)
         
         desc = d.create.ImportDescriptor()
         source_mob.essence_descriptor = desc
@@ -210,7 +210,7 @@ class TestFile(unittest.TestCase):
         d = f.dictionary
         
         master_mob = d.create.MasterMob("external_mob")
-        header.append(master_mob)
+        f.storage.add_mob(master_mob)
         
         media_kind = "picture"
         
@@ -247,7 +247,7 @@ class TestFile(unittest.TestCase):
         
         
         phys_source_mob.essence_descriptor = desc
-        header.append(phys_source_mob)
+        f.storage.add_mob(phys_source_mob)
         
         phys_source_mob.add_nil_ref(1, 39, 'picture',"23976/1000" )
         
@@ -273,13 +273,13 @@ class TestFile(unittest.TestCase):
         tape_name = "tape_01"
 
         master_mob = d.create.MasterMob("clip1")
-        header.append(master_mob)
+        f.storage.add_mob(master_mob)
         
         source_mob = d.create.SourceMob()
         source_mob.name = tape_name
         tape_desc = d.create.TapeDescriptor()
         source_mob.essence_descriptor = tape_desc
-        header.append(source_mob)
+        f.storage.add_mob(source_mob)
         
         # Now add Video and Audio Tracks
         for track in xrange(3):
@@ -328,17 +328,17 @@ class TestFile(unittest.TestCase):
         
         picture_mastermob1 = d.create.MasterMob("Picture Mob 1")
         picture_mastermob2 = d.create.MasterMob("Picture Mob 2")
-        header.append(picture_mastermob1)
-        header.append(picture_mastermob2)
+        storage.add_mob(picture_mastermob1)
+        storage.add_mob(picture_mastermob2)
         
         sound_mastermob1 = d.create.MasterMob("sound Mob 1")
         sound_mastermob2 = d.create.MasterMob("sound Mob 2")
-        header.append(sound_mastermob1)
-        header.append(sound_mastermob2)
+        storage.add_mob(sound_mastermob1)
+        storage.add_mob(sound_mastermob2)
         
         
         comp = d.create.CompositionMob("Comp Example")
-        header.append(comp)
+        storage.add_mob(comp)
         
         print comp.mobID
         

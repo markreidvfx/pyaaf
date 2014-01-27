@@ -170,15 +170,6 @@ cdef class Header(AAFObject):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-            
-    def append(self, AAFObject obj):
-        cdef mob.Mob mob_obj
-        
-        if isinstance(obj, mob.Mob):
-            mob_obj = obj
-            error_check(self.ptr.AddMob(mob_obj.ptr))
-        else:
-            raise ValueError("unable to append type %s" %(type(obj)))
         
     def dictionary(self):
         cdef Dictionary dictionary = Dictionary()

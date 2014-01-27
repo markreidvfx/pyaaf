@@ -343,7 +343,7 @@ class TestFile(unittest.TestCase):
         d = f.dictionary
         
         mob = d.create.MasterMob("bob")
-        header.append(mob)
+        f.storage.add_mob(mob)
         
         d = {'comment1':'value1', 'comment2': "value2", 'comment3':"value3"}
         for key, value in d.items():

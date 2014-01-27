@@ -240,7 +240,7 @@ def create_aaf(path, media_streams, mobname):
     f = aaf.open(path, 'rw')
 
     mastermob = f.dictionary.create.MasterMob(mobname)
-    f.header.append(mastermob)
+    f.storage.add_mob(mastermob)
     
     for stream in media_streams:
         if stream['type'] == 'video':

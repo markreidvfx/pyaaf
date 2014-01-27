@@ -231,7 +231,7 @@ class TestImport(unittest.TestCase):
             print name
 
             mastermob = d.create.MasterMob(name)
-            header.append(mastermob)
+            f.storage.add_mob(mastermob)
 
             essence = mastermob.create_essence(1,
                                                "picture",
@@ -405,7 +405,7 @@ class TestImport(unittest.TestCase):
         name = "mono_audio_export"
         
         mastermob = d.create.MasterMob(name)
-        header.append(mastermob)
+        f.storage.add_mob(mastermob)
         
         rate = 48000
         
@@ -462,7 +462,7 @@ class TestImport(unittest.TestCase):
         name = "stereo_audio_export"
         
         mastermob = d.create.MasterMob(name)
-        header.append(mastermob)
+        f.storage.add_mob(mastermob)
         
         rate = 48000
         
@@ -540,7 +540,7 @@ class TestImport(unittest.TestCase):
         name = "mob_import_essence"
         
         mastermob = d.create.MasterMob(name)
-        header.append(mastermob)
+        f.storage.add_mob(mastermob)
         
         
         size = (1920, 1080)
