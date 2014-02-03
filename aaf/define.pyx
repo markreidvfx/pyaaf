@@ -980,7 +980,6 @@ cpdef dict ContainerDefMap = {}
 cpdef dict CompressionDefMap = {}
 cpdef dict ExtEnumDefMap = {}
 
-
 cdef register_defs(map[string, lib.aafUID_t] def_map, dict d, replace=[]):
     cdef pair[string, lib.aafUID_t] def_pair
     cdef AUID auid_obj 
@@ -998,6 +997,16 @@ register_defs(lib.get_container_def_map(), ContainerDefMap, ["kAAFContainerDef_"
 register_defs(lib.get_compressiondef_map(), CompressionDefMap, ["kAAFCompressionDef_"])
 register_defs(lib.get_extenumdef_map(), ExtEnumDefMap, ["kAAF"])
 
+cpdef dict EdgeTypeMap = {"null" : lib.kAAFEtNull,
+                          "keycode" : lib.kAAFEtKeycode,
+                          "edgenum4" : lib.kAAFEtEdgenum4,
+                          "edgenum5" : lib.kAAFEtHeaderSize}
+
+cpdef dict FilmTypeMap = {"null": lib.kAAFFtNull,
+                          "35mm" : lib.kAAFFt35MM,
+                          "16mm" : lib.kAAFFt16MM,
+                          "8mm" : lib.kAAFFt8MM,
+                          "65mm" : lib.kAAFFt65MM}
 
 cdef class DefObject(AAFObject):
     def __init__(self, AAFBase obj = None):

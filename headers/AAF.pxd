@@ -754,6 +754,22 @@ cdef extern from "AAF.h":
             IAAFDataDef * pDataDef,
             aafRational_t  editRate
         )
+        HRESULT AppendTimecodeSlot(
+            aafRational_t  editrate,
+            aafInt32  slotID,
+            aafTimecode_t  startTC,
+            aafFrameLength_t  length32
+        )
+        HRESULT AppendEdgecodeSlot(
+            aafRational_t  editrate,
+            aafInt32  slotID,
+            aafFrameOffset_t  startEC,
+            aafFrameLength_t  length32,
+            aafFilmType_t  filmKind,
+            aafEdgeType_t  codeFormat,
+            aafEdgecodeHeader_t  header
+        )
+        
         HRESULT AppendPhysSourceRef(
             aafRational_t  editrate,
             aafSlotID_t  aMobSlot,

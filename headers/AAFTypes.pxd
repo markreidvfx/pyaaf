@@ -141,7 +141,27 @@ cdef extern from "AAFTypes.h":
         aafFadeType_t fadeType
         aafRational_t fadeEditUnit
         aafBoolean_t valid
-
+        
+    # Typedefs specific to edgecode and timecode
+    ctypedef aafInt32 aafEdgeType_t
+    ctypedef aafInt32 aafFilmType_t
+    
+    ctypedef aafUInt8 aafEdgecodeHeader_t[8]  
+    
+    cdef enum aafEdgeType_e:
+        kAAFEtNull
+        kAAFEtKeycode
+        kAAFEtEdgenum4
+        kAAFEtEdgenum5
+        kAAFEtHeaderSize
+        
+    cdef enum aafFilmType_e:
+        kAAFFtNull
+        kAAFFt35MM
+        kAAFFt16MM
+        kAAFFt8MM
+        kAAFFt65MM
+        
     # Data Types for Search Criteria and Iterators
      
     ctypedef aafInt32 aafSearchTag_t
