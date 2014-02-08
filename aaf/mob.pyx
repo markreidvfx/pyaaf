@@ -7,7 +7,7 @@ from cpython cimport bool
 
 from libc.stdio cimport FILE, fopen, fclose, fread
 
-from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, AUID, MobID
+from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, Timecode, AUID, MobID
 from .iterator cimport MobSlotIter, TaggedValueIter
 from .component cimport Segment
 from .essence cimport EssenceDescriptor, Locator, EssenceAccess
@@ -524,7 +524,18 @@ cdef class SourceMob(Mob):
                                                  pulldown_kind,
                                                  phase_frame,
                                                  direction
-                                                 ))            
+                                                 ))
+        
+    def append_timecode_slot(self, edit_rate, lib.aafSlotID_t  slotID, Timecode startTC, lib.aafFrameLength_t frame_length):
+        
+        cdef lib.aafRational_t edit_rate_t
+        fraction_to_aafRational(edit_rate, edit_rate_t)
+        
+        error_check(self.src_ptr.AppendTimecodeSlot(edit_rate_t,
+                                                    slotID,
+                                                    startTC.get_timecode_t(),
+                                                    frame_length
+                                                    ))          
     
     property essence_descriptor:
         def __get__(self):

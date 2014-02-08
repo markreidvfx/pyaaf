@@ -756,13 +756,13 @@ cdef extern from "AAF.h":
         )
         HRESULT AppendTimecodeSlot(
             aafRational_t  editrate,
-            aafInt32  slotID,
+            aafSlotID_t  slotID,
             aafTimecode_t  startTC,
             aafFrameLength_t  length32
         )
         HRESULT AppendEdgecodeSlot(
             aafRational_t  editrate,
-            aafInt32  slotID,
+            aafSlotID_t  slotID,
             aafFrameOffset_t  startEC,
             aafFrameLength_t  length32,
             aafFilmType_t  filmKind,
