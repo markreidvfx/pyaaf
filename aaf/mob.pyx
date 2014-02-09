@@ -203,7 +203,7 @@ cdef class MasterMob(Mob):
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.mastermob_ptr
     
-    def initialize(self, bytes name):
+    def initialize(self, bytes name = None):
         error_check(self.mastermob_ptr.Initialize())
         if name:
             self.name = name
@@ -449,7 +449,10 @@ cdef class CompositionMob(Mob):
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.compositionmob_ptr
     
-    def initialize(self, bytes name):
+    def initialize(self, bytes name = None):
+        if not name:
+            name = b"composition mob"
+        
         cdef wstring w_name = toWideString(name)
         
         error_check(self.compositionmob_ptr.Initialize(w_name.c_str()))
