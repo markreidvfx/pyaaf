@@ -32,7 +32,7 @@ cdef class WAVEDescriptor(FileDescriptor):
     cdef lib.IAAFWAVEDescriptor *ptr
     
 cdef class AIFCDescriptor(FileDescriptor):
-    cdef lib.IAAFCDCIDescriptor *ptr
+    cdef lib.IAAFAIFCDescriptor *ptr
     
 cdef class TIFFDescriptor(FileDescriptor):
     cdef lib.IAAFTIFFDescriptor *ptr    

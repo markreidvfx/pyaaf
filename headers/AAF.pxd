@@ -569,6 +569,13 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFAIFCDescriptor
     cdef cppclass IAAFAIFCDescriptor(IUnknown):
         HRESULT Initialize()
+        HRESULT GetSummary(aafUInt32  size,
+                           aafUInt8  *pSummary
+        )
+        HRESULT GetSummaryBufferSize(aafUInt32 *pSize)
+        HRESULT SetSummary(aafUInt32  size,
+                           aafUInt8  *pSummary
+        ) 
 
     cdef aafUID_t AUID_AAFTIFFDescriptor
     cdef GUID IID_IAAFTIFFDescriptor

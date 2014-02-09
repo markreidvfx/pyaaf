@@ -16,6 +16,10 @@ cdef object set_resolve_object_func(object obj)
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r)
 
+cdef class SourceRef(object):
+    cdef lib.aafSourceRef_t source_ref
+    cdef lib.aafSourceRef_t get_aafSourceRef_t(self)
+
 cdef class Timecode(object):
     cdef lib.aafTimecode_t timecode
     cdef lib.aafTimecode_t get_timecode_t(self)
@@ -29,6 +33,7 @@ cdef class AUID(object):
     
 cdef class MobID(object):
     cdef lib.aafMobID_t mobID
+    cdef lib.aafMobID_t get_aafMobID_t(self)
 
 cdef fused aaf_integral:
     lib.aafInt8

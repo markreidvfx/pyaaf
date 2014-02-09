@@ -582,6 +582,21 @@ cdef class AIFCDescriptor(FileDescriptor):
 
     def initialize(self):
         error_check(self.ptr.Initialize())
+        
+    property summary:
+        def __get__(self):
+            cdef lib.aafUInt32 bufer_size
+            error_check(self.ptr.GetSummaryBufferSize(&bufer_size))
+            cdef vector[lib.aafUInt8] buf = vector[lib.aafUInt8]( bufer_size )
+            
+            error_check(self.ptr.GetSummary(bufer_size, <lib.aafUInt8 *> &buf[0]))
+            cdef lib.aafUInt8 *data = <lib.aafUInt8 *>  &buf[0]
+            return data[:bufer_size]
+            #HRESULT GetSummaryBufferSize(aafUInt32 *pSize)
+
+        def __set__(self, bytes value):
+            cdef lib.aafUInt32 bufer_size =  len(value) * sizeof(lib.aafUInt8)
+            error_check(self.ptr.SetSummary(bufer_size, <lib.aafUInt8 *> value ))
             
 cdef class TIFFDescriptor(FileDescriptor):
     """
