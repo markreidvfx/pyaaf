@@ -563,8 +563,18 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFWAVEDescriptor
     cdef GUID IID_IAAFWAVEDescriptor
     cdef cppclass IAAFWAVEDescriptor(IUnknown):
+        HRESULT Initialize()
+        
+    cdef aafUID_t AUID_AAFAIFCDescriptor
+    cdef GUID IID_IAAFAIFCDescriptor
+    cdef cppclass IAAFAIFCDescriptor(IUnknown):
+        HRESULT Initialize()
+
+    cdef aafUID_t AUID_AAFTIFFDescriptor
+    cdef GUID IID_IAAFTIFFDescriptor
+    cdef cppclass IAAFTIFFDescriptor(IUnknown):
         pass
-    
+            
     cdef aafUID_t AUID_AAFDigitalImageDescriptor
     cdef GUID IID_IAAFDigitalImageDescriptor
     cdef cppclass IAAFDigitalImageDescriptor(IUnknown):

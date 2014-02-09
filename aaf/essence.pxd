@@ -30,6 +30,12 @@ cdef class FileDescriptor(EssenceDescriptor):
     
 cdef class WAVEDescriptor(FileDescriptor):
     cdef lib.IAAFWAVEDescriptor *ptr
+    
+cdef class AIFCDescriptor(FileDescriptor):
+    cdef lib.IAAFCDCIDescriptor *ptr
+    
+cdef class TIFFDescriptor(FileDescriptor):
+    cdef lib.IAAFTIFFDescriptor *ptr    
 
 cdef class DigitalImageDescriptor(FileDescriptor):
     cdef lib.IAAFDigitalImageDescriptor *im_ptr
@@ -63,3 +69,4 @@ cdef class RecordingDescriptor(PhysicalDescriptor):
     
 cdef class AuxiliaryDescriptor(PhysicalDescriptor):
     pass
+    

@@ -553,6 +553,63 @@ cdef class WAVEDescriptor(FileDescriptor):
         if self.ptr:
             self.ptr.Release()
             
+    def initialize(self):
+        error_check(self.ptr.Initialize())
+            
+cdef class AIFCDescriptor(FileDescriptor):
+    """
+    The AIFCDescriptor class specifies that a File SourceMob is associated with 
+    audio essence formatted according to the 
+    Audio Interchange File Format with Compression (AIFC)
+    """
+    
+    def __init__(self, AAFBase obj = None):
+        super(AIFCDescriptor, self).__init__(obj)
+        self.iid = lib.IID_IAAFAIFCDescriptor
+        self.auid = lib.AUID_AAFAIFCDescriptor
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get_ptr(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+
+    def initialize(self):
+        error_check(self.ptr.Initialize())
+            
+cdef class TIFFDescriptor(FileDescriptor):
+    """
+    The TIFFDescriptor class specifies that a File SourceMob 
+    is associated with video essence formatted according to 
+    the TIFF specification.
+    """
+    
+    def __init__(self, AAFBase obj = None):
+        super(TIFFDescriptor, self).__init__(obj)
+        self.iid = lib.IID_IAAFTIFFDescriptor
+        self.auid = lib.AUID_AAFTIFFDescriptor
+        self.ptr = NULL
+        if not obj:
+            return
+        
+        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+    
+    cdef lib.IUnknown **get_ptr(self):
+        return <lib.IUnknown **> &self.ptr
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+    def initialize(self):
+        pass
+            
 cdef class DigitalImageDescriptor(FileDescriptor):
     """
     The DigitalImageDescriptor class specifies that a File SourceMob is associated with 
@@ -973,6 +1030,8 @@ register_object(NetworkLocator)
 register_object(EssenceDescriptor)
 register_object(FileDescriptor)
 register_object(WAVEDescriptor)
+register_object(AIFCDescriptor)
+register_object(TIFFDescriptor)
 register_object(DigitalImageDescriptor)
 register_object(CDCIDescriptor)
 register_object(RGBADescriptor)
