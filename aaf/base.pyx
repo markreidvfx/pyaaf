@@ -109,6 +109,23 @@ cdef class AAFObject(AAFBase):
         error_check(self.obj_ptr.GetProperties(&prop_iter.ptr))
         return prop_iter
     
+    def __repr__(self):
+        name = self.name
+        if name:
+            return '<%s.%s %s at 0x%x>' % (
+                    self.__class__.__module__,
+                    self.__class__.__name__,
+                    str(name), 
+                    id(self),
+                    )
+        else:
+            return '<%s.%s at 0x%x>' % (
+                    self.__class__.__module__,
+                    self.__class__.__name__,
+                    id(self),
+                    )
+    
+    
     property class_auid:
         """
         The AUID of the AAFObject

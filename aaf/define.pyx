@@ -1069,10 +1069,7 @@ cdef class DataDef(DefObject):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-    
-    def initialize(self, object def_type, bytes):
-        pass
-    
+
 cdef class ParameterDef(DefObject):
     def __init__(self, AAFBase obj = None):
         super(ParameterDef, self).__init__(obj)

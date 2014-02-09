@@ -36,6 +36,14 @@ cdef class Property(AAFBase):
         value = self.property_value()
         return value.typedef()
     
+    def __repr__(self):
+        return '<%s.%s %s at 0x%x>' % (
+                self.__class__.__module__,
+                self.__class__.__name__,
+                str(self.name), 
+                id(self),
+                )
+    
     property name:
         def __get__(self):
             d = self.property_def()

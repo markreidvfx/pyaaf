@@ -6,7 +6,7 @@ from .util cimport error_check, query_interface, register_object, AUID, MobID
 
 from .base cimport AAFObject, AAFBase
 from .mob cimport Mob 
-from .define cimport TypeDef, DataDef, OperationDef, ParameterDef
+from .define cimport TypeDef, DataDef, OperationDef, ParameterDef, InterpolationDef
 from .iterator cimport ComponentIter, SegmentIter, ParamIter
 from .mob cimport Mob 
 
@@ -579,6 +579,27 @@ cdef class VaryingValue(Parameter):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+    
+    def interpolation_def(self):
+        cdef InterpolationDef inter_def = InterpolationDef()
+        error_check(self.ptr.GetInterpolationDefinition(&inter_def.ptr))
+        
+        return InterpolationDef(inter_def).resolve()
+            
+    def control_points(self):
+        pass
+            
+    def value_at(self, time):
+        
+        pass
+        
+        #HRESULT GetValueBufLen(aafInt32 *  pLen)
+        #HRESULT GetInterpolatedValue(aafRational_t  inputValue,
+        #                             aafInt32  valueSize,
+        #                             aafDataBuffer_t  pValue,
+        #                             aafInt32 *  bytesRead
+    
+        #GetInterpolatedValue
             
 cdef class ControlPoint(AAFObject):
     def __init__(self, AAFBase obj = None):
