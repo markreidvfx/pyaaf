@@ -173,6 +173,11 @@ cdef class Filler(Segment):
         if self.ptr:
             self.ptr.Release()
             
+    def initialize(self, media_kind, lib.aafLength_t length):
+        cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
+        
+        error_check(self.ptr.Initialize(data_def.ptr, length))
+            
 cdef class Pulldown(Segment):
     def __init__(self, AAFBase obj = None):
         super(Pulldown, self).__init__(obj)

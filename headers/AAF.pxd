@@ -901,7 +901,9 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFFiller
     cdef GUID IID_IAAFFiller
     cdef cppclass IAAFFiller(IUnknown):
-        pass
+        HRESULT Initialize(IAAFDataDef * pDataDef,
+                           aafLength_t  length
+       )
         
     cdef aafUID_t AUID_AAFPulldown
     cdef GUID IID_IAAFPulldown
