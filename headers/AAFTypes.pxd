@@ -166,6 +166,33 @@ cdef extern from "AAFTypes.h":
         kAAFFt8MM
         kAAFFt65MM
         
+    # Operation Group Types
+    
+    ctypedef aafInt32 aafInterpKind_t
+    
+    cdef enum aafInterpKind_e:
+        kAAFConstInterp
+        kAAFLinearInterp
+    
+    ctypedef aafInt32 aafEditHint_t
+    
+    cdef enum aafEditHint_e:
+        kAAFNoEditHint
+        kAAFProportional
+        kAAFRelativeLeft
+        kAAFRelativeRight
+        kAAFRelativeFixed
+        
+    ctypedef aafInt32 aafProductReleaseType_t
+    
+    cdef enum aafProductReleaseType_e:
+        kAAFVersionUnknown
+        kAAFVersionReleased
+        kAAFVersionDebug
+        kAAFVersionPatched
+        kAAFVersionBeta
+        kAAFVersionPrivateBuild
+              
     # Data Types for Search Criteria and Iterators
      
     ctypedef aafInt32 aafSearchTag_t

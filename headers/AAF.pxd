@@ -1013,17 +1013,57 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFConstantValue
     cdef GUID IID_IAAFConstantValue
     cdef cppclass IAAFConstantValue(IUnknown):
-        pass
+        HRESULT Initialize(IAAFParameterDef * pParameterDef,
+                           aafUInt32  valueSize,
+                           aafDataBuffer_t  pValue
+        )
+        HRESULT GetValue(aafUInt32  valueSize,
+                         aafDataBuffer_t  pValue,
+                         aafUInt32*  bytesRead
+        )
+        HRESULT GetValueBufLen(aafUInt32 *  pLen)
+        HRESULT GetTypeDefinition(IAAFTypeDef ** ppTypeDef)
+        HRESULT SetValue(aafUInt32  valueSize, aafDataBuffer_t  pValue)
         
     cdef aafUID_t AUID_AAFVaryingValue
     cdef GUID IID_IAAFVaryingValue
     cdef cppclass IAAFVaryingValue(IUnknown):
-        pass
+        HRESULT Initialize(IAAFParameterDef * pParameterDef, IAAFInterpolationDef * pInterpolation)
+        HRESULT AddControlPoint(IAAFControlPoint * pControlPoint)
+        HRESULT GetControlPoints(IEnumAAFControlPoints ** ppEnum)
+        HRESULT CountControlPoints(aafUInt32 *  pResult)
+        HRESULT GetControlPointAt(aafUInt32  index, IAAFControlPoint ** ppControlPoint)
+        HRESULT RemoveControlPointAt(aafUInt32  index)
+        HRESULT GetInterpolationDefinition(IAAFInterpolationDef ** ppInterpolation)
+        HRESULT GetValueBufLen(aafInt32 *  pLen)
+        HRESULT GetInterpolatedValue(aafRational_t  inputValue,
+                                     aafInt32  valueSize,
+                                     aafDataBuffer_t  pValue,
+                                     aafInt32 *  bytesRead
+        )
+        
         
     cdef aafUID_t AUID_AAFControlPoint
     cdef GUID IID_IAAFControlPoint
     cdef cppclass IAAFControlPoint(IUnknown):
-        pass
+        HRESULT Initialize(IAAFVaryingValue * pVaryingValue,
+                           aafRational_t &time,
+                           aafUInt32  valueSize,
+                           aafDataBuffer_t  pValue
+        )
+        HRESULT GetTime(aafRational_t *  pTime)
+        HRESULT GetEditHint(aafEditHint_t *  pEditHint)
+        HRESULT GetValueBufLen(aafUInt32 *  pLen)
+        HRESULT GetValue(aafUInt32  valueSize,
+                         aafDataBuffer_t  pValue,
+                         aafUInt32*  bytesRead
+        )
+        HRESULT SetTime(aafRational_t  pTime)
+        HRESULT SetEditHint(aafEditHint_t  editHint)
+        HRESULT GetTypeDefinition(IAAFTypeDef ** ppTypeDef)
+        
+        
+        
         
     ## IEnumAAFs
     
@@ -1078,6 +1118,10 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFCodecFlavours
     cdef cppclass IEnumAAFCodecFlavours(IUnknown):
         HRESULT NextOne(aafUID_t *  pAAFCodecFlavour)
+    
+    cdef GUID IID_IEnumAAFControlPoints  
+    cdef cppclass IEnumAAFControlPoints(IUnknown):
+        HRESULT NextOne(IAAFControlPoint ** ppControlPoints)
     
     cdef GUID IID_IEnumAAFTypeDefs
     cdef cppclass IEnumAAFTypeDefs(IUnknown):
