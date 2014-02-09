@@ -208,6 +208,17 @@ cdef class MasterMob(Mob):
         if name:
             self.name = name
             
+    def new_phys_source_ref(self, edit_rate, lib.aafSlotID_t  slotID, media_kind, SourceRef ref, lib.aafLength_t  srcRefLength):
+        cdef lib.aafRational_t edit_rate_t
+        fraction_to_aafRational(edit_rate, edit_rate_t)
+        cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
+        
+        error_check(self.mastermob_ptr.NewPhysSourceRef(edit_rate_t,
+                                                  slotID,
+                                                  data_def.ptr,
+                                                  ref.get_aafSourceRef_t(),
+                                                  srcRefLength)) 
+            
     def open_essence(self, lib.aafSlotID_t  slotID):
         
         slot = self.slot_at(slotID)

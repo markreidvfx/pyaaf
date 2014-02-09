@@ -743,6 +743,20 @@ cdef extern from "AAF.h":
             aafSlotID_t  masterSlotID,
             aafCharacter *pSlotName
         )
+        HRESULT AppendPhysSourceRef(
+            aafRational_t  editrate,
+            aafSlotID_t  aMobSlot,
+            IAAFDataDef * pEssenceKind,
+            aafSourceRef_t  ref,
+            aafLength_t  srcRefLength
+        )
+        HRESULT NewPhysSourceRef(
+            aafRational_t  editrate,
+            aafSlotID_t  aMobSlot,
+            IAAFDataDef * pEssenceKind,
+            aafSourceRef_t  ref,
+            aafLength_t  srcRefLength
+        )
     
     cdef aafUID_t AUID_AAFMasterMob2
     cdef GUID IID_IAAFMasterMob2
@@ -786,7 +800,6 @@ cdef extern from "AAF.h":
             aafEdgeType_t  codeFormat,
             aafEdgecodeHeader_t  header
         )
-        
         HRESULT AppendPhysSourceRef(
             aafRational_t  editrate,
             aafSlotID_t  aMobSlot,
