@@ -12,7 +12,7 @@ from .iterator cimport MobSlotIter, TaggedValueIter
 from .component cimport Segment
 from .essence cimport EssenceDescriptor, Locator, EssenceAccess
 from .component cimport Segment
-from .define cimport DataDef, CodecDefMap, ContainerDefMap
+from .define cimport DataDef, CodecDefMap, ContainerDefMap, PullDownKindMap, PulldownDirMap
 from .property cimport TaggedValue
 
 from wstring cimport wstring, wideToString, toWideString
@@ -490,28 +490,32 @@ cdef class SourceMob(Mob):
         
         error_check(self.src_ptr.AddNilReference(slotID, length, data_def.ptr, edit_rate_t))
         
-    def add_pulldown(self, edit_rate, 
+    def add_pulldown(self, 
+                     edit_rate, 
                      lib.aafSlotID_t slotID, media_kind, 
-                     Mob ref_mob, lib.aafSlotID_t ref_slotID, lib.aafLength_t ref_start_time,
-                     lib.aafLength_t src_ref_length):
+                     SourceRef source_ref,
+                     lib.aafLength_t src_ref_length,
+                     bytes pulldown_kind = b"TwentyFourToSixtyPD",
+                     lib.aafPhaseFrame_t phase_frame = 0,
+                     bytes direction = b"TapeToFilmSpeed",
+                     bytes add_type = b"append"):
         
-        cdef lib.aafAppendOption_t addType = lib.kAAFForceOverwrite
+        cdef lib.aafAppendOption_t addType
+        if add_type.lower() == "append":
+            addType = lib.kAAFAppend
+        elif add_type.lower() == 'overwrite':
+            addType= lib.kAAFForceOverwrite
+        else:
+            raise ValueError('invalid add_type: %s. must be "append" or "overwrite"' % add_type)
+        
         cdef lib.aafRational_t edit_rate_t
         
-        cdef lib.aafPulldownKind_t pulldown_kind = lib.kAAFTwentyFourToSixtyPD
+        cdef lib.aafPulldownKind_t pulldown_kind_t = PullDownKindMap[pulldown_kind.lower()]
+        cdef lib.aafPulldownDir_t direction_t = PulldownDirMap[direction.lower()]
         
-        cdef lib.aafPhaseFrame_t phase_frame = 0
-        cdef lib.aafPulldownDir_t direction = lib.kAAFTapeToFilmSpeed
+        cdef lib.aafSourceRef_t ref = source_ref.get_aafSourceRef_t()
         
-        cdef lib.aafSourceRef_t ref
-        
-        cdef MobID mobID
         cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
-        
-        mobID = ref_mob.mobID
-        ref.sourceID = mobID.mobID
-        ref.sourceSlotID = ref_slotID
-        ref.startTime = ref_start_time
         
         fraction_to_aafRational(edit_rate, edit_rate_t)
         
@@ -521,9 +525,9 @@ cdef class SourceMob(Mob):
                                                  data_def.ptr,
                                                  ref,
                                                  src_ref_length,
-                                                 pulldown_kind,
+                                                 pulldown_kind_t,
                                                  phase_frame,
-                                                 direction
+                                                 direction_t
                                                  ))
         
     def append_timecode_slot(self, edit_rate, lib.aafSlotID_t  slotID, Timecode startTC, lib.aafFrameLength_t frame_length):

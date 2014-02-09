@@ -76,6 +76,10 @@ cpdef dict CodecDefMap
 cpdef dict ContainerDefMap
 cpdef dict CompressionDefMap
 cpdef dict ExtEnumDefMap
+cpdef dict EdgeTypeMap
+cpdef dict FilmTypeMap
+cpdef dict PullDownKindMap
+cpdef dict PulldownDirMap
 
 cdef class DefObject(AAFObject):
     cdef lib.IAAFDefObject *defobject_ptr

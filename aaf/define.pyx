@@ -1008,6 +1008,18 @@ cpdef dict FilmTypeMap = {"null": lib.kAAFFtNull,
                           "8mm" : lib.kAAFFt8MM,
                           "65mm" : lib.kAAFFt65MM}
 
+cpdef dict PullDownKindMap = {'twothreepd' : lib.kAAFTwoThreePD,
+                              'palpd': lib.kAAFPALPD,
+                              'onetotonentsc' : lib.kAAFOneToOneNTSC,
+                              'onetoonepal' : lib.kAAFOneToOnePAL,
+                              'videotapntsc' : lib.kAAFVideoTapNTSC,
+                              'onetoonehdsixty' : lib.kAAFOneToOneHDSixty,
+                              'twentyfourtosixtypd' : lib.kAAFTwentyFourToSixtyPD,
+                              'twotoonepd' : lib.kAAFTwoToOnePD}
+
+cpdef dict PulldownDirMap = {'tapetofilmspeed' : lib.kAAFTapeToFilmSpeed,
+                             'filmtotapespeed' : lib.kAAFFilmToTapeSpeed}
+
 cdef class DefObject(AAFObject):
     def __init__(self, AAFBase obj = None):
         super(DefObject, self).__init__(obj)
