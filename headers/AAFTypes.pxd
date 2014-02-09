@@ -106,6 +106,10 @@ cdef extern from "AAFTypes.h":
     ctypedef struct aafMediaCriteria_t:
         pass
     
+    ctypedef aafInt32 aafDepend_t
+    
+    ctypedef aafInt32 aafIncMedia_t
+    
     ctypedef aafInt32 aafMediaOpenMode_t
     
     cdef enum aafMediaOpenMode_e:

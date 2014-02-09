@@ -692,7 +692,6 @@ cdef extern from "AAF.h":
             aafUInt32  bufSize
         )
         HRESULT SetName(aafCharacter *pName)
-        HRESULT GetSlots(IEnumAAFMobSlots **ppEnum)
         HRESULT CountSlots(aafNumSlots_t *  pNumSlots)
         HRESULT AppendNewTimelineSlot(
             aafRational_t  editRate,
@@ -702,6 +701,7 @@ cdef extern from "AAF.h":
             aafPosition_t  origin,
             IAAFTimelineMobSlot ** ppNewSlot
         )
+        HRESULT PrependSlot(IAAFMobSlot * pSlot)
         HRESULT InsertSlotAt(
             aafUInt32  index,
             IAAFMobSlot * pSlot
@@ -710,10 +710,23 @@ cdef extern from "AAF.h":
             aafCharacter *  pCategory,
             const aafCharacter *  pComment
         )
+        HRESULT RemoveSlotAt(aafUInt32  index)
+        HRESULT GetSlotAt(aafUInt32  index, IAAFMobSlot ** ppSlot)
+        HRESULT GetSlots(IEnumAAFMobSlots **ppEnum)
         HRESULT CountComments(aafUInt32 *  pNumComments)
         HRESULT GetComments(IEnumAAFTaggedValues ** ppEnum)
         HRESULT RemoveComment(IAAFTaggedValue * pComment)
-        
+
+        HRESULT CloneExternal(
+            aafDepend_t  resolveDependencies,
+            aafIncMedia_t  includeMedia,
+            IAAFFile * pDestFile,
+            IAAFMob ** ppDestMob
+        )
+        HRESULT Copy(
+            aafCharacter *pDestMobName,
+            IAAFMob ** ppDestMob
+        )
     cdef aafUID_t AUID_AAFMasterMob
     cdef GUID IID_IAAFMasterMob
     cdef cppclass IAAFMasterMob(IUnknown):
