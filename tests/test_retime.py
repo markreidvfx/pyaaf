@@ -40,12 +40,10 @@ class TestFile(unittest.TestCase):
         
         speed_map = None
         offset_map = None
-        for p in op_group.parameters():
-            if p.name == 'PARAM_SPEED_MAP_U':
-                speed_map = p
-            if p.name == "PARAM_SPEED_OFFSET_MAP_U":
-                offset_map = p
         
+        
+        speed_map = op_group.parameter['PARAM_SPEED_MAP_U']
+        offset_map = op_group.parameter['PARAM_SPEED_OFFSET_MAP_U']
         
         print speed_map['PointList'].value
         
@@ -56,12 +54,16 @@ class TestFile(unittest.TestCase):
         print speed_map.interpolation_def().name
         
         for p in speed_map.points():
-            print "  ", float(p.time), float(p.value)
+            print "  ", float(p.time), float(p.value), p.edit_hint
             for prop in p.point_properties():
                 print "    ", prop.name, float(prop.value)
         
         print offset_map.interpolation_def().name        
         for p in offset_map.points():
+            edit_hint =  p.edit_hint
+            time = p.time
+            value = p.value
+            
             pass
             #print "  ", float(p.time), float(p.value) 
                 

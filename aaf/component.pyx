@@ -298,6 +298,38 @@ cdef class SourceClip(SourceReference):
         error_check(self.ptr.ResolveRef(&mob.ptr))
         return Mob(mob).resolve()
     
+class ParametersHelper(object):
+    def __init__(self, obj):
+        self.obj = obj
+        
+    def __getitem__(self, bytes index):
+        for p in self.obj.parameters():
+            if p.name == index:
+                return p
+        raise KeyError("Key %s not found" % index)
+    def keys(self):
+        """
+        Return a list of the parameter names
+        """
+        return [p.name for p in self.obj.parameters()]
+    
+    def has_key(self, bytes key):
+        """
+        Test for the presence of key in the parameter names
+        """
+        if key in self.keys():
+            return True
+        return False
+    
+    def get(self, key, default=None):
+        """
+        Return the parameter for key if key is in the obj, else default. 
+        If default is not given, it defaults to None, so that this method never raises a KeyError.
+        """
+        if self.has_key(key):
+            return self[key]
+        return default
+    
 cdef class OperationGroup(Segment):
     def __init__(self, AAFBase obj = None):
         super(OperationGroup, self).__init__(obj)
@@ -331,6 +363,11 @@ cdef class OperationGroup(Segment):
         cdef ParamIter param_iter = ParamIter()
         error_check(self.ptr.GetParameters(&param_iter.ptr))
         return param_iter
+    
+    property parameter:
+        def __get__(self):
+            helper = ParametersHelper(self)
+            return helper
     
     property nb_input_segments:
         def __get__(self):
@@ -654,8 +691,7 @@ cdef class ControlPoint(AAFObject):
         cdef TypeDef type_def = TypeDef()
         error_check(self.ptr.GetTypeDefinition(&type_def.typedef_ptr))
         return TypeDef(type_def).resolve()
-        #GetTypeDefinition(IAAFTypeDef ** ppTypeDef)
-        
+
     def point_properties(self):
         prop = self.get('ControlPointPointProperties', None)
         if prop:
@@ -676,7 +712,8 @@ cdef class ControlPoint(AAFObject):
     
     property edit_hint:
         def __get__(self):
-            return self['EditHint'].value    
+            return self['EditHint'].value
+             
         
 register_object(Component)
 register_object(Segment)
