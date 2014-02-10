@@ -2,13 +2,15 @@ cimport lib
 
 from libc.string cimport memset 
 
-from .util cimport error_check, query_interface, register_object, AUID, MobID
+from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, aafRational_to_fraction, AUID, MobID
 
 from .base cimport AAFObject, AAFBase
 from .mob cimport Mob 
 from .define cimport TypeDef, DataDef, OperationDef, ParameterDef, InterpolationDef
-from .iterator cimport ComponentIter, SegmentIter, ParamIter
-from .mob cimport Mob 
+from .iterator cimport ComponentIter, ControlPointIter, SegmentIter, ParamIter
+from .mob cimport Mob
+
+from libcpp.vector cimport vector
 
 cdef class Component(AAFObject):
     def __init__(self, AAFBase obj = None):
@@ -585,21 +587,50 @@ cdef class VaryingValue(Parameter):
         error_check(self.ptr.GetInterpolationDefinition(&inter_def.ptr))
         
         return InterpolationDef(inter_def).resolve()
+    
+    def count(self):
+        cdef lib.aafUInt32 value
+        error_check(self.ptr.CountControlPoints(&value))
+        return value
             
-    def control_points(self):
-        pass
+    def points(self):
+        cdef ControlPointIter iter = ControlPointIter()
+        error_check(self.ptr.GetControlPoints(&iter.ptr))
+        return iter
+        
             
     def value_at(self, time):
+        """
+        Get the varying value at a specified time, Only currently works for step and linear interpolation.
+        """
+
+        interp_def = self.interpolation_def()
         
-        pass
+        if not interp_def.name in ('LinearInterp', 'StepInterp'):
+            raise NotImplementedError("value_at not implemented for %s" % interp_def.name)
         
-        #HRESULT GetValueBufLen(aafInt32 *  pLen)
-        #HRESULT GetInterpolatedValue(aafRational_t  inputValue,
-        #                             aafInt32  valueSize,
-        #                             aafDataBuffer_t  pValue,
-        #                             aafInt32 *  bytesRead
+        
+        cdef lib.aafInt32 buffer_size
+        
+        error_check(self.ptr.GetValueBufLen(&buffer_size))
+        
+        cdef lib.aafRational_t time_t
+        cdef lib.aafRational_t value_t
+        
+        cdef lib.aafInt32 bytes_read
+        
+        fraction_to_aafRational(time, time_t)
+        
+        error_check(self.ptr.GetInterpolatedValue(time_t,
+                                                  sizeof(value_t),
+                                                  <lib.aafDataBuffer_t> &value_t,
+                                                  &bytes_read
+                                                  ))
+        if bytes_read != sizeof(value_t):
+            raise IOError("invalid read size")
+        
+        return aafRational_to_fraction(value_t)
     
-        #GetInterpolatedValue
             
 cdef class ControlPoint(AAFObject):
     def __init__(self, AAFBase obj = None):
@@ -618,7 +649,35 @@ cdef class ControlPoint(AAFObject):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def typedef(self):
+        cdef TypeDef type_def = TypeDef()
+        error_check(self.ptr.GetTypeDefinition(&type_def.typedef_ptr))
+        return TypeDef(type_def).resolve()
+        #GetTypeDefinition(IAAFTypeDef ** ppTypeDef)
+        
+    def point_properties(self):
+        prop = self.get('ControlPointPointProperties', None)
+        if prop:
+            return prop.value
+        return []
     
+    property time:
+        def __get__(self):
+            return self['Time'].value
+        def __set__(self, value):
+            cdef lib.aafRational_t value_t
+            fraction_to_aafRational(value, value_t)
+            error_check(self.ptr.SetTime(value_t))
+        
+    property value:
+        def __get__(self):
+            return self['Value'].value
+    
+    property edit_hint:
+        def __get__(self):
+            return self['EditHint'].value    
+        
 register_object(Component)
 register_object(Segment)
 register_object(Transition)

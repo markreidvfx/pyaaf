@@ -15,6 +15,7 @@ cdef object resolve_object(object obj)
 cdef object set_resolve_object_func(object obj)
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r)
+cdef object aafRational_to_fraction(lib.aafRational_t& r)
 
 cdef class SourceRef(object):
     cdef lib.aafSourceRef_t source_ref

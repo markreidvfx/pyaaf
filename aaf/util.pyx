@@ -72,6 +72,10 @@ cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r):
     f = AAFFraction(obj)
     r.numerator = f.numerator
     r.denominator = f.denominator
+
+cdef object aafRational_to_fraction(lib.aafRational_t& r):
+
+    return AAFFraction(r.numerator, r.denominator)
     
 cdef class SourceRef(object):
     def __init__(self, source_id, lib.aafSlotID_t source_slot_id, lib.aafPosition_t start_time=0):

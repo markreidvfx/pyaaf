@@ -23,7 +23,7 @@ cdef class ContainerDefIter(BaseIterator):
     pass
     
 cdef class ControlPointIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFControlPoints *ptr
     
 cdef class DataDefIter(BaseIterator):
     pass

@@ -36,6 +36,12 @@ cdef extern from "AAF.h":
             IAAFDictionary * pDictionary,
             IAAFDefObject**  ppPluginDef,
         )
+        HRESULT CreateInstance(
+            GUID  & rclsid,
+            IUnknown *  pUnkOuter,
+            GUID  &riid,
+            void **  ppPlugin
+        )
    
     
     cdef aafUID_t AUID_AAFFile

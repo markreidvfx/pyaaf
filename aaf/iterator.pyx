@@ -3,7 +3,7 @@ cimport lib
 from .util cimport error_check, AUID
 from .mob cimport Mob,MobSlot
 from .property cimport Property,PropertyValue, TaggedValue
-from .component cimport Component, Segment, Parameter
+from .component cimport Component, Segment, Parameter, ControlPoint
 from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVDataDef
 from .essence cimport EssenceData
 
@@ -73,6 +73,28 @@ cdef class ComponentIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             return Component(comp).resolve()
+        else:
+            error_check(ret)
+            
+cdef class ControlPointIter(BaseIterator):
+    def __init__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+        
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        cdef ControlPoint point = ControlPoint()
+        ret = self.ptr.NextOne(&point.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return ControlPoint(point).resolve()
         else:
             error_check(ret)
             
