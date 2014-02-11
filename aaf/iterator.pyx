@@ -16,6 +16,13 @@ cdef class BaseIterator(object):
                 return item
         self.reset()
         raise IndexError("index out of range")
+    
+    def __len__(self):
+        i = 0
+        for item in self:
+            i += 1
+        self.reset()
+        return i
 
 cdef class ClassDefIter(BaseIterator):
     def __init__(self):
@@ -474,6 +481,9 @@ cdef class TypeDefStreamDataIter(BaseIterator):
     def __iter__(self):
         return self
     
+    def reset(self):
+        self.stream_typedef.set_position(self.value, 0)
+        
     def __next__(self):
         data = self.stream_typedef.read(self.value, self.readsize)
         if data:
