@@ -1076,74 +1076,92 @@ cdef extern from "AAF.h":
     cdef GUID IID_IEnumAAFComponents
     cdef cppclass IEnumAAFComponents(IUnknown):
         HRESULT NextOne(IAAFComponent ** ppComponent)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFEssenceData
     cdef cppclass IEnumAAFEssenceData(IUnknown):
         HRESULT NextOne(IAAFEssenceData ** ppEssenceData)
+        HRESULT Reset()
     
     cdef GUID IID_IEnumAAFLoadedPlugins
     cdef cppclass IEnumAAFLoadedPlugins(IUnknown):
         HRESULT NextOne(aafUID_t*  ppAAFPluginID)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFMobs
     cdef cppclass IEnumAAFMobs(IUnknown):
         HRESULT NextOne(IAAFMob ** ppMob)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFMobSlots
     cdef cppclass IEnumAAFMobSlots(IUnknown):
         HRESULT NextOne(IAAFMobSlot ** ppMob)
+        HRESULT Reset()
     
     cdef GUID IID_IEnumAAFProperties
     cdef cppclass IEnumAAFProperties(IUnknown):
         HRESULT NextOne(IAAFProperty ** ppMob)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFPropertyValues
     cdef cppclass IEnumAAFPropertyValues(IUnknown):
         HRESULT NextOne(IAAFPropertyValue ** ppPropertyValue)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFSegments
     cdef cppclass IEnumAAFSegments(IUnknown):
         HRESULT NextOne(IAAFSegment ** ppSegment)
+        HRESULT Reset()
      
     cdef GUID IID_IEnumAAFParameters
     cdef cppclass IEnumAAFParameters(IUnknown):
         HRESULT NextOne(IAAFParameter ** ppParameter)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFPropertyDefs
     cdef cppclass IEnumAAFPropertyDefs(IUnknown):
         HRESULT NextOne(IAAFPropertyDef ** ppParameter)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFClassDefs
     cdef cppclass IEnumAAFClassDefs(IUnknown):
         HRESULT NextOne(IAAFClassDef ** ppClassDefs)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFCodecDefs
     cdef cppclass IEnumAAFCodecDefs(IUnknown):
         HRESULT NextOne(IAAFCodecDef ** ppCodecDefs)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFCodecFlavours
     cdef cppclass IEnumAAFCodecFlavours(IUnknown):
         HRESULT NextOne(aafUID_t *  pAAFCodecFlavour)
+        HRESULT Reset()
     
     cdef GUID IID_IEnumAAFControlPoints  
     cdef cppclass IEnumAAFControlPoints(IUnknown):
         HRESULT NextOne(IAAFControlPoint ** ppControlPoints)
+        HRESULT Reset()
     
     cdef GUID IID_IEnumAAFTypeDefs
     cdef cppclass IEnumAAFTypeDefs(IUnknown):
         HRESULT NextOne(IAAFTypeDef ** ppTypeDef)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFPluginDefs
     cdef cppclass IEnumAAFPluginDefs(IUnknown):
         HRESULT NextOne(IAAFPluginDef ** ppPluginDefs)
+        HRESULT Reset()
         
     cdef GUID IID_IEnumAAFKLVDataDefs
     cdef cppclass IEnumAAFKLVDataDefs(IUnknown):
         HRESULT NextOne(IAAFKLVDataDefinition ** ppKLVDataDefs)
+        HRESULT Reset()
     
     cdef GUID IID_IEnumAAFTaggedValues
     cdef cppclass IEnumAAFTaggedValues(IUnknown):
         HRESULT NextOne(IAAFTaggedValue ** ppTaggedValues)
+        HRESULT Reset()
     
     # File Functions
         

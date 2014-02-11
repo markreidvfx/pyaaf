@@ -12,7 +12,9 @@ cdef class BaseIterator(object):
     def __getitem__(self, int index):
         for i, item in enumerate(self):
             if i == index:
+                self.reset()
                 return item
+        self.reset()
         raise IndexError("index out of range")
 
 cdef class ClassDefIter(BaseIterator):
@@ -22,6 +24,9 @@ cdef class ClassDefIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -44,6 +49,9 @@ cdef class CodecDefIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -66,6 +74,9 @@ cdef class ComponentIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -88,6 +99,9 @@ cdef class ControlPointIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+    
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -110,6 +124,9 @@ cdef class EssenceDataIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -132,6 +149,9 @@ cdef class KLVDataDefIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -154,6 +174,9 @@ cdef class LoadedPluginIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -176,6 +199,9 @@ cdef class MobSlotIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -198,6 +224,9 @@ cdef class MobIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -220,6 +249,9 @@ cdef class ParamIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -242,6 +274,9 @@ cdef class PluginDefIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -264,6 +299,9 @@ cdef class PropIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -286,6 +324,9 @@ cdef class PropertyDefsIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -308,6 +349,9 @@ cdef class PropValueIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -330,6 +374,9 @@ cdef class PropValueResolveIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -352,6 +399,9 @@ cdef class SegmentIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -374,6 +424,9 @@ cdef class TaggedValueIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
@@ -396,6 +449,9 @@ cdef class TypeDefIter(BaseIterator):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
         
     def __iter__(self):
         return self
