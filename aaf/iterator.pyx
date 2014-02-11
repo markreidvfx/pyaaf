@@ -10,19 +10,21 @@ from .essence cimport EssenceData
 cdef class BaseIterator(object):
     
     def __getitem__(self, int index):
+        
         for i, item in enumerate(self):
             if i == index:
-                self.reset()
                 return item
-        self.reset()
         raise IndexError("index out of range")
+    
+    def __iter__(self):
+        return self.clone()
     
     def __len__(self):
         i = 0
         for item in self:
             i += 1
-        self.reset()
-        return i
+            
+        return i 
 
 cdef class ClassDefIter(BaseIterator):
     def __init__(self):
@@ -35,8 +37,10 @@ cdef class ClassDefIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef ClassDefIter iterable = ClassDefIter()
+        error_check(self.ptr.Clone(&iterable.ptr))
+        return iterable
     
     def __next__(self):
         cdef ClassDef classdef = ClassDef()
@@ -60,9 +64,11 @@ cdef class CodecDefIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
-    
+    def clone(self):
+        cdef CodecDefIter iterable = CodecDefIter()
+        error_check(self.ptr.Clone(&iterable.ptr))
+        return iterable
+
     def __next__(self):
         cdef CodecDef codecdef = CodecDef()
         ret = self.ptr.NextOne(&codecdef.ptr)
@@ -85,8 +91,10 @@ cdef class ComponentIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef ComponentIter iter = ComponentIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef Component comp = Component()
@@ -110,8 +118,10 @@ cdef class ControlPointIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef ControlPointIter iter = ControlPointIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef ControlPoint point = ControlPoint()
@@ -135,8 +145,10 @@ cdef class EssenceDataIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef EssenceDataIter iter = EssenceDataIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef EssenceData data = EssenceData()
@@ -160,8 +172,10 @@ cdef class KLVDataDefIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef KLVDataDefIter iter = KLVDataDefIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef KLVDataDef klv_def = KLVDataDef()
@@ -185,8 +199,10 @@ cdef class LoadedPluginIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef LoadedPluginIter iter = LoadedPluginIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef AUID auid = AUID()
@@ -210,8 +226,10 @@ cdef class MobSlotIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef MobSlotIter iterable = MobSlotIter()
+        error_check(self.ptr.Clone(&iterable.ptr))
+        return iterable
     
     def __next__(self):
         cdef MobSlot slot = MobSlot()
@@ -235,13 +253,14 @@ cdef class MobIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef MobIter iterable = MobIter()
+        error_check(self.ptr.Clone(&iterable.ptr))
+        return iterable
     
     def __next__(self):
         cdef Mob mob = Mob()
         ret = self.ptr.NextOne(&mob.ptr)
-        
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
@@ -260,8 +279,10 @@ cdef class ParamIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef ParamIter iter = ParamIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef Parameter param = Parameter()
@@ -285,8 +306,10 @@ cdef class PluginDefIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef PluginDefIter iter = PluginDefIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef PluginDef plug_def = PluginDef()
@@ -310,8 +333,10 @@ cdef class PropIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef PropIter iter = PropIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef Property prop = Property()
@@ -335,8 +360,10 @@ cdef class PropertyDefsIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef PropertyDefsIter iter = PropertyDefsIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef PropertyDef propdef = PropertyDef()
@@ -360,8 +387,10 @@ cdef class PropValueIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef PropValueIter iter = PropValueIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef PropertyValue value = PropertyValue()
@@ -385,8 +414,10 @@ cdef class PropValueResolveIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef PropValueResolveIter iter = PropValueResolveIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef PropertyValue value = PropertyValue()
@@ -410,8 +441,10 @@ cdef class SegmentIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef SegmentIter iter = SegmentIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef Segment seg = Segment()
@@ -435,8 +468,10 @@ cdef class TaggedValueIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef TaggedValueIter iter = TaggedValueIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef TaggedValue tag = TaggedValue()
@@ -460,8 +495,10 @@ cdef class TypeDefIter(BaseIterator):
     def reset(self):
         error_check(self.ptr.Reset())
         
-    def __iter__(self):
-        return self
+    def clone(self):
+        cdef TypeDefIter iter = TypeDefIter()
+        error_check(self.ptr.Clone(&iter.ptr))
+        return iter
     
     def __next__(self):
         cdef TypeDef type_def = TypeDef()

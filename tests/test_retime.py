@@ -31,12 +31,24 @@ class TestFile(unittest.TestCase):
     def test_read_curve(self):
         f = aaf.open(main_test_file, 'r')
         
-        comp = f.storage.toplevel_mobs()[0]
+        
+        print "iter"
+        for i, item in enumerate(f.storage.toplevel_mobs()):
+            print i, item
+        
+
+        comp = f.storage.toplevel_mobs()[3]
+
+        print comp
+    
         
         seqs = [item.segment for item in comp.slots()]
+        print seqs
+        
+        
         
         op_group = seqs[1].components()[0]
-        
+        print op_group
         
         speed_map = None
         offset_map = None
