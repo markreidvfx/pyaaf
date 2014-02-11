@@ -8,7 +8,12 @@ from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVData
 from .essence cimport EssenceData
 
 cdef class BaseIterator(object):
-    pass
+    
+    def __getitem__(self, int index):
+        for i, item in enumerate(self):
+            if i == index:
+                return item
+        raise IndexError("index out of range")
 
 cdef class ClassDefIter(BaseIterator):
     def __init__(self):
