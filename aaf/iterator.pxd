@@ -5,7 +5,7 @@ from .define cimport TypeDefStream
 from .property cimport PropertyValue
 
 cdef class BaseIterator(object):
-    pass
+    cdef readonly object _clone_iter
     
 cdef class ClassDefIter(BaseIterator):
     cdef lib.IEnumAAFClassDefs *ptr
@@ -60,6 +60,7 @@ cdef class MobSlotIter(BaseIterator):
     
 cdef class MobIter(BaseIterator):
     cdef lib.IEnumAAFMobs *ptr
+    cdef lib.aafSearchCrit_t search_crit
     
 cdef class OperationDefIter(BaseIterator):
     pass

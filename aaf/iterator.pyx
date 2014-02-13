@@ -8,23 +8,31 @@ from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVData
 from .essence cimport EssenceData
 
 cdef class BaseIterator(object):
+    def __cinit__(self):
+        self._clone_iter = None
     
     def __getitem__(self, int index):
-        
         for i, item in enumerate(self):
             if i == index:
                 return item
         raise IndexError("index out of range")
     
+    def reset(self):
+        pass
+    
     def __iter__(self):
+        if self._clone_iter:
+            return self._clone_iter()
+        
         return self.clone()
     
     def __len__(self):
         i = 0
         for item in self:
             i += 1
-            
-        return i 
+        
+        return i
+        
 
 cdef class ClassDefIter(BaseIterator):
     def __init__(self):
@@ -35,6 +43,7 @@ cdef class ClassDefIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(ClassDefIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -62,6 +71,7 @@ cdef class CodecDefIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(CodecDefIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -89,6 +99,7 @@ cdef class ComponentIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(ComponentIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -116,6 +127,7 @@ cdef class ControlPointIter(BaseIterator):
             self.ptr.Release()
     
     def reset(self):
+        super(ControlPointIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -143,6 +155,7 @@ cdef class EssenceDataIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(EssenceDataIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -170,6 +183,7 @@ cdef class KLVDataDefIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(KLVDataDefIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -197,6 +211,7 @@ cdef class LoadedPluginIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(LoadedPluginIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -224,6 +239,7 @@ cdef class MobSlotIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(MobSlotIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -251,6 +267,7 @@ cdef class MobIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(MobIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -304,6 +321,7 @@ cdef class PluginDefIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(PluginDefIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -331,6 +349,7 @@ cdef class PropIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(PropIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -358,6 +377,7 @@ cdef class PropertyDefsIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(PropertyDefsIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -385,6 +405,7 @@ cdef class PropValueIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(PropValueIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -412,6 +433,7 @@ cdef class PropValueResolveIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(PropValueResolveIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -439,6 +461,7 @@ cdef class SegmentIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(SegmentIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -466,6 +489,7 @@ cdef class TaggedValueIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(TaggedValueIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -493,6 +517,7 @@ cdef class TypeDefIter(BaseIterator):
             self.ptr.Release()
             
     def reset(self):
+        super(TypeDefIter, self).reset()
         error_check(self.ptr.Reset())
         
     def clone(self):
@@ -519,6 +544,7 @@ cdef class TypeDefStreamDataIter(BaseIterator):
         return self
     
     def reset(self):
+        super(TypeDefStreamDataIter, self).reset()
         self.stream_typedef.set_position(self.value, 0)
         
     def __next__(self):

@@ -231,10 +231,11 @@ cdef class ContentStorage(AAFObject):
         
         cdef lib.aafSearchCrit_t search_crit
         
-        search_crit.searchTag = lib.kAAFByMobKind
-        search_crit.tags.mobKind = lib.kAAFAllMob
-        
-        error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
+        mob_iter.search_crit.searchTag = lib.kAAFByMobKind
+        mob_iter.search_crit.tags.mobKind = lib.kAAFAllMob
+
+        error_check(self.ptr.GetMobs(&mob_iter.search_crit, &mob_iter.ptr))
+        mob_iter._clone_iter = self.mobs
         return mob_iter
     
     def master_mobs(self):
@@ -242,10 +243,11 @@ cdef class ContentStorage(AAFObject):
         
         cdef lib.aafSearchCrit_t search_crit
         
-        search_crit.searchTag = lib.kAAFByMobKind
-        search_crit.tags.mobKind = lib.kAAFMasterMob
+        mob_iter.search_crit.searchTag = lib.kAAFByMobKind
+        mob_iter.search_crit.tags.mobKind = lib.kAAFMasterMob
         
-        error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
+        error_check(self.ptr.GetMobs(&mob_iter.search_crit, &mob_iter.ptr))
+        mob_iter._clone_iter = self.master_mobs
         return mob_iter
     
     def composition_mobs(self):
@@ -253,10 +255,11 @@ cdef class ContentStorage(AAFObject):
         
         cdef lib.aafSearchCrit_t search_crit
         
-        search_crit.searchTag = lib.kAAFByMobKind
-        search_crit.tags.mobKind = lib.kAAFCompMob
+        mob_iter.search_crit.searchTag = lib.kAAFByMobKind
+        mob_iter.search_crit.tags.mobKind = lib.kAAFCompMob
         
-        error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
+        error_check(self.ptr.GetMobs(&mob_iter.search_crit, &mob_iter.ptr))
+        mob_iter._clone_iter = self.composition_mobs
         return mob_iter
     
     def toplevel_mobs(self):
@@ -264,10 +267,11 @@ cdef class ContentStorage(AAFObject):
         
         cdef lib.aafSearchCrit_t search_crit
         
-        search_crit.searchTag = lib.kAAFByCompositionMobUsageCode
-        search_crit.tags.usageCode = lib.kAAFUsage_TopLevel
+        mob_iter.search_crit.searchTag = lib.kAAFByCompositionMobUsageCode
+        mob_iter.search_crit.tags.usageCode = lib.kAAFUsage_TopLevel
         
-        error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
+        error_check(self.ptr.GetMobs(&mob_iter.search_crit, &mob_iter.ptr))
+        mob_iter._clone_iter = self.toplevel_mobs
         return mob_iter
     
     def essence_data(self):

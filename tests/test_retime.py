@@ -37,7 +37,7 @@ class TestFile(unittest.TestCase):
             print i, item
         
 
-        comp = f.storage.toplevel_mobs()[3]
+        comp = f.storage.toplevel_mobs()[0]
 
         print comp
     
@@ -68,7 +68,7 @@ class TestFile(unittest.TestCase):
         for p in speed_map.points():
             print "  ", float(p.time), float(p.value), p.edit_hint
             for prop in p.point_properties():
-                print "    ", prop.name, float(prop.value)
+                print "    ", prop.name, prop.value, float(prop.value)
         
         print offset_map.interpolation_def().name        
         for p in offset_map.points():
