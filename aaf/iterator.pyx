@@ -47,6 +47,15 @@ cdef class ClassDefIter(BaseIterator):
         error_check(self.ptr.Clone(&iterable.ptr))
         return iterable
     
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
     def __next__(self):
         cdef ClassDef classdef = ClassDef()
         ret = self.ptr.NextOne(&classdef.ptr)
@@ -73,6 +82,15 @@ cdef class CodecDefIter(BaseIterator):
         cdef CodecDefIter iterable = CodecDefIter()
         error_check(self.ptr.Clone(&iterable.ptr))
         return iterable
+    
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
 
     def __next__(self):
         cdef CodecDef codecdef = CodecDef()
@@ -100,7 +118,16 @@ cdef class ComponentIter(BaseIterator):
         cdef ComponentIter iter = ComponentIter()
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
-    
+
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+            
     def __next__(self):
         cdef Component comp = Component()
         ret = self.ptr.NextOne(&comp.comp_ptr)
@@ -127,6 +154,15 @@ cdef class ControlPointIter(BaseIterator):
         cdef ControlPointIter iter = ControlPointIter()
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
+    
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
     
     def __next__(self):
         cdef ControlPoint point = ControlPoint()
@@ -155,6 +191,15 @@ cdef class EssenceDataIter(BaseIterator):
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
     
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
     def __next__(self):
         cdef EssenceData data = EssenceData()
         ret = self.ptr.NextOne(&data.ptr)
@@ -181,7 +226,16 @@ cdef class KLVDataDefIter(BaseIterator):
         cdef KLVDataDefIter iter = KLVDataDefIter()
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
-    
+
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+            
     def __next__(self):
         cdef KLVDataDef klv_def = KLVDataDef()
         ret = self.ptr.NextOne(&klv_def.ptr)
@@ -208,6 +262,15 @@ cdef class LoadedPluginIter(BaseIterator):
         cdef LoadedPluginIter iter = LoadedPluginIter()
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
+    
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
     
     def __next__(self):
         cdef AUID auid = AUID()
@@ -236,6 +299,15 @@ cdef class MobSlotIter(BaseIterator):
         error_check(self.ptr.Clone(&iterable.ptr))
         return iterable
     
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
     def __next__(self):
         cdef MobSlot slot = MobSlot()
         ret = self.ptr.NextOne(&slot.slot_ptr)
@@ -263,6 +335,15 @@ cdef class MobIter(BaseIterator):
         error_check(self.ptr.Clone(&iterable.ptr))
         return iterable
     
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
     def __next__(self):
         cdef Mob mob = Mob()
         ret = self.ptr.NextOne(&mob.ptr)
@@ -288,6 +369,15 @@ cdef class ParamIter(BaseIterator):
         cdef ParamIter iter = ParamIter()
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
+    
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
     
     def __next__(self):
         cdef Parameter param = Parameter()
@@ -316,6 +406,15 @@ cdef class PluginDefIter(BaseIterator):
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
     
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
     def __next__(self):
         cdef PluginDef plug_def = PluginDef()
         ret = self.ptr.NextOne(&plug_def.ptr)
@@ -342,6 +441,15 @@ cdef class PropIter(BaseIterator):
         cdef PropIter iter = PropIter()
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
+    
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
     
     def __next__(self):
         cdef Property prop = Property()
@@ -370,6 +478,15 @@ cdef class PropertyDefsIter(BaseIterator):
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
     
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
     def __next__(self):
         cdef PropertyDef propdef = PropertyDef()
         ret = self.ptr.NextOne(&propdef.ptr)
@@ -396,6 +513,15 @@ cdef class PropValueIter(BaseIterator):
         cdef PropValueIter iter = PropValueIter()
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
+
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
     
     def __next__(self):
         cdef PropertyValue value = PropertyValue()
@@ -424,6 +550,15 @@ cdef class PropValueResolveIter(BaseIterator):
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
     
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
     def __next__(self):
         cdef PropertyValue value = PropertyValue()
         ret = self.ptr.NextOne(&value.ptr)
@@ -450,6 +585,15 @@ cdef class SegmentIter(BaseIterator):
         cdef SegmentIter iter = SegmentIter()
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
+    
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
     
     def __next__(self):
         cdef Segment seg = Segment()
@@ -478,6 +622,15 @@ cdef class TaggedValueIter(BaseIterator):
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
     
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
     def __next__(self):
         cdef TaggedValue tag = TaggedValue()
         ret = self.ptr.NextOne(&tag.ptr)
@@ -504,6 +657,15 @@ cdef class TypeDefIter(BaseIterator):
         cdef TypeDefIter iter = TypeDefIter()
         error_check(self.ptr.Clone(&iter.ptr))
         return iter
+    
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
     
     def __next__(self):
         cdef TypeDef type_def = TypeDef()

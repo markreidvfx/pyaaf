@@ -25,6 +25,16 @@ if not os.path.exists(sandbox):
 main_test_file = os.path.join(cur_dir,"files/test_file_01.aaf")
 
 
+def iter_count(iterable):
+    i = 0
+    while True:
+        result = next(iterable, None)
+        if not result:
+            break
+        i += 1 
+    return i   
+
+
 
 class TestFile(unittest.TestCase):
     
@@ -38,13 +48,43 @@ class TestFile(unittest.TestCase):
     
         count = 0 
         for i, item in enumerate(iterable):
-            print item
+            #print item
             assert len(iterable) == 199
             count += 1
             
         assert count == len(iterable)
         assert len(iterable) == 199
         
+    def test_skip(self):
+        f = aaf.open(main_test_file)
+        
+        
+        iterable = f.storage.mobs()
+        
+        assert len(iterable) == 199
+        
+        
+        skip_amount = 100
+        iterable.skip(skip_amount)
+        
+        assert iter_count(iterable) == 199 - skip_amount
+        
+        iterable.reset()
+        
+        assert len(iterable) == 199
+        
+        
+        iterable.skip(skip_amount)
+        
+        try:
+            iterable.skip(1000)
+        except IndexError:
+            pass
+        else:
+            raise
+        
+        assert iter_count(iterable) == 199 - skip_amount
+            
         
 if __name__ == '__main__':
     unittest.main()

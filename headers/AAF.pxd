@@ -1077,24 +1077,28 @@ cdef extern from "AAF.h":
     cdef cppclass IEnumAAFComponents(IUnknown):
         HRESULT Clone(IEnumAAFComponents **ppEnum)
         HRESULT NextOne(IAAFComponent ** ppComponent)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFEssenceData
     cdef cppclass IEnumAAFEssenceData(IUnknown):
         HRESULT Clone(IEnumAAFEssenceData **ppEnum)
         HRESULT NextOne(IAAFEssenceData ** ppEssenceData)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
     
     cdef GUID IID_IEnumAAFLoadedPlugins
     cdef cppclass IEnumAAFLoadedPlugins(IUnknown):
         HRESULT Clone(IEnumAAFLoadedPlugins **ppEnum)
         HRESULT NextOne(aafUID_t*  ppAAFPluginID)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFMobs
     cdef cppclass IEnumAAFMobs(IUnknown):
         HRESULT Clone(IEnumAAFMobs **ppEnum)
         HRESULT NextOne(IAAFMob ** ppMob)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
         
@@ -1102,84 +1106,98 @@ cdef extern from "AAF.h":
     cdef cppclass IEnumAAFMobSlots(IUnknown):
         HRESULT Clone(IEnumAAFMobSlots **ppEnum)
         HRESULT NextOne(IAAFMobSlot ** ppMob)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
     
     cdef GUID IID_IEnumAAFProperties
     cdef cppclass IEnumAAFProperties(IUnknown):
         HRESULT Clone(IEnumAAFProperties **ppEnum)
         HRESULT NextOne(IAAFProperty ** ppMob)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFPropertyValues
     cdef cppclass IEnumAAFPropertyValues(IUnknown):
         HRESULT Clone(IEnumAAFPropertyValues **ppEnum)
         HRESULT NextOne(IAAFPropertyValue ** ppPropertyValue)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFSegments
     cdef cppclass IEnumAAFSegments(IUnknown):
         HRESULT Clone(IEnumAAFSegments **ppEnum)
         HRESULT NextOne(IAAFSegment ** ppSegment)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
      
     cdef GUID IID_IEnumAAFParameters
     cdef cppclass IEnumAAFParameters(IUnknown):
         HRESULT Clone(IEnumAAFParameters **ppEnum)
         HRESULT NextOne(IAAFParameter ** ppParameter)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFPropertyDefs
     cdef cppclass IEnumAAFPropertyDefs(IUnknown):
         HRESULT Clone(IEnumAAFPropertyDefs **ppEnum)
         HRESULT NextOne(IAAFPropertyDef ** ppParameter)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFClassDefs
     cdef cppclass IEnumAAFClassDefs(IUnknown):
         HRESULT Clone(IEnumAAFClassDefs **ppEnum)
         HRESULT NextOne(IAAFClassDef ** ppClassDefs)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFCodecDefs
     cdef cppclass IEnumAAFCodecDefs(IUnknown):
         HRESULT Clone(IEnumAAFCodecDefs **ppEnum)
         HRESULT NextOne(IAAFCodecDef ** ppCodecDefs)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFCodecFlavours
     cdef cppclass IEnumAAFCodecFlavours(IUnknown):
         HRESULT Clone(IEnumAAFCodecFlavours **ppEnum)
         HRESULT NextOne(aafUID_t *  pAAFCodecFlavour)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
     
     cdef GUID IID_IEnumAAFControlPoints  
     cdef cppclass IEnumAAFControlPoints(IUnknown):
         HRESULT Clone(IEnumAAFControlPoints **ppEnum)
         HRESULT NextOne(IAAFControlPoint ** ppControlPoints)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
     
     cdef GUID IID_IEnumAAFTypeDefs
     cdef cppclass IEnumAAFTypeDefs(IUnknown):
         HRESULT Clone(IEnumAAFTypeDefs **ppEnum)
         HRESULT NextOne(IAAFTypeDef ** ppTypeDef)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFPluginDefs
     cdef cppclass IEnumAAFPluginDefs(IUnknown):
         HRESULT Clone(IEnumAAFPluginDefs **ppEnum)
         HRESULT NextOne(IAAFPluginDef ** ppPluginDefs)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
     cdef GUID IID_IEnumAAFKLVDataDefs
     cdef cppclass IEnumAAFKLVDataDefs(IUnknown):
         HRESULT Clone(IEnumAAFKLVDataDefs **ppEnum)
         HRESULT NextOne(IAAFKLVDataDefinition ** ppKLVDataDefs)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
     
     cdef GUID IID_IEnumAAFTaggedValues
     cdef cppclass IEnumAAFTaggedValues(IUnknown):
         HRESULT Clone(IEnumAAFTaggedValues **ppEnum)
         HRESULT NextOne(IAAFTaggedValue ** ppTaggedValues)
+        HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
     
     # File Functions
