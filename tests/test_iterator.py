@@ -40,8 +40,6 @@ class TestFile(unittest.TestCase):
     
     def test_len(self):
         f = aaf.open(main_test_file)
-        
-        
         iterable = f.storage.mobs()
         
         assert len(iterable) == 199
@@ -55,10 +53,50 @@ class TestFile(unittest.TestCase):
         assert count == len(iterable)
         assert len(iterable) == 199
         
+    def test_negative_index(self):
+        f = aaf.open(main_test_file)
+        iterable = f.storage.mobs()
+        
+        
+        last_item = iterable[len(iterable)-1]
+        assert last_item == iterable[-1]
+        
+        try:
+            iterable[-10000]
+        except IndexError:
+            pass
+        else:
+            raise
+        
+        for i in xrange(len(iterable)):
+            assert iterable[i] == iterable[i-len(iterable)]
+            
+    def test_slice(self):
+        f = aaf.open(main_test_file)
+        iterable = f.storage.mobs()
+        
+        
+        s = iterable[1:10]
+        l = []
+        for i in xrange(1, 10):
+            l.append(iterable[i])
+        
+        assert s == l
+        
+        s = iterable[100:-10:2]
+        
+        l = []
+        
+        for i in xrange(100, len(iterable)-10, 2):
+            l.append(iterable[i])
+        
+        assert s == l
+        
+        l = iterable[-1000: 1000]
+        
+        
     def test_skip(self):
         f = aaf.open(main_test_file)
-        
-        
         iterable = f.storage.mobs()
         
         assert len(iterable) == 199

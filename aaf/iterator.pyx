@@ -11,11 +11,31 @@ cdef class BaseIterator(object):
     def __cinit__(self):
         self._clone_iter = None
     
-    def __getitem__(self, int index):
+    def __getitem__(self, index):
+        
+        if isinstance(index, slice):
+            return self._getslice(index)
+        
+        index = int(index)
+        
+        if index < 0:
+            index = len(self) + index
+        
+        if index < 0:
+            raise IndexError("index out of range")
+        
         for i, item in enumerate(self):
             if i == index:
                 return item
         raise IndexError("index out of range")
+    
+    def _getslice(self, slice_object):
+        
+        l = []
+        
+        for i in xrange(*slice_object.indices(len(self))):
+            l.append(self[i])
+        return l
     
     def __iter__(self):
         if self._clone_iter:
