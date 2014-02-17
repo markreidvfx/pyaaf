@@ -22,14 +22,14 @@ and build it yourself
 
 ::
 
-    $ https://github.com/markreidvfx/pyaaf.git
+    $ git clone https://github.com/markreidvfx/pyaaf.git
     $ cd pyaaf
     $ export AAF_ROOT=path/to/root/of/AAF-devel-libs
-    $ export LD_LIBRARY_PATH=AAF_ROOT/bin:$LD_LIBRARY_PATH #or DYLD_LIBRARY_PATH on mac
     $ virtualenv venv
     $ . venv/bin/activate
     $ pip install cython nose
-    $ make test
+    $ make
+    $ nosetests
     
  
 
