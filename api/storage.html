@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>aaf.storage &mdash; pyaaf 0.6.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.6.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pyaaf 0.6.1 documentation" href="../index.html" />
+    <link rel="next" title="aaf.dictionary" href="dictionary.html" />
+    <link rel="prev" title="Welcome to pyaaf’s documentation!" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dictionary.html" title="aaf.dictionary"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to pyaaf’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pyaaf 0.6.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-aaf.storage">
+<span id="aaf-storage"></span><h1><tt class="docutils literal"><span class="pre">aaf.storage</span></tt><a class="headerlink" href="#module-aaf.storage" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="aaf.storage.File">
+<em class="property">class </em><tt class="descclassname">aaf.storage.</tt><tt class="descname">File</tt><a class="headerlink" href="#aaf.storage.File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="aaf.storage.File.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.File.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.storage.File.dictionary">
+<tt class="descname">dictionary</tt><a class="headerlink" href="#aaf.storage.File.dictionary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.storage.File.header">
+<tt class="descname">header</tt><a class="headerlink" href="#aaf.storage.File.header" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.storage.File.mode">
+<tt class="descname">mode</tt><a class="headerlink" href="#aaf.storage.File.mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.File.save">
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.File.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save AAF file to disk. If not path and the mode is &#8216;rw&#8217; or &#8216;w&#8217; it will overwrite or modify
+the current file. If path is supplied a new file will be created, (Save Copy As).
+If the extension of the path is .xml a xml file will be saved.
+Note: If file mode is &#8216;t&#8217; or &#8216;r&#8217; and path is None, nothing will happen</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.storage.File.storage">
+<tt class="descname">storage</tt><a class="headerlink" href="#aaf.storage.File.storage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.storage.Header">
+<em class="property">class </em><tt class="descclassname">aaf.storage.</tt><tt class="descname">Header</tt><a class="headerlink" href="#aaf.storage.Header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFObject" title="aaf.base.AAFObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFObject</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.storage.Header.dictionary">
+<tt class="descname">dictionary</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.Header.dictionary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.Header.storage">
+<tt class="descname">storage</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.Header.storage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.storage.ContentStorage">
+<em class="property">class </em><tt class="descclassname">aaf.storage.</tt><tt class="descname">ContentStorage</tt><a class="headerlink" href="#aaf.storage.ContentStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFObject" title="aaf.base.AAFObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFObject</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.add_essence_data">
+<tt class="descname">add_essence_data</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.add_essence_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.add_mob">
+<tt class="descname">add_mob</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.add_mob" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.composition_mobs">
+<tt class="descname">composition_mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.composition_mobs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.count_mobs">
+<tt class="descname">count_mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.count_mobs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.essence_data">
+<tt class="descname">essence_data</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.essence_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.lookup_mob">
+<tt class="descname">lookup_mob</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.lookup_mob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks up the Mob that matches the given mob id</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.master_mobs">
+<tt class="descname">master_mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.master_mobs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.mobs">
+<tt class="descname">mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.mobs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.remove_essence_data">
+<tt class="descname">remove_essence_data</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.remove_essence_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.remove_mob">
+<tt class="descname">remove_mob</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.remove_mob" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.storage.ContentStorage.toplevel_mobs">
+<tt class="descname">toplevel_mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.toplevel_mobs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Welcome to pyaaf&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dictionary.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">aaf.dictionary</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api/storage.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dictionary.html" title="aaf.dictionary"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to pyaaf’s documentation!"
+             >previous</a> |</li>
+        <li><a href="../index.html">pyaaf 0.6.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mark Reid.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

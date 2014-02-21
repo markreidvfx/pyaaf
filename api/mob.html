@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>aaf.mob &mdash; pyaaf 0.6.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.6.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pyaaf 0.6.1 documentation" href="../index.html" />
+    <link rel="next" title="aaf.component" href="component.html" />
+    <link rel="prev" title="aaf.dictionary" href="dictionary.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="component.html" title="aaf.component"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="dictionary.html" title="aaf.dictionary"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pyaaf 0.6.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-aaf.mob">
+<span id="aaf-mob"></span><h1><tt class="docutils literal"><span class="pre">aaf.mob</span></tt><a class="headerlink" href="#module-aaf.mob" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="aaf.mob.Mob">
+<em class="property">class </em><tt class="descclassname">aaf.mob.</tt><tt class="descname">Mob</tt><a class="headerlink" href="#aaf.mob.Mob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFObject" title="aaf.base.AAFObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFObject</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.mob.Mob.add_timeline_slot">
+<tt class="descname">add_timeline_slot</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.Mob.add_timeline_slot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.Mob.append_comment">
+<tt class="descname">append_comment</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.Mob.append_comment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.Mob.create_clip">
+<tt class="descname">create_clip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.Mob.create_clip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.Mob.insert_slot">
+<tt class="descname">insert_slot</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.Mob.insert_slot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts the given slot into this mob at the given index.  All
+existing slots at the given and higher index will be moved up one
+index to accommodate.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.Mob.iter_comments">
+<tt class="descname">iter_comments</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.Mob.iter_comments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.Mob.mobID">
+<tt class="descname">mobID</tt><a class="headerlink" href="#aaf.mob.Mob.mobID" title="Permalink to this definition">¶</a></dt>
+<dd><p>The unique Mob ID associated with this mob. Get Returns MobID Object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.Mob.name">
+<tt class="descname">name</tt><a class="headerlink" href="#aaf.mob.Mob.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.Mob.nb_slots">
+<tt class="descname">nb_slots</tt><a class="headerlink" href="#aaf.mob.Mob.nb_slots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.Mob.remove_comment">
+<tt class="descname">remove_comment</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.Mob.remove_comment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.Mob.slot_at">
+<tt class="descname">slot_at</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.Mob.slot_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.Mob.slots">
+<tt class="descname">slots</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.Mob.slots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.mob.MasterMob">
+<em class="property">class </em><tt class="descclassname">aaf.mob.</tt><tt class="descname">MasterMob</tt><a class="headerlink" href="#aaf.mob.MasterMob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.mob.Mob" title="aaf.mob.Mob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.Mob</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.mob.MasterMob.add_master_slot">
+<tt class="descname">add_master_slot</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.MasterMob.add_master_slot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a slot that references the specified a slot in the specified Source Mob.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.MasterMob.create_essence">
+<tt class="descname">create_essence</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.MasterMob.create_essence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.MasterMob.import_audio_essence">
+<tt class="descname">import_audio_essence</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.MasterMob.import_audio_essence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import raw PCM audio stream from file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.MasterMob.import_video_essence">
+<tt class="descname">import_video_essence</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.MasterMob.import_video_essence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import raw dnxhd video stream from file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.MasterMob.initialize">
+<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.MasterMob.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.MasterMob.new_phys_source_ref">
+<tt class="descname">new_phys_source_ref</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.MasterMob.new_phys_source_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.MasterMob.open_essence">
+<tt class="descname">open_essence</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.MasterMob.open_essence" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.mob.CompositionMob">
+<em class="property">class </em><tt class="descclassname">aaf.mob.</tt><tt class="descname">CompositionMob</tt><a class="headerlink" href="#aaf.mob.CompositionMob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.mob.Mob" title="aaf.mob.Mob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.Mob</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.mob.CompositionMob.initialize">
+<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.CompositionMob.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.mob.SourceMob">
+<em class="property">class </em><tt class="descclassname">aaf.mob.</tt><tt class="descname">SourceMob</tt><a class="headerlink" href="#aaf.mob.SourceMob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.mob.Mob" title="aaf.mob.Mob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.Mob</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.mob.SourceMob.add_nil_ref">
+<tt class="descname">add_nil_ref</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.SourceMob.add_nil_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.SourceMob.add_pulldown">
+<tt class="descname">add_pulldown</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.SourceMob.add_pulldown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.SourceMob.append_timecode_slot">
+<tt class="descname">append_timecode_slot</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.SourceMob.append_timecode_slot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.SourceMob.essence_descriptor">
+<tt class="descname">essence_descriptor</tt><a class="headerlink" href="#aaf.mob.SourceMob.essence_descriptor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.SourceMob.initialize">
+<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.SourceMob.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.SourceMob.new_phys_source_ref">
+<tt class="descname">new_phys_source_ref</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.SourceMob.new_phys_source_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.mob.MobSlot">
+<em class="property">class </em><tt class="descclassname">aaf.mob.</tt><tt class="descname">MobSlot</tt><a class="headerlink" href="#aaf.mob.MobSlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFObject" title="aaf.base.AAFObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFObject</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.mob.MobSlot.datadef">
+<tt class="descname">datadef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.MobSlot.datadef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.MobSlot.media_kind">
+<tt class="descname">media_kind</tt><a class="headerlink" href="#aaf.mob.MobSlot.media_kind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.MobSlot.name">
+<tt class="descname">name</tt><a class="headerlink" href="#aaf.mob.MobSlot.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.MobSlot.physical_num">
+<tt class="descname">physical_num</tt><a class="headerlink" href="#aaf.mob.MobSlot.physical_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Audio channel, audio 1 = left 2 = right (leave video as 0)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.MobSlot.segment">
+<tt class="descname">segment</tt><a class="headerlink" href="#aaf.mob.MobSlot.segment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.MobSlot.slotID">
+<tt class="descname">slotID</tt><a class="headerlink" href="#aaf.mob.MobSlot.slotID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.mob.TimelineMobSlot">
+<em class="property">class </em><tt class="descclassname">aaf.mob.</tt><tt class="descname">TimelineMobSlot</tt><a class="headerlink" href="#aaf.mob.TimelineMobSlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.mob.MobSlot" title="aaf.mob.MobSlot"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.MobSlot</span></tt></a></p>
+<dl class="attribute">
+<dt id="aaf.mob.TimelineMobSlot.editrate">
+<tt class="descname">editrate</tt><a class="headerlink" href="#aaf.mob.TimelineMobSlot.editrate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.mob.TimelineMobSlot.initialize">
+<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.mob.TimelineMobSlot.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.mob.TimelineMobSlot.origin">
+<tt class="descname">origin</tt><a class="headerlink" href="#aaf.mob.TimelineMobSlot.origin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.mob.EventMobSlot">
+<em class="property">class </em><tt class="descclassname">aaf.mob.</tt><tt class="descname">EventMobSlot</tt><a class="headerlink" href="#aaf.mob.EventMobSlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.mob.MobSlot" title="aaf.mob.MobSlot"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.MobSlot</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.mob.StaticMobSlot">
+<em class="property">class </em><tt class="descclassname">aaf.mob.</tt><tt class="descname">StaticMobSlot</tt><a class="headerlink" href="#aaf.mob.StaticMobSlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.mob.MobSlot" title="aaf.mob.MobSlot"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.MobSlot</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="dictionary.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">aaf.dictionary</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="component.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">aaf.component</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api/mob.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="component.html" title="aaf.component"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="dictionary.html" title="aaf.dictionary"
+             >previous</a> |</li>
+        <li><a href="../index.html">pyaaf 0.6.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mark Reid.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>aaf.component &mdash; pyaaf 0.6.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.6.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pyaaf 0.6.1 documentation" href="../index.html" />
+    <link rel="next" title="aaf.essence" href="essence.html" />
+    <link rel="prev" title="aaf.mob" href="mob.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="essence.html" title="aaf.essence"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mob.html" title="aaf.mob"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pyaaf 0.6.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="aaf-component">
+<h1><tt class="docutils literal"><span class="pre">aaf.component</span></tt><a class="headerlink" href="#aaf-component" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-aaf.component"></span><dl class="class">
+<dt id="aaf.component.Component">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Component</tt><a class="headerlink" href="#aaf.component.Component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFObject" title="aaf.base.AAFObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFObject</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.component.Component.datadef">
+<tt class="descname">datadef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Component.datadef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.Component.length">
+<tt class="descname">length</tt><a class="headerlink" href="#aaf.component.Component.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.Component.media_kind">
+<tt class="descname">media_kind</tt><a class="headerlink" href="#aaf.component.Component.media_kind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.Segment">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Segment</tt><a class="headerlink" href="#aaf.component.Segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Component" title="aaf.component.Component"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Component</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.Transition">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Transition</tt><a class="headerlink" href="#aaf.component.Transition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Component" title="aaf.component.Component"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Component</span></tt></a></p>
+<dl class="attribute">
+<dt id="aaf.component.Transition.cutpoint">
+<tt class="descname">cutpoint</tt><a class="headerlink" href="#aaf.component.Transition.cutpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.Sequence">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Sequence</tt><a class="headerlink" href="#aaf.component.Sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.component.Sequence.append">
+<tt class="descname">append</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.append" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.components">
+<tt class="descname">components</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.initialize">
+<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.Timecode">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Timecode</tt><a class="headerlink" href="#aaf.component.Timecode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.component.Timecode.initialize">
+<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Timecode.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.Filler">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Filler</tt><a class="headerlink" href="#aaf.component.Filler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.component.Filler.initialize">
+<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Filler.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.Pulldown">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Pulldown</tt><a class="headerlink" href="#aaf.component.Pulldown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+<dl class="attribute">
+<dt id="aaf.component.Pulldown.direction">
+<tt class="descname">direction</tt><a class="headerlink" href="#aaf.component.Pulldown.direction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Pulldown.initialize">
+<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Pulldown.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.Pulldown.kind">
+<tt class="descname">kind</tt><a class="headerlink" href="#aaf.component.Pulldown.kind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.Pulldown.phase">
+<tt class="descname">phase</tt><a class="headerlink" href="#aaf.component.Pulldown.phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.Pulldown.segment">
+<tt class="descname">segment</tt><a class="headerlink" href="#aaf.component.Pulldown.segment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.SourceReference">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">SourceReference</tt><a class="headerlink" href="#aaf.component.SourceReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.SourceClip">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">SourceClip</tt><a class="headerlink" href="#aaf.component.SourceClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.SourceReference" title="aaf.component.SourceReference"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.SourceReference</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.component.SourceClip.initialize">
+<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.SourceClip.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.SourceClip.resolve_ref">
+<tt class="descname">resolve_ref</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.SourceClip.resolve_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.OperationGroup">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">OperationGroup</tt><a class="headerlink" href="#aaf.component.OperationGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.component.OperationGroup.input_segments">
+<tt class="descname">input_segments</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.OperationGroup.input_segments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.OperationGroup.nb_input_segments">
+<tt class="descname">nb_input_segments</tt><a class="headerlink" href="#aaf.component.OperationGroup.nb_input_segments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.OperationGroup.operation">
+<tt class="descname">operation</tt><a class="headerlink" href="#aaf.component.OperationGroup.operation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.OperationGroup.operationdef">
+<tt class="descname">operationdef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.OperationGroup.operationdef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.OperationGroup.parameter">
+<tt class="descname">parameter</tt><a class="headerlink" href="#aaf.component.OperationGroup.parameter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.OperationGroup.parameters">
+<tt class="descname">parameters</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.OperationGroup.parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.NestedScope">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">NestedScope</tt><a class="headerlink" href="#aaf.component.NestedScope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.component.NestedScope.segments">
+<tt class="descname">segments</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.NestedScope.segments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.ScopeReference">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">ScopeReference</tt><a class="headerlink" href="#aaf.component.ScopeReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.EssenceGroup">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">EssenceGroup</tt><a class="headerlink" href="#aaf.component.EssenceGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+<p>Describes multiple digital representations of the same original content source.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.Selector">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Selector</tt><a class="headerlink" href="#aaf.component.Selector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+<p>Provides the value of a single Segment while preserving references to unused alternatives.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.EdgeCode">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">EdgeCode</tt><a class="headerlink" href="#aaf.component.EdgeCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.Event">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Event</tt><a class="headerlink" href="#aaf.component.Event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.CommentMarker">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">CommentMarker</tt><a class="headerlink" href="#aaf.component.CommentMarker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Event" title="aaf.component.Event"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Event</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.DescriptiveMarker">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">DescriptiveMarker</tt><a class="headerlink" href="#aaf.component.DescriptiveMarker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.CommentMarker" title="aaf.component.CommentMarker"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.CommentMarker</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.GPITrigger">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">GPITrigger</tt><a class="headerlink" href="#aaf.component.GPITrigger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Event" title="aaf.component.Event"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Event</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.TimecodeStream">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">TimecodeStream</tt><a class="headerlink" href="#aaf.component.TimecodeStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.TimecodeStream12M">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">TimecodeStream12M</tt><a class="headerlink" href="#aaf.component.TimecodeStream12M" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.TimecodeStream" title="aaf.component.TimecodeStream"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.TimecodeStream</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.Parameter">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Parameter</tt><a class="headerlink" href="#aaf.component.Parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFObject" title="aaf.base.AAFObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFObject</span></tt></a></p>
+<p>A Parameter is an effect control. They are only on OperationGroups.</p>
+<dl class="attribute">
+<dt id="aaf.component.Parameter.name">
+<tt class="descname">name</tt><a class="headerlink" href="#aaf.component.Parameter.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Parameter.parameterdef">
+<tt class="descname">parameterdef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Parameter.parameterdef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Parameter.typedef">
+<tt class="descname">typedef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Parameter.typedef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.Parameter.value">
+<tt class="descname">value</tt><a class="headerlink" href="#aaf.component.Parameter.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.ConstantValue">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">ConstantValue</tt><a class="headerlink" href="#aaf.component.ConstantValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Parameter" title="aaf.component.Parameter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Parameter</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.VaryingValue">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">VaryingValue</tt><a class="headerlink" href="#aaf.component.VaryingValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.component.Parameter" title="aaf.component.Parameter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Parameter</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.component.VaryingValue.count">
+<tt class="descname">count</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.VaryingValue.count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.VaryingValue.interpolation_def">
+<tt class="descname">interpolation_def</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.VaryingValue.interpolation_def" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.VaryingValue.points">
+<tt class="descname">points</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.VaryingValue.points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.VaryingValue.value_at">
+<tt class="descname">value_at</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.VaryingValue.value_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the varying value at a specified time, Only currently works for step and linear interpolation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.component.ControlPoint">
+<em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">ControlPoint</tt><a class="headerlink" href="#aaf.component.ControlPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFObject" title="aaf.base.AAFObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFObject</span></tt></a></p>
+<dl class="attribute">
+<dt id="aaf.component.ControlPoint.edit_hint">
+<tt class="descname">edit_hint</tt><a class="headerlink" href="#aaf.component.ControlPoint.edit_hint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.ControlPoint.point_properties">
+<tt class="descname">point_properties</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.ControlPoint.point_properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.ControlPoint.time">
+<tt class="descname">time</tt><a class="headerlink" href="#aaf.component.ControlPoint.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.ControlPoint.typedef">
+<tt class="descname">typedef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.ControlPoint.typedef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.ControlPoint.value">
+<tt class="descname">value</tt><a class="headerlink" href="#aaf.component.ControlPoint.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mob.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">aaf.mob</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="essence.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">aaf.essence</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api/component.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="essence.html" title="aaf.essence"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mob.html" title="aaf.mob"
+             >previous</a> |</li>
+        <li><a href="../index.html">pyaaf 0.6.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mark Reid.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>
