@@ -6,8 +6,41 @@
 Welcome to pyaaf's documentation!
 =================================
 
-Python Bindings for the Advanced Authoring Format (AAF)
+Python Bindings for the `Advanced Authoring Format (AAF)
+<http://aaf.sourceforge.net/>`_.
 
+Basic Demo
+----------
+
+::
+
+    import aaf
+    
+    f - aaf.open("path/to/file.aaf", "r")
+    
+    # get the main composition
+    main_compostion = f.storage.toplevel_mobs()[0]
+    
+    # print the name of the composition
+    print main_compostion.name
+    
+    # AAFObjects have properties that can be accessed like a dictionary
+    # print out the creation time
+    print main_compostion['CreationTime'].value
+    
+    # video, audio and other track types are stored in slots
+    # on a mob object. 
+    
+    for slot in main_compostion.slots():
+        segment = slot.segment
+        print segment
+        
+            
+        
+    
+    
+    
+    
 
 Building From Source
 --------------------
@@ -17,7 +50,7 @@ First you need to download the AAF-devel-libs for your platform
 http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6
 
 If your platform isn't there then you'll need to download the full SDK
-and build it yourself
+and build it yourself. 
 
 
 ::

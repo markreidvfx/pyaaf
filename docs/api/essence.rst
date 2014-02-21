@@ -3,6 +3,11 @@
 
 .. automodule:: aaf.essence
 
+   .. autoclass:: EssenceData
+       :members:
+       :undoc-members:
+       :show-inheritance:
+
    .. autoclass:: EssenceFormat
        :members:
        :undoc-members:
@@ -39,6 +44,16 @@
        :show-inheritance:
        
    .. autoclass:: WAVEDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+
+   .. autoclass:: AIFCDescriptor
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: TIFFDescriptor
        :members:
        :undoc-members:
        :show-inheritance:

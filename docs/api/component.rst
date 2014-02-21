@@ -108,3 +108,22 @@
        :undoc-members:
        :show-inheritance:
        
+   .. autoclass:: Parameter
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: ConstantValue
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: VaryingValue
+       :members:
+       :undoc-members:
+       :show-inheritance:
+       
+   .. autoclass:: ControlPoint
+       :members:
+       :undoc-members:
+       :show-inheritance:
