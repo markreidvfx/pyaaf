@@ -3,7 +3,6 @@ from base cimport AAFObject,AAFBase
 
 cdef class IAAFFileProxy(AAFBase):
     cdef lib.IAAFFile *ptr
-    cdef object setup(self)
   
 cdef class File(object):
     cdef IAAFFileProxy proxy

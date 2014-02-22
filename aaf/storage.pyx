@@ -13,12 +13,17 @@ from wstring cimport wstring,toWideString
 import os
 
 cdef class IAAFFileProxy(AAFBase):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr= NULL
         self.iid = lib.IID_IAAFFile
         
-    cdef object setup(self):
-        super(IAAFFileProxy, self).__init__(self)
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFFile)
+            
+        AAFBase.query_interface(self, obj)
 
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -44,7 +49,8 @@ cdef class File(object):
         Note: Opening a .xml file in 'r' and 'rw' mode is buggy and might not work
         """
         
-        self.proxy = IAAFFileProxy()
+        #self.proxy = IAAFFileProxy()
+        self.proxy = IAAFFileProxy.__new__(IAAFFileProxy)
         
         if not path:
             path = b""
@@ -66,7 +72,7 @@ cdef class File(object):
         else:
             raise ValueError("invalid mode: %s" % mode)
         self.mode = mode
-        self.proxy.setup()
+        self.proxy.query_interface()
         
     cdef object setup_new_file(self, bytes path, bytes mode=b'w'):
             
@@ -133,17 +139,16 @@ cdef class File(object):
         error_check(self.proxy.ptr.SaveCopyAs(new_file.proxy.ptr))
         
         return new_file
-        
 
-    
     def close(self):
         error_check(self.proxy.ptr.Close())
         
     property header:
         def __get__(self):
-            cdef Header header = Header()
+            cdef Header header = Header.__new__(Header)
             error_check(self.proxy.ptr.GetHeader(&header.ptr))
-            return Header(header)
+            header.query_interface()
+            return header
             
     property storage:
         def __get__(self):
@@ -154,18 +159,26 @@ cdef class File(object):
             return self.header.dictionary()
 
 cdef class Header(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(Header, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFHeader
         self.auid = lib.AUID_AAFHeader
         self.ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFHeader)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFHeader)
+            
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -178,25 +191,33 @@ cdef class Header(AAFObject):
 
     def storage(self,none=None):
 
-        cdef ContentStorage content_storage = ContentStorage()
+        cdef ContentStorage content_storage = ContentStorage.__new__(ContentStorage)
         error_check(self.ptr.GetContentStorage(&content_storage.ptr))
-        
-        return ContentStorage(content_storage)
+        content_storage.query_interface()
+        return content_storage
     
          
 cdef class ContentStorage(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(ContentStorage, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFContentStorage
         self.auid = lib.AUID_AAFContentStorage
         self.ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFContentStorage)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFContentStorage)
+            
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -286,18 +307,28 @@ cdef class ContentStorage(AAFObject):
         error_check(self.ptr.RemoveEssenceData(data.ptr))
     
 cdef class Identification(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(Identification, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFIdentification
         self.auid = lib.AUID_AAFIdentification
         self.ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
+
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+        #query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:

@@ -9,16 +9,24 @@ from .iterator cimport PropIter
 from dictionary cimport Dictionary
 
 cdef class AAFBase(object):
-    def __init__(self,AAFBase obj = None):
+    def __cinit__(self):
         self.base_ptr = NULL
         self.iid = lib.IID_IUnknown
-        if not obj:
+        
+    def __init__(self,AAFBase obj = None):
+        if obj is None:
             return
         
-        query_interface(obj.get_ptr(), &self.base_ptr, lib.IID_IUnknown)
+        #query_interface(obj.get_ptr(), &self.base_ptr, lib.IID_IUnknown)
+        self.query_interface(obj)
 
     cdef lib.IUnknown **get_ptr(self):
         return &self.base_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            return
+        query_interface(obj.get_ptr(), &self.base_ptr, lib.IID_IUnknown)
     
     cdef resolve(self):
         return resolve_object(self)
@@ -36,19 +44,31 @@ cdef class AAFBase(object):
             
 
 cdef class AAFObject(AAFBase):
-    def __init__(self, AAFBase obj = None):
-        super(AAFObject, self).__init__(obj)
+    def __cinit__(self):
         self.obj_ptr = NULL
         self.iid = lib.IID_IAAFObject
         self.auid = lib.AUID_AAFObject
-        if not obj:
-            return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.obj_ptr, lib.IID_IAAFObject)
+    def __init__(self, AAFBase obj = None):
+        if obj is None:
+            return
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.obj_ptr
     
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.obj_ptr, lib.IID_IAAFObject)
+            
+        AAFBase.query_interface(self, obj)
+        
+    def __dealloc__(self):
+        if self.obj_ptr:
+            self.obj_ptr.Release()
+        
     def __getitem__(self, x):
         for p in self.properties():
             if p.name == x:
