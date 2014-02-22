@@ -185,9 +185,10 @@ cdef class Header(AAFObject):
             self.ptr.Release()
         
     def dictionary(self):
-        cdef Dictionary dictionary = Dictionary()
+        cdef Dictionary dictionary = Dictionary.__new__(Dictionary)
         error_check(self.ptr.GetDictionary(&dictionary.ptr))
-        return Dictionary(dictionary)
+        dictionary.query_interface()
+        return dictionary
 
     def storage(self,none=None):
 

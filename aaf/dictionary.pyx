@@ -8,25 +8,39 @@ from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, K
 from wstring cimport wstring,toWideString
 
 cdef class Dictionary(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(Dictionary, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFDictionary
         self.auid = lib.AUID_AAFDictionary
         self.ptr = NULL
         self.ptr2 = NULL
         self.create = CreateInstance(self)
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFDictionary)
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr2, lib.IID_IAAFDictionary2)
+        self.query_interface(obj)
         
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFDictionary)
+        
+        if not self.ptr2:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr2, lib.IID_IAAFDictionary2)
+            
+        AAFObject.query_interface(self, obj)
+    
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+        
+        if self.ptr2:
+            self.ptr2.Release()
         
     def lookup_datadef(self, bytes name):
         cdef AUID auid = DataDefMap[name.lower()]
