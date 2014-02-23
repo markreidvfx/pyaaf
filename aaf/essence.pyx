@@ -73,12 +73,6 @@ cdef class EssenceData(AAFObject):
         self.iid = lib.IID_IAAFEssenceData
         self.auid = lib.AUID_AAFEssenceData
         self.ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -139,9 +133,10 @@ cdef class EssenceData(AAFObject):
             return value
     property source_mob:
         def __get__(self):
-            cdef SourceMob mob = SourceMob()
+            cdef SourceMob mob = SourceMob.__new__(SourceMob)
             error_check(self.ptr.GetFileMob(&mob.src_ptr))
-            return SourceMob(mob)
+            mob.query_interface()
+            return mob
         def __set__(self, SourceMob mob):
             error_check(self.ptr.SetFileMob(mob.src_ptr))
             
@@ -150,12 +145,6 @@ cdef class EssenceFormat(AAFBase):
     def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceFormat
         self.ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -225,12 +214,6 @@ cdef class EssenceMultiAccess(AAFBase):
     def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceMultiAccess
         self.essence_ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.essence_ptr
@@ -268,9 +251,10 @@ cdef class EssenceAccess(EssenceMultiAccess):
             self.ptr.Release()
             
     def get_emptyfileformat(self):
-        cdef EssenceFormat format =  EssenceFormat()
+        cdef EssenceFormat format =  EssenceFormat.__new__(EssenceFormat)
         error_check(self.ptr.GetEmptyFileFormat(&format.ptr))
-        return EssenceFormat(format)
+        format.query_interface()
+        return format
     
     def set_fileformat(self, EssenceFormat format):
         
@@ -437,12 +421,6 @@ cdef class Locator(AAFObject):
         self.iid = lib.IID_IAAFLocator
         self.auid = lib.AUID_AAFLocator
         self.loc_ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.loc_ptr
@@ -512,12 +490,6 @@ cdef class EssenceDescriptor(AAFObject):
         self.iid = lib.IID_IAAFEssenceDescriptor
         self.auid = lib.AUID_AAFEssenceDescriptor
         self.essence_ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.essence_ptr
@@ -571,9 +543,9 @@ cdef class FileDescriptor(EssenceDescriptor):
             cdef ContainerDef cont_def = self.dictionary().lookup_containerdef(value)
             error_check(self.file_ptr.SetContainerFormat(cont_def.ptr))
         def __get__(self):
-            cdef ContainerDef cont_def = ContainerDef()
+            cdef ContainerDef cont_def = ContainerDef.__new__(ContainerDef)
             error_check(self.file_ptr.GetContainerFormat(&cont_def.ptr))
-            cont_def = ContainerDef(cont_def)
+            cont_def.query_interface()
             
             auid = cont_def['Identification']
             
@@ -1037,7 +1009,7 @@ cdef class SoundDescriptor(FileDescriptor):
             self.snd_ptr.Release()
             
 cdef class PCMDescriptor(SoundDescriptor):
-    def __init__(self):
+    def __cinit__(self):
         self.iid = lib.IID_IAAFPCMDescriptor
         self.auid = lib.AUID_AAFPCMDescriptor
         self.ptr = NULL

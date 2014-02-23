@@ -76,13 +76,6 @@ cdef class MetaDef(AAFBase):
     def __cinit__(self):
         self.meta_ptr = NULL
         self.iid = lib.IID_IAAFMetaDefinition
-        
-    def __init__(self, AAFBase obj = None):
-        raise TypeError("%s cannot be instantiated from Python" %  self.__class__.__name__)
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.meta_ptr
@@ -1137,12 +1130,6 @@ cdef class DefObject(AAFObject):
         self.iid = lib.IID_IAAFDefObject
         self.auid = lib.AUID_AAFDefObject
         self.defobject_ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.defobject_ptr
@@ -1178,12 +1165,6 @@ cdef class DataDef(DefObject):
         self.iid = lib.IID_IAAFDataDef
         self.auid = lib.AUID_AAFDataDef
         self.ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr

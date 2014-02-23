@@ -26,12 +26,6 @@ cdef class Mob(AAFObject):
         self.iid = lib.IID_IAAFMob
         self.auid = lib.AUID_AAFMob
         self.ptr = NULL
-        
-    def __init__(self, AAFBase obj=None):
-        if not obj:
-            return
-
-        self.query_interface(obj)
 
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -90,7 +84,7 @@ cdef class Mob(AAFObject):
         if not slot_name:
             slot_name = b'timeline slot %d' % slotID
         
-        cdef TimelineMobSlot timeline = TimelineMobSlot()
+        cdef TimelineMobSlot timeline = TimelineMobSlot.__new__(TimelineMobSlot)
         cdef lib.aafRational_t edit_rate_t
         
         
@@ -105,7 +99,8 @@ cdef class Mob(AAFObject):
                                                   origin,
                                                   &timeline.ptr
                                                   ))
-        return TimelineMobSlot(timeline)
+        timeline.query_interface()
+        return timeline
     
     def append_comment(self, bytes name, bytes value):
         cdef wstring w_name = toWideString(name)
@@ -124,7 +119,7 @@ cdef class Mob(AAFObject):
         return tags
     def remove_comment(self, bytes name):
         
-        cdef TaggedValue tag = TaggedValue()
+        cdef TaggedValue tag
         
         for tag in self.iter_comments():
             if tag.name == name:
@@ -236,15 +231,14 @@ cdef class MasterMob(Mob):
         
         slot = self.slot_at(slotID)
         
-        cdef EssenceAccess access = EssenceAccess()
+        cdef EssenceAccess access = EssenceAccess.__new__(EssenceAccess)
         
         error_check(self.mastermob_ptr.OpenEssence(slotID,
                                                    NULL,
                                                    lib.kAAFMediaOpenReadOnly,
                                                    lib.kAAFCompressionDisable,
                                                    &access.ptr))
-        
-        access = EssenceAccess(access)
+        access.query_interface()
         access.datadef = slot.datadef()
         return access
     
@@ -271,9 +265,9 @@ cdef class MasterMob(Mob):
         if locator:
             loc = locator
         else:
-            loc = Locator()
+            loc = Locator.__new__(Locator)
         
-        cdef EssenceAccess access = EssenceAccess()
+        cdef EssenceAccess access = EssenceAccess.__new__(EssenceAccess)
         
         cdef lib.aafCompressEnable_t enable = lib.kAAFCompressionEnable
         if not compress:
@@ -289,7 +283,7 @@ cdef class MasterMob(Mob):
                                                       container.get_auid(),
                                                       &access.ptr
                                                       ))
-        access = EssenceAccess(access)
+        access.query_interface()
         access.datadef = media_datadef
         return access
     
@@ -588,9 +582,10 @@ cdef class SourceMob(Mob):
     
     property essence_descriptor:
         def __get__(self):
-            cdef EssenceDescriptor descriptor = EssenceDescriptor()
+            cdef EssenceDescriptor descriptor = EssenceDescriptor.__new__(EssenceDescriptor)
             error_check(self.src_ptr.GetEssenceDescriptor(&descriptor.essence_ptr))
-            return EssenceDescriptor(descriptor).resolve()
+            descriptor.query_interface()
+            return descriptor.resolve()
         
         def __set__(self, EssenceDescriptor descriptor):
             error_check(self.src_ptr.SetEssenceDescriptor(descriptor.essence_ptr))
@@ -600,12 +595,6 @@ cdef class MobSlot(AAFObject):
         self.iid = lib.IID_IAAFMobSlot
         self.auid = lib.AUID_AAFMobSlot
         self.slot_ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-
-        if not obj:
-            return
-        self.query_interface(obj)
         
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.slot_ptr

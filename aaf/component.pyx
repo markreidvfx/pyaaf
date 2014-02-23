@@ -17,9 +17,6 @@ cdef class Component(AAFObject):
         self.iid = lib.IID_IAAFComponent
         self.auid = lib.AUID_AAFComponent
         self.comp_ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-        raise TypeError("%s cannot be instantiated from Python" %  self.__class__.__name__)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.comp_ptr
@@ -324,9 +321,10 @@ cdef class SourceClip(SourceReference):
                                         ))
             
     def resolve_ref(self):
-        cdef Mob mob = Mob()
+        cdef Mob mob = Mob.__new__(Mob)
         error_check(self.ptr.ResolveRef(&mob.ptr))
-        return Mob(mob).resolve()
+        mob.query_interface()
+        return mob.resolve()
     
 class ParametersHelper(object):
     def __init__(self, obj):

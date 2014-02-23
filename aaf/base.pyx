@@ -12,13 +12,9 @@ cdef class AAFBase(object):
     def __cinit__(self):
         self.base_ptr = NULL
         self.iid = lib.IID_IUnknown
-        
-    def __init__(self,AAFBase obj = None):
-        if obj is None:
-            return
-        
-        #query_interface(obj.get_ptr(), &self.base_ptr, lib.IID_IUnknown)
-        self.query_interface(obj)
+          
+    def __init__(self, AAFBase obj = None):
+        raise TypeError("%s cannot be instantiated from Python" %  self.__class__.__name__)
 
     cdef lib.IUnknown **get_ptr(self):
         return &self.base_ptr
@@ -48,11 +44,6 @@ cdef class AAFObject(AAFBase):
         self.obj_ptr = NULL
         self.iid = lib.IID_IAAFObject
         self.auid = lib.AUID_AAFObject
-        
-    def __init__(self, AAFBase obj = None):
-        if obj is None:
-            return
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.obj_ptr

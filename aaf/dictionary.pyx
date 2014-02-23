@@ -15,12 +15,6 @@ cdef class Dictionary(AAFObject):
         self.ptr2 = NULL
         self.create = CreateInstance(self)
         
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
-        
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
