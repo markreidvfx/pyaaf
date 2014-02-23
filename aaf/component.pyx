@@ -34,9 +34,10 @@ cdef class Component(AAFObject):
             self.comp_ptr.Release()
     
     def datadef(self):
-        cdef DataDef data_def = DataDef()
+        cdef DataDef data_def = DataDef.__new__(DataDef)
         error_check(self.comp_ptr.GetDataDef(&data_def.ptr))
-        return DataDef(data_def)
+        data_def.query_interface()
+        return data_def.resolve()
         
     property length:
         def __get__(self):
@@ -243,9 +244,10 @@ cdef class Pulldown(Segment):
     
     property segment:
         def __get__(self):
-            cdef Segment seg = Segment()
+            cdef Segment seg = Segment.__new__(Segment)
             error_check(self.ptr.GetInputSegment(&seg.seg_ptr))
-            return Segment(seg).resolve()
+            seg.query_interface()
+            return seg.resolve()
         def __set__(self, Segment value):
             error_check(self.ptr.SetInputSegment(value.seg_ptr))
 
