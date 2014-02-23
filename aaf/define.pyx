@@ -68,6 +68,7 @@ cdef class MetaDef(AAFBase):
         self.iid = lib.IID_IAAFMetaDefinition
         
     def __init__(self, AAFBase obj = None):
+        raise TypeError("This class cannot be instantiated from Python")
         if not obj:
             return
         
@@ -251,9 +252,10 @@ cdef class TypeDefEnum(TypeDef):
         return count
     
     def element_typedef(self):
-        cdef TypeDef typedef = TypeDef()
+        cdef TypeDef typedef = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetElementType(&typedef.typedef_ptr))
-        return resolve_typedef(TypeDef(typedef))
+        typedef.query_interface()
+        return resolve_typedef(typedef)
     
     def element_name(self, lib.aafUInt32 index):
         cdef lib.aafUInt32 sizeInChars
@@ -594,9 +596,10 @@ cdef class TypeDefObjectRef(TypeDef):
             self.ref_ptr.Release()
     
     def object_type(self):
-        cdef ClassDef class_def = ClassDef()
+        cdef ClassDef class_def = ClassDef.__new__(ClassDef)
         error_check(self.ref_ptr.GetObjectType(&class_def.ptr))
-        return ClassDef(class_def)
+        class_def.query_interface()
+        return class_def
     
     def value(self, PropertyValue p_value ):
         cdef AAFBase obj = AAFBase()
@@ -688,11 +691,11 @@ cdef class TypeDefRecord(TypeDef):
         return wideToString(value)
     
     def member_type(self, lib.aafUInt32 index):
-        cdef TypeDef typedef = TypeDef()
+        cdef TypeDef typedef = TypeDef.__new__(TypeDef)
         
         error_check(self.ptr.GetMemberType(index, &typedef.typedef_ptr))
-        
-        return TypeDef(typedef)
+        typedef.query_interface()
+        return resolve_typedef(typedef)
         
     
     def member_value(self, PropertyValue p_value, lib.aafUInt32 index):
@@ -1012,9 +1015,10 @@ cdef class TypeDefVariableArray(TypeDef):
             self.ptr.Release()
     
     def type(self):
-        cdef TypeDef typedef = TypeDef()
+        cdef TypeDef typedef = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetType(&typedef.typedef_ptr))
-        return TypeDef(typedef)
+        typedef.query_interface()
+        return resolve_typedef(typedef)
     
     def size(self,PropertyValue p_value):
         cdef lib.aafUInt32 count

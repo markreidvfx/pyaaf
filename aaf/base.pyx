@@ -116,10 +116,10 @@ cdef class AAFObject(AAFBase):
         """
         Returns the Class Definition
         """
-        cdef ClassDef class_def = ClassDef()
+        cdef ClassDef class_def = ClassDef.__new__(ClassDef)
         error_check(self.obj_ptr.GetDefinition(&class_def.ptr))
-        
-        return ClassDef(class_def)
+        class_def.query_interface()
+        return class_def
     
     def properties(self):
         """

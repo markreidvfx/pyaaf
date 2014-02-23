@@ -31,9 +31,10 @@ cdef class Property(AAFBase):
             self.ptr.Release()
     
     def property_def(self):
-        cdef PropertyDef prop_def = PropertyDef()
+        cdef PropertyDef prop_def = PropertyDef.__new__(PropertyDef)
         error_check(self.ptr.GetDefinition(&prop_def.ptr))
-        return PropertyDef(prop_def)
+        prop_def.query_interface()
+        return prop_def
     
     def property_value(self):
         """
@@ -92,9 +93,10 @@ cdef class PropertyValue(AAFBase):
             self.ptr.Release()
     
     def typedef(self):
-        cdef TypeDef type_def = TypeDef()
+        cdef TypeDef type_def = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetType(&type_def.typedef_ptr))
-        return resolve_typedef(TypeDef(type_def))
+        type_def.query_interface()
+        return resolve_typedef(type_def)
     
     property value:
         def __get__(self):

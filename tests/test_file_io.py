@@ -226,21 +226,21 @@ class TestFile(unittest.TestCase):
                 #print p,valuedef.name,
                 #print valuedef.category
                 if valuedef.category == 1:
-                    intDef = aaf.define.TypeDefInt(valuedef)
+                    intDef = valuedef
                     size = intDef.size()
                     signed = intDef.is_signed()
                     v = intDef.value(value)
                    # print v,size
                     
                 if valuedef.category == 3:
-                    strongRef = aaf.define.TypeDefStrongObjRef(valuedef)
+                    strongRef = valuedef
                     obj = strongRef.value(value)
                     obj_type = strongRef.object_type()
                     #print strongRef
                     #print strongRef.value(value),strongRef.object_type().name
                     
                 if valuedef.category == 6:
-                    enum = aaf.define.TypeDefEnum(valuedef)
+                    enum = valuedef
                     element_typdef = enum.element_typedef()
                     value = enum.value(value)
                     for key,value in enum.elements().items():
@@ -248,7 +248,7 @@ class TestFile(unittest.TestCase):
                       
                     
                 if valuedef.category == 7:
-                    VariableArrayDef = aaf.define.TypeDefFixedArray(valuedef)
+                    VariableArrayDef = valuedef
                     
                     count = VariableArrayDef.count(value)
                     typedef = VariableArrayDef.type()
@@ -258,7 +258,7 @@ class TestFile(unittest.TestCase):
                         #rint '  ', item, name
                     
                 if valuedef.category == 8:
-                    VariableArrayDef = aaf.define.TypeDefVariableArray(valuedef)
+                    VariableArrayDef = valuedef
                     
                     size = VariableArrayDef.size(value)
                     typedef = VariableArrayDef.type()
@@ -270,7 +270,8 @@ class TestFile(unittest.TestCase):
                     #print '   ', p.name, intDef,signed, '=',v
                 
                 if valuedef.category == 10:
-                    recordDef = aaf.define.TypeDefRecord(valuedef)
+                    recordDef = valuedef
+                    #recordDef = aaf.define.TypeDefRecord(valuedef)
                     #print '   ',p.name, recordDef, recordDef.value(value)
                     #print p.name
                     for x in xrange(recordDef.size()):
@@ -283,10 +284,11 @@ class TestFile(unittest.TestCase):
                         #print '   ', key,value
                         #print '      ',recordDef.member_name(x),recordDef.member_type(x).name
                 if valuedef.category == 12:
-                    stringDef = aaf.define.TypeDefString(valuedef)
+                    pass
+                    #stringDef = aaf.define.TypeDefString(valuedef)
                     
                 if valuedef.category == 13:
-                    enumExDef = aaf.define.TypeDefExtEnum(valuedef)
+                    enumExDef = valuedef
                     size = enumExDef.size()
                     #print size ,enumExDef
                     for key,value in enumExDef.elements().items():
@@ -393,20 +395,25 @@ class TestFile(unittest.TestCase):
         for item in d.class_defs():
             pass
             #c,name = item.class_name, item.name
-            #print c,name
+            print item
         for item in d.codec_defs():
             c,name = item.class_name, item.name
             #print c,name
         for item in d.type_defs():
             pass
+            print item
             #c,name = item.class_name, item.name
             #print c,name
         for item in d.plugin_defs():
+            print item
             c,name = item.class_name, item.name
             #print c,name
+        print "klv"
         for item in d.klvdata_defs():
+            print item
             c,name = item.class_name, item.name
-            #print c,name        
+            #print c,name
+        print "operation"        
         for item in d.operation_defs():
             c,name = item.class_name, item.name
             #print c,name

@@ -4,7 +4,7 @@ from .util cimport error_check, AUID
 from .mob cimport Mob,MobSlot
 from .property cimport Property,PropertyValue, TaggedValue
 from .component cimport Component, Segment, Parameter, ControlPoint
-from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVDataDef
+from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVDataDef, resolve_typedef
 from .essence cimport EssenceData
 
 cdef class BaseIterator(object):
@@ -77,13 +77,14 @@ cdef class ClassDefIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef ClassDef classdef = ClassDef()
+        cdef ClassDef classdef = ClassDef.__new__(ClassDef)
         ret = self.ptr.NextOne(&classdef.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return ClassDef(classdef)
+            classdef.query_interface()
+            return classdef
         else:
             error_check(ret)
 
@@ -113,13 +114,14 @@ cdef class CodecDefIter(BaseIterator):
             error_check(ret)
 
     def __next__(self):
-        cdef CodecDef codecdef = CodecDef()
+        cdef CodecDef codecdef = CodecDef.__new__(CodecDef)
         ret = self.ptr.NextOne(&codecdef.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return CodecDef(codecdef)
+            codecdef.query_interface()
+            return codecdef
         else:
             error_check(ret)
 
@@ -257,13 +259,14 @@ cdef class KLVDataDefIter(BaseIterator):
             error_check(ret)
             
     def __next__(self):
-        cdef KLVDataDef klv_def = KLVDataDef()
+        cdef KLVDataDef klv_def = KLVDataDef.__new__(KLVDataDef)
         ret = self.ptr.NextOne(&klv_def.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return KLVDataDef(klv_def)
+            klv_def.query_interface()
+            return klv_def
         else:
             error_check(ret)
 
@@ -509,13 +512,14 @@ cdef class PropertyDefsIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef PropertyDef propdef = PropertyDef()
+        cdef PropertyDef propdef = PropertyDef.__new__(PropertyDef)
         ret = self.ptr.NextOne(&propdef.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return PropertyDef(propdef)
+            propdef.query_interface()
+            return propdef
         else:
             error_check(ret)
 
@@ -691,13 +695,14 @@ cdef class TypeDefIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef TypeDef type_def = TypeDef()
+        cdef TypeDef type_def = TypeDef.__new__(TypeDef)
         ret = self.ptr.NextOne(&type_def.typedef_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return TypeDef(type_def).resolve()
+            type_def.query_interface()
+            return resolve_typedef(type_def)
         else:
             error_check(ret)
             
