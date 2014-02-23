@@ -153,7 +153,7 @@ cdef class CreateInstance(object):
         obj_type = lookup_object(name)
         
         
-        dummy = obj_type()
+        dummy = obj_type.__new__(obj_type)
         
         cdef AUID iid_obj = dummy.class_iid
         cdef AUID auid_obj = dummy.class_auid
@@ -161,12 +161,14 @@ cdef class CreateInstance(object):
         cdef lib.GUID iid = iid_obj.get_iid()
         cdef lib.aafUID_t auid = auid_obj.get_auid()
         
-        cdef AAFBase unknown = AAFBase()
+        cdef AAFBase unknown = AAFBase.__new__(AAFBase)
                 
         error_check(self.dictionary.ptr.CreateInstance(auid, iid,
                                          &unknown.base_ptr))
         
-        obj = obj_type(unknown)
+        cdef AAFBase obj = obj_type.__new__(obj_type)
+        
+        obj.query_interface(unknown)
         
         obj.initialize(*args, **kwargs)
 
