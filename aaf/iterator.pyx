@@ -52,7 +52,7 @@ cdef class BaseIterator(object):
         
 
 cdef class ClassDefIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -63,9 +63,9 @@ cdef class ClassDefIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef ClassDefIter iterable = ClassDefIter()
-        error_check(self.ptr.Clone(&iterable.ptr))
-        return iterable
+        cdef ClassDefIter value = ClassDefIter.__new__(ClassDefIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -77,19 +77,19 @@ cdef class ClassDefIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef ClassDef classdef = ClassDef.__new__(ClassDef)
-        ret = self.ptr.NextOne(&classdef.ptr)
+        cdef ClassDef value = ClassDef.__new__(ClassDef)
+        ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            classdef.query_interface()
-            return classdef
+            value.query_interface()
+            return value
         else:
             error_check(ret)
 
 cdef class CodecDefIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -100,9 +100,9 @@ cdef class CodecDefIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef CodecDefIter iterable = CodecDefIter()
-        error_check(self.ptr.Clone(&iterable.ptr))
-        return iterable
+        cdef CodecDefIter value = CodecDefIter.__new__(CodecDefIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -114,19 +114,19 @@ cdef class CodecDefIter(BaseIterator):
             error_check(ret)
 
     def __next__(self):
-        cdef CodecDef codecdef = CodecDef.__new__(CodecDef)
-        ret = self.ptr.NextOne(&codecdef.ptr)
+        cdef CodecDef value = CodecDef.__new__(CodecDef)
+        ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            codecdef.query_interface()
-            return codecdef
+            value.query_interface()
+            return value
         else:
             error_check(ret)
 
 cdef class ComponentIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -137,9 +137,9 @@ cdef class ComponentIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef ComponentIter iter = ComponentIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef ComponentIter value = ComponentIter.__new__(ComponentIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
 
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -151,18 +151,19 @@ cdef class ComponentIter(BaseIterator):
             error_check(ret)
             
     def __next__(self):
-        cdef Component comp = Component()
-        ret = self.ptr.NextOne(&comp.comp_ptr)
+        cdef Component value = Component.__new__(Component)
+        ret = self.ptr.NextOne(&value.comp_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return Component(comp).resolve()
+            value.query_interface()
+            return value.resolve()
         else:
             error_check(ret)
             
 cdef class ControlPointIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -173,9 +174,9 @@ cdef class ControlPointIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef ControlPointIter iter = ControlPointIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef ControlPointIter value = ControlPointIter.__new__(ControlPointIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -187,18 +188,19 @@ cdef class ControlPointIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef ControlPoint point = ControlPoint()
-        ret = self.ptr.NextOne(&point.ptr)
+        cdef ControlPoint value = ControlPoint.__new__(ControlPoint)
+        ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return ControlPoint(point).resolve()
+            value.query_interface()
+            return value.resolve()
         else:
             error_check(ret)
             
 cdef class EssenceDataIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -209,9 +211,9 @@ cdef class EssenceDataIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef EssenceDataIter iter = EssenceDataIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef EssenceDataIter value = EssenceDataIter.__new__(EssenceDataIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -223,18 +225,19 @@ cdef class EssenceDataIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef EssenceData data = EssenceData()
-        ret = self.ptr.NextOne(&data.ptr)
+        cdef EssenceData value = EssenceData.__new__(EssenceData)
+        ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return EssenceData(data)
+            value.query_interface()
+            return value
         else:
             error_check(ret)
             
 cdef class KLVDataDefIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -245,9 +248,9 @@ cdef class KLVDataDefIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef KLVDataDefIter iter = KLVDataDefIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef KLVDataDefIter value = KLVDataDefIter.__new__(KLVDataDefIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
 
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -259,19 +262,19 @@ cdef class KLVDataDefIter(BaseIterator):
             error_check(ret)
             
     def __next__(self):
-        cdef KLVDataDef klv_def = KLVDataDef.__new__(KLVDataDef)
-        ret = self.ptr.NextOne(&klv_def.ptr)
+        cdef KLVDataDef value = KLVDataDef.__new__(KLVDataDef)
+        ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            klv_def.query_interface()
-            return klv_def
+            value.query_interface()
+            return value
         else:
             error_check(ret)
 
 cdef class LoadedPluginIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -282,9 +285,9 @@ cdef class LoadedPluginIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef LoadedPluginIter iter = LoadedPluginIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef LoadedPluginIter value = LoadedPluginIter.__new__(LoadedPluginIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -307,7 +310,7 @@ cdef class LoadedPluginIter(BaseIterator):
             error_check(ret)
 
 cdef class MobSlotIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -318,9 +321,9 @@ cdef class MobSlotIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef MobSlotIter iterable = MobSlotIter()
-        error_check(self.ptr.Clone(&iterable.ptr))
-        return iterable
+        cdef MobSlotIter value = MobSlotIter.__new__(MobSlotIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -332,18 +335,19 @@ cdef class MobSlotIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef MobSlot slot = MobSlot()
-        ret = self.ptr.NextOne(&slot.slot_ptr)
+        cdef MobSlot value = MobSlot.__new__(MobSlot)
+        ret = self.ptr.NextOne(&value.slot_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return MobSlot(slot).resolve()
+            value.query_interface()
+            return value.resolve()
         else:
             error_check(ret)
             
 cdef class MobIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -354,9 +358,9 @@ cdef class MobIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef MobIter iterable = MobIter()
-        error_check(self.ptr.Clone(&iterable.ptr))
-        return iterable
+        cdef MobIter value = MobIter.__new__(MobIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -368,17 +372,18 @@ cdef class MobIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef Mob mob = Mob()
-        ret = self.ptr.NextOne(&mob.ptr)
+        cdef Mob value = Mob.__new__(Mob)
+        ret = self.ptr.NextOne(&value.ptr)
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return Mob(mob).resolve()
+            value.query_interface()
+            return value.resolve()
         else:
             error_check(ret)
 
 cdef class ParamIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -389,9 +394,9 @@ cdef class ParamIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef ParamIter iter = ParamIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef ParamIter value = ParamIter.__new__(ParamIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -403,18 +408,19 @@ cdef class ParamIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef Parameter param = Parameter()
-        ret = self.ptr.NextOne(&param.param_ptr)
+        cdef Parameter value = Parameter.__new__(Parameter)
+        ret = self.ptr.NextOne(&value.param_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return Parameter(param).resolve()
+            value.query_interface()
+            return value.resolve()
         else:
             error_check(ret)
 
 cdef class PluginDefIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -425,9 +431,9 @@ cdef class PluginDefIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef PluginDefIter iter = PluginDefIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef PluginDefIter value = PluginDefIter.__new__(PluginDefIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -439,18 +445,19 @@ cdef class PluginDefIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef PluginDef plug_def = PluginDef()
-        ret = self.ptr.NextOne(&plug_def.ptr)
+        cdef PluginDef value = PluginDef.__new__(PluginDef)
+        ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return PluginDef(plug_def)
+            value.query_interface()
+            return value.resolve()
         else:
             error_check(ret)
             
 cdef class PropIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -461,9 +468,9 @@ cdef class PropIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef PropIter iter = PropIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef PropIter value = PropIter.__new__(PropIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -475,19 +482,19 @@ cdef class PropIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef Property prop = Property.__new__(Property)
-        ret = self.ptr.NextOne(&prop.ptr)
+        cdef Property value = Property.__new__(Property)
+        ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            prop.query_interface()
-            return prop
+            value.query_interface()
+            return value.resolve()
         else:
             error_check(ret)
             
 cdef class PropertyDefsIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -498,9 +505,9 @@ cdef class PropertyDefsIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef PropertyDefsIter iter = PropertyDefsIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef PropertyDefsIter value = PropertyDefsIter.__new__(PropertyDefsIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -512,19 +519,19 @@ cdef class PropertyDefsIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef PropertyDef propdef = PropertyDef.__new__(PropertyDef)
-        ret = self.ptr.NextOne(&propdef.ptr)
+        cdef PropertyDef value = PropertyDef.__new__(PropertyDef)
+        ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            propdef.query_interface()
-            return propdef
+            value.query_interface()
+            return value.resolve()
         else:
             error_check(ret)
 
 cdef class PropValueIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -535,9 +542,9 @@ cdef class PropValueIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef PropValueIter iter = PropValueIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef PropValueIter value = PropValueIter.__new__(PropValueIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
 
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -561,7 +568,7 @@ cdef class PropValueIter(BaseIterator):
             error_check(ret)
 
 cdef class PropValueResolveIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -572,9 +579,9 @@ cdef class PropValueResolveIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef PropValueResolveIter iter = PropValueResolveIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef PropValueResolveIter value = PropValueResolveIter.__new__(PropValueResolveIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -598,7 +605,7 @@ cdef class PropValueResolveIter(BaseIterator):
             error_check(ret)
             
 cdef class SegmentIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -609,9 +616,9 @@ cdef class SegmentIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef SegmentIter iter = SegmentIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef SegmentIter value = SegmentIter.__new__(SegmentIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -623,18 +630,19 @@ cdef class SegmentIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef Segment seg = Segment()
-        ret = self.ptr.NextOne(&seg.seg_ptr)
+        cdef Segment value = Segment.__new__(Segment)
+        ret = self.ptr.NextOne(&value.seg_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return Segment(seg).resolve()
+            value.query_interface()
+            return value.resolve()
         else:
             error_check(ret)
             
 cdef class TaggedValueIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -645,9 +653,9 @@ cdef class TaggedValueIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef TaggedValueIter iter = TaggedValueIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef TaggedValueIter value = TaggedValueIter.__new__(TaggedValueIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -659,18 +667,19 @@ cdef class TaggedValueIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef TaggedValue tag = TaggedValue()
-        ret = self.ptr.NextOne(&tag.ptr)
+        cdef TaggedValue value = TaggedValue.__new__(TaggedValue)
+        ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return TaggedValue(tag)
+            value.query_interface()
+            return value
         else:
             error_check(ret)
 
 cdef class TypeDefIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.ptr = NULL
         
     def __dealloc__(self):
@@ -681,9 +690,9 @@ cdef class TypeDefIter(BaseIterator):
         error_check(self.ptr.Reset())
         
     def clone(self):
-        cdef TypeDefIter iter = TypeDefIter()
-        error_check(self.ptr.Clone(&iter.ptr))
-        return iter
+        cdef TypeDefIter value = TypeDefIter.__new__(TypeDefIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        return value
     
     def skip(self, lib.aafUInt32  count = 1):
         ret = self.ptr.Skip(count)
@@ -695,19 +704,19 @@ cdef class TypeDefIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef TypeDef type_def = TypeDef.__new__(TypeDef)
-        ret = self.ptr.NextOne(&type_def.typedef_ptr)
+        cdef TypeDef value = TypeDef.__new__(TypeDef)
+        ret = self.ptr.NextOne(&value.typedef_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            type_def.query_interface()
-            return resolve_typedef(type_def)
+            value.query_interface()
+            return resolve_typedef(value)
         else:
             error_check(ret)
             
 cdef class TypeDefStreamDataIter(BaseIterator):
-    def __init__(self):
+    def __cinit__(self):
         self.readsize = 2048
     
     def __iter__(self):
