@@ -19,10 +19,7 @@ cdef class Component(AAFObject):
         self.comp_ptr = NULL
         
     def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
+        raise TypeError("%s cannot be instantiated from Python" %  self.__class__.__name__)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.comp_ptr

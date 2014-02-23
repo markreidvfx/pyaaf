@@ -44,15 +44,17 @@ cdef class Dictionary(AAFObject):
         
     def lookup_datadef(self, bytes name):
         cdef AUID auid = DataDefMap[name.lower()]
-        cdef DataDef definition =  DataDef()
+        cdef DataDef definition =  DataDef.__new__(DataDef)
         error_check(self.ptr.LookupDataDef(auid.get_auid(), &definition.ptr ))
-        return DataDef(definition)
+        definition.query_interface()
+        return definition
     
     def lookup_containerdef(self, bytes name):
         cdef AUID auid = ContainerDefMap[name.lower()]
-        cdef ContainerDef definition = ContainerDef()
+        cdef ContainerDef definition = ContainerDef.__new__(ContainerDef)
         error_check(self.ptr.LookupContainerDef(auid.get_auid(), &definition.ptr ))
-        return ContainerDef(definition)
+        definition.query_interface()
+        return definition
         
     def class_defs(self):
         cdef ClassDefIter def_iter = ClassDefIter.__new__(ClassDefIter)

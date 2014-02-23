@@ -623,9 +623,10 @@ cdef class MobSlot(AAFObject):
             self.slot_ptr.Release()
             
     def datadef(self):
-        cdef DataDef data_def = DataDef()
+        cdef DataDef data_def = DataDef.__new__(DataDef)
         error_check(self.slot_ptr.GetDataDef(&data_def.ptr))
-        return DataDef(data_def)
+        data_def.query_interface()
+        return data_def
     
     property name:
         def __get__(self):
@@ -648,9 +649,10 @@ cdef class MobSlot(AAFObject):
     
     property segment:
         def __get__(self):
-            cdef Segment seg = Segment()
+            cdef Segment seg = Segment.__new__(Segment)
             error_check(self.slot_ptr.GetSegment(&seg.seg_ptr))
-            return Segment(seg).resolve()
+            seg.query_interface()
+            return seg.resolve()
         
         def __set__(self, Segment value):
             error_check(self.slot_ptr.SetSegment(value.seg_ptr))
