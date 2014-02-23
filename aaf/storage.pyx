@@ -87,11 +87,11 @@ cdef class File(object):
         
         company_name = "CompanyName"
         product_name = "pyaaf"
-        producr_version_string = "0"
+        product_version_string = "0"
         
         productInfo.companyName = <lib.aafCharacter* > toWideString(company_name).c_str()
         productInfo.productName = <lib.aafCharacter* > toWideString(product_name).c_str()
-        productInfo.productVersionString = <lib.aafCharacter* > toWideString(producr_version_string).c_str()
+        productInfo.productVersionString = <lib.aafCharacter* > toWideString(product_version_string).c_str()
         productInfo.productID = productUID
         
         cdef wstring w_path = toWideString(path)
