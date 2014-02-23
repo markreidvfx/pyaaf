@@ -156,6 +156,10 @@ cdef class File(object):
     property dictionary:
         def __get__(self):
             return self.header.dictionary()
+    
+    property create:
+        def __get__(self):
+            return self.header.dictionary().create
 
 cdef class Header(AAFObject):
     def __cinit__(self):

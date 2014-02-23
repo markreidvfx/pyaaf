@@ -20,8 +20,8 @@ class TestCreateSequence(unittest.TestCase):
         
         video_rate = " 30000/1001"
         
-        comp_mob = f.dictionary.create.CompositionMob()
-        sequence = f.dictionary.create.Sequence("picture")
+        comp_mob = f.create.CompositionMob()
+        sequence = f.create.Sequence("picture")
         
         timeline_slot = comp_mob.add_timeline_slot( video_rate, sequence)
         
@@ -34,8 +34,8 @@ class TestCreateSequence(unittest.TestCase):
         for i in xrange(10):
             
             # Make the Tape MOB
-            tape_mob = f.dictionary.create.SourceMob()
-            tape_description = f.dictionary.create.TapeDescriptor()
+            tape_mob = f.create.SourceMob()
+            tape_description = f.create.TapeDescriptor()
             tape_mob.essence_descriptor = tape_description
             
             tape_mob.append_timecode_slot(video_rate, 0, tape_tc, TAPE_LENGTH)
@@ -45,14 +45,14 @@ class TestCreateSequence(unittest.TestCase):
             f.storage.add_mob(tape_mob)
             
             # Make a FileMob
-            file_mob = f.dictionary.create.SourceMob()
-            file_description = f.dictionary.create.AIFCDescriptor()
+            file_mob = f.create.SourceMob()
+            file_description = f.create.AIFCDescriptor()
             file_description.summary = "TEST"
             assert file_description.summary == "TEST"
             
             # Make a locator, and attach it to the EssenceDescriptor
             
-            loc = f.dictionary.create.NetworkLocator()
+            loc = f.create.NetworkLocator()
             loc.path = "AnotherFile.aaf"
             file_description.append_locator(loc)
             
@@ -65,7 +65,7 @@ class TestCreateSequence(unittest.TestCase):
             
             # Make the Master MOB
             
-            master_mob = f.dictionary.create.MasterMob()
+            master_mob = f.create.MasterMob()
             master_mob.name = "Master Mob %i" % i
             source_ref = aaf.util.SourceRef(file_mob.mobID, 1, 0)
             
@@ -80,7 +80,7 @@ class TestCreateSequence(unittest.TestCase):
             
             # Create a filler
             
-            comp_fill = f.dictionary.create.Filler("picture", filler_len)
+            comp_fill = f.create.Filler("picture", filler_len)
             sequence.append(comp_fill)
         
         f.save()
