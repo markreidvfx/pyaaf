@@ -58,16 +58,26 @@ def resolve_object_func(AAFBase obj):
 set_resolve_object_func(resolve_object_func)
 
 cdef class MetaDef(AAFBase):
-    def __init__(self, AAFBase obj = None):
-        super(MetaDef, self).__init__(obj)
+    def __cinit__(self):
         self.meta_ptr = NULL
+        self.iid = lib.IID_IAAFMetaDefinition
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.meta_ptr, lib.IID_IAAFMetaDefinition)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.meta_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.meta_ptr, lib.IID_IAAFMetaDefinition)
+            
+        AAFBase.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.meta_ptr:
@@ -106,16 +116,26 @@ cdef class MetaDef(AAFBase):
             return auid
         
 cdef class ClassDef(MetaDef):
-    def __init__(self, AAFBase obj = None):
-        super(ClassDef, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFClassDef
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFClassDef)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFClassDef)
+            
+        MetaDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -127,16 +147,27 @@ cdef class ClassDef(MetaDef):
         return propdefs_iter
     
 cdef class PropertyDef(MetaDef):
-    def __init__(self, AAFBase obj = None):
-        super(PropertyDef, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFPropertyDef
+        
+    def __init__(self, AAFBase obj = None):
+
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPropertyDef)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPropertyDef)
+            
+        MetaDef.query_interface(self, obj)
 
     def __dealloc__(self):
         if self.ptr:
@@ -151,16 +182,27 @@ cdef class PropertyDef(MetaDef):
             return False
 
 cdef class TypeDef(MetaDef):
+    def __cinit__(self):
+        self.typedef_ptr = NULL
+        self.iid = lib.IID_IAAFTypeDef
+        
     def __init__(self, AAFBase obj = None):
-        super(TypeDef, self).__init__(obj)
         self.typedef_ptr = NULL
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.typedef_ptr, lib.IID_IAAFTypeDef)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.typedef_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.typedef_ptr, lib.IID_IAAFTypeDef)
+            
+        MetaDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.typedef_ptr:
@@ -179,32 +221,51 @@ cdef class TypeDef(MetaDef):
             return cat
         
 cdef class TypeDefCharacter(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefCharacter, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefCharacter
+    def __init__(self, AAFBase obj = None):
+
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefCharacter)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefCharacter)
+            
+        TypeDef.query_interface(self, obj)
 
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
 
 cdef class TypeDefEnum(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefEnum, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefEnum
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefEnum)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefEnum)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -285,16 +346,27 @@ cdef class TypeDefEnum(TypeDef):
         return v
 
 cdef class TypeDefExtEnum(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefExtEnum, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefExtEnum
+        
+    def __init__(self, AAFBase obj = None):
+
         if not obj:
             return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefExtEnum)
+
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefExtEnum)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -355,16 +427,26 @@ cdef class TypeDefExtEnum(TypeDef):
         return self.element_name_from_value(p_value)
 
 cdef class TypeDefFixedArray(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefFixedArray, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefFixedArray
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefFixedArray)
-    
+        self.query_interface(obj)
+        
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefFixedArray)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -381,16 +463,27 @@ cdef class TypeDefFixedArray(TypeDef):
         return prop_iter
 
 cdef class TypeDefIndirect(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefIndirect, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefIndirect
+        
+    def __init__(self, AAFBase obj = None):
+
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefIndirect)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefIndirect)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -415,16 +508,27 @@ cdef class TypeDefIndirect(TypeDef):
     
 # Note Opaque inherits TypeDefIndirect
 cdef class TypeDefOpaque(TypeDefIndirect):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefOpaque, self).__init__(obj)
+    def __cinit__(self):
         self.opaque_ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefOpaque
+        
+    def __init__(self, AAFBase obj = None):
+
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.opaque_ptr, lib.IID_IAAFTypeDefOpaque)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.opaque_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.opaque_ptr, lib.IID_IAAFTypeDefOpaque)
+            
+        TypeDefIndirect.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.opaque_ptr:
@@ -432,16 +536,26 @@ cdef class TypeDefOpaque(TypeDefIndirect):
     
 
 cdef class TypeDefInt(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefInt, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefInt
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefInt)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefInt)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -519,16 +633,26 @@ cdef aaf_integral set_int(TypeDefInt typdef, PropertyValue value,aaf_integral i)
 
 # Note TypeDefWeakObjRef and TypeDefWeakObjRef inherit
 cdef class TypeDefObjectRef(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefObjectRef, self).__init__(obj)
+    def __cinit__(self):
         self.ref_ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefObjectRef
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ref_ptr, lib.IID_IAAFTypeDefObjectRef)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ref_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ref_ptr, lib.IID_IAAFTypeDefObjectRef)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ref_ptr:
@@ -548,48 +672,77 @@ cdef class TypeDefObjectRef(TypeDef):
     
     
 cdef class TypeDefStrongObjRef(TypeDefObjectRef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefStrongObjRef, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefStrongObjRef
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefStrongObjRef)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefStrongObjRef)
+            
+        TypeDefObjectRef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
     
 cdef class TypeDefWeakObjRef(TypeDefObjectRef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefWeakObjRef, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefWeakObjRef
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefWeakObjRef)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefWeakObjRef)
+            
+        TypeDefObjectRef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
 
 cdef class TypeDefRecord(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefRecord, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefRecord
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefRecord)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefRecord)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -733,16 +886,26 @@ cdef object get_timestamp(TypeDefRecord record, PropertyValue value):
     
     
 cdef class TypeDefRename(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefRename, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefRename
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefRename)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefRename)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -768,16 +931,26 @@ cdef class TypeDefRename(TypeDef):
         
 
 cdef class TypeDefSet(TypeDef):
+    def __cinit__(self):
+        self.ptr == NULL
+        self.iid = lib.IID_IAAFTypeDefSet
+        
     def __init__(self, AAFBase obj = None):
-        super(TypeDefSet, self).__init__(obj)
-        self.ptr = NULL
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefSet)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefSet)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -794,16 +967,26 @@ cdef class TypeDefSet(TypeDef):
         return prop_iter
 
 cdef class TypeDefStream(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefStream, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefStream
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefStream)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefStream)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -856,16 +1039,26 @@ cdef class TypeDefStream(TypeDef):
         return data_iter
 
 cdef class TypeDefString(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefString, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefString
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefString)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefString)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -905,16 +1098,26 @@ cdef class TypeDefString(TypeDef):
         return wideToString(value)
 
 cdef class TypeDefVariableArray(TypeDef):
-    def __init__(self, AAFBase obj = None):
-        super(TypeDefVariableArray, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
+        self.iid = lib.IID_IAAFTypeDefVariableArray
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefVariableArray)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTypeDefVariableArray)
+            
+        TypeDef.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -943,39 +1146,43 @@ cdef class TypeDefVariableArray(TypeDef):
 cdef object resolve_typedef(TypeDef typedef):
     
     cat = typedef.category
+    cdef TypeDef obj
     
     if cat == lib.kAAFTypeCatInt:
-        return TypeDefInt(typedef)
+        obj = TypeDefInt.__new__(TypeDefInt)
     elif cat == lib.kAAFTypeCatCharacter:
-        return TypeDefCharacter(typedef)
+        obj = TypeDefCharacter.__new__(TypeDefCharacter)
     elif cat == lib.kAAFTypeCatStrongObjRef:
-        return TypeDefStrongObjRef(typedef)
+        obj = TypeDefStrongObjRef.__new__(TypeDefStrongObjRef)
     elif cat == lib.kAAFTypeCatWeakObjRef:
-        return TypeDefWeakObjRef(typedef)
+        obj = TypeDefWeakObjRef.__new__(TypeDefWeakObjRef)
     elif cat == lib.kAAFTypeCatRename:
-        return TypeDefRename(typedef)
+        obj = TypeDefRename.__new__(TypeDefRename)
     elif cat == lib.kAAFTypeCatEnum:
-        return TypeDefEnum(typedef)
+        obj = TypeDefEnum.__new__(TypeDefEnum)
     elif cat == lib.kAAFTypeCatFixedArray:
-        return TypeDefFixedArray(typedef)
+        obj = TypeDefFixedArray.__new__(TypeDefFixedArray)
     elif cat == lib.kAAFTypeCatSet:
-        return TypeDefSet(typedef)
+        obj = TypeDefSet.__new__(TypeDefSet)
     elif cat == lib.kAAFTypeCatRecord:
-        return TypeDefRecord(typedef)
+        obj = TypeDefRecord.__new__(TypeDefRecord)
     elif cat == lib.kAAFTypeCatStream:
-        return TypeDefStream(typedef)
+        obj = TypeDefStream.__new__(TypeDefStream)
     elif cat == lib.kAAFTypeCatString:
-        return TypeDefString(typedef)
+        obj = TypeDefString.__new__(TypeDefString)
     elif cat == lib.kAAFTypeCatExtEnum:
-        return TypeDefExtEnum(typedef)
+        obj = TypeDefExtEnum.__new__(TypeDefExtEnum)
     elif cat == lib.kAAFTypeCatIndirect:
-        return TypeDefIndirect(typedef)
+        obj = TypeDefIndirect.__new__(TypeDefIndirect)
     elif cat == lib.kAAFTypeCatOpaque:
-        return TypeDefOpaque(typedef)
+        obj = TypeDefOpaque.__new__(TypeDefOpaque)
     elif cat == lib.kAAFTypeCatVariableArray:
-        return TypeDefVariableArray(typedef)
+        obj = TypeDefVariableArray.__new__(TypeDefVariableArray)
     else:
         raise Exception("Unkown TypeDef")
+    
+    obj.query_interface(typedef)
+    return obj
     
 cpdef dict DataDefMap = {}
 cpdef dict CodecDefMap = {}
