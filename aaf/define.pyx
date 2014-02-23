@@ -124,12 +124,6 @@ cdef class ClassDef(MetaDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFClassDef
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -155,13 +149,6 @@ cdef class PropertyDef(MetaDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFPropertyDef
-        
-    def __init__(self, AAFBase obj = None):
-
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -190,13 +177,6 @@ cdef class TypeDef(MetaDef):
     def __cinit__(self):
         self.typedef_ptr = NULL
         self.iid = lib.IID_IAAFTypeDef
-        
-    def __init__(self, AAFBase obj = None):
-        self.typedef_ptr = NULL
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.typedef_ptr
@@ -229,12 +209,6 @@ cdef class TypeDefCharacter(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefCharacter
-    def __init__(self, AAFBase obj = None):
-
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -255,11 +229,6 @@ cdef class TypeDefEnum(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefEnum
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -354,13 +323,6 @@ cdef class TypeDefExtEnum(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefExtEnum
-        
-    def __init__(self, AAFBase obj = None):
-
-        if not obj:
-            return
-
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -436,12 +398,6 @@ cdef class TypeDefFixedArray(TypeDef):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefFixedArray
         
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
-        
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
@@ -471,13 +427,6 @@ cdef class TypeDefIndirect(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefIndirect
-        
-    def __init__(self, AAFBase obj = None):
-
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -516,13 +465,6 @@ cdef class TypeDefOpaque(TypeDefIndirect):
     def __cinit__(self):
         self.opaque_ptr = NULL
         self.iid = lib.IID_IAAFTypeDefOpaque
-        
-    def __init__(self, AAFBase obj = None):
-
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.opaque_ptr
@@ -544,12 +486,6 @@ cdef class TypeDefInt(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefInt
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -641,12 +577,6 @@ cdef class TypeDefObjectRef(TypeDef):
     def __cinit__(self):
         self.ref_ptr = NULL
         self.iid = lib.IID_IAAFTypeDefObjectRef
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ref_ptr
@@ -680,11 +610,6 @@ cdef class TypeDefStrongObjRef(TypeDefObjectRef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefStrongObjRef
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -705,12 +630,6 @@ cdef class TypeDefWeakObjRef(TypeDefObjectRef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefWeakObjRef
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -731,12 +650,6 @@ cdef class TypeDefRecord(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefRecord
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -894,12 +807,6 @@ cdef class TypeDefRename(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefRename
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -939,12 +846,6 @@ cdef class TypeDefSet(TypeDef):
     def __cinit__(self):
         self.ptr == NULL
         self.iid = lib.IID_IAAFTypeDefSet
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -975,12 +876,6 @@ cdef class TypeDefStream(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefStream
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -1047,12 +942,6 @@ cdef class TypeDefString(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefString
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -1106,12 +995,6 @@ cdef class TypeDefVariableArray(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
         self.iid = lib.IID_IAAFTypeDefVariableArray
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
