@@ -397,9 +397,10 @@ cdef class TypeDefIndirect(TypeDef):
             self.ptr.Release()
             
     def indirect_value(self, PropertyValue p_value):
-        cdef PropertyValue out_value = PropertyValue()
+        cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
         error_check(self.ptr.GetActualValue(p_value.ptr, &out_value.ptr))
-        return PropertyValue(out_value)
+        out_value.query_interface()
+        return out_value
     
     def set_value(self, PropertyValue p_value, object value):
         cdef PropertyValue indirect_value = self.indirect_value(p_value)
@@ -624,13 +625,14 @@ cdef class TypeDefRecord(TypeDef):
         
     
     def member_value(self, PropertyValue p_value, lib.aafUInt32 index):
-        cdef PropertyValue member_value = PropertyValue()
+        cdef PropertyValue member_value = PropertyValue.__new__(PropertyValue)
         
         error_check(self.ptr.GetValue(p_value.ptr,
                                        index,
                                        &member_value.ptr
                                        ))
-        return PropertyValue(member_value)
+        member_value.query_interface()
+        return member_value
     
     def value(self, PropertyValue p_value):
         value_dict = {}
@@ -747,9 +749,10 @@ cdef class TypeDefRename(TypeDef):
             self.ptr.Release()
     
     def resolve_rename(self, PropertyValue p_value):
-        cdef PropertyValue out_value = PropertyValue()
+        cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
         error_check(self.ptr.GetBaseValue(p_value.ptr, &out_value.ptr))
-        return PropertyValue(out_value)
+        out_value.query_interface()
+        return out_value
             
     def set_value(self, PropertyValue p_value, value):        
         self.resolve_rename(p_value).value = value

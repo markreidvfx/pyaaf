@@ -472,13 +472,14 @@ cdef class PropIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef Property prop = Property()
+        cdef Property prop = Property.__new__(Property)
         ret = self.ptr.NextOne(&prop.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return Property(prop)
+            prop.query_interface()
+            return prop
         else:
             error_check(ret)
             
@@ -544,13 +545,14 @@ cdef class PropValueIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef PropertyValue value = PropertyValue()
+        cdef PropertyValue value = PropertyValue.__new__(PropertyValue)
         ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return PropertyValue(value)
+            value.query_interface()
+            return value
         else:
             error_check(ret)
 
@@ -580,13 +582,14 @@ cdef class PropValueResolveIter(BaseIterator):
             error_check(ret)
     
     def __next__(self):
-        cdef PropertyValue value = PropertyValue()
+        cdef PropertyValue value = PropertyValue.__new__(PropertyValue)
         ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
-            return PropertyValue(value).value
+            value.query_interface()
+            return value.value
         else:
             error_check(ret)
             

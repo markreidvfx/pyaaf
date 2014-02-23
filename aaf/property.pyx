@@ -8,16 +8,27 @@ from libcpp.string cimport string
 from wstring cimport  wstring, wideToString, toWideString
 
 cdef class Property(AAFBase):
-    def __init__(self, AAFBase obj = None):
-        super(Property, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
-        if not obj:
-            return
+        self.iid = lib.IID_IAAFProperty
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFProperty)
+    def __init__(self, AAFBase obj = None):
+        raise TypeError("This class cannot be instantiated from Python")
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFProperty)
+            
+        AAFBase.query_interface(self, obj)
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
     
     def property_def(self):
         cdef PropertyDef prop_def = PropertyDef()
@@ -28,9 +39,10 @@ cdef class Property(AAFBase):
         """
         returns PropertyValue object
         """
-        cdef PropertyValue value = PropertyValue()
+        cdef PropertyValue value = PropertyValue.__new__(PropertyValue)
         error_check(self.ptr.GetValue(&value.ptr))
-        return PropertyValue(value)
+        value.query_interface()
+        return value
     
     def value_typedef(self):
         value = self.property_value()
@@ -57,16 +69,27 @@ cdef class Property(AAFBase):
             
     
 cdef class PropertyValue(AAFBase):
-    def __init__(self, AAFBase obj = None):
-        super(PropertyValue, self).__init__(obj)
+    def __cinit__(self):
         self.ptr = NULL
-        if not obj:
-            return
+        self.iid = lib.IID_IAAFPropertyValue
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPropertyValue)
+    def __init__(self, AAFBase obj = None):
+        raise TypeError("This class cannot be instantiated from Python")
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPropertyValue)
+            
+        AAFBase.query_interface(self, obj)
+    
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
     
     def typedef(self):
         cdef TypeDef type_def = TypeDef()
