@@ -22,19 +22,27 @@ from struct import unpack
 from .fraction_util import AAFFraction
 
 cdef class Mob(AAFObject):
-    def __init__(self, AAFBase obj=None):
-        super(Mob, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFMob
         self.auid = lib.AUID_AAFMob
         self.ptr = NULL
-
+        
+    def __init__(self, AAFBase obj=None):
         if not obj:
             return
 
-        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, lib.IID_IAAFMob)
+        self.query_interface(obj)
 
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, lib.IID_IAAFMob)
+            
+        AAFObject.query_interface(self, obj)
             
     def __dealloc__(self):
         if self.ptr:
@@ -188,20 +196,25 @@ cdef class Mob(AAFObject):
             
             
 cdef class MasterMob(Mob):
-    def __init__(self, AAFBase obj=None):
-        super(MasterMob, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFMasterMob2
         self.auid = lib.AUID_AAFMasterMob
         self.mastermob_ptr = NULL
         self.mastermob2_ptr = NULL
-        if not obj:
-            return
-
-        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mastermob_ptr, lib.IID_IAAFMasterMob)
-        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mastermob2_ptr, lib.IID_IAAFMasterMob2)
 
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.mastermob_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mastermob_ptr, lib.IID_IAAFMasterMob)
+        
+        if not self.mastermob2_ptr:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mastermob2_ptr, lib.IID_IAAFMasterMob2)
+            
+        Mob.query_interface(self, obj)
     
     def initialize(self, bytes name = None):
         error_check(self.mastermob_ptr.Initialize())
@@ -445,20 +458,25 @@ cdef class MasterMob(Mob):
             self.mastermob2_ptr.Release()
 
 cdef class CompositionMob(Mob):
-    def __init__(self, AAFBase obj=None):
-        super(CompositionMob, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFCompositionMob2
         self.auid = lib.AUID_AAFCompositionMob
         self.compositionmob_ptr = NULL
         self.compositionmob2_ptr = NULL
-        if not obj:
-            return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.compositionmob_ptr, lib.IID_IAAFCompositionMob)
-        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.compositionmob2_ptr, lib.IID_IAAFCompositionMob2)
-
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.compositionmob_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.compositionmob_ptr, lib.IID_IAAFCompositionMob)
+        
+        if not self.compositionmob2_ptr:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.compositionmob2_ptr, lib.IID_IAAFCompositionMob2)
+            
+        Mob.query_interface(self, obj)
     
     def initialize(self, bytes name = None):
         if not name:
@@ -476,19 +494,21 @@ cdef class CompositionMob(Mob):
         
             
 cdef class SourceMob(Mob):
-    def __init__(self, AAFBase obj=None):
-        super(SourceMob, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFSourceMob
         self.auid = lib.AUID_AAFSourceMob
         self.src_ptr = NULL
 
-        if not obj:
-            return
-
-        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.src_ptr, self.iid)
-
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.src_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.src_ptr, lib.IID_IAAFSourceMob)
+
+        Mob.query_interface(self, obj)
             
     def __dealloc__(self):
         if self.src_ptr:
@@ -576,16 +596,27 @@ cdef class SourceMob(Mob):
             error_check(self.src_ptr.SetEssenceDescriptor(descriptor.essence_ptr))
 
 cdef class MobSlot(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(MobSlot, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFMobSlot
         self.auid = lib.AUID_AAFMobSlot
         self.slot_ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
+
         if not obj:
             return
-        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.slot_ptr, self.iid)
+        self.query_interface(obj)
+        
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.slot_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.slot_ptr, lib.IID_IAAFMobSlot)
+
+        AAFObject.query_interface(self, obj)
             
     def __dealloc__(self):
         if self.slot_ptr:
@@ -649,16 +680,21 @@ cdef class MobSlot(AAFObject):
         
     
 cdef class TimelineMobSlot(MobSlot):
-    def __init__(self, AAFBase obj = None):
-        super(TimelineMobSlot, self).__init__(obj)
+    def __cinit__(self, AAFBase obj = None):
         self.iid = lib.IID_IAAFTimelineMobSlot
         self.auid = lib.AUID_AAFTimelineMobSlot
         self.ptr = NULL
-        if not obj:
-            return
-        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, self.iid)
+        
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, lib.IID_IAAFTimelineMobSlot)
+
+        MobSlot.query_interface(self, obj)
             
     def __dealloc__(self):
         if self.ptr:
@@ -685,16 +721,21 @@ cdef class TimelineMobSlot(MobSlot):
             error_check(self.ptr.SetEditRate(rate))
             
 cdef class EventMobSlot(MobSlot):
-    def __init__(self, AAFBase obj = None):
-        super(EventMobSlot, self).__init__(obj)
+    def __cinit__(self, AAFBase obj = None):
         self.iid = lib.IID_IAAFEventMobSlot
         self.auid = lib.AUID_AAFEventMobSlot
         self.ptr = NULL
-        if not obj:
-            return
-        query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, self.iid)
+        
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, lib.IID_IAAFEventMobSlot)
+
+        MobSlot.query_interface(self, obj)
             
     def __dealloc__(self):
         if self.ptr:
