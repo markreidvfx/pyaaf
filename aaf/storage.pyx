@@ -1,12 +1,11 @@
 
 cimport lib
-cimport mob
-cimport iterator
+
 from base cimport AAFBase, AAFObject
 from dictionary cimport Dictionary
 
 from .util cimport error_check, query_interface, register_object, lookup_object, AUID, MobID
-from .iterator cimport EssenceDataIter
+from .iterator cimport EssenceDataIter, MobIter
 from .mob cimport Mob
 from .essence cimport EssenceData
 from wstring cimport wstring,toWideString
@@ -229,10 +228,10 @@ cdef class ContentStorage(AAFObject):
         error_check(self.ptr.CountMobs(lib.kAAFAllMob, &mobCount))
         return mobCount
     
-    def add_mob(self, mob.Mob mob):
+    def add_mob(self, Mob mob):
         error_check(self.ptr.AddMob(mob.ptr))
         
-    def remove_mob(self, mob.Mob mob):
+    def remove_mob(self, Mob mob):
         error_check(self.ptr.RemoveMob(mob.ptr))
         
     def lookup_mob(self, mobID):
@@ -240,16 +239,16 @@ cdef class ContentStorage(AAFObject):
         Looks up the Mob that matches the given mob id
         """
         
-        cdef Mob mob = Mob()
+        cdef Mob mob = Mob.__new__(Mob)
         cdef MobID mobID_obj = MobID(mobID)
         
         error_check(self.ptr.LookupMob(mobID_obj.mobID, &mob.ptr))
-        
-        return Mob(mob).resolve()
+        mob.query_interface()
+        return mob.resolve()
         
 
     def mobs(self):
-        cdef iterator.MobIter mob_iter = iterator.MobIter()
+        cdef MobIter mob_iter = MobIter.__new__(MobIter)
         
         cdef lib.aafSearchCrit_t search_crit
         
@@ -261,7 +260,7 @@ cdef class ContentStorage(AAFObject):
         return mob_iter
     
     def master_mobs(self):
-        cdef iterator.MobIter mob_iter = iterator.MobIter()
+        cdef MobIter mob_iter = MobIter.__new__(MobIter)
         
         cdef lib.aafSearchCrit_t search_crit
         
@@ -273,7 +272,7 @@ cdef class ContentStorage(AAFObject):
         return mob_iter
     
     def composition_mobs(self):
-        cdef iterator.MobIter mob_iter = iterator.MobIter()
+        cdef MobIter mob_iter = MobIter.__new__(MobIter)
         
         cdef lib.aafSearchCrit_t search_crit
         
@@ -285,7 +284,7 @@ cdef class ContentStorage(AAFObject):
         return mob_iter
     
     def toplevel_mobs(self):
-        cdef iterator.MobIter mob_iter = iterator.MobIter()
+        cdef MobIter mob_iter = MobIter.__new__(MobIter)
         
         cdef lib.aafSearchCrit_t search_crit
         
@@ -297,7 +296,7 @@ cdef class ContentStorage(AAFObject):
         return mob_iter
     
     def essence_data(self):
-        cdef EssenceDataIter data_iter = EssenceDataIter()
+        cdef EssenceDataIter data_iter = EssenceDataIter.__new__(EssenceDataIter)
         error_check(self.ptr.EnumEssenceData(&data_iter.ptr))
         return data_iter
     

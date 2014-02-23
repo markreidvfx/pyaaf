@@ -55,27 +55,27 @@ cdef class Dictionary(AAFObject):
         return ContainerDef(definition)
         
     def class_defs(self):
-        cdef ClassDefIter def_iter = ClassDefIter()
+        cdef ClassDefIter def_iter = ClassDefIter.__new__(ClassDefIter)
         error_check(self.ptr.GetClassDefs(&def_iter.ptr))
         return def_iter
 
     def codec_defs(self):
-        cdef CodecDefIter def_iter = CodecDefIter()
+        cdef CodecDefIter def_iter = CodecDefIter.__new__(CodecDefIter)
         error_check(self.ptr.GetCodecDefs(&def_iter.ptr))
         return def_iter
     
     def type_defs(self):
-        cdef TypeDefIter def_iter = TypeDefIter()
+        cdef TypeDefIter def_iter = TypeDefIter.__new__(TypeDefIter)
         error_check(self.ptr.GetTypeDefs(&def_iter.ptr))
         return def_iter
     
     def plugin_defs(self):
-        cdef PluginDefIter def_iter = PluginDefIter()
+        cdef PluginDefIter def_iter = PluginDefIter.__new__(PluginDefIter)
         error_check(self.ptr.GetPluginDefs(&def_iter.ptr))
         return def_iter
      
     def klvdata_defs(self):
-        cdef KLVDataDefIter def_iter = KLVDataDefIter()
+        cdef KLVDataDefIter def_iter = KLVDataDefIter.__new__(KLVDataDefIter)
         error_check(self.ptr2.GetKLVDataDefs(&def_iter.ptr))
         return def_iter
      
@@ -131,7 +131,7 @@ cdef class PluginManager(object):
             -interpolation
         """
 
-        cdef LoadedPluginIter plugin_iter = LoadedPluginIter()
+        cdef LoadedPluginIter plugin_iter = LoadedPluginIter.__new__(LoadedPluginIter)
         cdef AUID cat = ExtEnumDefMap["plugincategory_%s" % category.lower()]
         error_check(self.ptr.EnumLoadedPlugins(cat.get_auid(), &plugin_iter.ptr))
         

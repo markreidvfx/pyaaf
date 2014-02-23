@@ -4,8 +4,7 @@ from .base cimport AAFBase, AAFObject
 from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func, AUID, MobID
 from .property cimport PropertyValue
 
-cimport iterator
-from .iterator cimport PropertyDefsIter, TypeDefStreamDataIter
+from .iterator cimport PropertyDefsIter, TypeDefStreamDataIter, PropValueIter, PropValueResolveIter
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -79,7 +78,7 @@ cdef class MetaDef(AAFBase):
         self.iid = lib.IID_IAAFMetaDefinition
         
     def __init__(self, AAFBase obj = None):
-        raise TypeError("This class cannot be instantiated from Python")
+        raise TypeError("%s cannot be instantiated from Python" %  self.__class__.__name__)
         if not obj:
             return
         
@@ -153,7 +152,7 @@ cdef class ClassDef(MetaDef):
             self.ptr.Release()
             
     def propertydefs(self):
-        cdef PropertyDefsIter propdefs_iter = PropertyDefsIter()
+        cdef PropertyDefsIter propdefs_iter = PropertyDefsIter.__new__(PropertyDefsIter)
         error_check(self.ptr.GetPropertyDefs(&propdefs_iter.ptr))
         return propdefs_iter
     
@@ -427,12 +426,12 @@ cdef class TypeDefFixedArray(TypeDef):
             self.ptr.Release()
     
     def iter_property_value(self, PropertyValue p_value):
-        cdef iterator.PropValueIter prop_iter = iterator.PropValueIter()
+        cdef PropValueIter prop_iter = PropValueIter.__new__(PropValueIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
         return prop_iter
     
     def value(self, PropertyValue p_value):
-        cdef iterator.PropValueResolveIter prop_iter = iterator.PropValueResolveIter()
+        cdef PropValueResolveIter prop_iter = PropValueResolveIter.__new__(PropValueResolveIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
         return prop_iter
 
@@ -877,12 +876,12 @@ cdef class TypeDefSet(TypeDef):
             self.ptr.Release()
             
     def iter_property_value(self, PropertyValue p_value):
-        cdef iterator.PropValueIter prop_iter = iterator.PropValueIter()
+        cdef PropValueIter prop_iter = PropValueIter.__new__(PropValueIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
         return prop_iter
     
     def value(self, PropertyValue p_value):
-        cdef iterator.PropValueResolveIter prop_iter = iterator.PropValueResolveIter()
+        cdef PropValueResolveIter prop_iter = PropValueResolveIter.__new__(PropValueResolveIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
         return prop_iter
 
@@ -947,7 +946,7 @@ cdef class TypeDefStream(TypeDef):
             
     def value(self,PropertyValue p_value):
         
-        cdef TypeDefStreamDataIter data_iter = TypeDefStreamDataIter()
+        cdef TypeDefStreamDataIter data_iter = TypeDefStreamDataIter.__new__(TypeDefStreamDataIter)
         data_iter.stream_typedef = self
         data_iter.value = p_value
         return data_iter
@@ -1037,12 +1036,12 @@ cdef class TypeDefVariableArray(TypeDef):
         return count
     
     def iter_property_value(self, PropertyValue p_value):
-        cdef iterator.PropValueIter prop_iter = iterator.PropValueIter()
+        cdef PropValueIter prop_iter = PropValueIter.__new__(PropValueIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
         return prop_iter
     
     def value(self, PropertyValue p_value):
-        cdef iterator.PropValueResolveIter prop_iter = iterator.PropValueResolveIter()
+        cdef PropValueResolveIter prop_iter = PropValueResolveIter.__new__(PropValueResolveIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
         return prop_iter
 

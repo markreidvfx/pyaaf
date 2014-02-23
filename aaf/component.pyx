@@ -134,7 +134,7 @@ cdef class Sequence(Segment):
         error_check(self.ptr.Initialize(media_datadef.ptr))
         
     def components(self):
-        cdef ComponentIter comp_inter = ComponentIter()
+        cdef ComponentIter comp_inter = ComponentIter.__new__(ComponentIter)
         error_check(self.ptr.GetComponents(&comp_inter.ptr))
         return comp_inter
     
@@ -387,17 +387,19 @@ cdef class OperationGroup(Segment):
     def input_segments(self):
         cdef Segment seg
         for i in xrange(self.nb_input_segments):
-            seg = Segment()
+            seg = Segment.__new__(Segment)
             error_check(self.ptr.GetInputSegmentAt(i, &seg.seg_ptr))
-            yield Segment(seg).resolve()
+            seg.query_interface()
+            yield seg.resolve()
     
     def operationdef(self):
-        cdef OperationDef op_def = OperationDef()
+        cdef OperationDef op_def = OperationDef.__new__(OperationDef)
         error_check(self.ptr.GetOperationDefinition(&op_def.ptr))
-        return OperationDef(op_def)
+        op_def.query_interface()
+        return op_def
     
     def parameters(self):
-        cdef ParamIter param_iter = ParamIter()
+        cdef ParamIter param_iter = ParamIter.__new__(ParamIter)
         error_check(self.ptr.GetParameters(&param_iter.ptr))
         return param_iter
     
@@ -439,7 +441,7 @@ cdef class NestedScope(Segment):
             self.ptr.Release()
             
     def segments(self):
-        cdef SegmentIter seg_iter = SegmentIter()
+        cdef SegmentIter seg_iter = SegmentIter.__new__(SegmentIter)
         error_check(self.ptr.GetSegments(&seg_iter.ptr))
         return seg_iter
     
@@ -627,14 +629,16 @@ cdef class Parameter(AAFObject):
             self.param_ptr.Release()
     
     def typedef(self):
-        cdef TypeDef type_def = TypeDef()
+        cdef TypeDef type_def = TypeDef.__new__(TypeDef)
         error_check(self.param_ptr.GetTypeDefinition(&type_def.typedef_ptr))
-        return TypeDef(type_def).resolve()
+        type_def.query_interface()
+        return type_def.resolve()
         
     def parameterdef(self):
-        cdef ParameterDef param_def = ParameterDef()
+        cdef ParameterDef param_def = ParameterDef.__new__(ParameterDef)
         error_check(self.param_ptr.GetParameterDefinition(&param_def.ptr))
-        return ParameterDef(param_def)
+        param_def.query_interface()
+        return param_def
     
     property name:
         def __get__(self):
@@ -696,10 +700,10 @@ cdef class VaryingValue(Parameter):
             self.ptr.Release()
     
     def interpolation_def(self):
-        cdef InterpolationDef inter_def = InterpolationDef()
+        cdef InterpolationDef inter_def = InterpolationDef.__new__(InterpolationDef)
         error_check(self.ptr.GetInterpolationDefinition(&inter_def.ptr))
-        
-        return InterpolationDef(inter_def).resolve()
+        inter_def.query_interface()
+        return inter_def.resolve()
     
     def count(self):
         cdef lib.aafUInt32 value
@@ -707,7 +711,7 @@ cdef class VaryingValue(Parameter):
         return value
             
     def points(self):
-        cdef ControlPointIter iter = ControlPointIter()
+        cdef ControlPointIter iter = ControlPointIter.__new__(ControlPointIter)
         error_check(self.ptr.GetControlPoints(&iter.ptr))
         return iter
         
@@ -767,9 +771,10 @@ cdef class ControlPoint(AAFObject):
             self.ptr.Release()
             
     def typedef(self):
-        cdef TypeDef type_def = TypeDef()
+        cdef TypeDef type_def = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetTypeDefinition(&type_def.typedef_ptr))
-        return TypeDef(type_def).resolve()
+        type_def.query_interface()
+        return type_def.resolve()
 
     def point_properties(self):
         prop = self.get('ControlPointPointProperties', None)

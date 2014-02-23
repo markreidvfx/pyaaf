@@ -108,8 +108,9 @@ cdef class AAFObject(AAFBase):
         """
         Returns the Dictionary Object the AAFObject belongs to.
         """
-        cdef Dictionary d = Dictionary()
+        cdef Dictionary d = Dictionary.__new__(Dictionary)
         error_check(self.obj_ptr.GetDictionary(&d.ptr))
+        d.query_interface()
         return d
     
     def classdef(self):
@@ -125,7 +126,7 @@ cdef class AAFObject(AAFBase):
         """
         Returns a property Iterator
         """
-        cdef PropIter prop_iter = PropIter()
+        cdef PropIter prop_iter = PropIter.__new__(PropIter)
         error_check(self.obj_ptr.GetProperties(&prop_iter.ptr))
         return prop_iter
     

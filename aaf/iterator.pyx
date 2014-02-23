@@ -10,6 +10,9 @@ from .essence cimport EssenceData
 cdef class BaseIterator(object):
     def __cinit__(self):
         self._clone_iter = None
+        
+    def __init__(self):
+        raise TypeError("%s cannot be instantiated from Python" %  self.__class__.__name__)
     
     def __getitem__(self, index):
         

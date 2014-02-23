@@ -49,7 +49,7 @@ cdef class Mob(AAFObject):
             self.ptr.Release()
             
     def slots(self):
-        cdef MobSlotIter slot_iter = MobSlotIter()
+        cdef MobSlotIter slot_iter = MobSlotIter.__new__(MobSlotIter)
         error_check(self.ptr.GetSlots(&slot_iter.ptr))    
         return slot_iter
     
@@ -114,7 +114,7 @@ cdef class Mob(AAFObject):
         error_check(self.ptr.AppendComment(<lib.aafCharacter *> w_name.c_str(), w_value.c_str()))
     
     def iter_comments(self):
-        cdef TaggedValueIter tags = TaggedValueIter()
+        cdef TaggedValueIter tags = TaggedValueIter.__new__(TaggedValueIter)
         hr = self.ptr.GetComments(&tags.ptr)
         if hr == lib.AAFRESULT_PROP_NOT_PRESENT:
             return []
