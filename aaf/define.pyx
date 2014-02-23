@@ -17,8 +17,11 @@ import traceback
 from fraction_util import AAFFraction
 
 cdef object isA(AAFBase obj1,obj2):
+    cdef AAFBase test_obj
     try:
-        obj2(obj1)
+        test_obj = obj2.__new__(obj2)
+        test_obj.query_interface(obj1)
+        #obj2(obj1)
     except:
         return False
     
@@ -29,24 +32,32 @@ def resolve_object_func(AAFBase obj):
     resolve any AAFBase object into it highest level class
     """
     cdef AAFBase new_obj
+    cdef AAFObject test_aaf_obj
+    
     if isA(obj, AAFObject):
         
-        AAFObj = AAFObject(obj)
+        test_aaf_obj = AAFObject.__new__(AAFObject)
+        test_aaf_obj.query_interface(obj)
         try:
-            obj_type = lookup_object(AAFObj.class_name)
-        
-            return obj_type(AAFObj)
+            obj_type = lookup_object(test_aaf_obj.class_name)
+            new_obj = obj_type.__new__(obj_type)
+            new_obj.query_interface(obj)
+            
+            return new_obj
         except:
             #print traceback.format_exc()
             #print "no lookup for %s" % AAFObj.class_name
             if isinstance(obj, AAFObject):
                 return obj
             else:
-                return AAFObj
+                return test_aaf_obj
+            
     elif isA(obj, MetaDef):
         
         if isA(obj, TypeDef):
-            return resolve_typedef(TypeDef(obj))
+            new_obj = TypeDef.__new__(TypeDef)
+            new_obj.query_interface(obj)
+            return resolve_typedef(new_obj)
         elif isA(obj, ClassDef):
             new_obj = ClassDef.__new__(ClassDef)
             new_obj.query_interface(obj)
@@ -602,7 +613,7 @@ cdef class TypeDefObjectRef(TypeDef):
         return class_def
     
     def value(self, PropertyValue p_value ):
-        cdef AAFBase obj = AAFBase()
+        cdef AAFBase obj = AAFBase.__new__(AAFBase)
         error_check(self.ref_ptr.GetObject(p_value.ptr, lib.IID_IUnknown, &obj.base_ptr))
         
         return obj.resolve()
