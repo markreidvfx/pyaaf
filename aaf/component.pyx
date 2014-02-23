@@ -13,18 +13,27 @@ from .mob cimport Mob
 from libcpp.vector cimport vector
 
 cdef class Component(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(Component, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFComponent
         self.auid = lib.AUID_AAFComponent
         self.comp_ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.comp_ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.comp_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.comp_ptr, lib.IID_IAAFComponent)
+
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.comp_ptr:
@@ -51,36 +60,42 @@ cdef class Component(AAFObject):
             self.comp_ptr.SetDataDef(data_def.ptr)
             
 cdef class Segment(Component):
-    def __init__(self, AAFBase obj = None):
-        super(Segment, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFSegment
         self.auid = lib.AUID_AAFSegment
         self.seg_ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.seg_ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.seg_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.seg_ptr, lib.IID_IAAFSegment)
+
+        Component.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.seg_ptr:
             self.seg_ptr.Release()
             
 cdef class Transition(Component):
-    def __init__(self, AAFBase obj = None):
-        super(Transition, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFTransition
         self.auid = lib.AUID_AAFTransition
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTransition)
+
+        Component.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -93,18 +108,21 @@ cdef class Transition(Component):
             return value
             
 cdef class Sequence(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(Sequence, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFSequence
         self.auid = lib.AUID_AAFSequence
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFSequence)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -125,18 +143,21 @@ cdef class Sequence(Segment):
         
     
 cdef class Timecode(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(Timecode, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFTimecode
         self.auid = lib.AUID_AAFTimecode
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTimecode)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -158,18 +179,21 @@ cdef class Timecode(Segment):
         error_check(self.ptr.Initialize(length, &timecode))
         
 cdef class Filler(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(Filler, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFFiller
         self.auid = lib.AUID_AAFFiller
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFFiller)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -181,18 +205,21 @@ cdef class Filler(Segment):
         error_check(self.ptr.Initialize(data_def.ptr, length))
             
 cdef class Pulldown(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(Pulldown, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFPulldown
         self.auid = lib.AUID_AAFPulldown
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPulldown)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -226,39 +253,45 @@ cdef class Pulldown(Segment):
             error_check(self.ptr.GetInputSegment(&seg.seg_ptr))
             return Segment(seg).resolve()
         def __set__(self, Segment value):
-             error_check(self.ptr.SetInputSegment(value.seg_ptr))
+            error_check(self.ptr.SetInputSegment(value.seg_ptr))
 
 cdef class SourceReference(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(SourceReference, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFSourceReference
         self.auid = lib.AUID_AAFSourceReference
         self.ref_ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ref_ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ref_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ref_ptr, lib.IID_IAAFSourceReference)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ref_ptr:
             self.ref_ptr.Release()
             
 cdef class SourceClip(SourceReference):
-    def __init__(self, AAFBase obj = None):
-        super(SourceReference, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFSourceClip
         self.auid = lib.AUID_AAFSourceClip
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFSourceClip)
+
+        SourceReference.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -331,22 +364,26 @@ class ParametersHelper(object):
         return default
     
 cdef class OperationGroup(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(OperationGroup, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFOperationGroup
         self.auid = lib.AUID_AAFOperationGroup
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFOperationGroup)
+
+        Segment.query_interface(self, obj)
+    
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
     def input_segments(self):
         cdef Segment seg
         for i in xrange(self.nb_input_segments):
@@ -381,18 +418,21 @@ cdef class OperationGroup(Segment):
         
     
 cdef class NestedScope(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(NestedScope, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFNestedScope
         self.auid = lib.AUID_AAFNestedScope
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFNestedScope)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -404,18 +444,21 @@ cdef class NestedScope(Segment):
         return seg_iter
     
 cdef class ScopeReference(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(ScopeReference, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFScopeReference
         self.auid = lib.AUID_AAFScopeReference
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFScopeReference)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -425,18 +468,21 @@ cdef class EssenceGroup(Segment):
     """
     Describes multiple digital representations of the same original content source.
     """
-    def __init__(self, AAFBase obj = None):
-        super(EssenceGroup, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceGroup
         self.auid = lib.AUID_AAFEssenceGroup
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFEssenceGroup)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -446,90 +492,105 @@ cdef class Selector(Segment):
     """
     Provides the value of a single Segment while preserving references to unused alternatives.
     """
-    def __init__(self, AAFBase obj = None):
-        super(Selector, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFSelector
         self.auid = lib.AUID_AAFSelector
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFSelector)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class EdgeCode(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(EdgeCode, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFEdgecode
         self.auid = lib.AUID_AAFEdgecode
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFEdgecode)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class Event(Segment):
-    def __init__(self, AAFBase obj = None):
-        super(Event, self).__init__(obj)
+    def __cinit__(self, AAFBase obj = None):
         self.iid = lib.IID_IAAFEvent
         self.auid = lib.AUID_AAFEvent
         self.event_ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.event_ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.event_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.event_ptr, lib.IID_IAAFEvent)
+
+        Segment.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.event_ptr:
             self.event_ptr.Release()
             
 cdef class CommentMarker(Event):
-    def __init__(self, AAFBase obj = None):
-        super(CommentMarker, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFCommentMarker
         self.auid = lib.AUID_AAFCommentMarker
         self.comment_ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.comment_ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.comment_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.comment_ptr, lib.IID_IAAFCommentMarker)
+
+        Event.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.comment_ptr:
             self.comment_ptr.Release()
             
 cdef class DescriptiveMarker(CommentMarker):
-    def __init__(self, AAFBase obj = None):
-        super(DescriptiveMarker, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFDescriptiveMarker
         self.auid = lib.AUID_AAFDescriptiveMarker
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFDescriptiveMarker)
+
+        CommentMarker.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -539,18 +600,27 @@ cdef class Parameter(AAFObject):
     """
     A Parameter is an effect control. They are only on OperationGroups.
     """
-    def __init__(self, AAFBase obj = None):
-        super(Parameter, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFParameter
         self.auid = lib.AUID_AAFParameter
         self.param_ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.param_ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.param_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.param_ptr, lib.IID_IAAFParameter)
+
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.param_ptr:
@@ -584,36 +654,42 @@ cdef class Parameter(AAFObject):
         
             
 cdef class ConstantValue(Parameter):
-    def __init__(self, AAFBase obj = None):
-        super(ConstantValue, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFConstantValue
         self.auid = lib.AUID_AAFConstantValue
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
-    
+
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFConstantValue)
+
+        Parameter.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class VaryingValue(Parameter):
-    def __init__(self, AAFBase obj = None):
-        super(VaryingValue, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFVaryingValue
         self.auid = lib.AUID_AAFVaryingValue
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFVaryingValue)
+
+        Parameter.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -670,18 +746,21 @@ cdef class VaryingValue(Parameter):
     
             
 cdef class ControlPoint(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(ControlPoint, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFControlPoint
         self.auid = lib.AUID_AAFControlPoint
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFControlPoint)
+
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
