@@ -28,6 +28,7 @@ def resolve_object_func(AAFBase obj):
     """
     resolve any AAFBase object into it highest level class
     """
+    cdef AAFBase new_obj
     if isA(obj, AAFObject):
         
         AAFObj = AAFObject(obj)
@@ -47,9 +48,13 @@ def resolve_object_func(AAFBase obj):
         if isA(obj, TypeDef):
             return resolve_typedef(TypeDef(obj))
         elif isA(obj, ClassDef):
-            return ClassDef(obj)
+            new_obj = ClassDef.__new__(ClassDef)
+            new_obj.query_interface(obj)
+            return new_obj
         elif isA(obj, PropertyDef):
-            return PropertyDef(obj)
+            new_obj = PropertyDef.__new__(PropertyDef)
+            new_obj.query_interface(obj)
+            return new_obj
         else:        
             raise ValueError("Unknown Metadef")
     return obj
@@ -1231,18 +1236,27 @@ cpdef dict PulldownDirMap = {'tapetofilmspeed' : lib.kAAFTapeToFilmSpeed,
                              'filmtotapespeed' : lib.kAAFFilmToTapeSpeed}
 
 cdef class DefObject(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(DefObject, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFDefObject
         self.auid = lib.AUID_AAFDefObject
         self.defobject_ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.defobject_ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.defobject_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.defobject_ptr, lib.IID_IAAFDefObject)
+            
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.defobject_ptr:
@@ -1263,162 +1277,195 @@ cdef class DefObject(AAFObject):
             
 
 cdef class DataDef(DefObject):
-    def __init__(self, AAFBase obj = None):
-        super(DataDef, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFDataDef
         self.auid = lib.AUID_AAFDataDef
         self.ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFDataDef)
+            
+        DefObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
 
 cdef class ParameterDef(DefObject):
-    def __init__(self, AAFBase obj = None):
-        super(ParameterDef, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFParameterDef
         self.auid = lib.AUID_AAFParameterDef
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFParameterDef)
+            
+        DefObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
 
 cdef class PluginDef(DefObject):
-    def __init__(self, AAFBase obj = None):
-        super(PluginDef, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFPluginDef
         self.auid = lib.AUID_AAFPluginDef
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPluginDef)
+            
+        DefObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
 
 cdef class CodecDef(DefObject):
-    def __init__(self, AAFBase obj = None):
-        super(CodecDef, self).__init__(obj)
+    def __cinit_(self):
         self.iid = lib.IID_IAAFCodecDef
         self.auid = lib.AUID_AAFCodecDef
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFCodecDef)
+            
+        DefObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class ContainerDef(DefObject):
-    def __init__(self, AAFBase obj = None):
-        super(ContainerDef, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFContainerDef
         self.auid = lib.AUID_AAFContainerDef
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFContainerDef)
+            
+        DefObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class InterpolationDef(DefObject):
-    def __init__(self, AAFBase obj = None):
-        super(InterpolationDef, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFInterpolationDef
         self.auid = lib.AUID_AAFInterpolationDef
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
     
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFInterpolationDef)
+            
+        DefObject.query_interface(self, obj)
+        
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class OperationDef(DefObject):
-    def __init__(self, AAFBase obj = None):
-        super(OperationDef, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFOperationDef
         self.auid = lib.AUID_AAFOperationDef
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFOperationDef)
+            
+        DefObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class KLVDataDef(DefObject):
-    def __init__(self, AAFBase obj = None):
-        super(KLVDataDef, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFKLVDataDefinition
         self.auid = lib.AUID_AAFKLVDataDefinition
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
-    
+
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFKLVDataDefinition)
+            
+        DefObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class TaggedValueDef(DefObject):
-    def __init__(self, AAFBase obj = None):
-        super(TaggedValueDef, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFTaggedValueDefinition
         self.auid = lib.AUID_AAFTaggedValueDefinition
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTaggedValueDefinition)
+            
+        DefObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
