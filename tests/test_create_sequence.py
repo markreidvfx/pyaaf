@@ -85,6 +85,13 @@ class TestCreateSequence(unittest.TestCase):
         
         f.save()
         f.save(output_xml)
+        f.close()
+        
+        f = aaf.open(output_aaf, 'r')
+        
+        for mob in f.storage.master_mobs():
+            print mob.name
+        
         
 
 if __name__ == "__main__":
