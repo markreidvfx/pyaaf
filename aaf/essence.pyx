@@ -69,18 +69,27 @@ cdef fused format_specifier:
     lib.aafBoolean_t
     
 cdef class EssenceData(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(EssenceData, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceData
         self.auid = lib.AUID_AAFEssenceData
         self.ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFEssenceData)
+
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -138,17 +147,26 @@ cdef class EssenceData(AAFObject):
             
     
 cdef class EssenceFormat(AAFBase):
-    def __init__(self, AAFBase obj = None):
-        super(EssenceFormat, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceFormat
         self.ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFEssenceFormat)
+
+        AAFBase.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -204,34 +222,46 @@ cdef object set_format_specifier(EssenceFormat format,lib.aafUID_t &auid, format
 
 
 cdef class EssenceMultiAccess(AAFBase):
-    def __init__(self, AAFBase obj = None):
-        super(EssenceMultiAccess, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceMultiAccess
         self.essence_ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.essence_ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.essence_ptr
+
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.essence_ptr, lib.IID_IAAFEssenceMultiAccess)
+
+        AAFBase.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.essence_ptr:
             self.essence_ptr.Release()
             
 cdef class EssenceAccess(EssenceMultiAccess):
-    def __init__(self, AAFBase obj = None):
-        super(EssenceAccess, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceAccess
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFEssenceAccess)
+
+        EssenceMultiAccess.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -403,18 +433,27 @@ cdef object essence_write_samples(EssenceAccess essence, data, lib.aafUInt32 sam
     #print 'wrote bytes', bytes_written, byte_size
 
 cdef class Locator(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(Locator, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFLocator
         self.auid = lib.AUID_AAFLocator
         self.loc_ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.loc_ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.loc_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.loc_ptr, lib.IID_IAAFLocator)
+
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.loc_ptr:
@@ -445,18 +484,21 @@ cdef class Locator(AAFObject):
             
             
 cdef class NetworkLocator(Locator):
-    def __init__(self, AAFBase obj = None):
-        super(NetworkLocator, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFNetworkLocator
         self.auid = lib.AUID_AAFNetworkLocator
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.loc_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFNetworkLocator)
+
+        Locator.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.loc_ptr:
@@ -466,18 +508,27 @@ cdef class NetworkLocator(Locator):
         error_check(self.ptr.Initialize())
             
 cdef class EssenceDescriptor(AAFObject):
-    def __init__(self, AAFBase obj = None):
-        super(EssenceDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceDescriptor
         self.auid = lib.AUID_AAFEssenceDescriptor
         self.essence_ptr = NULL
+        
+    def __init__(self, AAFBase obj = None):
         if not obj:
             return
         
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.essence_ptr, self.iid)
+        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.essence_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.essence_ptr, lib.IID_IAAFEssenceDescriptor)
+
+        AAFObject.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.essence_ptr:
@@ -487,18 +538,21 @@ cdef class EssenceDescriptor(AAFObject):
         error_check(self.essence_ptr.AppendLocator(loc.loc_ptr))
             
 cdef class FileDescriptor(EssenceDescriptor):
-    def __init__(self, AAFBase obj = None):
-        super(FileDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFFileDescriptor
         self.auid = lib.AUID_AAFFileDescriptor
         self.file_ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.file_ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.file_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.file_ptr, lib.IID_IAAFFileDescriptor)
+
+        EssenceDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.file_ptr:
@@ -536,18 +590,21 @@ cdef class WAVEDescriptor(FileDescriptor):
     A WAVEDescriptor object shall be owned by a file SourceMob.
     """
     
-    def __init__(self, AAFBase obj = None):
-        super(WAVEDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFWAVEDescriptor
         self.auid = lib.AUID_AAFWAVEDescriptor
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFWAVEDescriptor)
+
+        FileDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -563,18 +620,21 @@ cdef class AIFCDescriptor(FileDescriptor):
     Audio Interchange File Format with Compression (AIFC)
     """
     
-    def __init__(self, AAFBase obj = None):
-        super(AIFCDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFAIFCDescriptor
         self.auid = lib.AUID_AAFAIFCDescriptor
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFAIFCDescriptor)
+
+        FileDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -605,18 +665,21 @@ cdef class TIFFDescriptor(FileDescriptor):
     the TIFF specification.
     """
     
-    def __init__(self, AAFBase obj = None):
-        super(TIFFDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFTIFFDescriptor
         self.auid = lib.AUID_AAFTIFFDescriptor
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTIFFDescriptor)
+
+        FileDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -633,18 +696,21 @@ cdef class DigitalImageDescriptor(FileDescriptor):
     The DigitalImageDescriptor class is an abstract class.
     """
     
-    def __init__(self, AAFBase obj = None):
-        super(DigitalImageDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFDigitalImageDescriptor
         self.auid = lib.AUID_AAFDigitalImageDescriptor
         self.im_ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.im_ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.im_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.im_ptr, lib.IID_IAAFDigitalImageDescriptor)
+
+        FileDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.im_ptr:
@@ -840,18 +906,21 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
     The CDCIDescriptor class is a sub-class of the DigitalImageDescriptor class.
     A CDCIDescriptor object shall be owned by a file SourceMob.
     """
-    def __init__(self, AAFBase obj = None):
-        super(CDCIDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFCDCIDescriptor
         self.auid = lib.AUID_AAFCDCIDescriptor
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFCDCIDescriptor)
+
+        DigitalImageDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -926,72 +995,84 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
             return value
         
 cdef class RGBADescriptor(DigitalImageDescriptor):
-    def __init__(self, AAFBase obj = None):
-        super(RGBADescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFRGBADescriptor
         self.auid = lib.AUID_AAFRGBADescriptor
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFRGBADescriptor)
+
+        DigitalImageDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class SoundDescriptor(FileDescriptor):
-    def __init__(self, AAFBase obj = None):
-        super(SoundDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFSoundDescriptor
         self.auid = lib.AUID_AAFSoundDescriptor
         self.snd_ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.snd_ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.snd_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.snd_ptr, lib.IID_IAAFSoundDescriptor)
+
+        FileDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.snd_ptr:
             self.snd_ptr.Release()
             
 cdef class PCMDescriptor(SoundDescriptor):
-    def __init__(self, AAFBase obj = None):
-        super(PCMDescriptor, self).__init__(obj)
+    def __init__(self):
         self.iid = lib.IID_IAAFPCMDescriptor
         self.auid = lib.AUID_AAFPCMDescriptor
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPCMDescriptor)
+
+        SoundDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
             
 cdef class TapeDescriptor(EssenceDescriptor):
-    def __init__(self, AAFBase obj = None):
-        super(TapeDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFTapeDescriptor
         self.auid = lib.AUID_AAFTapeDescriptor
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFTapeDescriptor)
+
+        EssenceDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
@@ -1001,36 +1082,42 @@ cdef class TapeDescriptor(EssenceDescriptor):
         error_check(self.ptr.Initialize())
         
 cdef class PhysicalDescriptor(EssenceDescriptor):
-    def __init__(self, AAFBase obj = None):
-        super(PhysicalDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFPhysicalDescriptor
         self.auid = lib.AUID_AAFPhysicalDescriptor
         self.phys_ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.phys_ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.phys_ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.phys_ptr, lib.IID_IAAFPhysicalDescriptor)
+
+        EssenceDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.phys_ptr:
             self.phys_ptr.Release()
             
 cdef class ImportDescriptor(PhysicalDescriptor):
-    def __init__(self, AAFBase obj = None):
-        super(ImportDescriptor, self).__init__(obj)
+    def __cinit__(self):
         self.iid = lib.IID_IAAFImportDescriptor
         self.auid = lib.AUID_AAFImportDescriptor
         self.ptr = NULL
-        if not obj:
-            return
-        
-        query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, self.iid)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
+    
+    cdef query_interface(self, AAFBase obj = None):
+        if obj is None:
+            obj = self
+        else:
+            query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFImportDescriptor)
+
+        PhysicalDescriptor.query_interface(self, obj)
     
     def __dealloc__(self):
         if self.ptr:
