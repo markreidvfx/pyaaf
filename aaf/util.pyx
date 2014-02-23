@@ -30,7 +30,10 @@ cdef object error_check(int ret):
 
 cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID guid):
     if not src[0]:
-        raise Exception("src cannot be a null pointer")
+        raise RuntimeError("src can not be a null pointer")
+    if dst[0]:
+        raise RuntimeError("dst needs to be a null pointer")
+    
     error_check(src[0].QueryInterface(guid, <void**> dst))
 
 cdef lib.aafCharacter* aafChar(char* s):
