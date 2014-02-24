@@ -185,6 +185,7 @@ class TestFile(unittest.TestCase):
         for p in dictionary.properties():
             pass
             #print p.name, p.value_typedef(),p.property_def(), p.value
+        print dictionary.classdef().parent().name
         
         
     def test_properties(self):

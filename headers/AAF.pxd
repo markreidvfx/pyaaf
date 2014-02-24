@@ -166,6 +166,7 @@ cdef extern from "AAF.h":
     
     cdef GUID IID_IAAFClassDef
     cdef cppclass IAAFClassDef(IUnknown):
+        HRESULT GetParent(IAAFClassDef ** ppClassDef)
         HRESULT GetPropertyDefs(IEnumAAFPropertyDefs ** ppEnum)
         
     cdef GUID IID_IAAFPropertyDef

@@ -144,6 +144,12 @@ cdef class ClassDef(MetaDef):
         if self.ptr:
             self.ptr.Release()
             
+    def parent(self):
+        cdef ClassDef classdef = ClassDef.__new__(ClassDef)
+        error_check(self.ptr.GetParent(&classdef.ptr))
+        classdef.query_interface()
+        return classdef
+            
     def propertydefs(self):
         cdef PropertyDefsIter propdefs_iter = PropertyDefsIter.__new__(PropertyDefsIter)
         error_check(self.ptr.GetPropertyDefs(&propdefs_iter.ptr))
