@@ -1014,6 +1014,9 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFDescriptiveMarker(IUnknown):
         pass
         
+    cdef cppclass IAAFProgress(IUnknown):
+        pass
+        
     ## Parameters
     
     cdef aafUID_t AUID_AAFParameter
@@ -1233,7 +1236,13 @@ cdef extern from "AAF.h":
         aafProductIdentification_t *pIdent,
         IAAFFile ** ppFile
         )
-            
-    
+        
+    cdef HRESULT AAFResultToTextBufLen(HRESULT  result, 
+                                       aafUInt32 *pResultTextSize )
+    cdef HRESULT AAFResultToText(AAFRESULT  result,
+                                 aafCharacter *  pResultText,
+                                 aafUInt32  resultTextSize)
+         
+    cdef HRESULT AAFSetProgressCallback(IAAFProgress*  pProgress)
     cdef HRESULT AAFLoad(char *dllname)
     cdef HRESULT AAFGetPluginManager(IAAFPluginManager **ppPluginManager)
