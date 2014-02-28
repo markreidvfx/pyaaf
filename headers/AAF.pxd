@@ -987,7 +987,12 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFSelector
     cdef GUID IID_IAAFSelector
     cdef cppclass IAAFSelector(IUnknown):
-        pass
+        HRESULT GetSelectedSegment(IAAFSegment ** ppSelSegment)
+        HRESULT SetSelectedSegment(IAAFSegment * pSelSegment)
+        HRESULT AppendAlternateSegment(IAAFSegment * pSegment)
+        HRESULT GetNumAlternateSegments(aafInt32 *  pNumSegments)
+        HRESULT EnumAlternateSegments(IEnumAAFSegments ** ppEnum)
+        HRESULT RemoveAlternateSegment(IAAFSegment * pSelSegment)
         
     cdef aafUID_t AUID_AAFEdgecode
     cdef GUID IID_IAAFEdgecode

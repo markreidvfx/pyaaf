@@ -683,7 +683,7 @@ def get_tracks(mob,trackType= 'Picture'):
                 tracks.append([segment])
                 
             elif isinstance(segment, aaf.component.Selector):
-                tracks.append([segment.segment()])
+                tracks.append(list(segment.alternate_segments()))
                 
             elif isinstance(segment, aaf.component.EssenceGroup):
                 choices = []
