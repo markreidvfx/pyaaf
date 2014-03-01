@@ -1,8 +1,5 @@
 from libcpp.string cimport string
 from libcpp.map cimport map
-
-cdef extern from "hrmap.h":
-    cdef map[HRESULT, string] get_hrmap()
     
 cdef extern from "AAFCOMPlatformTypes.h":
     cdef int SUCCEEDED(int status)
