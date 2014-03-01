@@ -1,16 +1,14 @@
 
 cimport lib
 
-from wstring cimport wstring, toWideString,wideToString
+from wstring cimport wstring, toWideString, wideToString
 from libcpp.string cimport string
+from libcpp.vector cimport vector
 from libc.stddef cimport wchar_t
 
 from .fraction_util import AAFFraction
 
 import uuid
-
-HRESULTS = lib.get_hrmap()
-
 
 # This function is defined in the define module
 # and set via set_resolver_func to avoid import base into this module
@@ -20,13 +18,33 @@ cdef dict OBJECT_MAP = {}
 
 cdef object error_check(int ret):
     if not lib.SUCCEEDED(ret):
-        message = "Unknown Error"
-        if HRESULTS.has_key(ret):
-            message =  HRESULTS[ret]
-    
-        raise Exception("failed with [%d]: %s" % (ret, message))
+        message = HRESULT2str(ret)
+        raise RuntimeError("failed with [%d]: %s" % (ret, message))
     
     return ret
+
+cdef object HRESULT2str(lib.HRESULT result):
+    cdef lib.aafUInt32 bufflen
+    ret = lib.AAFResultToTextBufLen(result, &bufflen)
+    
+    if not lib.SUCCEEDED(ret):
+        return "Unknown Error"
+    
+    cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter](bufflen)
+    cdef lib.aafUInt32 bytes_read
+    
+    ret = lib.AAFResultToText(result,
+                              &buf[0],
+                              bufflen
+                              )
+    
+    if not lib.SUCCEEDED(ret):
+        return "Unknown Error"
+    
+    cdef wstring name = wstring(&buf[0])
+    message = wideToString(name)
+    message = message.replace("AAFRESULT_", "").replace("_", " ").lower()    
+    return message
 
 cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID guid):
     if not src[0]:
@@ -35,20 +53,6 @@ cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID gui
         raise RuntimeError("dst needs to be a null pointer")
     
     error_check(src[0].QueryInterface(guid, <void**> dst))
-
-cdef lib.aafCharacter* aafChar(char* s):
-    
-    cdef wstring wstr = toWideString(s)
-    
-    return <lib.aafCharacter *> wstr.c_str()
-
-cdef char* toChar(lib.aafCharacter* s):
-    
-    cdef wstring wstr = wstring(<wchar_t*>s)
-    
-    cdef string mbs = wideToString(wstr)
-    
-    return <char *> mbs.c_str()
 
 cdef object register_object(object obj):
     global OBJECT_MAP

@@ -5,9 +5,6 @@ from libc.stddef cimport wchar_t
 cdef object error_check(int ret)
 cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID guid)
 
-cdef lib.aafCharacter* aafChar(char* s)
-cdef char* toChar(lib.aafCharacter* s)
-
 cdef object register_object(object obj)
 cdef object lookup_object(bytes name)
 
