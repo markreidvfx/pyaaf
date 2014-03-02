@@ -10,8 +10,9 @@ from .mob cimport Mob
 from .essence cimport EssenceData
 from wstring cimport wstring,toWideString
 import os
+        
+cdef class File(AAFBase):
 
-cdef class IAAFFileProxy(AAFBase):
     def __cinit__(self):
         self.ptr= NULL
         self.iid = lib.IID_IAAFFile
@@ -33,8 +34,6 @@ cdef class IAAFFileProxy(AAFBase):
             if not (ret == lib.AAFRESULT_SUCCESS or ret == lib.AAFRESULT_NOT_OPEN):
                 error_check(ret)
             self.ptr.Release()
-        
-cdef class File(object):
     
     def __init__(self, bytes path, bytes mode = b'r'):
         """
@@ -49,7 +48,7 @@ cdef class File(object):
         """
         
         #self.proxy = IAAFFileProxy()
-        self.proxy = IAAFFileProxy.__new__(IAAFFileProxy)
+        #self.proxy = IAAFFileProxy.__new__(IAAFFileProxy)
         
         if not path:
             path = b""
@@ -61,7 +60,7 @@ cdef class File(object):
         if mode == 'r':
             error_check(lib.AAFFileOpenExistingRead(w_path.c_str(),
                                                     0,
-                                                    &self.proxy.ptr))
+                                                    &self.ptr))
         elif mode == 'rw':
             self.setup_new_file(path, mode)
         elif mode == 'w':
@@ -71,7 +70,7 @@ cdef class File(object):
         else:
             raise ValueError("invalid mode: %s" % mode)
         self.mode = mode
-        self.proxy.query_interface()
+        self.query_interface()
         
     cdef object setup_new_file(self, bytes path, bytes mode=b'w'):
             
@@ -101,11 +100,11 @@ cdef class File(object):
             #d = dict(productUID)
             error_check(lib.AAFFileOpenExistingModify(w_path.c_str(),
                                                       0, &productInfo,
-                                                      &self.proxy.ptr))
+                                                      &self.ptr))
             return
         
         elif mode == 't':
-            error_check(lib.AAFFileOpenTransient(&productInfo, &self.proxy.ptr))
+            error_check(lib.AAFFileOpenTransient(&productInfo, &self.ptr))
             return
 
         if os.path.exists(path):
@@ -120,7 +119,7 @@ cdef class File(object):
         
         error_check(lib.AAFFileOpenNewModifyEx(w_path.c_str(), 
                                                &kind, 0, &productInfo, 
-                                               &self.proxy.ptr))
+                                               &self.ptr))
     def save(self,bytes path=None):
         """Save AAF file to disk. If not path and the mode is 'rw' or 'w' it will overwrite or modify
         the current file. If path is supplied a new file will be created, (Save Copy As).
@@ -130,22 +129,22 @@ cdef class File(object):
         if not path:
             # If in 't' or 'r' mode do nothing
             if self.mode == 'rw' or self.mode == 'w':
-                error_check(self.proxy.ptr.Save())
+                error_check(self.ptr.Save())
             return
         
         cdef File new_file = File(path, 'w')
         
-        error_check(self.proxy.ptr.SaveCopyAs(new_file.proxy.ptr))
+        error_check(self.ptr.SaveCopyAs(new_file.ptr))
         
         return new_file
 
     def close(self):
-        error_check(self.proxy.ptr.Close())
+        error_check(self.ptr.Close())
         
     property header:
         def __get__(self):
             cdef Header header = Header.__new__(Header)
-            error_check(self.proxy.ptr.GetHeader(&header.ptr))
+            error_check(self.ptr.GetHeader(&header.ptr))
             header.query_interface()
             return header
             
