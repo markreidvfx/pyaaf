@@ -41,6 +41,7 @@ cdef class Dictionary(AAFObject):
         cdef DataDef definition =  DataDef.__new__(DataDef)
         error_check(self.ptr.LookupDataDef(auid.get_auid(), &definition.ptr ))
         definition.query_interface()
+        definition.root = self.root
         return definition
     
     def lookup_containerdef(self, bytes name):
@@ -48,31 +49,37 @@ cdef class Dictionary(AAFObject):
         cdef ContainerDef definition = ContainerDef.__new__(ContainerDef)
         error_check(self.ptr.LookupContainerDef(auid.get_auid(), &definition.ptr ))
         definition.query_interface()
+        definition.root = self.root
         return definition
         
     def class_defs(self):
         cdef ClassDefIter def_iter = ClassDefIter.__new__(ClassDefIter)
         error_check(self.ptr.GetClassDefs(&def_iter.ptr))
+        def_iter.root = self.root
         return def_iter
 
     def codec_defs(self):
         cdef CodecDefIter def_iter = CodecDefIter.__new__(CodecDefIter)
         error_check(self.ptr.GetCodecDefs(&def_iter.ptr))
+        def_iter.root = self.root
         return def_iter
     
     def type_defs(self):
         cdef TypeDefIter def_iter = TypeDefIter.__new__(TypeDefIter)
         error_check(self.ptr.GetTypeDefs(&def_iter.ptr))
+        def_iter.root = self.root
         return def_iter
     
     def plugin_defs(self):
         cdef PluginDefIter def_iter = PluginDefIter.__new__(PluginDefIter)
         error_check(self.ptr.GetPluginDefs(&def_iter.ptr))
+        def_iter.root = self.root
         return def_iter
      
     def klvdata_defs(self):
         cdef KLVDataDefIter def_iter = KLVDataDefIter.__new__(KLVDataDefIter)
         error_check(self.ptr2.GetKLVDataDefs(&def_iter.ptr))
+        def_iter.root = self.root
         return def_iter
      
     def operation_defs(self):
@@ -165,6 +172,7 @@ cdef class CreateInstance(object):
         cdef AAFBase obj = obj_type.__new__(obj_type)
         
         obj.query_interface(unknown)
+        obj.root = self.dictionary.root
         
         obj.initialize(*args, **kwargs)
 
