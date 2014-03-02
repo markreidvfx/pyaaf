@@ -68,6 +68,7 @@ cdef class ClassDefIter(BaseIterator):
     def clone(self):
         cdef ClassDefIter value = ClassDefIter.__new__(ClassDefIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -87,6 +88,7 @@ cdef class ClassDefIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value
         else:
             error_check(ret)
@@ -105,6 +107,7 @@ cdef class CodecDefIter(BaseIterator):
     def clone(self):
         cdef CodecDefIter value = CodecDefIter.__new__(CodecDefIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -124,6 +127,7 @@ cdef class CodecDefIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value
         else:
             error_check(ret)
@@ -142,6 +146,7 @@ cdef class ComponentIter(BaseIterator):
     def clone(self):
         cdef ComponentIter value = ComponentIter.__new__(ComponentIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
 
     def skip(self, lib.aafUInt32  count = 1):
@@ -161,6 +166,7 @@ cdef class ComponentIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.resolve()
         else:
             error_check(ret)
@@ -179,6 +185,7 @@ cdef class ControlPointIter(BaseIterator):
     def clone(self):
         cdef ControlPointIter value = ControlPointIter.__new__(ControlPointIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -198,6 +205,7 @@ cdef class ControlPointIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.resolve()
         else:
             error_check(ret)
@@ -216,6 +224,7 @@ cdef class EssenceDataIter(BaseIterator):
     def clone(self):
         cdef EssenceDataIter value = EssenceDataIter.__new__(EssenceDataIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -235,6 +244,7 @@ cdef class EssenceDataIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value
         else:
             error_check(ret)
@@ -253,6 +263,7 @@ cdef class KLVDataDefIter(BaseIterator):
     def clone(self):
         cdef KLVDataDefIter value = KLVDataDefIter.__new__(KLVDataDefIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
 
     def skip(self, lib.aafUInt32  count = 1):
@@ -272,6 +283,7 @@ cdef class KLVDataDefIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value
         else:
             error_check(ret)
@@ -290,6 +302,7 @@ cdef class LoadedPluginIter(BaseIterator):
     def clone(self):
         cdef LoadedPluginIter value = LoadedPluginIter.__new__(LoadedPluginIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -326,6 +339,7 @@ cdef class MobSlotIter(BaseIterator):
     def clone(self):
         cdef MobSlotIter value = MobSlotIter.__new__(MobSlotIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -345,6 +359,7 @@ cdef class MobSlotIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.resolve()
         else:
             error_check(ret)
@@ -363,6 +378,7 @@ cdef class MobIter(BaseIterator):
     def clone(self):
         cdef MobIter value = MobIter.__new__(MobIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -381,6 +397,7 @@ cdef class MobIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.resolve()
         else:
             error_check(ret)
@@ -399,6 +416,7 @@ cdef class ParamIter(BaseIterator):
     def clone(self):
         cdef ParamIter value = ParamIter.__new__(ParamIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -418,6 +436,7 @@ cdef class ParamIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.resolve()
         else:
             error_check(ret)
@@ -436,6 +455,7 @@ cdef class PluginDefIter(BaseIterator):
     def clone(self):
         cdef PluginDefIter value = PluginDefIter.__new__(PluginDefIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -455,6 +475,7 @@ cdef class PluginDefIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.resolve()
         else:
             error_check(ret)
@@ -473,6 +494,7 @@ cdef class PropIter(BaseIterator):
     def clone(self):
         cdef PropIter value = PropIter.__new__(PropIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -492,6 +514,7 @@ cdef class PropIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.resolve()
         else:
             error_check(ret)
@@ -510,6 +533,7 @@ cdef class PropertyDefsIter(BaseIterator):
     def clone(self):
         cdef PropertyDefsIter value = PropertyDefsIter.__new__(PropertyDefsIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -529,6 +553,7 @@ cdef class PropertyDefsIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.resolve()
         else:
             error_check(ret)
@@ -547,6 +572,7 @@ cdef class PropValueIter(BaseIterator):
     def clone(self):
         cdef PropValueIter value = PropValueIter.__new__(PropValueIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
 
     def skip(self, lib.aafUInt32  count = 1):
@@ -566,6 +592,7 @@ cdef class PropValueIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value
         else:
             error_check(ret)
@@ -584,6 +611,7 @@ cdef class PropValueResolveIter(BaseIterator):
     def clone(self):
         cdef PropValueResolveIter value = PropValueResolveIter.__new__(PropValueResolveIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -603,6 +631,7 @@ cdef class PropValueResolveIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.value
         else:
             error_check(ret)
@@ -621,6 +650,7 @@ cdef class SegmentIter(BaseIterator):
     def clone(self):
         cdef SegmentIter value = SegmentIter.__new__(SegmentIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -640,6 +670,7 @@ cdef class SegmentIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value.resolve()
         else:
             error_check(ret)
@@ -658,6 +689,7 @@ cdef class TaggedValueIter(BaseIterator):
     def clone(self):
         cdef TaggedValueIter value = TaggedValueIter.__new__(TaggedValueIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -677,6 +709,7 @@ cdef class TaggedValueIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return value
         else:
             error_check(ret)
@@ -695,6 +728,7 @@ cdef class TypeDefIter(BaseIterator):
     def clone(self):
         cdef TypeDefIter value = TypeDefIter.__new__(TypeDefIter)
         error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
         return value
     
     def skip(self, lib.aafUInt32  count = 1):
@@ -714,6 +748,7 @@ cdef class TypeDefIter(BaseIterator):
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
             value.query_interface()
+            value.root = self.root
             return resolve_typedef(value)
         else:
             error_check(ret)

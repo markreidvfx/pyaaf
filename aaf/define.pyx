@@ -41,7 +41,7 @@ def resolve_object_func(AAFBase obj):
             obj_type = lookup_object(test_aaf_obj.class_name)
             new_obj = obj_type.__new__(obj_type)
             new_obj.query_interface(obj)
-            
+            new_obj.root = obj.root
             return new_obj
         except:
             #print traceback.format_exc()
@@ -49,6 +49,7 @@ def resolve_object_func(AAFBase obj):
             if isinstance(obj, AAFObject):
                 return obj
             else:
+                test_aaf_obj.root = obj.root
                 return test_aaf_obj
             
     elif isA(obj, MetaDef):
@@ -56,14 +57,17 @@ def resolve_object_func(AAFBase obj):
         if isA(obj, TypeDef):
             new_obj = TypeDef.__new__(TypeDef)
             new_obj.query_interface(obj)
+            new_obj.root = obj.root
             return resolve_typedef(new_obj)
         elif isA(obj, ClassDef):
             new_obj = ClassDef.__new__(ClassDef)
             new_obj.query_interface(obj)
+            new_obj.root = obj.root
             return new_obj
         elif isA(obj, PropertyDef):
             new_obj = PropertyDef.__new__(PropertyDef)
             new_obj.query_interface(obj)
+            new_obj.root = obj.root
             return new_obj
         else:        
             raise ValueError("Unknown Metadef")
@@ -148,11 +152,13 @@ cdef class ClassDef(MetaDef):
         cdef ClassDef classdef = ClassDef.__new__(ClassDef)
         error_check(self.ptr.GetParent(&classdef.ptr))
         classdef.query_interface()
+        classdef.root = self.root
         return classdef
             
     def propertydefs(self):
         cdef PropertyDefsIter propdefs_iter = PropertyDefsIter.__new__(PropertyDefsIter)
         error_check(self.ptr.GetPropertyDefs(&propdefs_iter.ptr))
+        propdefs_iter.root = self.root
         return propdefs_iter
     
 cdef class PropertyDef(MetaDef):
@@ -264,6 +270,7 @@ cdef class TypeDefEnum(TypeDef):
         cdef TypeDef typedef = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetElementType(&typedef.typedef_ptr))
         typedef.query_interface()
+        typedef.root = self.root
         return resolve_typedef(typedef)
     
     def element_name(self, lib.aafUInt32 index):
@@ -427,11 +434,13 @@ cdef class TypeDefFixedArray(TypeDef):
     def iter_property_value(self, PropertyValue p_value):
         cdef PropValueIter prop_iter = PropValueIter.__new__(PropValueIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
+        prop_iter.root = self.root
         return prop_iter
     
     def value(self, PropertyValue p_value):
         cdef PropValueResolveIter prop_iter = PropValueResolveIter.__new__(PropValueResolveIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
+        prop_iter.root = self.root
         return prop_iter
 
 cdef class TypeDefIndirect(TypeDef):
@@ -458,6 +467,7 @@ cdef class TypeDefIndirect(TypeDef):
         cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
         error_check(self.ptr.GetActualValue(p_value.ptr, &out_value.ptr))
         out_value.query_interface()
+        out_value.root = self.root
         return out_value
     
     def set_value(self, PropertyValue p_value, object value):
@@ -608,12 +618,13 @@ cdef class TypeDefObjectRef(TypeDef):
         cdef ClassDef class_def = ClassDef.__new__(ClassDef)
         error_check(self.ref_ptr.GetObjectType(&class_def.ptr))
         class_def.query_interface()
+        class_def.root = self.root
         return class_def
     
     def value(self, PropertyValue p_value ):
         cdef AAFBase obj = AAFBase.__new__(AAFBase)
         error_check(self.ref_ptr.GetObject(p_value.ptr, lib.IID_IUnknown, &obj.base_ptr))
-        
+        obj.root = self.root
         return obj.resolve()
 
     
@@ -704,6 +715,7 @@ cdef class TypeDefRecord(TypeDef):
         
         error_check(self.ptr.GetMemberType(index, &typedef.typedef_ptr))
         typedef.query_interface()
+        typedef.root = self.root
         return resolve_typedef(typedef)
         
     
@@ -715,6 +727,7 @@ cdef class TypeDefRecord(TypeDef):
                                        &member_value.ptr
                                        ))
         member_value.query_interface()
+        member_value.root = self.root
         return member_value
     
     def value(self, PropertyValue p_value):
@@ -839,6 +852,7 @@ cdef class TypeDefRename(TypeDef):
         cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
         error_check(self.ptr.GetBaseValue(p_value.ptr, &out_value.ptr))
         out_value.query_interface()
+        out_value.root = self.root
         return out_value
             
     def set_value(self, PropertyValue p_value, value):        
@@ -877,11 +891,13 @@ cdef class TypeDefSet(TypeDef):
     def iter_property_value(self, PropertyValue p_value):
         cdef PropValueIter prop_iter = PropValueIter.__new__(PropValueIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
+        prop_iter.root = self.root
         return prop_iter
     
     def value(self, PropertyValue p_value):
         cdef PropValueResolveIter prop_iter = PropValueResolveIter.__new__(PropValueResolveIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
+        prop_iter.root = self.root
         return prop_iter
 
 cdef class TypeDefStream(TypeDef):
@@ -1027,6 +1043,7 @@ cdef class TypeDefVariableArray(TypeDef):
         cdef TypeDef typedef = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetType(&typedef.typedef_ptr))
         typedef.query_interface()
+        typedef.root = self.root
         return resolve_typedef(typedef)
     
     def size(self,PropertyValue p_value):
@@ -1037,11 +1054,13 @@ cdef class TypeDefVariableArray(TypeDef):
     def iter_property_value(self, PropertyValue p_value):
         cdef PropValueIter prop_iter = PropValueIter.__new__(PropValueIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
+        prop_iter.root = self.root
         return prop_iter
     
     def value(self, PropertyValue p_value):
         cdef PropValueResolveIter prop_iter = PropValueResolveIter.__new__(PropValueResolveIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
+        prop_iter.root = self.root
         return prop_iter
 
 cdef object resolve_typedef(TypeDef typedef):
@@ -1083,6 +1102,7 @@ cdef object resolve_typedef(TypeDef typedef):
         raise Exception("Unkown TypeDef")
     
     obj.query_interface(typedef)
+    obj.root = typedef.root
     return obj
     
 cpdef dict DataDefMap = {}

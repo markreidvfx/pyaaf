@@ -103,6 +103,7 @@ cdef class AAFObject(AAFBase):
         cdef Dictionary d = Dictionary.__new__(Dictionary)
         error_check(self.obj_ptr.GetDictionary(&d.ptr))
         d.query_interface()
+        d.root = self.root
         return d
     
     def classdef(self):
@@ -112,6 +113,7 @@ cdef class AAFObject(AAFBase):
         cdef ClassDef class_def = ClassDef.__new__(ClassDef)
         error_check(self.obj_ptr.GetDefinition(&class_def.ptr))
         class_def.query_interface()
+        class_def.root = self.root
         return class_def
     
     def properties(self):
@@ -120,6 +122,7 @@ cdef class AAFObject(AAFBase):
         """
         cdef PropIter prop_iter = PropIter.__new__(PropIter)
         error_check(self.obj_ptr.GetProperties(&prop_iter.ptr))
+        prop_iter.root = self.root
         return prop_iter
     
     def __repr__(self):

@@ -34,6 +34,7 @@ cdef class Property(AAFBase):
         cdef PropertyDef prop_def = PropertyDef.__new__(PropertyDef)
         error_check(self.ptr.GetDefinition(&prop_def.ptr))
         prop_def.query_interface()
+        prop_def.root = self.root
         return prop_def
     
     def property_value(self):
@@ -43,10 +44,12 @@ cdef class Property(AAFBase):
         cdef PropertyValue value = PropertyValue.__new__(PropertyValue)
         error_check(self.ptr.GetValue(&value.ptr))
         value.query_interface()
+        value.root = self.root
         return value
     
     def value_typedef(self):
         value = self.property_value()
+        value.root = self.root
         return value.typedef()
     
     def __repr__(self):
@@ -96,6 +99,7 @@ cdef class PropertyValue(AAFBase):
         cdef TypeDef type_def = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetType(&type_def.typedef_ptr))
         type_def.query_interface()
+        type_def.root = self.root
         return resolve_typedef(type_def)
     
     property value:
@@ -129,9 +133,11 @@ cdef class TaggedValue(AAFObject):
             self.ptr.Release()
     
     def typedef(self):
-        cdef TypeDef type_def = TypeDef()
+        cdef TypeDef type_def = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetTypeDefinition(&type_def.typedef_ptr))
-        return resolve_typedef(TypeDef(type_def))
+        type_def.query_interface()
+        type_def.root = self.root
+        return resolve_typedef(type_def)
             
     property value:
         def __get__(self):
