@@ -136,6 +136,7 @@ cdef class EssenceData(AAFObject):
             cdef SourceMob mob = SourceMob.__new__(SourceMob)
             error_check(self.ptr.GetFileMob(&mob.src_ptr))
             mob.query_interface()
+            mob.root = self.root
             return mob
         def __set__(self, SourceMob mob):
             error_check(self.ptr.SetFileMob(mob.src_ptr))
@@ -254,6 +255,7 @@ cdef class EssenceAccess(EssenceMultiAccess):
         cdef EssenceFormat format =  EssenceFormat.__new__(EssenceFormat)
         error_check(self.ptr.GetEmptyFileFormat(&format.ptr))
         format.query_interface()
+        format.root = self.root
         return format
     
     def set_fileformat(self, EssenceFormat format):
@@ -546,7 +548,7 @@ cdef class FileDescriptor(EssenceDescriptor):
             cdef ContainerDef cont_def = ContainerDef.__new__(ContainerDef)
             error_check(self.file_ptr.GetContainerFormat(&cont_def.ptr))
             cont_def.query_interface()
-            
+            cont_def.root = self.root
             auid = cont_def['Identification']
             
             for key,value in ContainerDefMap.items():
