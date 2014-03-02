@@ -44,7 +44,8 @@ cdef class Mob(AAFObject):
             
     def slots(self):
         cdef MobSlotIter slot_iter = MobSlotIter.__new__(MobSlotIter)
-        error_check(self.ptr.GetSlots(&slot_iter.ptr))    
+        error_check(self.ptr.GetSlots(&slot_iter.ptr)) 
+        slot_iter.root = self.root   
         return slot_iter
     
     def slot_at(self, lib.aafSlotID_t slotID):
@@ -85,6 +86,7 @@ cdef class Mob(AAFObject):
             slot_name = b'timeline slot %d' % slotID
         
         cdef TimelineMobSlot timeline = TimelineMobSlot.__new__(TimelineMobSlot)
+        
         cdef lib.aafRational_t edit_rate_t
         
         
@@ -100,6 +102,7 @@ cdef class Mob(AAFObject):
                                                   &timeline.ptr
                                                   ))
         timeline.query_interface()
+        timeline.root = self.root
         return timeline
     
     def append_comment(self, bytes name, bytes value):
@@ -110,6 +113,7 @@ cdef class Mob(AAFObject):
     
     def iter_comments(self):
         cdef TaggedValueIter tags = TaggedValueIter.__new__(TaggedValueIter)
+        tags.root = self.root
         hr = self.ptr.GetComments(&tags.ptr)
         if hr == lib.AAFRESULT_PROP_NOT_PRESENT:
             return []
@@ -240,6 +244,7 @@ cdef class MasterMob(Mob):
                                                    &access.ptr))
         access.query_interface()
         access.datadef = slot.datadef()
+        access.root = self.root
         return access
     
     def create_essence(self,lib.aafSlotID_t slot_index, 
@@ -285,6 +290,7 @@ cdef class MasterMob(Mob):
                                                       ))
         access.query_interface()
         access.datadef = media_datadef
+        access.root = self.root
         return access
     
     def import_video_essence(self, bytes path, object frame_rate):
@@ -585,6 +591,7 @@ cdef class SourceMob(Mob):
             cdef EssenceDescriptor descriptor = EssenceDescriptor.__new__(EssenceDescriptor)
             error_check(self.src_ptr.GetEssenceDescriptor(&descriptor.essence_ptr))
             descriptor.query_interface()
+            descriptor.root = self.root
             return descriptor.resolve()
         
         def __set__(self, EssenceDescriptor descriptor):
@@ -615,6 +622,7 @@ cdef class MobSlot(AAFObject):
         cdef DataDef data_def = DataDef.__new__(DataDef)
         error_check(self.slot_ptr.GetDataDef(&data_def.ptr))
         data_def.query_interface()
+        data_def.root = self.root
         return data_def
     
     property name:
@@ -632,6 +640,7 @@ cdef class MobSlot(AAFObject):
             cdef Segment seg = Segment.__new__(Segment)
             error_check(self.slot_ptr.GetSegment(&seg.seg_ptr))
             seg.query_interface()
+            seg.root = self.root
             return seg.resolve()
         
         def __set__(self, Segment value):

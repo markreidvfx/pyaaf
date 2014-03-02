@@ -49,7 +49,6 @@ cdef class Property(AAFBase):
     
     def value_typedef(self):
         value = self.property_value()
-        value.root = self.root
         return value.typedef()
     
     def __repr__(self):
