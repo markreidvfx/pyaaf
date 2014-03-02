@@ -12,6 +12,7 @@ cdef class AAFBase(object):
     def __cinit__(self):
         self.base_ptr = NULL
         self.iid = lib.IID_IUnknown
+        self.root = None
           
     def __init__(self, AAFBase obj = None):
         raise TypeError("%s cannot be instantiated from Python" %  self.__class__.__name__)

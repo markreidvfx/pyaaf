@@ -146,6 +146,7 @@ cdef class File(AAFBase):
             cdef Header header = Header.__new__(Header)
             error_check(self.ptr.GetHeader(&header.ptr))
             header.query_interface()
+            header.root = self
             return header
             
     property storage:
@@ -185,6 +186,7 @@ cdef class Header(AAFObject):
         cdef Dictionary dictionary = Dictionary.__new__(Dictionary)
         error_check(self.ptr.GetDictionary(&dictionary.ptr))
         dictionary.query_interface()
+        dictionary.root = self.root
         return dictionary
 
     def storage(self,none=None):
@@ -192,6 +194,7 @@ cdef class Header(AAFObject):
         cdef ContentStorage content_storage = ContentStorage.__new__(ContentStorage)
         error_check(self.ptr.GetContentStorage(&content_storage.ptr))
         content_storage.query_interface()
+        content_storage.root = self.root
         return content_storage
     
          
@@ -237,6 +240,7 @@ cdef class ContentStorage(AAFObject):
         
         error_check(self.ptr.LookupMob(mobID_obj.mobID, &mob.ptr))
         mob.query_interface()
+        mob.root = self.root
         return mob.resolve()
         
 
@@ -250,6 +254,7 @@ cdef class ContentStorage(AAFObject):
 
         error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
         mob_iter._clone_iter = self.mobs
+        mob_iter.root = self.root
         return mob_iter
     
     def master_mobs(self):
@@ -262,6 +267,7 @@ cdef class ContentStorage(AAFObject):
         
         error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
         mob_iter._clone_iter = self.master_mobs
+        mob_iter.root = self.root
         return mob_iter
     
     def composition_mobs(self):
@@ -274,6 +280,7 @@ cdef class ContentStorage(AAFObject):
         
         error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
         mob_iter._clone_iter = self.composition_mobs
+        mob_iter.root = self.root
         return mob_iter
     
     def toplevel_mobs(self):
@@ -286,11 +293,13 @@ cdef class ContentStorage(AAFObject):
         
         error_check(self.ptr.GetMobs(&search_crit, &mob_iter.ptr))
         mob_iter._clone_iter = self.toplevel_mobs
+        mob_iter.root = self.root
         return mob_iter
     
     def essence_data(self):
         cdef EssenceDataIter data_iter = EssenceDataIter.__new__(EssenceDataIter)
         error_check(self.ptr.EnumEssenceData(&data_iter.ptr))
+        data_iter.root = self.root
         return data_iter
     
     def add_essence_data(self, EssenceData data):
