@@ -693,6 +693,7 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFMob
     cdef cppclass IAAFMob(IUnknown):
         HRESULT GetMobID(aafMobID_t *pMobID)
+        HRESULT SetMobID(aafMobID_t &pMobID)
         HRESULT GetNameBufLen(aafUInt32 *pBufSize)
         HRESULT GetName(
             aafCharacter *pName,

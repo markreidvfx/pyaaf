@@ -192,6 +192,10 @@ cdef class Mob(AAFObject):
             
             mobID_obj.mobID = mobID
             return mobID_obj
+        
+        def __set__(self, value):
+            cdef MobID mobID_obj = MobID(value)
+            error_check(self.ptr.SetMobID(mobID_obj.get_aafMobID_t()))
             
             
 cdef class MasterMob(Mob):
