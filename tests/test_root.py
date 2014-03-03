@@ -4,7 +4,7 @@ import aaf.define
 import aaf.iterator
 import aaf.dictionary
 import aaf.storage
-
+import aaf.base
 import unittest
 import traceback
 
@@ -50,6 +50,7 @@ class TestFile(unittest.TestCase):
                 if isinstance(item, aaf.property.Property):
                     value = item.value
                     print space, item.root
+                    assert item.root is not None
                 name = ""
                 
                 if hasattr(item, 'name'):
@@ -57,12 +58,17 @@ class TestFile(unittest.TestCase):
                 
                 #print space,name, value
                 s = space + '   '
+                
+                if isinstance(value, aaf.base.AAFBase):
+                    assert value.root is not None
+                
                 if isinstance(value, aaf.base.AAFObject):
                     print space, value.root
+                    assert value.root is not None
                     walk_properties(s, value.properties())
                 if isinstance(value, aaf.iterator.BaseIterator):
-                    print space, value.root
-                    
+                    print space,value, value.root
+                    assert value.root is not None
                     walk_properties(s, value)
         
         walk_properties("", header.properties())

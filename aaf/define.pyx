@@ -964,6 +964,7 @@ cdef class TypeDefStream(TypeDef):
         cdef TypeDefStreamDataIter data_iter = TypeDefStreamDataIter.__new__(TypeDefStreamDataIter)
         data_iter.stream_typedef = self
         data_iter.value = p_value
+        data_iter.root = self.root
         return data_iter
 
 cdef class TypeDefString(TypeDef):
