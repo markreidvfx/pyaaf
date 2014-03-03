@@ -989,8 +989,10 @@ cdef class TypeDefString(TypeDef):
             self.ptr.Release()
             
     def typedef(self):
-        cdef TypeDef typedef = TypeDef()
+        cdef TypeDef typedef = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetType(&typedef.typedef_ptr))
+        typedef.query_interface()
+        typedef.root = self.root
         return resolve_typedef(TypeDef(typedef))
             
     def set_value(self, PropertyValue p_value, bytes value):
