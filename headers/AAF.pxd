@@ -23,6 +23,12 @@ cdef extern from "AAF.h":
         HRESULT GetDefinition(IAAFClassDef **ppClassDef)
         HRESULT GetProperties(IEnumAAFProperties **ppEnum)
         HRESULT GetDictionary(IAAFDictionary **ppDictionary)
+        HRESULT SetPropertyValue(IAAFPropertyDef * pPropDef,
+                                 IAAFPropertyValue * pPropVal
+        )
+        HRESULT CreateOptionalPropertyValue(IAAFPropertyDef * pPropDef,
+                                            IAAFPropertyValue ** ppPropVal
+        )
         
     cdef GUID IID_IAAFPluginManager
     cdef cppclass IAAFPluginManager(IUnknown):

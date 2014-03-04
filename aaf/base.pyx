@@ -2,8 +2,9 @@
 cimport lib
 from .util cimport error_check, query_interface, resolve_object, AUID
 
-from .define cimport ClassDef
+from .define cimport ClassDef, PropertyDef 
 from .iterator cimport PropIter
+from .property cimport PropertyValue 
 #from .resolve import resolve_object
 
 from dictionary cimport Dictionary
@@ -31,6 +32,8 @@ cdef class AAFBase(object):
     def __dealloc__(self):
         if self.base_ptr:
             self.base_ptr.Release()
+            
+        self.root = None
             
     property class_iid:
         def __get__(self):
@@ -65,6 +68,24 @@ cdef class AAFObject(AAFBase):
         for p in self.properties():
             if p.name == x:
                 return p
+            
+        classdef = self.classdef()
+        
+        cdef PropertyDef propdef
+        cdef PropertyValue value
+        
+        # if x is a optional property create it
+        for propdef in classdef.propertydefs():
+            if propdef.name == x:
+                # create property value
+                value = PropertyValue.__new__(PropertyValue)
+                error_check(self.obj_ptr.CreateOptionalPropertyValue(propdef.ptr, &value.ptr))
+                error_check(self.obj_ptr.SetPropertyValue(propdef.ptr, value.ptr))
+                # now find the property and return it
+                for p in self.properties():
+                    if p.name == x:
+                        return p
+            
         raise KeyError("Key %s not found" % x)
     
     def keys(self):

@@ -1004,7 +1004,7 @@ cdef class TypeDefString(TypeDef):
                                         <lib.aafMemPtr_t> w_value.c_str(),
                                         size_in_bytes))
         
-        print self.value(p_value)
+        #print self.value(p_value)
     
     def value(self, PropertyValue p_value ):
         
