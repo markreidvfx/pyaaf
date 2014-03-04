@@ -2,6 +2,7 @@ cimport lib
 from base cimport AAFObject,AAFBase
   
 cdef class File(AAFBase):
+    cdef object __weakref__
     cdef lib.IAAFFile *ptr
     cdef readonly bytes mode
     cdef lib.aafProductIdentification_t productInfo

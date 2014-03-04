@@ -6,7 +6,7 @@ from .define cimport TypeDefStream
 from .property cimport PropertyValue
 
 cdef class BaseIterator(object):
-    cdef readonly AAFBase root
+    cdef readonly object root
     cdef readonly object _clone_iter
     
 cdef class ClassDefIter(BaseIterator):

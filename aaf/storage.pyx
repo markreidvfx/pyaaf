@@ -10,6 +10,7 @@ from .mob cimport Mob
 from .essence cimport EssenceData
 from wstring cimport wstring,toWideString
 import os
+import weakref
         
 cdef class File(AAFBase):
 
@@ -146,7 +147,7 @@ cdef class File(AAFBase):
             cdef Header header = Header.__new__(Header)
             error_check(self.ptr.GetHeader(&header.ptr))
             header.query_interface()
-            header.root = self
+            header.root = weakref.proxy(self)
             return header
             
     property storage:
