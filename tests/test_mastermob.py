@@ -87,9 +87,13 @@ class TestFile(unittest.TestCase):
             if i == 0:
                 src_mob.new_phys_source_ref(slot_rates[i], i, slot_defs[i], source_ref, tape_mob_length)
             else:
-                pass
-                #source_mob.
-             
+                src_mob.append_phys_source_ref(slot_rates[i], i, slot_defs[i], source_ref, tape_mob_length)
+                
+            desc = f.create.AIFCDescriptor()
+            #desc['Summary'].value = "TEST"
+            #for p in desc.classdef().propertydefs():
+                #print p.name
+            #source_mob.essence_descriptor = desc
         
         f.save()
         #f.close()
