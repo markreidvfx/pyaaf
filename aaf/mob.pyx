@@ -588,8 +588,18 @@ cdef class SourceMob(Mob):
                                                   slotID,
                                                   data_def.ptr,
                                                   ref.get_aafSourceRef_t(),
-                                                  srcRefLength)) 
-    
+                                                  srcRefLength))
+    def append_phys_source_ref(self, edit_rate, lib.aafSlotID_t  slotID, media_kind, SourceRef ref, lib.aafLength_t  srcRefLength):
+        cdef lib.aafRational_t edit_rate_t
+        fraction_to_aafRational(edit_rate, edit_rate_t)
+        cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
+        
+        error_check(self.src_ptr.AppendPhysSourceRef(edit_rate_t,
+                                                     slotID,
+                                                     data_def.ptr,
+                                                     ref.get_aafSourceRef_t(),
+                                                     srcRefLength))
+                                            
     property essence_descriptor:
         def __get__(self):
             cdef EssenceDescriptor descriptor = EssenceDescriptor.__new__(EssenceDescriptor)
