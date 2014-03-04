@@ -1014,6 +1014,9 @@ cdef class TypeDefString(TypeDef):
         error_check(self.ptr.GetCount(p_value.ptr, &sizeInChars))
         sizeInBytes = sizeof(lib.aafCharacter)*sizeInChars
         
+        if not sizeInBytes:
+            return None
+        
         cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter]( sizeInChars )
         
         error_check(self.ptr.GetElements(p_value.ptr,
