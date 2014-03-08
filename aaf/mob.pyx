@@ -204,6 +204,7 @@ cdef class MasterMob(Mob):
         self.auid = lib.AUID_AAFMasterMob
         self.mastermob_ptr = NULL
         self.mastermob2_ptr = NULL
+        self.mastermob3_ptr = NULL
 
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.mastermob_ptr
@@ -216,6 +217,9 @@ cdef class MasterMob(Mob):
         
         if not self.mastermob2_ptr:
             query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mastermob2_ptr, lib.IID_IAAFMasterMob2)
+        
+        if not self.mastermob3_ptr:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mastermob3_ptr, lib.IID_IAAFMasterMob3)
             
         Mob.query_interface(self, obj)
     
@@ -450,6 +454,23 @@ cdef class MasterMob(Mob):
         cdef wstring w_slot_name = toWideString(slot_name)
 
         error_check(self.mastermob_ptr.AddMasterSlot(media_datadef.ptr,
+                                                     source_slotID,
+                                                     source_mob.src_ptr,
+                                                     master_slotID,
+                                                     w_slot_name.c_str()))
+        
+    def add_master_slot_with_sequence(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
+                                      lib.aafSlotID_t master_slotID, bytes slot_name=None):
+        
+        cdef DataDef media_datadef        
+        media_datadef = self.dictionary().lookup_datadef(media_kind)
+        
+        if not slot_name:
+            slot_name = b""
+        
+        cdef wstring w_slot_name = toWideString(slot_name)
+        
+        error_check(self.mastermob3_ptr.AddMasterSlotWithSequence(media_datadef.ptr,
                                                      source_slotID,
                                                      source_mob.src_ptr,
                                                      master_slotID,

@@ -8,6 +8,7 @@ cdef class Mob(AAFObject):
 cdef class MasterMob(Mob):
     cdef lib.IAAFMasterMob *mastermob_ptr
     cdef lib.IAAFMasterMob2 *mastermob2_ptr
+    cdef lib.IAAFMasterMob3 *mastermob3_ptr
     
 cdef class CompositionMob(Mob):
     cdef lib.IAAFCompositionMob *compositionmob_ptr

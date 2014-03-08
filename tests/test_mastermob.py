@@ -40,6 +40,7 @@ tape_mob_offset = 10
 tape_mob_name = "A Tape Mob"
 slot_rates = [ 297, 44100, 44100, 25]
 slot_defs = ["Picture", "Sound", "Sound", "Picture"]
+slot_names = ["VIDEO SLOT", "AUDIO SLOT1", "AUDIO SLOT2", "VIDEO SLOT MXF style"]
 
 class TestFile(unittest.TestCase):
     
@@ -90,11 +91,16 @@ class TestFile(unittest.TestCase):
                 src_mob.append_phys_source_ref(slot_rates[i], i, slot_defs[i], source_ref, tape_mob_length)
                 
             desc = f.create.AIFCDescriptor()
-            #desc['Summary'].value = "TEST"
-            #for p in desc.classdef().propertydefs():
-                #print p.name
-            #source_mob.essence_descriptor = desc
-        
+            desc.summary = "TEST"
+            src_mob.essence_descriptor = desc
+            src_mob.name = "source mob"
+            f.storage.add_mob(src_mob)
+            
+            if i == NumMobSlots -1:
+                mob.add_master_slot_with_sequence(slot_defs[i], i, src_mob, i+1, slot_names[i])
+            else:
+                mob.add_master_slot(slot_defs[i], i, src_mob, i+1, slot_names[i])
+        #add_master_slot_with_sequence
         f.save()
         #f.close()
     def test_result(self):

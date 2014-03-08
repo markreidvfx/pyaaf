@@ -789,6 +789,17 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFMasterMob2
     cdef cppclass IAAFMasterMob2(IUnknown):
         pass
+        
+    cdef aafUID_t AUID_AAFMasterMob3
+    cdef GUID IID_IAAFMasterMob3
+    cdef cppclass IAAFMasterMob3(IUnknown):
+        HRESULT AddMasterSlotWithSequence(
+            IAAFDataDef * pDataDef,
+            aafSlotID_t  sourceSlotID,
+            IAAFSourceMob * pSourceMob,
+            aafSlotID_t  masterSlotID,
+            aafCharacter * pSlotName
+        )
     
     cdef aafUID_t AUID_AAFCompositionMob  
     cdef GUID IID_IAAFCompositionMob
