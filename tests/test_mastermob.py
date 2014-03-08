@@ -19,6 +19,7 @@ if not os.path.exists(sandbox):
     os.makedirs(sandbox)
 
 main_test_file = os.path.join(sandbox, 'test_mastermob.aaf')
+main_test_file_xml = os.path.join(sandbox, 'test_mastermob.xml')
 
 mob_id = "urn:smpte:umid:060a2b34.01010101.01010f00.13000000.060e2b34.7f7f2a80.5313d268.30a073be"
 mob_name  = "test_mastermob"
@@ -58,8 +59,6 @@ class TestFile(unittest.TestCase):
         source_mob.essence_descriptor = tape_description
         
         f.storage.add_mob(source_mob)
-        
-        print tape_description['ManufacturerID'].value
         
         tape_description['ManufacturerID'].value = manufacturer
         assert tape_description['ManufacturerID'].value == manufacturer
@@ -102,12 +101,22 @@ class TestFile(unittest.TestCase):
                 mob.add_master_slot(slot_defs[i], i, src_mob, i+1, slot_names[i])
         #add_master_slot_with_sequence
         f.save()
+        f.save(main_test_file_xml)
         #f.close()
     def test_result(self):
         f = aaf.open(main_test_file, 'r')
         
+        assert len(f.storage.master_mobs()) == 1
         mob = f.storage.lookup_mob(mob_id)
         assert mob.name == mob_name
+        
+        for i, slot in enumerate(mob.slots()):
+            print slot.name
+            assert slot.name == slot_names[i]
+            
+            seg = slot.segment
+            
+        
         #assert mob.essence_descriptor['ManufacturerID'].value == manufacturer
     
 if __name__ == '__main__':

@@ -458,6 +458,11 @@ cdef class MasterMob(Mob):
                                                      source_mob.src_ptr,
                                                      master_slotID,
                                                      w_slot_name.c_str()))
+        for slot in self.slots():
+            if slot.slotID == master_slotID:
+                return slot
+        
+        raise RuntimeError("could not find added master slot")
         
     def add_master_slot_with_sequence(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
                                       lib.aafSlotID_t master_slotID, bytes slot_name=None):
@@ -475,6 +480,11 @@ cdef class MasterMob(Mob):
                                                      source_mob.src_ptr,
                                                      master_slotID,
                                                      w_slot_name.c_str()))
+        for slot in self.slots():
+            if slot.slotID == master_slotID:
+                return slot
+        
+        raise RuntimeError("could not find added master slot")
         
     def __dealloc__(self):
         if self.mastermob_ptr:
@@ -662,14 +672,11 @@ cdef class MobSlot(AAFObject):
     
     property name:
         def __get__(self):
-            return self.get("Name", None)
+            return self.get_value("SlotName", None)
         
         def __set__(self, bytes value):
-            
-            cdef wstring w_name = toWideString(value)
-            error_check(self.slot_ptr.SetName(w_name.c_str()))
+            self['SlotName'].value = value
         
-    
     property segment:
         def __get__(self):
             cdef Segment seg = Segment.__new__(Segment)

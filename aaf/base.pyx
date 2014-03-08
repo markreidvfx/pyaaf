@@ -104,11 +104,20 @@ cdef class AAFObject(AAFBase):
     
     def get(self, key, default=None):
         """
-        Return the property value for key if key is in the AAFObject, else default. 
+        Return the property object for key if key is in the AAFObject, else default. 
         If default is not given, it defaults to None, so that this method never raises a KeyError.
         """
         if self.has_key(key):
             return self[key]
+        return default
+    
+    def get_value(self, key, default=None):
+        """
+        Return the property value for key if key is in the AAFObject, else default. 
+        If default is not given, it defaults to None, so that this method never raises a KeyError.
+        """
+        if self.has_key(key):
+            return self[key].value
         return default
     
     def initialize(self, *args, **kwargs):
