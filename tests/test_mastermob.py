@@ -61,7 +61,7 @@ class TestFile(unittest.TestCase):
         f.storage.add_mob(source_mob)
         
         tape_description['ManufacturerID'].value = manufacturer
-        assert tape_description['ManufacturerID'].value == manufacturer
+        #assert tape_description['ManufacturerID'].value == manufacturer
         tape_description['Model'].value = model
         print tape_description['Model'].value
         tape_description['FormFactor'].value = form_factor
@@ -71,9 +71,9 @@ class TestFile(unittest.TestCase):
         tape_description['TapeFormat'].value = tape_format
         print tape_description['TapeFormat'].value
         
-        print tape_description['FormFactor'].property_value().typedef().elements()
-        print tape_description['VideoSignal'].property_value().typedef().elements()
-        print tape_description['TapeFormat'].property_value().typedef().elements()
+        print tape_description['FormFactor'].value_typedef().elements()
+        print tape_description['VideoSignal'].value_typedef().elements()
+        print tape_description['TapeFormat'].value_typedef().elements()
         tape_description['Length'].value = tape_length
         print tape_description['Length'].value
         
@@ -96,9 +96,9 @@ class TestFile(unittest.TestCase):
             f.storage.add_mob(src_mob)
             
             if i == NumMobSlots -1:
-                mob.add_master_slot_with_sequence(slot_defs[i], i, src_mob, i+1, slot_names[i])
+                print mob.add_master_slot_with_sequence(slot_defs[i], i, src_mob, i+1, slot_names[i])
             else:
-                mob.add_master_slot(slot_defs[i], i, src_mob, i+1, slot_names[i])
+                print mob.add_master_slot(slot_defs[i], i, src_mob, i+1, slot_names[i])
         #add_master_slot_with_sequence
         f.save()
         f.save(main_test_file_xml)
@@ -115,6 +115,11 @@ class TestFile(unittest.TestCase):
             assert slot.name == slot_names[i]
             
             seg = slot.segment
+            print seg
+            if slot.slotID == NumMobSlots:
+                assert isinstance(seg, aaf.component.Sequence)
+            else:
+                assert isinstance(seg, aaf.component.SourceClip)
             
         
         #assert mob.essence_descriptor['ManufacturerID'].value == manufacturer
