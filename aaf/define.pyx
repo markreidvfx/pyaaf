@@ -1,7 +1,7 @@
 
 cimport lib
 from .base cimport AAFBase, AAFObject
-from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func, AUID, MobID
+from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func, AUID, MobID, WCharBuffer
 from .property cimport PropertyValue
 
 from .iterator cimport PropertyDefsIter, TypeDefStreamDataIter, PropValueIter, PropValueResolveIter
@@ -996,13 +996,17 @@ cdef class TypeDefString(TypeDef):
         return resolve_typedef(TypeDef(typedef))
             
     def set_value(self, PropertyValue p_value, bytes value):
+
+        cdef WCharBuffer buf = WCharBuffer.__new__(WCharBuffer)
         
-        cdef wstring w_value = toWideString(value)
+        buf.from_string(value)
         
-        cdef lib.aafUInt32 size_in_bytes =  len(value) * sizeof(lib.aafCharacter)
+        print len(value), buf.size(), buf.size_in_bytes()
+
+        #cdef lib.aafUInt32 size_in_bytes =  buf.buf.size() * sizeof(lib.aafCharacter)
         error_check(self.ptr.SetCString(p_value.ptr,
-                                        <lib.aafMemPtr_t> w_value.c_str(),
-                                        size_in_bytes))
+                                        <lib.aafMemPtr_t> buf.to_wchar(),
+                                        buf.size_in_bytes()))
         
         #print self.value(p_value)
     
@@ -1018,6 +1022,7 @@ cdef class TypeDefString(TypeDef):
             return None
         
         cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter]( sizeInChars )
+        
         
         error_check(self.ptr.GetElements(p_value.ptr,
                                          <lib.aafMemPtr_t> &buf[0],

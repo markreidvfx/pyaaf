@@ -24,6 +24,9 @@ cdef class WCharBuffer(object):
     cdef bytes to_string(self)
     cdef wstring to_wstring(self)
     cdef wchar_t * to_wchar(self)
+    cdef set_size(self, size_t size)
+    cdef size_t size(self)
+    cdef size_t size_in_bytes(self)
     
 cdef class SourceRef(object):
     cdef lib.aafSourceRef_t source_ref

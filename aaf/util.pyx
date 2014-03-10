@@ -93,7 +93,9 @@ cdef class WCharBuffer(object):
         for i in xrange(value.size()):
             item = ptr[i]
             self.buf.push_back(item)
-            
+        # Added null terminator
+        self.buf.push_back('\0')
+        
     cdef from_string(self, bytes value):
         self.from_wstring(toWideString(value))
         
@@ -106,6 +108,15 @@ cdef class WCharBuffer(object):
 
     cdef wchar_t* to_wchar(self):
         return <wchar_t *> &self.buf[0]
+    
+    cdef set_size(self, size_t size):
+        self.buf = vector[lib.aafCharacter](size)
+    
+    cdef size_t size(self):
+        return self.buf.size()
+    
+    cdef size_t size_in_bytes(self):
+        return self.buf.size() * sizeof(lib.aafCharacter)
     
     def __str__(self):
         return self.to_string()

@@ -131,7 +131,11 @@ class TestFile(unittest.TestCase):
                     print tape_mob
                     print tape_description
                     print "ManufacturerID", tape_description['ManufacturerID'].value
+                    assert tape_description['ManufacturerID'].value == manufacturer
+                    print "Model", tape_description['Model'].value
+                    assert tape_description['Model'].value == model
                     print "FormFactor", tape_description['FormFactor'].value
+                    
             
         
         #assert mob.essence_descriptor['ManufacturerID'].value == manufacturer
