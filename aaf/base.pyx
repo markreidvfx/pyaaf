@@ -4,7 +4,7 @@ from .util cimport error_check, query_interface, resolve_object, AUID
 
 from .define cimport ClassDef, PropertyDef 
 from .iterator cimport PropIter
-from .property cimport PropertyValue 
+from .property cimport PropertyValue, PropertyItem
 #from .resolve import resolve_object
 
 from dictionary cimport Dictionary
@@ -65,6 +65,9 @@ cdef class AAFObject(AAFBase):
             self.obj_ptr.Release()
         
     def __getitem__(self, x):
+        
+        cdef PropertyItem p_wrapper = PropertyItem.__new__(PropertyItem)
+        
         for p in self.properties():
             if p.name == x:
                 return p
@@ -73,6 +76,8 @@ cdef class AAFObject(AAFBase):
         
         cdef PropertyDef propdef
         cdef PropertyValue value
+        
+        
         
         # if x is a optional property create it
         for propdef in classdef.propertydefs():
@@ -84,7 +89,9 @@ cdef class AAFObject(AAFBase):
                 # now find the property and return it
                 for p in self.properties():
                     if p.name == x:
-                        return p
+                        p_wrapper.prop = p
+                        p_wrapper.parent = self
+                        return p_wrapper
             
         raise KeyError("Key %s not found" % x)
     

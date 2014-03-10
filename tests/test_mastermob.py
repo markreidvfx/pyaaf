@@ -61,8 +61,8 @@ class TestFile(unittest.TestCase):
         tape_description = f.create.TapeDescriptor()
         
         tape_description['ManufacturerID'].value = manufacturer
-        assert tape_description['ManufacturerID'].value == manufacturer
         print "~~~", tape_description['ManufacturerID'].value
+        assert tape_description['ManufacturerID'].value == manufacturer
         tape_description['Model'].value = model
         print "~~~", tape_description['Model'].value
         tape_description['FormFactor'].value = form_factor
