@@ -125,3 +125,4 @@ cdef extern from "<string>" namespace "std":
 cdef extern from "wstring_helpers.h":
     cdef wstring toWideString(char * cstr)
     cdef string wideToString(wstring& s)
+    cdef void print_wchar(wchar_t * cstr)

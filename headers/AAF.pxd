@@ -178,6 +178,7 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFPropertyDef
     cdef cppclass IAAFPropertyDef(IUnknown):
         HRESULT GetIsOptional(aafBoolean_t *  pIsOptional)
+        HRESULT GetTypeDef(IAAFTypeDef ** ppTypeDef)
     
     cdef GUID IID_IAAFTypeDef
     cdef cppclass IAAFTypeDef(IUnknown):
@@ -346,6 +347,11 @@ cdef extern from "AAF.h":
         )
     cdef GUID IID_IAAFTypeDefString
     cdef cppclass IAAFTypeDefString(IUnknown):
+        HRESULT CreateValueFromCString(
+        aafMemPtr_t  pInitData,
+        aafUInt32  initDataSize,
+        IAAFPropertyValue ** ppPropVal
+        )
         HRESULT SetCString(
             IAAFPropertyValue * pPropVal,
             aafMemPtr_t  pData,

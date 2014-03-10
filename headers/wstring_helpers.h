@@ -2,6 +2,7 @@
 #include <wchar.h>
 #include <sstream>
 #include <string.h>
+#include <iostream>
 
 //multibyte to wide string
 std::wstring toWideString( const char* cstr )
@@ -34,4 +35,9 @@ std::string wideToString( const std::wstring& s )
 	}
     
 	return os.str();
+}
+
+void print_wchar(const wchar_t* cstr)
+{
+    std::wcout << cstr << L"\n";
 }
