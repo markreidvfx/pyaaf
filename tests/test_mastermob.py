@@ -55,27 +55,30 @@ class TestFile(unittest.TestCase):
         source_mob = f.create.SourceMob()
         source_mob.name = tape_mob_name
         source_mob.mobID = tape_mob_id
-        tape_description = f.create.TapeDescriptor()
-        source_mob.essence_descriptor = tape_description
         
         f.storage.add_mob(source_mob)
         
+        tape_description = f.create.TapeDescriptor()
+        
         tape_description['ManufacturerID'].value = manufacturer
-        #assert tape_description['ManufacturerID'].value == manufacturer
+        assert tape_description['ManufacturerID'].value == manufacturer
+        print "~~~", tape_description['ManufacturerID'].value
         tape_description['Model'].value = model
-        print tape_description['Model'].value
+        print "~~~", tape_description['Model'].value
         tape_description['FormFactor'].value = form_factor
-        print tape_description['FormFactor'].value
+        print "~~~", tape_description['FormFactor'].value
         tape_description['VideoSignal'].value = video_signal_type
-        print tape_description['VideoSignal'].value
+        print "~~~", tape_description['VideoSignal'].value
         tape_description['TapeFormat'].value = tape_format
-        print tape_description['TapeFormat'].value
+        print "~~~", tape_description['TapeFormat'].value
         
         print tape_description['FormFactor'].value_typedef().elements()
         print tape_description['VideoSignal'].value_typedef().elements()
         print tape_description['TapeFormat'].value_typedef().elements()
         tape_description['Length'].value = tape_length
-        print tape_description['Length'].value
+        print "~~~", tape_description['Length'].value
+        
+        source_mob.essence_descriptor = tape_description
         
         
         for i in xrange(NumMobSlots):
@@ -115,11 +118,20 @@ class TestFile(unittest.TestCase):
             assert slot.name == slot_names[i]
             
             seg = slot.segment
-            print seg
+            #print seg
             if slot.slotID == NumMobSlots:
                 assert isinstance(seg, aaf.component.Sequence)
             else:
                 assert isinstance(seg, aaf.component.SourceClip)
+                
+                src_mob =  seg.resolve_ref()
+                for s in src_mob.slots():
+                    tape_mob = s.segment.resolve_ref()
+                    tape_description = tape_mob.essence_descriptor
+                    print tape_mob
+                    print tape_description
+                    print "ManufacturerID", tape_description['ManufacturerID'].value
+                    print "FormFactor", tape_description['FormFactor'].value
             
         
         #assert mob.essence_descriptor['ManufacturerID'].value == manufacturer

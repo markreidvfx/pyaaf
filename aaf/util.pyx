@@ -1,7 +1,7 @@
 
 cimport lib
 
-from wstring cimport wstring, toWideString, wideToString
+from wstring cimport wstring, toWideString, wideToString, print_wchar
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libc.stddef cimport wchar_t
@@ -83,6 +83,32 @@ cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r):
 cdef object aafRational_to_fraction(lib.aafRational_t& r):
 
     return AAFFraction(r.numerator, r.denominator)
+
+cdef class WCharBuffer(object):
+    
+    cdef from_wstring(self, wstring value):
+        self.buf = vector[lib.aafCharacter]()
+        cdef const wchar_t *ptr = value.c_str()
+        cdef wchar_t item
+        for i in xrange(value.size()):
+            item = ptr[i]
+            self.buf.push_back(item)
+            
+    cdef from_string(self, bytes value):
+        self.from_wstring(toWideString(value))
+        
+    cdef bytes to_string(self):
+        return wideToString(self.to_wstring())
+    
+    cdef wstring to_wstring(self):
+        cdef wstring value = wstring(&self.buf[0], self.buf.size())
+        return value
+
+    cdef wchar_t* to_wchar(self):
+        return <wchar_t *> &self.buf[0]
+    
+    def __str__(self):
+        return self.to_string()
     
 cdef class SourceRef(object):
     def __init__(self, source_id, lib.aafSlotID_t source_slot_id, lib.aafPosition_t start_time=0):
