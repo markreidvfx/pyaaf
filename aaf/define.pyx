@@ -180,7 +180,14 @@ cdef class PropertyDef(MetaDef):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-    
+            
+    def typedef(self):
+        cdef TypeDef typedef = TypeDef.__new__(TypeDef)
+        error_check(self.ptr.GetTypeDef(&typedef.typedef_ptr))
+        typedef.query_interface()
+        typedef.root = self.root
+        return resolve_typedef(typedef)
+        
     property optional:
         def __get__(self):
             cdef lib.aafBoolean_t value
