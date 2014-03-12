@@ -60,9 +60,13 @@ class TestFile(unittest.TestCase):
         
         tape_description = f.create.TapeDescriptor()
         
+        print tape_description['ManufacturerID'].value
+        
         tape_description['ManufacturerID'].value = manufacturer
         print "~~~", tape_description['ManufacturerID'].value
         assert tape_description['ManufacturerID'].value == manufacturer
+        #tape_description['ManufacturerID'].value = manufacturer + '2'
+        
         tape_description['Model'].value = model
         print "~~~", tape_description['Model'].value
         tape_description['FormFactor'].value = form_factor
@@ -72,9 +76,9 @@ class TestFile(unittest.TestCase):
         tape_description['TapeFormat'].value = tape_format
         print "~~~", tape_description['TapeFormat'].value
         
-        print tape_description['FormFactor'].value_typedef().elements()
-        print tape_description['VideoSignal'].value_typedef().elements()
-        print tape_description['TapeFormat'].value_typedef().elements()
+        print tape_description['FormFactor'].typedef.elements()
+        print tape_description['VideoSignal'].typedef.elements()
+        print tape_description['TapeFormat'].typedef.elements()
         tape_description['Length'].value = tape_length
         print "~~~", tape_description['Length'].value
         
@@ -130,7 +134,7 @@ class TestFile(unittest.TestCase):
                     tape_description = tape_mob.essence_descriptor
                     print tape_mob
                     print tape_description
-                    print "ManufacturerID", tape_description['ManufacturerID'].value
+                    print "ManufacturerID =", tape_description['ManufacturerID'].value
                     assert tape_description['ManufacturerID'].value == manufacturer
                     print "Model", tape_description['Model'].value
                     assert tape_description['Model'].value == model

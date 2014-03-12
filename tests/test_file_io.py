@@ -162,10 +162,10 @@ class TestFile(unittest.TestCase):
         
         for p in storage.properties():
             pass
-            value_typedef = p.value_typedef()
+            value_typedef = p.typedef
             
             value =  p.value
-            print p.name, value_typedef, value_typedef.category,p.property_def()
+            print p.name, value_typedef, value_typedef.category,p.property_def
             
             if isinstance(value, aaf.iterator.BaseIterator):
                 for item in value:

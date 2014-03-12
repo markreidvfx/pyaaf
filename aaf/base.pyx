@@ -66,32 +66,41 @@ cdef class AAFObject(AAFBase):
         
     def __getitem__(self, x):
         
-        cdef PropertyItem p_wrapper = PropertyItem.__new__(PropertyItem)
-        
-        for p in self.properties():
-            if p.name == x:
-                return p
-            
-        classdef = self.classdef()
+        cdef PropertyItem item
         
         cdef PropertyDef propdef
         cdef PropertyValue value
         
+        cdef AAFObject new_obj 
         
         
+        cdef PropIter prop_iter = PropIter.__new__(PropIter)
+        error_check(self.obj_ptr.GetProperties(&prop_iter.ptr))
+        prop_iter.root = self.root
+        
+        for p in prop_iter:
+            if p.name == x:
+                new_obj = AAFObject.__new__(AAFObject)
+                new_obj.query_interface(self)
+                item = PropertyItem.__new__(PropertyItem)
+                item.property_def = p.property_def()
+                item.parent = new_obj
+                
+                
+                return item
+        
+        
+        classdef = self.classdef()
         # if x is a optional property create it
         for propdef in classdef.propertydefs():
+            print "*", propdef.name
             if propdef.name == x:
-                # create property value
-                value = PropertyValue.__new__(PropertyValue)
-                error_check(self.obj_ptr.CreateOptionalPropertyValue(propdef.ptr, &value.ptr))
-                error_check(self.obj_ptr.SetPropertyValue(propdef.ptr, value.ptr))
-                # now find the property and return it
-                for p in self.properties():
-                    if p.name == x:
-                        p_wrapper.prop = p
-                        p_wrapper.parent = self
-                        return p_wrapper
+                new_obj = AAFObject.__new__(AAFObject)
+                new_obj.query_interface(self)
+                item = PropertyItem.__new__(PropertyItem)
+                item.property_def = propdef
+                item.parent = new_obj
+                return item
             
         raise KeyError("Key %s not found" % x)
     
@@ -100,6 +109,10 @@ cdef class AAFObject(AAFBase):
         Return a list of the AAFObjects property names
         """
         return [p.name for p in self.properties()]
+    
+    def all_keys(self):
+        
+        return [p.name for p in self.classdef().propertydefs()]
     
     def has_key(self, bytes key):
         """
@@ -114,7 +127,7 @@ cdef class AAFObject(AAFBase):
         Return the property object for key if key is in the AAFObject, else default. 
         If default is not given, it defaults to None, so that this method never raises a KeyError.
         """
-        if self.has_key(key):
+        if key in self.all_keys():
             return self[key]
         return default
     
@@ -157,10 +170,23 @@ cdef class AAFObject(AAFBase):
         """
         Returns a property Iterator
         """
+        cdef AAFObject new_obj 
+        
         cdef PropIter prop_iter = PropIter.__new__(PropIter)
         error_check(self.obj_ptr.GetProperties(&prop_iter.ptr))
         prop_iter.root = self.root
-        return prop_iter
+        
+        cdef PropertyItem item
+        
+        
+        for p in prop_iter:
+            new_obj = AAFObject.__new__(AAFObject)
+            new_obj.query_interface(self)
+            
+            item = PropertyItem.__new__(PropertyItem)
+            item.property_def = p.property_def()
+            item.parent = new_obj
+            yield item
     
     def __repr__(self):
         name = self.name

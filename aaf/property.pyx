@@ -12,28 +12,62 @@ cdef class PropertyItem(object):
     def __init__(self, AAFBase obj = None):
         raise TypeError("This class cannot be instantiated from Python")
     
+    def property_value(self):
+        cdef lib.aafBoolean_t b
+        cdef PropertyValue value
+            
+        error_check(self.parent.obj_ptr.IsPropertyPresent(self.property_def.ptr, &b))
+        if b:
+            value = PropertyValue.__new__(PropertyValue)
+            error_check(self.parent.obj_ptr.GetPropertyValue(self.property_def.ptr, &value.ptr))
+            value.query_interface()
+            return value
+        else:
+            return None
+    
     property value:
         def __get__(self):
-            return self.prop.value
-        def __set__(self, value):
-            cdef PropertyValue p_value = self.prop.property_value()
-            cdef PropertyDef propdef = self.prop.property_def()
-            
-            p_value.value = value
 
-            error_check(self.parent.obj_ptr.SetPropertyValue(propdef.ptr, p_value.ptr))
+            cdef lib.aafBoolean_t b
+            cdef PropertyValue value
+            
+            error_check(self.parent.obj_ptr.IsPropertyPresent(self.property_def.ptr, &b))
+            
+            if b:
+                value = PropertyValue.__new__(PropertyValue)
+                error_check(self.parent.obj_ptr.GetPropertyValue(self.property_def.ptr, &value.ptr))
+                value.query_interface()
+                return value.value
+            
+            else:
+                return None
+
+        def __set__(self, value):
+            cdef lib.aafBoolean_t b
+            cdef PropertyValue p_value
+            
+            error_check(self.parent.obj_ptr.IsPropertyPresent(self.property_def.ptr, &b))
+            
+            if b:
+                p_value = PropertyValue.__new__(PropertyValue)
+                error_check(self.parent.obj_ptr.GetPropertyValue(self.property_def.ptr, &p_value.ptr))
+                
+            else:
+                p_value = PropertyValue.__new__(PropertyValue)
+                error_check(self.parent.obj_ptr.CreateOptionalPropertyValue(self.property_def.ptr, &p_value.ptr))
+                
+            p_value.query_interface()
+            p_value.value = value 
+
+            error_check(self.parent.obj_ptr.SetPropertyValue(self.property_def.ptr, p_value.ptr))
             
     property typedef:
         def __get__(self):
-            return self.prop.value_typedef()
-    
-    property property_def:
-        def __get__(self):
-            return self.prop.property_def()
+            return self.property_def.typedef()
     
     property name:
         def __get__(self):
-            return self.prop.name
+            return self.property_def.name
     
     def __repr__(self):
         return '<%s.%s %s at 0x%x>' % (
