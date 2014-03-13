@@ -7,7 +7,7 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from wstring cimport  wstring, wideToString, toWideString
 
-cdef class PropertyItem(object):
+cdef class PropertyItem(AAFBase):
 
     def __init__(self, AAFBase obj = None):
         raise TypeError("This class cannot be instantiated from Python")
@@ -21,6 +21,7 @@ cdef class PropertyItem(object):
             value = PropertyValue.__new__(PropertyValue)
             error_check(self.parent.obj_ptr.GetPropertyValue(self.property_def.ptr, &value.ptr))
             value.query_interface()
+            value.root = self.root
             return value
         else:
             return None

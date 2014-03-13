@@ -8,7 +8,7 @@ cdef class Property(AAFBase):
 cdef class PropertyValue(AAFBase):
     cdef lib.IAAFPropertyValue *ptr
     
-cdef class PropertyItem(object):
+cdef class PropertyItem(AAFBase):
     cdef Property prop
     cdef AAFObject parent
     cdef readonly PropertyDef property_def

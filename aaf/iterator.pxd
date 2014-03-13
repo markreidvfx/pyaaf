@@ -1,7 +1,7 @@
 
 cimport lib
 
-from .base cimport AAFBase
+from .base cimport AAFBase, AAFObject
 from .define cimport TypeDefStream
 from .property cimport PropertyValue
 
@@ -80,7 +80,11 @@ cdef class PluginLocatorIter(BaseIterator):
     
 cdef class PropIter(BaseIterator):
     cdef lib.IEnumAAFProperties *ptr 
-     
+
+cdef class PropItemIter(BaseIterator):
+    cdef lib.IEnumAAFProperties *ptr
+    cdef AAFObject parent
+    
 cdef class PropertyDefsIter(BaseIterator):
     cdef lib.IEnumAAFPropertyDefs *ptr
     

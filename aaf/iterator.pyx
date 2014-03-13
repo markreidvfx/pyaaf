@@ -1,8 +1,9 @@
 cimport lib
 
 from .util cimport error_check, AUID
+from .base cimport AAFObject 
 from .mob cimport Mob,MobSlot
-from .property cimport Property,PropertyValue, TaggedValue
+from .property cimport Property, PropertyItem, PropertyValue, TaggedValue
 from .component cimport Component, Segment, Parameter, ControlPoint
 from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVDataDef, resolve_typedef
 from .essence cimport EssenceData
@@ -516,6 +517,57 @@ cdef class PropIter(BaseIterator):
             value.query_interface()
             value.root = self.root
             return value.resolve()
+        else:
+            error_check(ret)
+            
+cdef class PropItemIter(BaseIterator):
+    def __cinit__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
+        
+    def clone(self):
+        cdef PropItemIter value = PropItemIter.__new__(PropItemIter)
+        cdef AAFObject new_obj = AAFObject.__new__(AAFObject)
+        
+        error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
+        new_obj.query_interface(self.parent)
+        value.parent = new_obj
+        return value
+    
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
+    def __next__(self):
+        cdef PropertyItem item = PropertyItem.__new__(PropertyItem)
+        cdef AAFObject new_obj = AAFObject.__new__(AAFObject)
+        cdef Property value = Property.__new__(Property)
+        ret = self.ptr.NextOne(&value.ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        
+        elif ret == lib.AAFRESULT_SUCCESS:
+            value.query_interface()
+            value.root = self.root
+            new_obj.query_interface(self.parent)
+            item.parent = new_obj
+            item.property_def = value.property_def()
+            item.root = self.root
+            return item
+
         else:
             error_check(ret)
             

@@ -17,7 +17,7 @@ if not args:
 def walk_properties(space, iter_item):
     for item in iter_item:
         value = item
-        if isinstance(item, aaf.property.Property):
+        if isinstance(item, aaf.property.PropertyItem):
             value = item.value
         name = ""
         

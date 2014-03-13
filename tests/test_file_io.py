@@ -291,7 +291,7 @@ class TestFile(unittest.TestCase):
 
             for item in iter_item:
                 value = item
-                if isinstance(item, aaf.property.Property):
+                if isinstance(item, aaf.property.PropertyItem):
                     value = item.value
                 name = ""
                 if hasattr(item, 'name'):
