@@ -2,7 +2,7 @@
 cimport lib
 
 from .base cimport AAFBase, AAFObject
-from .define cimport DataDef, ContainerDef, ContainerDefMap, DataDefMap, ExtEnumDefMap
+from .define cimport DefObject, TypeDef, DataDef, ContainerDef, OperationDef, ParameterDef, TypeDefMap, ContainerDefMap, DataDefMap, ExtEnumDefMap
 from .util cimport error_check, query_interface, register_object, lookup_object, AUID
 from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter, LoadedPluginIter
 from wstring cimport wstring,toWideString
@@ -35,6 +35,24 @@ cdef class Dictionary(AAFObject):
         
         if self.ptr2:
             self.ptr2.Release()
+            
+    cdef create_instance(self, AAFObject obj):
+        error_check(self.ptr.CreateInstance(obj.auid, obj.iid, obj.get_ptr()))
+        obj.query_interface()
+        obj.root = self.root
+        
+    def register_def(self, DefObject def_obj not None):
+        cdef OperationDef op_def
+        cdef ParameterDef param_def
+        
+        if isinstance(def_obj, OperationDef):
+            op_def = def_obj
+            error_check(self.ptr.RegisterOperationDef(op_def.ptr))
+        elif isinstance(def_obj, ParameterDef):
+            param_def = def_obj
+            error_check(self.ptr.RegisterParameterDef(param_def.ptr))
+        else:
+            raise NotImplementedError("Not implented for def type")
         
     def lookup_datadef(self, bytes name):
         cdef AUID auid = DataDefMap[name.lower()]
@@ -43,6 +61,14 @@ cdef class Dictionary(AAFObject):
         definition.query_interface()
         definition.root = self.root
         return definition
+    def lookup_typedef(self, bytes name not None):
+        cdef AUID auid = TypeDefMap[name.lower()]
+        cdef TypeDef definition = TypeDef.__new__(TypeDef)
+        
+        error_check(self.ptr.LookupTypeDef(auid.get_auid(), &definition.typedef_ptr))
+        definition.query_interface()
+        definition.root = self.root
+        return definition.resolve()
     
     def lookup_containerdef(self, bytes name):
         cdef AUID auid = ContainerDefMap[name.lower()]

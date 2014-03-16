@@ -73,19 +73,15 @@ cdef extern from "AAF.h":
             GUID riid,
             IUnknown ** ppvObject
         )
-        HRESULT LookupDataDef(
-            aafUID_t &dataDefinitionId,
-            IAAFDataDef ** ppDataDef
-        )
-        HRESULT LookupCodecDef(
-            aafUID_t &dataDefinitionId,
-            IAAFCodecDef ** ppParmDef
-        )
-        HRESULT LookupContainerDef(
-            aafUID_t &dataDefinitionId,
-            IAAFContainerDef ** ppParmDef
-        )
-        HRESULT RegisterCodecDef(IAAFCodecDef *pParmDef)  
+        HRESULT LookupTypeDef(aafUID_t &dataDefinitionId, IAAFTypeDef ** ppTypeDef)
+        HRESULT LookupDataDef(aafUID_t &dataDefinitionId, IAAFDataDef ** ppDataDef)
+        HRESULT LookupCodecDef(aafUID_t &dataDefinitionId, IAAFCodecDef ** ppParmDef)
+        HRESULT LookupContainerDef(aafUID_t &dataDefinitionId, IAAFContainerDef ** ppParmDef)
+        HRESULT RegisterOperationDef(IAAFOperationDef * pOperationDef)
+        HRESULT RegisterParameterDef(IAAFParameterDef * pParmDef)
+        HRESULT RegisterCodecDef(IAAFCodecDef *pParmDef)
+        HRESULT RegisterContainerDef(IAAFContainerDef * pParmDef)
+        HRESULT RegisterInterpolationDef(IAAFInterpolationDef * pInterpolationDef)
         HRESULT GetClassDefs(IEnumAAFClassDefs ** ppEnum)
         HRESULT GetCodecDefs(IEnumAAFCodecDefs ** ppEnum)
         HRESULT GetTypeDefs(IEnumAAFTypeDefs ** ppEnum)
@@ -419,37 +415,37 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFContainerDef
     cdef GUID IID_IAAFContainerDef
     cdef cppclass IAAFContainerDef(IUnknown):
-        pass
+        HRESULT Initialize(aafUID_t  &id, aafCharacter  *pName, aafCharacter  *pDescription)
         
     cdef aafUID_t AUID_AAFInterpolationDef
     cdef GUID IID_IAAFInterpolationDef
     cdef cppclass IAAFInterpolationDef(IUnknown):
-        pass
+        HRESULT Initialize(aafUID_t  &id, aafCharacter  *pName, aafCharacter  *pDescription)
         
     cdef aafUID_t AUID_AAFParameterDef
     cdef GUID IID_IAAFParameterDef
     cdef cppclass IAAFParameterDef(IUnknown):
-        pass
+        HRESULT Initialize(aafUID_t  &id, aafCharacter  *pName, aafCharacter  *pDescription, IAAFTypeDef * pType)
         
     cdef aafUID_t AUID_AAFPluginDef
     cdef GUID IID_IAAFPluginDef
     cdef cppclass IAAFPluginDef(IUnknown):
-        pass
+        HRESULT Initialize(aafUID_t  &id, aafCharacter  *pName, aafCharacter  *pDescription)
         
     cdef aafUID_t AUID_AAFOperationDef
     cdef GUID IID_IAAFOperationDef
     cdef cppclass IAAFOperationDef(IUnknown):
-        pass
+        HRESULT Initialize(aafUID_t  &id, aafCharacter  *pName, aafCharacter  *pDescription)
                 
     cdef aafUID_t AUID_AAFKLVDataDefinition
     cdef GUID IID_IAAFKLVDataDefinition
     cdef cppclass IAAFKLVDataDefinition(IUnknown):
-        pass
+        HRESULT Initialize(aafUID_t  &id, aafCharacter  *pName, aafCharacter  *pDescription)
 
     cdef aafUID_t AUID_AAFTaggedValueDefinition
     cdef GUID IID_IAAFTaggedValueDefinition
     cdef cppclass IAAFTaggedValueDefinition(IUnknown):
-        pass
+        HRESULT Initialize(aafUID_t  &id, aafCharacter  *pName, aafCharacter  *pDescription)
         
     # File Locators
     
@@ -978,6 +974,7 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFOperationGroup
     cdef GUID IID_IAAFOperationGroup
     cdef cppclass IAAFOperationGroup(IUnknown):
+        HRESULT Initialize(IAAFDataDef * pDataDef, aafLength_t  length, IAAFOperationDef * operationDef)
         HRESULT CountSourceSegments(aafUInt32 *  pResult)
         HRESULT GetInputSegmentAt(
             aafUInt32  index,

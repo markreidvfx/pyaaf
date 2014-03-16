@@ -5,7 +5,7 @@ from .util cimport error_check, query_interface, aaf_integral, register_object, 
 from .property cimport PropertyValue
 
 from .iterator cimport PropertyDefsIter, TypeDefStreamDataIter, PropValueIter, PropValueResolveIter
-
+from .dictionary cimport Dictionary
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.pair cimport pair
@@ -1123,7 +1123,8 @@ cdef object resolve_typedef(TypeDef typedef):
     obj.query_interface(typedef)
     obj.root = typedef.root
     return obj
-    
+
+cpdef dict TypeDefMap = {}
 cpdef dict DataDefMap = {}
 cpdef dict CodecDefMap = {}
 cpdef dict ContainerDefMap = {}
@@ -1140,7 +1141,8 @@ cdef register_defs(map[string, lib.aafUID_t] def_map, dict d, replace=[]):
         for n in replace:
             name = name.replace(n, '')
         d[name.lower()] = auid_obj
-    
+        
+register_defs(lib.get_typedef_map(), TypeDefMap, ["kAAFTypeID_"])    
 register_defs(lib.get_datadef_map(), DataDefMap, ["kAAFDataDef_"])
 register_defs(lib.get_codecdef_map(), CodecDefMap, ["kAAFCodecDef_",'kAAFCodec'])
 register_defs(lib.get_container_def_map(), ContainerDefMap, ["kAAFContainerDef_"])
@@ -1246,7 +1248,17 @@ cdef class ParameterDef(DefObject):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-
+    
+    def __init__(self, root, auid, bytes name, bytes description, TypeDef typedef not None):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
+        cdef AUID auid_obj = AUID(auid)
+        cdef wstring w_name = toWideString(name)
+        cdef wstring w_description = toWideString(description)
+        
+        error_check(self.ptr.Initialize(auid_obj.get_auid(), w_name.c_str(), w_description.c_str(), typedef.typedef_ptr))
+    
 cdef class PluginDef(DefObject):
     def __cinit__(self):
         self.iid = lib.IID_IAAFPluginDef
@@ -1351,6 +1363,16 @@ cdef class OperationDef(DefObject):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+    
+    def __init__(self, root, auid, bytes name, bytes description):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
+        cdef AUID auid_obj = AUID(auid)
+        cdef wstring w_name = toWideString(name)
+        cdef wstring w_description = toWideString(description)
+        
+        error_check(self.ptr.Initialize(auid_obj.get_auid(), w_name.c_str(), w_description.c_str()))
             
 cdef class KLVDataDef(DefObject):
     def __cinit__(self):

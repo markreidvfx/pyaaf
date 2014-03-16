@@ -71,6 +71,7 @@ cdef object resolve_typedef(TypeDef typedef)
 
 # DefObjects
 
+cpdef dict TypeDefMap
 cpdef dict DataDefMap
 cpdef dict CodecDefMap
 cpdef dict ContainerDefMap

@@ -9,6 +9,7 @@ from .mob cimport Mob
 from .define cimport TypeDef, DataDef, OperationDef, ParameterDef, InterpolationDef
 from .iterator cimport ComponentIter, ControlPointIter, SegmentIter, ParamIter
 from .mob cimport Mob
+from .dictionary cimport Dictionary
 
 from libcpp.vector cimport vector
 
@@ -384,6 +385,15 @@ cdef class OperationGroup(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def __init__(self, root, bytes media_kind, lib.aafLength_t length, OperationDef op_def not None):
+        
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
+        cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
+        
+        error_check(self.ptr.Initialize(data_def.ptr, length, op_def.ptr))
             
     def input_segments(self):
         cdef Segment seg
