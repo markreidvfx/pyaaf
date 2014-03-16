@@ -436,6 +436,16 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFOperationDef
     cdef cppclass IAAFOperationDef(IUnknown):
         HRESULT Initialize(aafUID_t  &id, aafCharacter  *pName, aafCharacter  *pDescription)
+        HRESULT GetDataDef(IAAFDataDef ** ppDataDef)
+        HRESULT SetDataDef(IAAFDataDef * ppDataDef)
+        HRESULT IsTimeWarp(aafBoolean_t *  bIsTimeWarp)
+        HRESULT SetIsTimeWarp(aafBoolean_t  IsTimeWarp)
+        HRESULT GetNumberInputs(aafInt32 *  pNumberInputs)
+        HRESULT SetNumberInputs(aafInt32  NumberInputs)
+        HRESULT GetCategory(aafUID_t*  pValue)
+        HRESULT SetCategory(aafUID_t&  value)
+        HRESULT AddParameterDef(IAAFParameterDef * pParameterDef)
+        HRESULT GetParameterDefs(IEnumAAFParameterDefs ** ppEnum)
                 
     cdef aafUID_t AUID_AAFKLVDataDefinition
     cdef GUID IID_IAAFKLVDataDefinition
@@ -1163,6 +1173,13 @@ cdef extern from "AAF.h":
     cdef cppclass IEnumAAFParameters(IUnknown):
         HRESULT Clone(IEnumAAFParameters **ppEnum)
         HRESULT NextOne(IAAFParameter ** ppParameter)
+        HRESULT Skip(aafUInt32  count)
+        HRESULT Reset()
+    
+    cdef GUID IID_IEnumAAFParameterDefs  
+    cdef cppclass IEnumAAFParameterDefs(IUnknown):
+        HRESULT Clone(IEnumAAFParameterDefs **ppEnum)
+        HRESULT NextOne(IAAFParameterDef ** ppParameterDef)
         HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         

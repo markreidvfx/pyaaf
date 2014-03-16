@@ -77,6 +77,7 @@ cpdef dict CodecDefMap
 cpdef dict ContainerDefMap
 cpdef dict CompressionDefMap
 cpdef dict ExtEnumDefMap
+cpdef dict InterpolationDefMap
 cpdef dict EdgeTypeMap
 cpdef dict FilmTypeMap
 cpdef dict PullDownKindMap

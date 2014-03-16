@@ -4,6 +4,7 @@
 #include <AAFContainerDefs.h>
 #include <AAFCompressionDefs.h>
 #include <AAFExtEnum.h>
+#include <AAFInterpolatorDefs.h>
 #include <AAFTypes.h>
 #include <AAFEssenceFormats.h>
 #include <map>
@@ -406,6 +407,19 @@ std::map<std::string, aafUID_t> get_extenumdef_map()
     return def_map;
 }
 
+std::map<std::string, aafUID_t> get_interpolationdef_map()
+{
+    std::map<std::string, aafUID_t> def_map;
+    #define MAP_ADD( NAME ) def_map[ #NAME ] = NAME;
+    MAP_ADD(kAAFInterpolationDef_None)
+    MAP_ADD(kAAFInterpolationDef_Linear)
+    MAP_ADD(kAAFInterpolationDef_Constant)
+    MAP_ADD(kAAFInterpolationDef_BSpline)
+    MAP_ADD(kAAFInterpolationDef_Log)
+    MAP_ADD(kAAFInterpolationDef_Power)
+    #undef MAP_ADD
+    return def_map;
+}
 
 std::map<std::string, std::pair< aafUID_t, std::string > > get_essenceformats_def_map()
 {
