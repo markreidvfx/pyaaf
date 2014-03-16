@@ -1379,7 +1379,7 @@ cdef class OperationDef(DefObject):
         # Automaticly set category to effect_category
         effect_category = "0D010102-0101-0100-060E-2B3404010101"
         cdef AUID auid_category = AUID(effect_category)
-        error_check(self.ptr.SetCategory(auid_obj.get_auid()))
+        error_check(self.ptr.SetCategory(auid_category.get_auid()))
         
     def add_parameterdef(self, ParameterDef param not None):
         error_check(self.ptr.AddParameterDef(param.ptr))
@@ -1395,6 +1395,16 @@ cdef class OperationDef(DefObject):
             cdef Dictionary dictionary = self.root.dictionary
             cdef DataDef data_def = dictionary.lookup_datadef(value)
             error_check(self.ptr.SetDataDef(data_def.ptr))
+    
+    property categoryID:
+        def __get__(self):
+            cdef AUID auid_category = AUID()
+            error_check(self.ptr.GetCategory(&auid_category.auid))
+            return auid_category
+        
+        def __set__(self, value):
+            cdef AUID auid_category = AUID(value)
+            error_check(self.ptr.SetCategory(auid_category.get_auid()))
             
 cdef class KLVDataDef(DefObject):
     def __cinit__(self):
