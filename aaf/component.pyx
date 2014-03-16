@@ -2,7 +2,7 @@ cimport lib
 
 from libc.string cimport memset 
 
-from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, aafRational_to_fraction, AUID, MobID
+from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, aafRational_to_fraction, AUID, MobID, SourceRef
 
 from .base cimport AAFObject, AAFBase
 from .mob cimport Mob 
@@ -296,6 +296,15 @@ cdef class SourceClip(SourceReference):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def __init__(self, root, bytes media_kind, lib.aafLength_t length, SourceRef source_ref):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
+        cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
+        
+        error_check(self.ptr.Initialize(data_def.ptr, length, source_ref.get_aafSourceRef_t()))
+        
     
     def initialize(self, Mob mob =None, lib.aafSlotID_t slotID = 0, 
                       lib.aafLength_t length = 0, lib.aafPosition_t start_time = 0,
@@ -431,6 +440,17 @@ cdef class OperationGroup(Segment):
     property operation:
         def __get__(self):
             return self.operationdef().name
+    
+    property render:
+        def __get__(self):
+            cdef SourceReference source_ref = SourceReference.__new__(SourceReference)
+            error_check(self.ptr.GetRender(&source_ref.ref_ptr))
+            source_ref.query_interface()
+            source_ref.root = self.root
+            return source_ref.resovle()
+        
+        def __set__(self, SourceReference source_ref not None):
+            error_check(self.ptr.SetRender(source_ref.ref_ptr))
         
     
 cdef class NestedScope(Segment):

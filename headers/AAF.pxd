@@ -985,6 +985,8 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFOperationGroup
     cdef cppclass IAAFOperationGroup(IUnknown):
         HRESULT Initialize(IAAFDataDef * pDataDef, aafLength_t  length, IAAFOperationDef * operationDef)
+        HRESULT GetRender(IAAFSourceReference ** ppSourceRef)
+        HRESULT SetRender(IAAFSourceReference * pSourceRef)
         HRESULT CountSourceSegments(aafUInt32 *  pResult)
         HRESULT GetInputSegmentAt(
             aafUInt32  index,
