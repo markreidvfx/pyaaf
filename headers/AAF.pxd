@@ -994,7 +994,7 @@ cdef extern from "AAF.h":
         )
         HRESULT GetOperationDefinition(IAAFOperationDef **ppOperationDef)
         HRESULT GetParameters(IEnumAAFParameters **ppEnum)
-        
+        HRESULT AddParameter(IAAFParameter * pParameter)
 
     cdef aafUID_t AUID_AAFNestedScope
     cdef GUID IID_IAAFNestedScope

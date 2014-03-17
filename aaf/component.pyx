@@ -403,6 +403,10 @@ cdef class OperationGroup(Segment):
         cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
         
         error_check(self.ptr.Initialize(data_def.ptr, length, op_def.ptr))
+        
+    def add_parameter(self, Parameter param not None):
+        
+        error_check(self.ptr.AddParameter(param.param_ptr))
             
     def input_segments(self):
         cdef Segment seg
@@ -655,12 +659,6 @@ cdef class Parameter(AAFObject):
         self.iid = lib.IID_IAAFParameter
         self.auid = lib.AUID_AAFParameter
         self.param_ptr = NULL
-        
-    def __init__(self, AAFBase obj = None):
-        if not obj:
-            return
-        
-        self.query_interface(obj)
     
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.param_ptr
@@ -749,6 +747,14 @@ cdef class VaryingValue(Parameter):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def __init__(self, root, ParameterDef param not None, InterpolationDef interp not None):
+                
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
+        error_check(self.ptr.Initialize(param.ptr, interp.ptr))
+        
     
     def interpolation_def(self):
         cdef InterpolationDef inter_def = InterpolationDef.__new__(InterpolationDef)
@@ -767,6 +773,12 @@ cdef class VaryingValue(Parameter):
         error_check(self.ptr.GetControlPoints(&iter.ptr))
         iter.root = self.root
         return iter
+    
+    def add_point(self, time, value):
+        
+        cdef ControlPoint point = ControlPoint(self.root, self, time, value)
+        error_check(self.ptr.AddControlPoint(point.ptr))
+        return point
         
             
     def value_at(self, time):
@@ -822,7 +834,21 @@ cdef class ControlPoint(AAFObject):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-            
+    
+    def __init__(self, root, VaryingValue varying_value not None, time, value):
+        
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
+        
+        cdef lib.aafRational_t time_t        
+        fraction_to_aafRational(time, time_t)
+        
+        cdef lib.aafRational_t value_t
+        fraction_to_aafRational(value, value_t)
+        
+        error_check(self.ptr.Initialize(varying_value.ptr, time_t, sizeof(value_t), <lib.aafDataBuffer_t> &value_t))
+
     def typedef(self):
         cdef TypeDef type_def = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetTypeDefinition(&type_def.typedef_ptr))
