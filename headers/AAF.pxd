@@ -251,10 +251,20 @@ cdef extern from "AAF.h":
 
     cdef GUID IID_IAAFTypeDefIndirect
     cdef cppclass IAAFTypeDefIndirect(IUnknown):
-        HRESULT GetActualValue(
-            IAAFPropertyValue * pIndirectPropertyValue,
-            IAAFPropertyValue ** ppActualPropertyValue
+        HRESULT CreateValueFromActualValue(
+            IAAFPropertyValue * pActualValue,
+            IAAFPropertyValue ** ppIndirectPropertyValue
         )
+        HRESULT CreateValueFromActualData(
+            IAAFTypeDef * pActualType,
+            aafMemPtr_t  pInitData,
+            aafUInt32  initDataSize,
+            IAAFPropertyValue ** ppIndirectPropertyValue
+        )
+        HRESULT GetActualValue(IAAFPropertyValue * pIndirectPropertyValue, IAAFPropertyValue ** ppActualPropertyValue)
+        HRESULT GetActualSize(IAAFPropertyValue * pIndirectPropertyValue, aafUInt32 *  pActualSize)
+        HRESULT GetActualType(IAAFPropertyValue * pIndirectPropertyValue, IAAFTypeDef ** pActualType)
+        HRESULT GetActualData(IAAFPropertyValue * pPropVal, aafMemPtr_t  pData, aafUInt32  dataSize)
 
     cdef GUID IID_IAAFTypeDefInt
     cdef cppclass IAAFTypeDefInt(IUnknown):
@@ -304,6 +314,11 @@ cdef extern from "AAF.h":
             IAAFPropertyValue * pInPropVal,
             aafUInt32  index,
             IAAFPropertyValue **ppOutPropVal
+        )
+        HRESULT SetValue(
+            IAAFPropertyValue * pPropVal,
+            aafUInt32  index,
+            IAAFPropertyValue * pMemberPropVal
         )
         
     cdef GUID IID_IAAFTypeDefRename
