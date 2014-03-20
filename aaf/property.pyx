@@ -172,6 +172,14 @@ cdef class PropertyValue(AAFBase):
         type_def.root = self.root
         return resolve_typedef(type_def)
     
+    def __repr__(self):
+        return '<%s.%s %s at 0x%x>' % (
+                self.__class__.__module__,
+                self.__class__.__name__,
+                str(self.typedef().name), 
+                id(self),
+                )
+    
     property value:
         def __get__(self):
             typedef = self.typedef()
