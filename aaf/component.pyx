@@ -754,7 +754,6 @@ cdef class VaryingValue(Parameter):
         dictionary.create_instance(self)
         
         error_check(self.ptr.Initialize(param.ptr, interp.ptr))
-        
     
     def interpolation_def(self):
         cdef InterpolationDef inter_def = InterpolationDef.__new__(InterpolationDef)
@@ -847,7 +846,10 @@ cdef class ControlPoint(AAFObject):
         cdef lib.aafRational_t value_t
         fraction_to_aafRational(value, value_t)
         
-        error_check(self.ptr.Initialize(varying_value.ptr, time_t, sizeof(value_t), <lib.aafDataBuffer_t> &value_t))
+        # typedef varying_value.typedef()
+        
+        error_check(self.ptr.Initialize(varying_value.ptr, time_t, sizeof(lib.aafRational_t), <lib.aafDataBuffer_t> &value_t))
+
 
     def typedef(self):
         cdef TypeDef type_def = TypeDef.__new__(TypeDef)
@@ -873,6 +875,8 @@ cdef class ControlPoint(AAFObject):
     property value:
         def __get__(self):
             return self['Value'].value
+        def __set__(self, value):
+            self['Value'].value = value
     
     property edit_hint:
         def __get__(self):

@@ -477,9 +477,25 @@ cdef class TypeDefIndirect(TypeDef):
         out_value.root = self.root
         return out_value
     
+    def create_value(self, PropertyValue p_value):
+        cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
+        error_check(self.ptr.CreateValueFromActualValue(p_value.ptr, &out_value.ptr))
+        out_value.query_interface()
+        out_value.root = self.root
+        return out_value
+    
+    def actual_typedef(self, PropertyValue p_value):
+        cdef TypeDef typedef = TypeDef.__new__(TypeDef)
+        error_check(self.ptr.GetActualType(p_value.ptr, &typedef.typedef_ptr))
+        typedef.query_interface()
+        typedef= self.root
+        return resolve_typedef(typedef)
+        
+    
     def set_value(self, PropertyValue p_value, object value):
         cdef PropertyValue indirect_value = self.indirect_value(p_value)
-        indirect_value.value = value
+        indirect_value =  indirect_value.set_value(value)
+        return self.create_value(indirect_value)
             
     def value(self, PropertyValue p_value):
         cdef PropertyValue out_value = self.indirect_value(p_value)
@@ -701,6 +717,25 @@ cdef class TypeDefRecord(TypeDef):
         error_check(self.ptr.GetCount(&count))
         return count
     
+    def keys(self):
+        keys = []
+        for i in xrange(self.size()):
+            keys.append(self.member_name(i))
+        
+        return keys
+    
+    def typedef_dict(self):
+        d = {}
+        for i in xrange(self.size()): 
+            d[self.member_name(i)] = self.member_typedef(i)
+        return d
+    
+    def value_dict(self, PropertyValue p_value):
+        d = {}
+        for i in xrange(self.size()): 
+            d[self.member_name(i)] = self.member_value(p_value, i)
+        return d
+    
     def member_name(self, lib.aafUInt32 index):
         cdef lib.aafUInt32 sizeInChars
         cdef lib.aafUInt32 sizeInBytes
@@ -736,6 +771,54 @@ cdef class TypeDefRecord(TypeDef):
         member_value.query_interface()
         member_value.root = self.root
         return member_value
+    
+    def set_value_from_dict(self, PropertyValue p_value, dict value):
+        
+        value_dict = self.value_dict(p_value)
+        for key, item in value.items():
+            if not value_dict.has_key(key):
+                raise ValueError("TypeDefRecord does not have key %s" % key)
+            
+        cdef PropertyValue member_value
+        
+        keys = self.keys()
+        
+        cdef lib.aafUInt32 index
+        for key, item in value.items():
+            member_value = value_dict[key] 
+            member_value.value = item
+            index = keys.index(key)
+            error_check(self.ptr.SetValue(p_value.ptr, index, member_value.ptr))
+    
+    def set_value_from_list(self, PropertyValue p_value, object value):
+        
+        value_dict = {}
+        
+        for i,item in enumerate((value)):
+            value_dict[self.member_name(i)] = item
+        
+        self.set_value_from_dict(p_value, value_dict)
+    
+    def set_value(self, PropertyValue p_value, value):
+        
+        if isinstance(value, dict):
+            self.set_value_from_dict(p_value, value)
+            return
+        if isinstance(value, (list, tuple)):
+            self.set_value_from_list(p_value, value)
+            return
+        
+        
+        cdef AUID auid_typdef = AUID()
+        
+        auid_typdef.from_auid(lib.kAAFTypeID_Rational)
+        
+        if self.auid == auid_typdef:
+            frac = AAFFraction(value)
+            self.set_value_from_dict(p_value, {'Numerator':frac.numerator, 'Denominator': frac.denominator})
+            return
+
+        raise NotImplementedError("setting record for for format not supported yet")
     
     def value(self, PropertyValue p_value):
         value_dict = {}
@@ -833,7 +916,7 @@ cdef object get_date(TypeDefRecord record, PropertyValue value):
 cdef object get_timestamp(TypeDefRecord record, PropertyValue value):
     
     return "%s %s" % ( record.member_value(value, 0).value, record.member_value(value, 1).value)
-    
+
     
 cdef class TypeDefRename(TypeDef):
     def __cinit__(self):
@@ -1260,6 +1343,11 @@ cdef class ParameterDef(DefObject):
         cdef wstring w_description = toWideString(description)
         
         error_check(self.ptr.Initialize(auid_obj.get_auid(), w_name.c_str(), w_description.c_str(), typedef.typedef_ptr))
+        
+    def typedef(self):
+        cdef TypeDef typedef = TypeDef.__new__(TypeDef) 
+        error_check(self.ptr.GetTypeDefinition(&typedef.typedef_ptr))
+        return resolve_typedef(typedef)
     
 cdef class PluginDef(DefObject):
     def __cinit__(self):

@@ -441,6 +441,7 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFParameterDef
     cdef cppclass IAAFParameterDef(IUnknown):
         HRESULT Initialize(aafUID_t  &id, aafCharacter  *pName, aafCharacter  *pDescription, IAAFTypeDef * pType)
+        HRESULT GetTypeDefinition(IAAFTypeDef ** ppTypeDef)
         
     cdef aafUID_t AUID_AAFPluginDef
     cdef GUID IID_IAAFPluginDef

@@ -58,7 +58,7 @@ cdef class PropertyItem(AAFBase):
                 error_check(self.parent.obj_ptr.CreateOptionalPropertyValue(self.property_def.ptr, &p_value.ptr))
                 
             p_value.query_interface()
-            p_value.value = value 
+            p_value = p_value.set_value(value)
 
             error_check(self.parent.obj_ptr.SetPropertyValue(self.property_def.ptr, p_value.ptr))
             
@@ -179,6 +179,13 @@ cdef class PropertyValue(AAFBase):
                 str(self.typedef().name), 
                 id(self),
                 )
+        
+    def set_value(self, value):
+        typedef = self.typedef()
+        result = typedef.set_value(self, value)
+        if result:
+            return result
+        return self
     
     property value:
         def __get__(self):
@@ -186,8 +193,7 @@ cdef class PropertyValue(AAFBase):
             return typedef.value(self)
         
         def __set__(self, value):
-            typedef = self.typedef()
-            typedef.set_value(self, value)
+            self.set_value(value)
         
 cdef class TaggedValue(AAFObject):
     def __cinit__(self):
