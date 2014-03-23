@@ -814,7 +814,7 @@ cdef class TypeDefRecord(TypeDef):
         auid_typdef.from_auid(lib.kAAFTypeID_Rational)
         
         if self.auid == auid_typdef:
-            frac = AAFFraction(value)
+            frac = AAFFraction(value).limit_denominator(200000000)
             self.set_value_from_dict(p_value, {'Numerator':frac.numerator, 'Denominator': frac.denominator})
             return
 

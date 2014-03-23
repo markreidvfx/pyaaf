@@ -76,7 +76,7 @@ cdef object resolve_object(object obj):
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r):
     
-    f = AAFFraction(obj)
+    f = AAFFraction(obj).limit_denominator(200000000)
     r.numerator = f.numerator
     r.denominator = f.denominator
 
