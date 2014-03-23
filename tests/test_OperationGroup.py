@@ -19,6 +19,8 @@ sandbox = os.path.join(cur_dir,'sandbox')
 if not os.path.exists(sandbox):
     os.makedirs(sandbox)
 
+mob_id = "urn:smpte:umid:060a2b34.01010101.01010f00.13000000.060e2b34.7f7f2a80.5313d268.30a073be"
+
 main_test_file = os.path.join(sandbox, 'test_OperationGroup.aaf')
 main_test_file_xml = os.path.join(sandbox, 'test_OperationGroup.xml')
 
@@ -27,6 +29,7 @@ test_category = "0d010102-0101-0100-060e-2b3404010101"
 test_effectID = "D15E7611-FE40-11d2-80A5-006008143E6F"
 test_parmID =  "C7265931-FE57-11d2-80A5-006008143E6F"
 
+point_values = [.2, .3, 1.0]
 
 class TestFile(unittest.TestCase):
     
@@ -60,6 +63,7 @@ class TestFile(unittest.TestCase):
         comp_mob = f.create.CompositionMob()
         
         comp_mob.name = "OperationGroupTest"
+        comp_mob.mobID = mob_id
         
         for i in xrange(2):
             opgroup = aaf.component.OperationGroup(f, "picture", 10, op_def)
@@ -79,8 +83,13 @@ class TestFile(unittest.TestCase):
             p['Value'].value = [1,9]
             print "new->", p['Value'].value
             
-            varying_value.add_point(.5, 1)
-            varying_value.add_point(1, 1)
+            p['Value'].value = 5.3121323333423
+            print "new->", float(p['Value'].value)
+            
+            p.value = point_values[0]
+            
+            varying_value.add_point(.5, point_values[1])
+            varying_value.add_point(1, point_values[2])
             
             opgroup.add_parameter(varying_value)
             
@@ -98,6 +107,11 @@ class TestFile(unittest.TestCase):
     
     def test_file(self):
         f = aaf.open(main_test_file, 'r')
+        mob = f.storage.lookup_mob(mob_id)
+        
+        for slot in mob.slots():
+            for i, p in enumerate(slot.segment.parameter['testParam'].points()):
+                assert point_values[i] ==  float(p.value)
         
 if __name__ == "__main__":
     unittest.main()
