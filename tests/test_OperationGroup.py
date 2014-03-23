@@ -72,7 +72,7 @@ class TestFile(unittest.TestCase):
             varying_value = aaf.component.VaryingValue(f, param, interpdef)
             
             
-            p = varying_value.add_point(0, "1")
+            p = varying_value.add_point(0, 1)
             print 'original:', p['Value'].value
             p['Value'].value = "1/255"
             print "new->", p['Value'].value
