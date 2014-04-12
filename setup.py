@@ -8,6 +8,9 @@ import shutil
 #os.environ['CXX'] = 'g++'
 #os.environ['ARCHFLAGS'] ="-arch x86_64"
 
+# add this to fix build on mac osx mavericks
+#os.environ['ARCHFLAGS'] ="-Wno-error=unused-command-line-argument-hard-error-in-future"
+
 copy_args = sys.argv[1:]
 AAF_ROOT = None
 if '--aaf-root' in copy_args:
@@ -218,7 +221,7 @@ package_data = {'aaf':package_data}
 setup(
     script_args=copy_args,
     name='PyAAF',
-    version='0.6.1',
+    version='0.7.0',
     description='Python Bindings for the Advanced Authoring Format (AAF)',
     
     author="Mark Reid",
