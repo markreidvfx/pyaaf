@@ -9,6 +9,13 @@ This example walks through all the video tracks looking for Title_2 OperationGro
 and prints their text, along with the video Track number, in frame and out frame.
 """
 
+
+header_padding =""
+for i in xrange(512):
+    header_padding += '00'.decode("hex")
+pict_header = "6DEC0000000001E602D0001102FF0C00FFFE000000".decode("hex")
+
+
 def get_video_tracks(mob):
     tracks = []
     
@@ -67,6 +74,7 @@ def dump_avid_titles(header):
     main_mob = list(storage.toplevel_mobs())[0]
     
     tracks = get_video_tracks(main_mob)
+    clip_num = 0
     
     for i, track in enumerate(tracks):
 
@@ -89,13 +97,27 @@ def dump_avid_titles(header):
                             
                         # convert list of ints to unsigned char data
                         string_data = array.array("B",AvidBagOfBits).tostring()
+                        f = open("text_data_%04d.pct" % clip_num, 'w')
+                        f.write(header_padding)
+                        f.write(pict_header)
+                        f.write(string_data[21:])
+                        #f.write(string_data)
+                        f.close()
+                        clip_num += 1
+                        
                         print_text_data(string_data, i+1, in_frame, out_frame)
 
                 if component.has_key("OpGroupGraphicsParamStream"):
                     string_data = ""
                     for data in component['OpGroupGraphicsParamStream'].value:
                         string_data += data
-                        
+                    f = open("text_data_%04d.pct" % clip_num, 'w')
+                    f.write(header_padding)
+                    f.write(pict_header)
+                    f.write(string_data[21:])
+                    #f.write(string_data)
+                    f.close()
+                    clip_num += 1
                     print_text_data(string_data, i+1, in_frame, out_frame)
                                     
             if not isinstance(component,  aaf.component.Transition):
@@ -107,6 +129,7 @@ if __name__ == "__main__":
     from optparse import OptionParser
     
     parser = OptionParser()
+    parser.add_option('--dump_files', action="store_true", default=False, help='dump titles to pct files')
     (options, args) = parser.parse_args()
     
     
@@ -115,4 +138,4 @@ if __name__ == "__main__":
     
     
     f = aaf.open(args[0])
-    dump_avid_titles(f.header)
+    dump_avid_titles(f.header, dump_files=option.dump_files)
