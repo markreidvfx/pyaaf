@@ -82,6 +82,18 @@ Contents:
    api/define
    api/base
 
+Further Reading
+===============
+
+`AAF SDK Reference Manual <http://aaf.sourceforge.net/docs>`_
+
+`aafobjectspec-v1.1.pdf <http://aaf.cvs.sourceforge.net/viewvc/aaf/AAF/doc/aafobjectspec-v1.1.pdf>`_
+
+`aafeditprotocol.pdf <http://aaf.cvs.sourceforge.net/viewvc/aaf/AAF/doc/aafeditprotocol.pdf>`_
+
+`aafstoredformatspec-v1.0.1.pdf <http://aaf.cvs.sourceforge.net/viewvc/aaf/AAF/doc/aafstoredformatspec-v1.0.1.pdf>`_
+
+`aafcontainerspec-v1.0.1.pdf <http://aaf.cvs.sourceforge.net/viewvc/aaf/AAF/doc/aafcontainerspec-v1.0.1.pdf>`_
 
 
 Indices and tables
