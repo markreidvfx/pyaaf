@@ -13,6 +13,31 @@ import os
 import weakref
         
 cdef class File(AAFBase):
+    """AAF File Object. This is the entry point object for most of the API. 
+    It is recommended to create this object with the `aaf.open` alias.
+    Creating this object is designed to be like python's native open function.
+
+    For example. Opening existing AAF file readonly::
+     
+         f = aaf.open("/path/to/aaf_file.aaf", 'r')
+         
+    Opening new AAF file overwriting existing one::
+     
+         f = aaf.open("/path/to/aaf_file.aaf", 'w')
+         
+    Opening existing AAF in read and write::
+     
+         f = aaf.open("/path/to/aaf_file.aaf", 'rw')
+    
+    Opening New Transient in memory file::
+     
+         f = aaf.open(None, 't')
+         
+    .. note::
+    
+        Opening AAF formatted xml files is currently buggy
+        
+    """
 
     def __cinit__(self):
         self.ptr= NULL
@@ -37,15 +62,21 @@ cdef class File(AAFBase):
             self.ptr.Release()
     
     def __init__(self, bytes path, bytes mode = b'r'):
-        """
-        Open a AAF file, returning a File Object. Mode is similar to python's native open command.
-        Possible modes are: 
-            'r' readonly, 
-            'w' write 
-            'rw' readwrite
-            't' transient (in memory)
-        If the file is opened in 'w' or 'rw', save needs to be called to write the changes to the file.
-        Note: Opening a .xml file in 'r' and 'rw' mode is buggy and might not work
+        """__init__(path, mode = 'r')
+        
+        :param str path: AAF file path, set to `None` if in opening in transient mode.
+        :param str mode: Similar to python's native open function modes.
+
+        modes:
+        
+            * ``"r"`` readonly
+            
+            * ``"w"`` write
+            
+            * ``"rw"`` readonly or modify
+            
+            * ``"t"`` transient in memory file
+        
         """
         
         #self.proxy = IAAFFileProxy()
@@ -122,7 +153,9 @@ cdef class File(AAFBase):
                                                &kind, 0, &productInfo, 
                                                &self.ptr))
     def save(self,bytes path=None):
-        """Save AAF file to disk. If not path and the mode is 'rw' or 'w' it will overwrite or modify
+        """save(path=None)
+        
+        Save AAF file to disk. If not path and the mode is 'rw' or 'w' it will overwrite or modify
         the current file. If path is supplied a new file will be created, (Save Copy As).
         If the extension of the path is .xml a xml file will be saved.
         Note: If file mode is 't' or 'r' and path is None, nothing will happen
@@ -140,6 +173,7 @@ cdef class File(AAFBase):
         return new_file
 
     def close(self):
+        """Close the file. A closed file cannot be read or written any more."""
         error_check(self.ptr.Close())
         
     property header:
