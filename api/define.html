@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>aaf.define &mdash; pyaaf 0.6.1 documentation</title>
+    <title>aaf.define &mdash; pyaaf 0.7.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.6.1',
+        VERSION:     '0.7.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="pyaaf 0.6.1 documentation" href="../index.html" />
+    <link rel="top" title="pyaaf 0.7.1 documentation" href="../index.html" />
     <link rel="next" title="aaf.base" href="base.html" />
     <link rel="prev" title="aaf.essence" href="essence.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="essence.html" title="aaf.essence"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">pyaaf 0.6.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">pyaaf 0.7.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -80,6 +80,11 @@
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">ClassDef</tt><a class="headerlink" href="#aaf.define.ClassDef" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.MetaDef" title="aaf.define.MetaDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.MetaDef</span></tt></a></p>
 <dl class="method">
+<dt id="aaf.define.ClassDef.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.ClassDef.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="aaf.define.ClassDef.propertydefs">
 <tt class="descname">propertydefs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.ClassDef.propertydefs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -93,6 +98,11 @@
 <dl class="attribute">
 <dt id="aaf.define.PropertyDef.optional">
 <tt class="descname">optional</tt><a class="headerlink" href="#aaf.define.PropertyDef.optional" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.PropertyDef.typedef">
+<tt class="descname">typedef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.PropertyDef.typedef" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -227,6 +237,16 @@
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">TypeDefIndirect</tt><a class="headerlink" href="#aaf.define.TypeDefIndirect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.TypeDef" title="aaf.define.TypeDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.TypeDef</span></tt></a></p>
 <dl class="method">
+<dt id="aaf.define.TypeDefIndirect.actual_typedef">
+<tt class="descname">actual_typedef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefIndirect.actual_typedef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefIndirect.create_value">
+<tt class="descname">create_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefIndirect.create_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="aaf.define.TypeDefIndirect.indirect_value">
 <tt class="descname">indirect_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefIndirect.indirect_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -270,6 +290,11 @@
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.MetaDef" title="aaf.define.MetaDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.MetaDef</span></tt></a></p>
 <dl class="method">
 <dt>
+<tt class="descname">parent</tt><big>(</big><big>)</big></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
 <tt class="descname">propertydefs</tt><big>(</big><big>)</big></dt>
 <dd></dd></dl>
 
@@ -282,6 +307,11 @@
 <dl class="attribute">
 <dt>
 <tt class="descname">optional</tt></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">typedef</tt><big>(</big><big>)</big></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -417,6 +447,16 @@
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.TypeDef" title="aaf.define.TypeDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.TypeDef</span></tt></a></p>
 <dl class="method">
 <dt>
+<tt class="descname">actual_typedef</tt><big>(</big><big>)</big></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">create_value</tt><big>(</big><big>)</big></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
 <tt class="descname">indirect_value</tt><big>(</big><big>)</big></dt>
 <dd></dd></dl>
 
@@ -497,6 +537,11 @@
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">TypeDefRecord</tt><a class="headerlink" href="#aaf.define.TypeDefRecord" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.TypeDef" title="aaf.define.TypeDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.TypeDef</span></tt></a></p>
 <dl class="method">
+<dt id="aaf.define.TypeDefRecord.keys">
+<tt class="descname">keys</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="aaf.define.TypeDefRecord.member_name">
 <tt class="descname">member_name</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.member_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -512,13 +557,38 @@
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="aaf.define.TypeDefRecord.set_value">
+<tt class="descname">set_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.set_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefRecord.set_value_from_dict">
+<tt class="descname">set_value_from_dict</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.set_value_from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefRecord.set_value_from_list">
+<tt class="descname">set_value_from_list</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.set_value_from_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="aaf.define.TypeDefRecord.size">
 <tt class="descname">size</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.size" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="aaf.define.TypeDefRecord.typedef_dict">
+<tt class="descname">typedef_dict</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.typedef_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="aaf.define.TypeDefRecord.value">
 <tt class="descname">value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefRecord.value_dict">
+<tt class="descname">value_dict</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.value_dict" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -672,6 +742,11 @@
 <dt id="aaf.define.ParameterDef">
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">ParameterDef</tt><a class="headerlink" href="#aaf.define.ParameterDef" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.DefObject" title="aaf.define.DefObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.DefObject</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.define.ParameterDef.typedef">
+<tt class="descname">typedef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.ParameterDef.typedef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -690,6 +765,21 @@
 <dt id="aaf.define.OperationDef">
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">OperationDef</tt><a class="headerlink" href="#aaf.define.OperationDef" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.DefObject" title="aaf.define.DefObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.DefObject</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.define.OperationDef.add_parameterdef">
+<tt class="descname">add_parameterdef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.OperationDef.add_parameterdef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.define.OperationDef.categoryID">
+<tt class="descname">categoryID</tt><a class="headerlink" href="#aaf.define.OperationDef.categoryID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.define.OperationDef.media_kind">
+<tt class="descname">media_kind</tt><a class="headerlink" href="#aaf.define.OperationDef.media_kind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -755,7 +845,7 @@
         <li class="right" >
           <a href="essence.html" title="aaf.essence"
              >previous</a> |</li>
-        <li><a href="../index.html">pyaaf 0.6.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">pyaaf 0.7.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
