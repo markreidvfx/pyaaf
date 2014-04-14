@@ -310,7 +310,7 @@ class TestFile(unittest.TestCase):
         
         walk_properties("", header.properties())
         
-    def test_iter_comments(self):
+    def test_comments(self):
         test_file = main_test_file
         f = aaf.open(test_file)
         header = f.header
@@ -318,7 +318,7 @@ class TestFile(unittest.TestCase):
         
         for mob in storage.mobs():
             
-            comments = list(mob.iter_comments())
+            comments = list(mob.comments())
             if comments:
                 print mob.name
                 for c in comments:
@@ -338,13 +338,13 @@ class TestFile(unittest.TestCase):
         for key, value in d.items():
             mob.append_comment(key,value)
             
-        for item in mob.iter_comments():
+        for item in mob.comments():
             print '**', item.name, item.value
             assert d[item.name] == item.value.value
             
         mob.remove_comment('comment3')
         
-        for item in mob.iter_comments():
+        for item in mob.comments():
             assert item.name != 'comment3'
             
         f.save()

@@ -111,7 +111,7 @@ cdef class Mob(AAFObject):
         
         error_check(self.ptr.AppendComment(<lib.aafCharacter *> w_name.c_str(), w_value.c_str()))
     
-    def iter_comments(self):
+    def comments(self):
         cdef TaggedValueIter tags = TaggedValueIter.__new__(TaggedValueIter)
         tags.root = self.root
         hr = self.ptr.GetComments(&tags.ptr)
@@ -125,7 +125,7 @@ cdef class Mob(AAFObject):
         
         cdef TaggedValue tag
         
-        for tag in self.iter_comments():
+        for tag in self.comments():
             if tag.name == name:
                 error_check(self.ptr.RemoveComment(tag.ptr))
                 return
@@ -239,15 +239,47 @@ cdef class MasterMob(Mob):
                                                   ref.get_aafSourceRef_t(),
                                                   srcRefLength)) 
             
-    def open_essence(self, lib.aafSlotID_t  slotID):
+    def open_essence(self, lib.aafSlotID_t  slotID, bytes mode = b'r', bool compression = False):
+        """open_essence(slotID, mode = "r", compression = False)
+        
+        Opens a single channel of a file mob and returns EssenceAccess Object.
+        If the essence is interleaved, then it will be di-interleaved when samples are
+        read.  This routine follows the locator, and may call the locator
+        failure callback if the essence can not be found.  If the failure
+        callback finds the essence, then this routine will return normally.
+        
+        :param int slotID: mob slotID to open essence data.
+        :param str mode: essence open mode "r" for read, "a" for append.
+        :param bool compression: decompress encoded data, (if supportedd).
+          
+        :returns: :class:`aaf.essence.EssenceAccess`.
+        """
         
         slot = self.slot_at(slotID)
         
         cdef EssenceAccess access = EssenceAccess.__new__(EssenceAccess)
         
+        cdef lib.aafMediaOpenMode_t mode_t
+        cdef lib.aafCompressEnable_t compression_t
+        
+        if mode.lower() == 'r':
+            mode_t = lib.kAAFMediaOpenReadOnly
+        
+        elif mode.lower() == 'a':
+            mode_t == lib.kAAFMediaOpenAppend
+        
+        else:
+            raise ValueError("invalid mode %s" % mode)
+        
+        if compression:
+            compression_t = lib.kAAFCompressionEnable
+        else:
+            compression_t = lib.kAAFCompressionDisable
+        
+        
         error_check(self.mastermob_ptr.OpenEssence(slotID,
                                                    NULL,
-                                                   lib.kAAFMediaOpenReadOnly,
+                                                   mode_t,
                                                    lib.kAAFCompressionDisable,
                                                    &access.ptr))
         access.query_interface()
@@ -303,7 +335,12 @@ cdef class MasterMob(Mob):
     
     def import_video_essence(self, bytes path, object frame_rate):
         """
+        import_video_essence(path, frame_rate)
+        
         Import raw dnxhd video stream from file.
+        
+        :param str path: path to dnxhd file
+        :param frame_rate: frame rate of dnxhd file
         """
         
         f = open(path, 'rb')
@@ -374,7 +411,13 @@ cdef class MasterMob(Mob):
 
     def import_audio_essence(self, bytes path, lib.aafUInt32 channels, object sample_rate):
         """
+        import_audio_essence(path, channels, sample_rate)
+        
         Import raw PCM audio stream from file.
+        
+        :param str path: path to pcm file
+        :param int channels: number of channels in pcm file
+        :param sample_rate: sample rate of pcm file
         """
         
         slot_index = 0
