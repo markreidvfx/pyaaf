@@ -75,10 +75,10 @@ Contents:
    :maxdepth: 2
    
    api/storage
-   api/dictionary
    api/mob
    api/component
    api/essence
+   api/dictionary
    api/define
    api/base
 

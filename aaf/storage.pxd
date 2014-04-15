@@ -4,7 +4,7 @@ from base cimport AAFObject,AAFBase
 cdef class File(AAFBase):
     cdef object __weakref__
     cdef lib.IAAFFile *ptr
-    cdef readonly bytes mode
+    cdef bytes mode
     cdef lib.aafProductIdentification_t productInfo
     cdef object setup_new_file(self, bytes path, bytes mode=*)
     

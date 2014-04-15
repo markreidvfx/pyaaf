@@ -22,6 +22,9 @@ from struct import unpack
 from .fraction_util import AAFFraction
 
 cdef class Mob(AAFObject):
+    """Base Class for All Mob Objects
+    """
+    
     def __cinit__(self):
         self.iid = lib.IID_IAAFMob
         self.auid = lib.AUID_AAFMob
@@ -49,20 +52,24 @@ cdef class Mob(AAFObject):
         return slot_iter
     
     def slot_at(self, lib.aafSlotID_t slotID):
+        """slot_at(slotID)
+        """
         for slot in self.slots():
             if slot.slotID == slotID:
                 return slot
         raise IndexError("Invalid slot number: %d" % slotID)
     
     def insert_slot(self, lib.aafUInt32 index, MobSlot slot):
-        """
+        """insert_slot(index, slot)
         Inserts the given slot into this mob at the given index.  All
         existing slots at the given and higher index will be moved up one
         index to accommodate.
         """
         error_check(self.ptr.InsertSlotAt(index, slot.slot_ptr))
         
-    def create_clip(self, slotID=None, length=None, start_time=None):
+    def create_clip(self, slotID = None, length = None, start_time = None):
+        """create_clip(slotID = None, length = None, start_time = None)
+        """
 
         d = self.dictionary()
         
@@ -81,6 +88,9 @@ cdef class Mob(AAFObject):
         
     def add_timeline_slot(self, edit_rate, Segment seg, lib.aafSlotID_t slotID = 0, 
                             bytes slot_name = None, lib.aafPosition_t origin = 0):
+        
+        """add_timeline_slot(edit_rate, seg, slotID = 0, slot_name = None, origin = 0)
+        """
         
         if not slot_name:
             slot_name = b'timeline slot %d' % slotID
@@ -105,7 +115,9 @@ cdef class Mob(AAFObject):
         timeline.root = self.root
         return timeline
     
-    def append_comment(self, bytes name, bytes value):
+    def append_comment(self, bytes name not None, bytes value not None):
+        """append_comment(name, value)
+        """
         cdef wstring w_name = toWideString(name)
         cdef wstring w_value = toWideString(value)
         
@@ -121,7 +133,9 @@ cdef class Mob(AAFObject):
             error_check(hr)
         
         return tags
-    def remove_comment(self, bytes name):
+    def remove_comment_by_name(self, bytes name not None):
+        """remove_comment_by_name(name)
+        """
         
         cdef TaggedValue tag
         
@@ -130,6 +144,11 @@ cdef class Mob(AAFObject):
                 error_check(self.ptr.RemoveComment(tag.ptr))
                 return
         raise KeyError("No comment with name: %s" % str(name))
+    
+    def remove_comment(self, TaggedValue tag not None):
+        """remove_comment(tag)
+        """
+        error_check(self.ptr.RemoveComment(tag.ptr))
     
     def __richcmp__(x, y, int op):
         if op == 2:
@@ -229,6 +248,8 @@ cdef class MasterMob(Mob):
             self.name = name
             
     def new_phys_source_ref(self, edit_rate, lib.aafSlotID_t  slotID, media_kind, SourceRef ref, lib.aafLength_t  srcRefLength):
+        """new_phys_source_ref(edit_rate, slotID, media_kind, ref, srcRefLength)
+        """
         cdef lib.aafRational_t edit_rate_t
         fraction_to_aafRational(edit_rate, edit_rate_t)
         cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
@@ -243,10 +264,6 @@ cdef class MasterMob(Mob):
         """open_essence(slotID, mode = "r", compression = False)
         
         Opens a single channel of a file mob and returns EssenceAccess Object.
-        If the essence is interleaved, then it will be di-interleaved when samples are
-        read.  This routine follows the locator, and may call the locator
-        failure callback if the essence can not be found.  If the failure
-        callback finds the essence, then this routine will return normally.
         
         :param int slotID: mob slotID to open essence data.
         :param str mode: essence open mode "r" for read, "a" for append.
@@ -294,6 +311,8 @@ cdef class MasterMob(Mob):
                             bool compress=False,
                             Locator locator=None, 
                             bytes fileformat = b"aaf"):
+        """create_essence(slot_index, media_kind, codec_name, edit_rate, sample_rate, compress = False, locator = None, fileformat = "aaf")
+        """
         
         cdef DataDef media_datadef        
         media_datadef = self.dictionary().lookup_datadef(media_kind)
@@ -334,8 +353,7 @@ cdef class MasterMob(Mob):
         return access
     
     def import_video_essence(self, bytes path, object frame_rate):
-        """
-        import_video_essence(path, frame_rate)
+        """import_video_essence(path, frame_rate)
         
         Import raw dnxhd video stream from file.
         
@@ -410,8 +428,7 @@ cdef class MasterMob(Mob):
             fclose(cfile)
 
     def import_audio_essence(self, bytes path, lib.aafUInt32 channels, object sample_rate):
-        """
-        import_audio_essence(path, channels, sample_rate)
+        """import_audio_essence(path, channels, sample_rate)
         
         Import raw PCM audio stream from file.
         
@@ -485,7 +502,7 @@ cdef class MasterMob(Mob):
     
     def add_master_slot(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
                         lib.aafSlotID_t master_slotID, bytes slot_name=None):
-        """
+        """add_master_slot(media_kind, source_slotID, source_mob, master_slotID, slot_name = None)
         Add a slot that references the specified a slot in the specified Source Mob.
         """
         cdef DataDef media_datadef        
@@ -508,7 +525,9 @@ cdef class MasterMob(Mob):
         raise RuntimeError("could not find added master slot")
         
     def add_master_slot_with_sequence(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
-                                      lib.aafSlotID_t master_slotID, bytes slot_name=None):
+                                      lib.aafSlotID_t master_slotID, bytes slot_name = None):
+        """add_master_slot_with_sequence(media_kind, source_slotID, source_mob, master_slotID, slot_name = None)
+        """
         
         cdef DataDef media_datadef        
         media_datadef = self.dictionary().lookup_datadef(media_kind)
@@ -596,6 +615,8 @@ cdef class SourceMob(Mob):
         error_check(self.src_ptr.Initialize())
         
     def add_nil_ref(self, lib.aafSlotID_t slotID, lib.aafLength_t length, media_kind, edit_rate):
+        """add_nil_ref(slotID, length, media_kind, edit_rate)
+        """
         cdef lib.aafRational_t edit_rate_t
         fraction_to_aafRational(edit_rate, edit_rate_t)
         cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
@@ -611,6 +632,8 @@ cdef class SourceMob(Mob):
                      lib.aafPhaseFrame_t phase_frame = 0,
                      bytes direction = b"TapeToFilmSpeed",
                      bytes add_type = b"append"):
+        """add_pulldown(edit_rate, slotID, media_kind, source_ref, src_ref_length, pulldown_kind = "TwentyFourToSixtyPD", phase_frame = 0, direction = "TapeToFilmSpeed", add_type = b"append")
+        """
         
         cdef lib.aafAppendOption_t addType
         if add_type.lower() == "append":
@@ -643,6 +666,8 @@ cdef class SourceMob(Mob):
                                                  ))
         
     def append_timecode_slot(self, edit_rate, lib.aafSlotID_t  slotID, Timecode startTC, lib.aafFrameLength_t frame_length):
+        """append_timecode_slot(edit_rate, slotID, startTC, frame_length)
+        """
         
         cdef lib.aafRational_t edit_rate_t
         fraction_to_aafRational(edit_rate, edit_rate_t)
@@ -654,6 +679,9 @@ cdef class SourceMob(Mob):
                                                     ))   
     
     def new_phys_source_ref(self, edit_rate, lib.aafSlotID_t  slotID, media_kind, SourceRef ref, lib.aafLength_t  srcRefLength):
+        """new_phys_source_ref(edit_rate, slotID, media_kind, ref, srcRefLength)
+        """
+        
         cdef lib.aafRational_t edit_rate_t
         fraction_to_aafRational(edit_rate, edit_rate_t)
         cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
@@ -664,6 +692,9 @@ cdef class SourceMob(Mob):
                                                   ref.get_aafSourceRef_t(),
                                                   srcRefLength))
     def append_phys_source_ref(self, edit_rate, lib.aafSlotID_t  slotID, media_kind, SourceRef ref, lib.aafLength_t  srcRefLength):
+        """append_phys_source_ref(edit_rate, slotID, media_kind, ref, srcRefLength)
+        """
+        
         cdef lib.aafRational_t edit_rate_t
         fraction_to_aafRational(edit_rate, edit_rate_t)
         cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)

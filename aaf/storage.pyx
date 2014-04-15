@@ -35,7 +35,7 @@ cdef class File(AAFBase):
          
     .. note::
     
-        Opening AAF formatted xml files is currently buggy
+        Opening AAF formatted xml files is untested
         
     """
 
@@ -152,13 +152,19 @@ cdef class File(AAFBase):
         error_check(lib.AAFFileOpenNewModifyEx(w_path.c_str(), 
                                                &kind, 0, &productInfo, 
                                                &self.ptr))
-    def save(self,bytes path=None):
-        """save(path=None)
+    def save(self,bytes path = None):
+        """save(path = None)
         
-        Save AAF file to disk. If not path and the mode is 'rw' or 'w' it will overwrite or modify
-        the current file. If path is supplied a new file will be created, (Save Copy As).
-        If the extension of the path is .xml a xml file will be saved.
-        Note: If file mode is 't' or 'r' and path is None, nothing will happen
+        Save AAF file to disk. If path is ``None`` and the mode is ``"rw"`` or ``"w"`` it will overwrite or modify
+        the current file. If path is supplied, a new file will be created, (Save Copy As).
+        If the extension of the path is ``".xml"`` a xml file will be saved.
+        
+        :param path: optional path to new aaf file.
+        :type path: `str` or `None`
+        
+        .. note::
+        
+            If file mode is ``"t"`` or ``"r"`` and path is ``None``, nothing will happen
         """
         if not path:
             # If in 't' or 'r' mode do nothing
@@ -177,6 +183,9 @@ cdef class File(AAFBase):
         error_check(self.ptr.Close())
         
     property header:
+        """
+        :class:`Header` object for AAF file.
+        """
         def __get__(self):
             cdef Header header = Header.__new__(Header)
             error_check(self.ptr.GetHeader(&header.ptr))
@@ -185,18 +194,43 @@ cdef class File(AAFBase):
             return header
             
     property storage:
+        """
+        :class:`ContentStorage` object for AAF File. This has the Mob and EssenceData objects.
+        """
         def __get__(self):
             return self.header.storage()
     
     property dictionary:
+        """
+        :class:`aaf.dictionary.Dictionary` for AAF file.  The dictionary property has DefinitionObject objects.
+        """
         def __get__(self):
             return self.header.dictionary()
     
     property create:
+        """
+        AAFObject Factory property.  Used for creating new AAFObjects.
+        
+        example::
+            
+            # create a empty aaf file.
+            f = aaf.open("/path/to/new_aaf_file.aaf", "w")
+            
+            # use create factory to make a MasterMob.
+            mob = f.create.MasterMob()
+            
+            # add MasterMob object to file.
+            f.storage.add_mob(mob)
+        """
         def __get__(self):
             return self.header.dictionary().create
 
 cdef class Header(AAFObject):
+    """
+    Header object for AAF File. This object is mainly used to get the 
+    :class:`aaf.dictionary.Dictionary` and 
+    :class:`ContentStorage`  objects for the AAF file
+    """
     def __cinit__(self):
         self.iid = lib.IID_IAAFHeader
         self.auid = lib.AUID_AAFHeader
@@ -218,14 +252,19 @@ cdef class Header(AAFObject):
             self.ptr.Release()
         
     def dictionary(self):
+        """
+        :returns: :class:`aaf.dictionary.Dictionary`
+        """
         cdef Dictionary dictionary = Dictionary.__new__(Dictionary)
         error_check(self.ptr.GetDictionary(&dictionary.ptr))
         dictionary.query_interface()
         dictionary.root = self.root
         return dictionary
 
-    def storage(self,none=None):
-
+    def storage(self):
+        """
+        :returns: :class:`aaf.storage.ContentStorage`
+        """
         cdef ContentStorage content_storage = ContentStorage.__new__(ContentStorage)
         error_check(self.ptr.GetContentStorage(&content_storage.ptr))
         content_storage.query_interface()
@@ -234,6 +273,9 @@ cdef class Header(AAFObject):
     
          
 cdef class ContentStorage(AAFObject):
+    """
+    This object has all Mobs and Essence Data in the file 
+    """
     def __cinit__(self):
         self.iid = lib.IID_IAAFContentStorage
         self.auid = lib.AUID_AAFContentStorage
@@ -255,19 +297,42 @@ cdef class ContentStorage(AAFObject):
             self.ptr.Release()
         
     def count_mobs(self):
+        """
+        Total number of mobs in AAF File
+        
+        :returns: int
+        """
         cdef lib.aafUInt32 mobCount
         error_check(self.ptr.CountMobs(lib.kAAFAllMob, &mobCount))
         return mobCount
     
-    def add_mob(self, Mob mob):
+    def add_mob(self, Mob mob not None):
+        """add_mob(mob)
+        
+        Add a :class:`aaf.mob.Mob` object to ContentStorage
+        
+        :param aaf.mob.Mob mob: Mob object to add.
+        """
         error_check(self.ptr.AddMob(mob.ptr))
         
-    def remove_mob(self, Mob mob):
+    def remove_mob(self, Mob mob not None):
+        """remove_mob(mob)
+        
+        Remove a :class:`aaf.mob.Mob` object from ContentStorage.
+        
+        :param aaf.mob.Mob mob: Mob object to remove.
+        """
+        
         error_check(self.ptr.RemoveMob(mob.ptr))
         
     def lookup_mob(self, mobID):
-        """
-        Looks up the Mob that matches the given mob id
+        """lookup_mob(mobID)
+        
+        Looks up the Mob that matches the given mob id.
+        
+        :param mobID: 9d of :class:`aaf.mob.Mob` to lookup.
+        :type mobID: :class:`aaf.util.MobID` or :class:`str`
+        :returns: :class:`aaf.mob.Mob`
         """
         
         cdef Mob mob = Mob.__new__(Mob)
@@ -280,6 +345,12 @@ cdef class ContentStorage(AAFObject):
         
 
     def mobs(self):
+        """
+        Returns a :class:`aaf.iterator.MobIter`` that iterates over all :class:`aaf.mob.Mob` objects in the AAF file.
+        
+        :returns: :class:`aaf.iterator.MobIter`
+        """
+        
         cdef MobIter mob_iter = MobIter.__new__(MobIter)
         
         cdef lib.aafSearchCrit_t search_crit
@@ -293,6 +364,12 @@ cdef class ContentStorage(AAFObject):
         return mob_iter
     
     def master_mobs(self):
+        """
+        Returns a :class:`aaf.iterator.MobIter` that iterates over all :class:`aaf.mob.MasterMob` objects in the AAF file.
+        
+        :returns: :class:`aaf.iterator.MobIter`
+        """
+        
         cdef MobIter mob_iter = MobIter.__new__(MobIter)
         
         cdef lib.aafSearchCrit_t search_crit
@@ -306,6 +383,12 @@ cdef class ContentStorage(AAFObject):
         return mob_iter
     
     def composition_mobs(self):
+        """
+        Returns a :class:`aaf.iterator.MobIter` that iterates over all :class:`aaf.mob.CompositionMob` objects in the AAF file.
+        
+        :returns: :class:`aaf.iterator.MobIter`
+        """
+        
         cdef MobIter mob_iter = MobIter.__new__(MobIter)
         
         cdef lib.aafSearchCrit_t search_crit
@@ -319,6 +402,12 @@ cdef class ContentStorage(AAFObject):
         return mob_iter
     
     def toplevel_mobs(self):
+        """
+        Returns a :class:`aaf.iterator.MobIter` that iterates over all :class:`aaf.mob.CompositionMob` 
+        objects in the AAF file with ``"UsageType""`` property set to ``"Usage_TopLevel"``. 
+        
+        :returns: :class:`aaf.iterator.MobIter`
+        """
         cdef MobIter mob_iter = MobIter.__new__(MobIter)
         
         cdef lib.aafSearchCrit_t search_crit
@@ -332,15 +421,22 @@ cdef class ContentStorage(AAFObject):
         return mob_iter
     
     def essence_data(self):
+        """
+        Returns a :class:`aaf.iterator.EssenceDataIter` that iterates over all 
+        embedded :class:`aaf.essence.EssenceData` in AAF file.
+        
+        :returns: :class:`aaf.iterator.EssenceDataIter`
+        """
+        
         cdef EssenceDataIter data_iter = EssenceDataIter.__new__(EssenceDataIter)
         error_check(self.ptr.EnumEssenceData(&data_iter.ptr))
         data_iter.root = self.root
         return data_iter
     
-    def add_essence_data(self, EssenceData data):
+    def add_essence_data(self, EssenceData data not None):
         error_check(self.ptr.AddEssenceData(data.ptr))
     
-    def remove_essence_data(self, EssenceData data):
+    def remove_essence_data(self, EssenceData data not None):
         error_check(self.ptr.RemoveEssenceData(data.ptr))
     
 cdef class Identification(AAFObject):
