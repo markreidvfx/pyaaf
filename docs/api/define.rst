@@ -3,198 +3,183 @@
 
 .. automodule:: aaf.define
 
+MetaDef
+-------
+
    .. autoclass:: MetaDef
        :members:
-       :undoc-members:
-       :show-inheritance:
-       
+
+ClassDef
+--------
+      
    .. autoclass:: ClassDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+PropertyDef
+-----------
        
    .. autoclass:: PropertyDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDef
+-------
        
    .. autoclass:: TypeDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefCharacter
+----------------
 
    .. autoclass:: TypeDefCharacter
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefEnum
+-----------
        
    .. autoclass:: TypeDefEnum
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefExtEnum
+--------------
        
    .. autoclass:: TypeDefExtEnum
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefFixedArray
+-----------------
        
    .. autoclass:: TypeDefFixedArray
        :members:
-       :undoc-members:
-       :show-inheritance:
        
-   .. autoclass:: TypeDefIndirect
-       :members:
-       :undoc-members:
-       :show-inheritance:
-       
-   .. autoclass:: MetaDef
-       :members:
-       :undoc-members:
-       :show-inheritance:
-       
-   .. autoclass:: ClassDef
-       :members:
-       :undoc-members:
-       :show-inheritance:
-       
-   .. autoclass:: PropertyDef
-       :members:
-       :undoc-members:
-       :show-inheritance:
-       
-   .. autoclass:: TypeDef
-       :members:
-       :undoc-members:
-       :show-inheritance:
+TypeDefIndirect
+---------------
 
-   .. autoclass:: TypeDefCharacter
-       :members:
-       :undoc-members:
-       :show-inheritance:
-       
-   .. autoclass:: TypeDefEnum
-       :members:
-       :undoc-members:
-       :show-inheritance:
-       
-   .. autoclass:: TypeDefExtEnum
-       :members:
-       :undoc-members:
-       :show-inheritance:
-       
-   .. autoclass:: TypeDefFixedArray
-       :members:
-       :undoc-members:
-       :show-inheritance:
-       
    .. autoclass:: TypeDefIndirect
        :members:
-       :undoc-members:
-       :show-inheritance:
+
+TypeDefOpaque
+-------------     
        
    .. autoclass:: TypeDefOpaque
        :members:
-       :undoc-members:
-       :show-inheritance:
-       
+
+TypeDefInt
+----------
+
    .. autoclass:: TypeDefInt
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefObjectRef
+----------------
        
    .. autoclass:: TypeDefObjectRef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefStrongObjRef
+-------------------
        
    .. autoclass:: TypeDefStrongObjRef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefWeakObjRef
+-----------------
 
    .. autoclass:: TypeDefWeakObjRef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefRecord
+-------------
        
    .. autoclass:: TypeDefRecord
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefRename
+-------------
        
    .. autoclass:: TypeDefRename
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefSet
+----------
        
    .. autoclass:: TypeDefSet
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefStream
+-------------
        
    .. autoclass:: TypeDefStream
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefString
+-------------
        
    .. autoclass:: TypeDefString
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TypeDefVariableArray
+--------------------
        
    .. autoclass:: TypeDefVariableArray
        :members:
-       :undoc-members:
-       :show-inheritance:
        
+DefObject
+---------
+
    .. autoclass:: DefObject
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+DataDef
+-------
 
    .. autoclass:: DataDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+ContainerDef
+------------
        
    .. autoclass:: ContainerDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+InterpolationDef
+----------------
        
    .. autoclass:: InterpolationDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+ParameterDef
+------------
        
    .. autoclass:: ParameterDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+PluginDef
+---------
        
    .. autoclass:: PluginDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+CodecDef
+--------
        
    .. autoclass:: CodecDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+OperationDef
+------------
        
    .. autoclass:: OperationDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+
+KLVDataDef
+----------
 
    .. autoclass:: KLVDataDef
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TaggedValueDef
+-------------
        
    .. autoclass:: TaggedValueDef
        :members:
-       :undoc-members:
-       :show-inheritance:
        

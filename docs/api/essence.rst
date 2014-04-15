@@ -3,112 +3,134 @@
 
 .. automodule:: aaf.essence
 
+EssenceData
+-----------
+
    .. autoclass:: EssenceData
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+EssenceFormat
+-------------
 
    .. autoclass:: EssenceFormat
        :members:
-       :undoc-members:
-       :show-inheritance:
        
+EssenceMultiAccess
+------------------
+
    .. autoclass:: EssenceMultiAccess
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+EssenceAccess
+-------------
        
    .. autoclass:: EssenceAccess
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+Locator
+-------
        
    .. autoclass:: Locator
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+NetworkLocator
+--------------
 
    .. autoclass:: NetworkLocator
        :members:
-       :undoc-members:
-       :show-inheritance:
+
+EssenceDescriptor
+-----------------
        
    .. autoclass:: EssenceDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+FileDescriptor
+--------------
        
    .. autoclass:: FileDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+WAVEDescriptor
+--------------
        
    .. autoclass:: WAVEDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+
+AIFCDescriptor
+--------------
 
    .. autoclass:: AIFCDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TIFFDescriptor
+--------------
        
    .. autoclass:: TIFFDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+DigitalImageDescriptor
+----------------------
        
    .. autoclass:: DigitalImageDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
        
+CDCIDescriptor
+--------------
+
    .. autoclass:: CDCIDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+RGBADescriptor
+--------------
        
    .. autoclass:: RGBADescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
-       
+
+SoundDescriptor
+---------------
+
    .. autoclass:: SoundDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+
+PCMDescriptor
+-------------
 
    .. autoclass:: PCMDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TapeDescriptor
+--------------
 
    .. autoclass:: TapeDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+FilmDescriptor
+--------------
     
    .. autoclass:: FilmDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+PhysicalDescriptor
+------------------
     
    .. autoclass:: PhysicalDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+ImportDescriptor
+----------------
     
    .. autoclass:: ImportDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+RecordingDescriptor
+-------------------
     
    .. autoclass:: RecordingDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+AuxiliaryDescriptor
+-------------------
     
    .. autoclass:: AuxiliaryDescriptor
        :members:
-       :undoc-members:
-       :show-inheritance:

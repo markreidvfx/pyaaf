@@ -3,6 +3,9 @@
 
 .. automodule:: aaf.dictionary
 
+Dictionary
+----------
+
    .. autoclass:: Dictionary
        :members:
        :undoc-members:

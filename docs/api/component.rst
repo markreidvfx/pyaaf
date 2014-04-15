@@ -3,127 +3,153 @@
 
 .. automodule:: aaf.component
 
+Component
+---------
+
    .. autoclass:: Component
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+Segment
+-------
        
    .. autoclass:: Segment
        :members:
-       :undoc-members:
-       :show-inheritance:
        
+Transition
+----------
+
    .. autoclass:: Transition
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+Sequence
+--------
        
    .. autoclass:: Sequence
        :members:
-       :undoc-members:
-       :show-inheritance:
+
+
+Timecode
+--------
 
    .. autoclass:: Timecode
        :members:
-       :undoc-members:
-       :show-inheritance:
-       
+
+Filler
+------
+
    .. autoclass:: Filler
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+Pulldown
+--------
        
    .. autoclass:: Pulldown
        :members:
-       :undoc-members:
-       :show-inheritance:
+
+SourceReference
+---------------
        
    .. autoclass:: SourceReference
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+SourceClip
+----------
        
    .. autoclass:: SourceClip
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+OperationGroup
+--------------
        
    .. autoclass:: OperationGroup
        :members:
-       :undoc-members:
-       :show-inheritance:
        
+NestedScope
+-----------
+
    .. autoclass:: NestedScope
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+ScopeReference
+--------------      
        
    .. autoclass:: ScopeReference
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+EssenceGroup
+------------
        
    .. autoclass:: EssenceGroup
        :members:
-       :undoc-members:
-       :show-inheritance:
+
+Selector
+--------
 
    .. autoclass:: Selector
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+EdgeCode
+--------
        
    .. autoclass:: EdgeCode
        :members:
-       :undoc-members:
-       :show-inheritance:
-       
+
+Event
+-----
+
    .. autoclass:: Event
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+CommentMarker
+-------------
        
    .. autoclass:: CommentMarker
        :members:
-       :undoc-members:
-       :show-inheritance:
-       
+
+DescriptiveMarker
+-----------------
+
    .. autoclass:: DescriptiveMarker
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+GPITrigger
+----------
        
    .. autoclass:: GPITrigger
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TimecodeStream
+--------------
 
    .. autoclass:: TimecodeStream
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+TimecodeStream12M
+-----------------
        
    .. autoclass:: TimecodeStream12M
        :members:
-       :undoc-members:
-       :show-inheritance:
        
+Parameter
+---------
+
    .. autoclass:: Parameter
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+ConstantValue
+-------------
        
    .. autoclass:: ConstantValue
        :members:
-       :undoc-members:
-       :show-inheritance:
-       
+
+VaryingValue
+------------
+
    .. autoclass:: VaryingValue
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+ControlPoint
+------------
        
    .. autoclass:: ControlPoint
        :members:
-       :undoc-members:
-       :show-inheritance:
