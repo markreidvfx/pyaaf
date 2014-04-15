@@ -3,17 +3,19 @@
 
 .. automodule:: aaf.storage
 
+File
+----
    .. autoclass:: File
        :members:
-       :undoc-members:
-       :show-inheritance:
        
+       .. automethod:: __init__
+       
+Header
+------
    .. autoclass:: Header
        :members:
-       :undoc-members:
-       :show-inheritance:
        
+ContentStorage
+--------------   
    .. autoclass:: ContentStorage
        :members:
-       :undoc-members:
-       :show-inheritance:

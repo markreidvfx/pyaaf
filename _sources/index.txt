@@ -72,15 +72,18 @@ API Reference
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    
    api/storage
-   api/dictionary
    api/mob
    api/component
    api/essence
-   api/define
+   api/dictionary
+   api/util
    api/base
+   api/property
+   api/define
+   api/iterator
 
 Further Reading
 ===============

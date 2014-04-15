@@ -1,0 +1,736 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>aaf.iterator &mdash; pyaaf 0.7.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.7.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="pyaaf 0.7.1 documentation" href="../index.html" />
+    <link rel="prev" title="aaf.define" href="define.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="define.html" title="aaf.define"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">pyaaf 0.7.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="aaf-iterator">
+<h1><tt class="docutils literal"><span class="pre">aaf.iterator</span></tt><a class="headerlink" href="#aaf-iterator" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-aaf.iterator"></span><dl class="class">
+<dt id="aaf.iterator.BaseIterator">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">BaseIterator</tt><a class="headerlink" href="#aaf.iterator.BaseIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="attribute">
+<dt id="aaf.iterator.BaseIterator.root">
+<tt class="descname">root</tt><a class="headerlink" href="#aaf.iterator.BaseIterator.root" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.ClassDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">ClassDefIter</tt><a class="headerlink" href="#aaf.iterator.ClassDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.ClassDefIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ClassDefIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.ClassDefIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.ClassDefIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.ClassDefIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ClassDefIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.ClassDefIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ClassDefIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.CodecDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">CodecDefIter</tt><a class="headerlink" href="#aaf.iterator.CodecDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.CodecDefIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.CodecDefIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.CodecDefIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.CodecDefIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.CodecDefIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.CodecDefIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.CodecDefIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.CodecDefIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.CodecFlavourIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">CodecFlavourIter</tt><a class="headerlink" href="#aaf.iterator.CodecFlavourIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.ComponentIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">ComponentIter</tt><a class="headerlink" href="#aaf.iterator.ComponentIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.ComponentIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ComponentIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.ComponentIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.ComponentIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.ComponentIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ComponentIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.ComponentIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ComponentIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.ContainerDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">ContainerDefIter</tt><a class="headerlink" href="#aaf.iterator.ContainerDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.ControlPointIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">ControlPointIter</tt><a class="headerlink" href="#aaf.iterator.ControlPointIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.ControlPointIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ControlPointIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.ControlPointIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.ControlPointIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.ControlPointIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ControlPointIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.ControlPointIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ControlPointIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.DataDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">DataDefIter</tt><a class="headerlink" href="#aaf.iterator.DataDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.EssenceDataIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">EssenceDataIter</tt><a class="headerlink" href="#aaf.iterator.EssenceDataIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.EssenceDataIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.EssenceDataIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.EssenceDataIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.EssenceDataIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.EssenceDataIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.EssenceDataIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.EssenceDataIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.EssenceDataIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.FileDescriptorIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">FileDescriptorIter</tt><a class="headerlink" href="#aaf.iterator.FileDescriptorIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.FileEncodingIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">FileEncodingIter</tt><a class="headerlink" href="#aaf.iterator.FileEncodingIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.IdentificationIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">IdentificationIter</tt><a class="headerlink" href="#aaf.iterator.IdentificationIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.InterpolationDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">InterpolationDefIter</tt><a class="headerlink" href="#aaf.iterator.InterpolationDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.KLVDataIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">KLVDataIter</tt><a class="headerlink" href="#aaf.iterator.KLVDataIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.KLVDataDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">KLVDataDefIter</tt><a class="headerlink" href="#aaf.iterator.KLVDataDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.KLVDataDefIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.KLVDataDefIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.KLVDataDefIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.KLVDataDefIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.KLVDataDefIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.KLVDataDefIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.KLVDataDefIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.KLVDataDefIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.LoadedPluginIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">LoadedPluginIter</tt><a class="headerlink" href="#aaf.iterator.LoadedPluginIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.LoadedPluginIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.LoadedPluginIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.LoadedPluginIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.LoadedPluginIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.LoadedPluginIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.LoadedPluginIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.LoadedPluginIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.LoadedPluginIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.LocatorIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">LocatorIter</tt><a class="headerlink" href="#aaf.iterator.LocatorIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.MobSlotIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">MobSlotIter</tt><a class="headerlink" href="#aaf.iterator.MobSlotIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.MobSlotIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.MobSlotIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.MobSlotIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.MobSlotIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.MobSlotIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.MobSlotIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.MobSlotIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.MobSlotIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.MobIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">MobIter</tt><a class="headerlink" href="#aaf.iterator.MobIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.MobIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.MobIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.MobIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.MobIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.MobIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.MobIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.MobIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.MobIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.OperationDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">OperationDefIter</tt><a class="headerlink" href="#aaf.iterator.OperationDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.ParamDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">ParamDefIter</tt><a class="headerlink" href="#aaf.iterator.ParamDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.ParamIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">ParamIter</tt><a class="headerlink" href="#aaf.iterator.ParamIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.ParamIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ParamIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.ParamIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.ParamIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.ParamIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ParamIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.ParamIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.ParamIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.PluginDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">PluginDefIter</tt><a class="headerlink" href="#aaf.iterator.PluginDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.PluginDefIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PluginDefIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.PluginDefIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.PluginDefIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PluginDefIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PluginDefIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PluginDefIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PluginDefIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.PluginLocatorIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">PluginLocatorIter</tt><a class="headerlink" href="#aaf.iterator.PluginLocatorIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.PropIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">PropIter</tt><a class="headerlink" href="#aaf.iterator.PropIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.PropIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.PropIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.PropIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.PropItemIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">PropItemIter</tt><a class="headerlink" href="#aaf.iterator.PropItemIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.PropItemIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropItemIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.PropItemIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.PropItemIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropItemIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropItemIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropItemIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropItemIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.PropertyDefsIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">PropertyDefsIter</tt><a class="headerlink" href="#aaf.iterator.PropertyDefsIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.PropertyDefsIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropertyDefsIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.PropertyDefsIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.PropertyDefsIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropertyDefsIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropertyDefsIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropertyDefsIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropertyDefsIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.PropValueIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">PropValueIter</tt><a class="headerlink" href="#aaf.iterator.PropValueIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.PropValueIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropValueIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.PropValueIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.PropValueIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropValueIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropValueIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropValueIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropValueIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.PropValueResolveIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">PropValueResolveIter</tt><a class="headerlink" href="#aaf.iterator.PropValueResolveIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.PropValueResolveIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropValueResolveIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.PropValueResolveIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.PropValueResolveIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropValueResolveIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropValueResolveIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.PropValueResolveIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.PropValueResolveIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.RIFFChunkIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">RIFFChunkIter</tt><a class="headerlink" href="#aaf.iterator.RIFFChunkIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.SegmentIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">SegmentIter</tt><a class="headerlink" href="#aaf.iterator.SegmentIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.SegmentIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.SegmentIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.SegmentIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.SegmentIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.SegmentIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.SegmentIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.SegmentIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.SegmentIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.TaggedValueDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">TaggedValueDefIter</tt><a class="headerlink" href="#aaf.iterator.TaggedValueDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.TaggedValueIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">TaggedValueIter</tt><a class="headerlink" href="#aaf.iterator.TaggedValueIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.TaggedValueIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.TaggedValueIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.TaggedValueIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.TaggedValueIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.TaggedValueIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.TaggedValueIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.TaggedValueIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.TaggedValueIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.TypeDefIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">TypeDefIter</tt><a class="headerlink" href="#aaf.iterator.TypeDefIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.iterator.TypeDefIter.clone">
+<tt class="descname">clone</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.TypeDefIter.clone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.TypeDefIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.TypeDefIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.TypeDefIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.TypeDefIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.TypeDefIter.skip">
+<tt class="descname">skip</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.TypeDefIter.skip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="aaf.iterator.TypeDefStreamDataIter">
+<em class="property">class </em><tt class="descclassname">aaf.iterator.</tt><tt class="descname">TypeDefStreamDataIter</tt><a class="headerlink" href="#aaf.iterator.TypeDefStreamDataIter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#aaf.iterator.BaseIterator" title="aaf.iterator.BaseIterator"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.BaseIterator</span></tt></a></p>
+<dl class="attribute">
+<dt id="aaf.iterator.TypeDefStreamDataIter.next">
+<tt class="descname">next</tt><a class="headerlink" href="#aaf.iterator.TypeDefStreamDataIter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.next() -&gt; the next value, or raise StopIteration</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.iterator.TypeDefStreamDataIter.readsize">
+<tt class="descname">readsize</tt><a class="headerlink" href="#aaf.iterator.TypeDefStreamDataIter.readsize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.iterator.TypeDefStreamDataIter.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.iterator.TypeDefStreamDataIter.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="define.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">aaf.define</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api/iterator.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="define.html" title="aaf.define"
+             >previous</a> |</li>
+        <li><a href="../index.html">pyaaf 0.7.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Mark Reid.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="pyaaf 0.7.1 documentation" href="../index.html" />
-    <link rel="next" title="aaf.dictionary" href="dictionary.html" />
+    <link rel="next" title="aaf.mob" href="mob.html" />
     <link rel="prev" title="Welcome to pyaaf’s documentation!" href="../index.html" /> 
   </head>
   <body>
@@ -38,7 +38,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="dictionary.html" title="aaf.dictionary"
+          <a href="mob.html" title="aaf.mob"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../index.html" title="Welcome to pyaaf’s documentation!"
@@ -54,71 +54,175 @@
             
   <div class="section" id="module-aaf.storage">
 <span id="aaf-storage"></span><h1><tt class="docutils literal"><span class="pre">aaf.storage</span></tt><a class="headerlink" href="#module-aaf.storage" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<div class="section" id="file">
+<h2>File<a class="headerlink" href="#file" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="class">
 <dt id="aaf.storage.File">
-<em class="property">class </em><tt class="descclassname">aaf.storage.</tt><tt class="descname">File</tt><a class="headerlink" href="#aaf.storage.File" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">aaf.storage.</tt><tt class="descname">File</tt><big>(</big><em>path</em>, <em>mode = 'r'</em><big>)</big><a class="headerlink" href="#aaf.storage.File" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFBase" title="aaf.base.AAFBase"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFBase</span></tt></a></p>
+<p>AAF File Object. This is the entry point object for most of the API. 
+It is recommended to create this object with the <cite>aaf.open</cite> alias.
+Creating this object is designed to be like python&#8217;s native open function.</p>
+<p>For example. Opening existing AAF file readonly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">aaf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/path/to/aaf_file.aaf&quot;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Opening new AAF file overwriting existing one:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">aaf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/path/to/aaf_file.aaf&quot;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Opening existing AAF in read and write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">aaf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/path/to/aaf_file.aaf&quot;</span><span class="p">,</span> <span class="s">&#39;rw&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Opening New Transient in memory file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">aaf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Opening AAF formatted xml files is untested</p>
+</div>
+<dl class="method">
+<dt id="aaf.storage.File.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>path</em>, <em>mode = 'r'</em><big>)</big><a class="headerlink" href="#aaf.storage.File.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; AAF file path, set to <cite>None</cite> if in opening in transient mode.</li>
+<li><strong>mode</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Similar to python&#8217;s native open function modes.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>modes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">&quot;r&quot;</span></tt> readonly</li>
+<li><tt class="docutils literal"><span class="pre">&quot;w&quot;</span></tt> write</li>
+<li><tt class="docutils literal"><span class="pre">&quot;rw&quot;</span></tt> readonly or modify</li>
+<li><tt class="docutils literal"><span class="pre">&quot;t&quot;</span></tt> transient in memory file</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
 <dl class="method">
 <dt id="aaf.storage.File.close">
 <tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.File.close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Close the file. A closed file cannot be read or written any more.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="aaf.storage.File.create">
 <tt class="descname">create</tt><a class="headerlink" href="#aaf.storage.File.create" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>AAFObject Factory property.  Used for creating new AAFObjects.</p>
+<p>example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># create a empty aaf file.</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">aaf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/path/to/new_aaf_file.aaf&quot;</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+
+<span class="c"># use create factory to make a MasterMob.</span>
+<span class="n">mob</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">MasterMob</span><span class="p">()</span>
+
+<span class="c"># add MasterMob object to file.</span>
+<span class="n">f</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">add_mob</span><span class="p">(</span><span class="n">mob</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="aaf.storage.File.dictionary">
 <tt class="descname">dictionary</tt><a class="headerlink" href="#aaf.storage.File.dictionary" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><a class="reference internal" href="dictionary.html#aaf.dictionary.Dictionary" title="aaf.dictionary.Dictionary"><tt class="xref py py-class docutils literal"><span class="pre">aaf.dictionary.Dictionary</span></tt></a> for AAF file.  The dictionary property has DefinitionObject objects.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="aaf.storage.File.header">
 <tt class="descname">header</tt><a class="headerlink" href="#aaf.storage.File.header" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="aaf.storage.File.mode">
-<tt class="descname">mode</tt><a class="headerlink" href="#aaf.storage.File.mode" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><a class="reference internal" href="#aaf.storage.Header" title="aaf.storage.Header"><tt class="xref py py-class docutils literal"><span class="pre">Header</span></tt></a> object for AAF file.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.File.save">
-<tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.File.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save AAF file to disk. If not path and the mode is &#8216;rw&#8217; or &#8216;w&#8217; it will overwrite or modify
-the current file. If path is supplied a new file will be created, (Save Copy As).
-If the extension of the path is .xml a xml file will be saved.
-Note: If file mode is &#8216;t&#8217; or &#8216;r&#8217; and path is None, nothing will happen</p>
+<tt class="descname">save</tt><big>(</big><em>path = None</em><big>)</big><a class="headerlink" href="#aaf.storage.File.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save AAF file to disk. If path is <tt class="docutils literal"><span class="pre">None</span></tt> and the mode is <tt class="docutils literal"><span class="pre">&quot;rw&quot;</span></tt> or <tt class="docutils literal"><span class="pre">&quot;w&quot;</span></tt> it will overwrite or modify
+the current file. If path is supplied, a new file will be created, (Save Copy As).
+If the extension of the path is <tt class="docutils literal"><span class="pre">&quot;.xml&quot;</span></tt> a xml file will be saved.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<cite>str</cite> or <cite>None</cite>) &#8211; optional path to new aaf file.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If file mode is <tt class="docutils literal"><span class="pre">&quot;t&quot;</span></tt> or <tt class="docutils literal"><span class="pre">&quot;r&quot;</span></tt> and path is <tt class="docutils literal"><span class="pre">None</span></tt>, nothing will happen</p>
+</div>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="aaf.storage.File.storage">
 <tt class="descname">storage</tt><a class="headerlink" href="#aaf.storage.File.storage" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><a class="reference internal" href="#aaf.storage.ContentStorage" title="aaf.storage.ContentStorage"><tt class="xref py py-class docutils literal"><span class="pre">ContentStorage</span></tt></a> object for AAF File. This has the Mob and EssenceData objects.</p>
+</dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+</div></blockquote>
+</div>
+<div class="section" id="header">
+<h2>Header<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="class">
 <dt id="aaf.storage.Header">
 <em class="property">class </em><tt class="descclassname">aaf.storage.</tt><tt class="descname">Header</tt><a class="headerlink" href="#aaf.storage.Header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFObject" title="aaf.base.AAFObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFObject</span></tt></a></p>
+<p>Header object for AAF File. This object is mainly used to get the 
+<a class="reference internal" href="dictionary.html#aaf.dictionary.Dictionary" title="aaf.dictionary.Dictionary"><tt class="xref py py-class docutils literal"><span class="pre">aaf.dictionary.Dictionary</span></tt></a> and 
+<a class="reference internal" href="#aaf.storage.ContentStorage" title="aaf.storage.ContentStorage"><tt class="xref py py-class docutils literal"><span class="pre">ContentStorage</span></tt></a>  objects for the AAF file</p>
 <dl class="method">
 <dt id="aaf.storage.Header.dictionary">
 <tt class="descname">dictionary</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.Header.dictionary" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="dictionary.html#aaf.dictionary.Dictionary" title="aaf.dictionary.Dictionary"><tt class="xref py py-class docutils literal"><span class="pre">aaf.dictionary.Dictionary</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.Header.storage">
 <tt class="descname">storage</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.Header.storage" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#aaf.storage.ContentStorage" title="aaf.storage.ContentStorage"><tt class="xref py py-class docutils literal"><span class="pre">aaf.storage.ContentStorage</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+</div></blockquote>
+</div>
+<div class="section" id="contentstorage">
+<h2>ContentStorage<a class="headerlink" href="#contentstorage" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><dl class="class">
 <dt id="aaf.storage.ContentStorage">
 <em class="property">class </em><tt class="descclassname">aaf.storage.</tt><tt class="descname">ContentStorage</tt><a class="headerlink" href="#aaf.storage.ContentStorage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="base.html#aaf.base.AAFObject" title="aaf.base.AAFObject"><tt class="xref py py-class docutils literal"><span class="pre">aaf.base.AAFObject</span></tt></a></p>
+<p>This object has all Mobs and Essence Data in the file</p>
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.add_essence_data">
 <tt class="descname">add_essence_data</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.add_essence_data" title="Permalink to this definition">¶</a></dt>
@@ -126,39 +230,104 @@ Note: If file mode is &#8216;t&#8217; or &#8216;r&#8217; and path is None, nothi
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.add_mob">
-<tt class="descname">add_mob</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.add_mob" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">add_mob</tt><big>(</big><em>mob</em><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.add_mob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a <a class="reference internal" href="mob.html#aaf.mob.Mob" title="aaf.mob.Mob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.Mob</span></tt></a> object to ContentStorage</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mob</strong> (<a class="reference internal" href="mob.html#aaf.mob.Mob" title="aaf.mob.Mob"><em>aaf.mob.Mob</em></a>) &#8211; Mob object to add.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.composition_mobs">
 <tt class="descname">composition_mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.composition_mobs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a <a class="reference internal" href="iterator.html#aaf.iterator.MobIter" title="aaf.iterator.MobIter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.MobIter</span></tt></a> that iterates over all <a class="reference internal" href="mob.html#aaf.mob.CompositionMob" title="aaf.mob.CompositionMob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.CompositionMob</span></tt></a> objects in the AAF file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="iterator.html#aaf.iterator.MobIter" title="aaf.iterator.MobIter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.MobIter</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.count_mobs">
 <tt class="descname">count_mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.count_mobs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Total number of mobs in AAF File</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.essence_data">
 <tt class="descname">essence_data</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.essence_data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a <a class="reference internal" href="iterator.html#aaf.iterator.EssenceDataIter" title="aaf.iterator.EssenceDataIter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.EssenceDataIter</span></tt></a> that iterates over all 
+embedded <a class="reference internal" href="essence.html#aaf.essence.EssenceData" title="aaf.essence.EssenceData"><tt class="xref py py-class docutils literal"><span class="pre">aaf.essence.EssenceData</span></tt></a> in AAF file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="iterator.html#aaf.iterator.EssenceDataIter" title="aaf.iterator.EssenceDataIter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.EssenceDataIter</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.lookup_mob">
-<tt class="descname">lookup_mob</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.lookup_mob" title="Permalink to this definition">¶</a></dt>
-<dd><p>Looks up the Mob that matches the given mob id</p>
+<tt class="descname">lookup_mob</tt><big>(</big><em>mobID</em><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.lookup_mob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks up the Mob that matches the given mob id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mobID</strong> (<a class="reference internal" href="util.html#aaf.util.MobID" title="aaf.util.MobID"><tt class="xref py py-class docutils literal"><span class="pre">aaf.util.MobID</span></tt></a> or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; 9d of <a class="reference internal" href="mob.html#aaf.mob.Mob" title="aaf.mob.Mob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.Mob</span></tt></a> to lookup.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="mob.html#aaf.mob.Mob" title="aaf.mob.Mob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.Mob</span></tt></a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.master_mobs">
 <tt class="descname">master_mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.master_mobs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a <a class="reference internal" href="iterator.html#aaf.iterator.MobIter" title="aaf.iterator.MobIter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.MobIter</span></tt></a> that iterates over all <a class="reference internal" href="mob.html#aaf.mob.MasterMob" title="aaf.mob.MasterMob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.MasterMob</span></tt></a> objects in the AAF file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="iterator.html#aaf.iterator.MobIter" title="aaf.iterator.MobIter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.MobIter</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.mobs">
 <tt class="descname">mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.mobs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a <tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.MobIter`</span></tt> that iterates over all <a class="reference internal" href="mob.html#aaf.mob.Mob" title="aaf.mob.Mob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.Mob</span></tt></a> objects in the AAF file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="iterator.html#aaf.iterator.MobIter" title="aaf.iterator.MobIter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.MobIter</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.remove_essence_data">
@@ -167,16 +336,37 @@ Note: If file mode is &#8216;t&#8217; or &#8216;r&#8217; and path is None, nothi
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.remove_mob">
-<tt class="descname">remove_mob</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.remove_mob" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">remove_mob</tt><big>(</big><em>mob</em><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.remove_mob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a <a class="reference internal" href="mob.html#aaf.mob.Mob" title="aaf.mob.Mob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.Mob</span></tt></a> object from ContentStorage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mob</strong> (<a class="reference internal" href="mob.html#aaf.mob.Mob" title="aaf.mob.Mob"><em>aaf.mob.Mob</em></a>) &#8211; Mob object to remove.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.storage.ContentStorage.toplevel_mobs">
 <tt class="descname">toplevel_mobs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.storage.ContentStorage.toplevel_mobs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a <a class="reference internal" href="iterator.html#aaf.iterator.MobIter" title="aaf.iterator.MobIter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.MobIter</span></tt></a> that iterates over all <a class="reference internal" href="mob.html#aaf.mob.CompositionMob" title="aaf.mob.CompositionMob"><tt class="xref py py-class docutils literal"><span class="pre">aaf.mob.CompositionMob</span></tt></a> 
+objects in the AAF file with <tt class="docutils literal"><span class="pre">&quot;UsageType&quot;&quot;</span></tt> property set to <tt class="docutils literal"><span class="pre">&quot;Usage_TopLevel&quot;</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="iterator.html#aaf.iterator.MobIter" title="aaf.iterator.MobIter"><tt class="xref py py-class docutils literal"><span class="pre">aaf.iterator.MobIter</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
+</div></blockquote>
+</div>
 </div>
 
 
@@ -185,12 +375,22 @@ Note: If file mode is &#8216;t&#8217; or &#8216;r&#8217; and path is None, nothi
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">aaf.storage</span></tt></a><ul>
+<li><a class="reference internal" href="#file">File</a></li>
+<li><a class="reference internal" href="#header">Header</a></li>
+<li><a class="reference internal" href="#contentstorage">ContentStorage</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="../index.html"
                         title="previous chapter">Welcome to pyaaf&#8217;s documentation!</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="dictionary.html"
-                        title="next chapter"><tt class="docutils literal"><span class="pre">aaf.dictionary</span></tt></a></p>
+  <p class="topless"><a href="mob.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">aaf.mob</span></tt></a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/api/storage.txt"
@@ -223,7 +423,7 @@ Note: If file mode is &#8216;t&#8217; or &#8216;r&#8217; and path is None, nothi
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="dictionary.html" title="aaf.dictionary"
+          <a href="mob.html" title="aaf.mob"
              >next</a> |</li>
         <li class="right" >
           <a href="../index.html" title="Welcome to pyaaf’s documentation!"

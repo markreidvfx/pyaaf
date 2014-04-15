@@ -3,41 +3,59 @@
 
 .. automodule:: aaf.mob
 
+Mob
+---
+
    .. autoclass:: Mob
        :members:
-       :undoc-members:
-       :show-inheritance:
        
+MasterMob
+---------
+
    .. autoclass:: MasterMob
        :members:
-       :undoc-members:
-       :show-inheritance:
-       
+
+CompositionMob
+--------------
+
    .. autoclass:: CompositionMob
        :members:
-       :undoc-members:
-       :show-inheritance:
+       
+SourceMob
+---------
    
    .. autoclass:: SourceMob
        :members:
        :undoc-members:
        :show-inheritance:
        
+MobSlot
+------- 
+       
    .. autoclass:: MobSlot
        :members:
        :undoc-members:
        :show-inheritance:
-       
+
+TimelineMobSlot
+---------------
+
    .. autoclass:: TimelineMobSlot
        :members:
        :undoc-members:
        :show-inheritance:
        
+EventMobSlot
+------------
+       
    .. autoclass:: EventMobSlot
        :members:
        :undoc-members:
        :show-inheritance:
-       
+
+StaticMobSlot
+-------------
+
    .. autoclass:: StaticMobSlot
        :members:
        :undoc-members:
