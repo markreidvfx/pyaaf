@@ -462,7 +462,7 @@ std::map<std::string, std::pair< aafUID_t, std::string > > get_essenceformats_de
     MAP_ADD(kAAFResolutionID, operand.expUInt32)
     MAP_ADD(kAAFAudioSampleBits, operand.expInt32)
     MAP_ADD(kAAFMaxSampleBytes, ?operand.expUInt32)
-    MAP_ADD(kAAFSampleRate, ?operand.expUInt32)
+    MAP_ADD(kAAFSampleRate, operand.expRational) //guess
     MAP_ADD(kAAFSampleFormat, ?operand.expUInt32)
     MAP_ADD(kAAFNumChannels, operand.expUInt32)
     MAP_ADD(kAAFPadBytesPerRow, ?operand.expUInt32)

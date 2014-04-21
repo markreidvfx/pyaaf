@@ -91,16 +91,18 @@ def encode_dnxhd(size, bit_rate, pix_fmt, frame_rate, frames, name, iterlaced=Fa
     return outfile
 
 
-def generate_pcm_audio_mono(name, sample_rate = 48000, duration = 2):
+def generate_pcm_audio_mono(name, sample_rate = 48000, duration = 2, format='pcm'):
     
-    outfile = os.path.join(sandbox, '%s.pcm' % name)
+    outfile = os.path.join(sandbox, '%s.%s' % (name, format))
     
     #cmd = ['ffmpeg','-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t):cos(430*2*PI*t)::s=48000:d=10']
     
     #mono
     cmd = [FFMPEG_EXEC,'-y', '-f', 'lavfi', '-i', 'aevalsrc=sin(420*2*PI*t)::s=%d:d=%f' % (sample_rate, duration)]
     
-    cmd.extend([ '-f','s16le', '-acodec', 'pcm_s16le'])
+    if format == 'pcm':
+    
+        cmd.extend([ '-f','s16le', '-acodec', 'pcm_s16le'])
     
     cmd.extend([outfile])
     
