@@ -40,6 +40,7 @@ class TestEssenceAccess(unittest.TestCase):
     #NULL, testStandardCalls, kAAFCodecWAVE, kAAFDataDef_Sound, kAAFTrue)
     def test_audio_aaf_file(self):
         test_file = os.path.join(sandbox, "EssenceAccessWAVE.aaf")
+        export_file = os.path.join(sandbox, "EssenceAccessWAVE_export.wav")
         f = aaf.open(test_file, 'w')
         
         wave_audio_file_path = generate_pcm_audio_mono("EssenceAccessWAVE",sample_rate = 48000, duration = 2, format='wav')
@@ -53,6 +54,7 @@ class TestEssenceAccess(unittest.TestCase):
         bitsPerSample = wave_file.getsampwidth()
         numCh = wave_file.getnchannels()
         sampleRate = wave_file.getframerate()
+        audiosamplebits =  bitsPerSample * 8
         
         samples = wave_file.getnframes()
         
@@ -64,11 +66,9 @@ class TestEssenceAccess(unittest.TestCase):
             
         format = essence_access.get_emptyfileformat()
         
-        format['audiosamplebits'] = bitsPerSample * 8
+        format['audiosamplebits'] = audiosamplebits
         format['numchannels'] = numCh
         format['samplerate'] = sampleRate
-        
-        print format
         
         essence_access.set_fileformat(format)
         
@@ -79,8 +79,33 @@ class TestEssenceAccess(unittest.TestCase):
         
         essence_access.complete_write()
         
-
         f.save()
+        f.close()
+        
+        # now open file and verify data
+        
+        f = aaf.open(test_file, 'r')
+        
+        mob = f.storage.master_mobs()[0]
+        
+        essence_access = mob.open_essence(1)
+        
+        format = essence_access.get_fileformat()
+        
+        assert format['audiosamplebits'] == audiosamplebits
+        assert format['numchannels'] == numCh
+        assert format['samplerate'] == sampleRate
+        
+        data = essence_access.read(samples)
+        
+        export_wave = wave.open(export_file, 'w')
+        
+        export_wave.setsampwidth(audiosamplebits/8)
+        export_wave.setnchannels(numCh)
+        export_wave.setframerate(sampleRate)
+        export_wave.writeframes(data)
+        
+        #print data
 
 if __name__ == "__main__":
     unittest.main()

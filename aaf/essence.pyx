@@ -367,6 +367,18 @@ cdef class EssenceAccess(EssenceMultiAccess):
         
         error_check(self.ptr.PutFileFormat(format.ptr))
         
+    def get_fileformat(self, EssenceFormat template = None):
+        if not template:
+            template = self.get_fileformat_parameters()
+        
+        cdef EssenceFormat format = EssenceFormat.__new__(EssenceFormat)
+        
+        error_check(self.ptr.GetFileFormat(template.ptr, &format.ptr))
+        format.query_interface()
+        format.root = self.root
+        return format
+        
+        
     def get_fileformat_parameters(self):
         cdef EssenceFormat format = EssenceFormat.__new__(EssenceFormat)
         error_check(self.ptr.GetFileFormatParameterList(&format.ptr))
