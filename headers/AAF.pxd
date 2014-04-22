@@ -1045,7 +1045,8 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFEdgecode
     cdef GUID IID_IAAFEdgecode
     cdef cppclass IAAFEdgecode(IUnknown):
-        pass
+        HRESULT Initialize(aafLength_t length, aafEdgecode_t  edgecode)
+        HRESULT GetEdgecode(aafEdgecode_t *  edgecode)
         
     cdef aafUID_t AUID_AAFEvent
     cdef GUID IID_IAAFEvent

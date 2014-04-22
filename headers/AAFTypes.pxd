@@ -166,6 +166,12 @@ cdef extern from "AAFTypes.h":
         kAAFFt8MM
         kAAFFt65MM
         
+    ctypedef struct aafEdgecode_t:
+        aafFrameOffset_t   startFrame
+        aafFilmType_t   filmKind
+        aafEdgeType_t codeFormat
+        aafEdgecodeHeader_t header
+        
     # Operation Group Types
     
     ctypedef aafInt32 aafInterpKind_t
