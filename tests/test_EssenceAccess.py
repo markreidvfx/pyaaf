@@ -104,6 +104,7 @@ class TestEssenceAccess(unittest.TestCase):
         export_wave.setnchannels(numCh)
         export_wave.setframerate(sampleRate)
         export_wave.writeframes(data)
+        export_wave.close()
         
         #print data
 
