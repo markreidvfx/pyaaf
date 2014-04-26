@@ -7,6 +7,8 @@ from .util cimport error_check, query_interface, register_object, lookup_object,
 from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter, LoadedPluginIter
 from wstring cimport wstring,toWideString
 
+import traceback
+
 cdef class Dictionary(AAFObject):
     def __cinit__(self):
         self.iid = lib.IID_IAAFDictionary
@@ -195,6 +197,16 @@ cdef class CreateInstance(object):
         
         obj_type = lookup_object(name)
         
+        # first try and use init method all classes going forward should
+        # implement this instead of old depricated initialize method
+        
+        try:
+            return obj_type(self.dictionary.root, *args, **kwargs)
+        except:
+            pass
+        
+        # This code wiil get remove once __init__ is implemented on objects the
+        # curretnly have initialize
         
         dummy = obj_type.__new__(obj_type)
         

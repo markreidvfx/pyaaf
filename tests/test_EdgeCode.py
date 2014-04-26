@@ -33,6 +33,7 @@ class TestEdgeCode(unittest.TestCase):
         
         edge_code_header = 'BOB'
         
+        # manually initialize
         edgecode =  aaf.component.EdgeCode(f, header=edge_code_header)
         
         edgecode['Length'].value = 10
@@ -41,6 +42,14 @@ class TestEdgeCode(unittest.TestCase):
         
          
         assert edgecode.header == edge_code_header
+        
+        
+        # test create interface
+        edgecode2 = f.create.EdgeCode(100, header=edge_code_header)
+        
+        assert edgecode2.header == edge_code_header
+        assert edgecode2['Length'].value == 100
+        
         
         f.save()
         f.close()
