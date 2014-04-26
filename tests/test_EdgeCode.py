@@ -38,7 +38,7 @@ class TestEdgeCode(unittest.TestCase):
         
         edgecode['Length'].value = 10
         
-        mob.add_timeline_slot("0/1", edgecode, 0, "edgecode", 0)
+        mob.append_new_timeline_slot("0/1", edgecode, 0, "edgecode", 0)
         
          
         assert edgecode.header == edge_code_header

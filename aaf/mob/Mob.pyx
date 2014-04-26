@@ -66,10 +66,12 @@ cdef class Mob(AAFObject):
         
         return d.create.SourceClip(source_slot.media_kind, length, source_ref)
         
-    def add_timeline_slot(self, edit_rate, Segment seg, lib.aafSlotID_t slotID = 0, 
+    def append_new_timeline_slot(self, edit_rate, Segment seg, lib.aafSlotID_t slotID = 0, 
                             bytes slot_name = None, lib.aafPosition_t origin = 0):
         
-        """add_timeline_slot(edit_rate, seg, slotID = 0, slot_name = None, origin = 0)
+        """append_new_timeline_slot(edit_rate, seg, slotID = 0, slot_name = None, origin = 0)
+        
+        Creates a new :class:`TimelineMobSlot` with the given property values and appends it to the :class:`Mob`
         """
         
         if not slot_name:

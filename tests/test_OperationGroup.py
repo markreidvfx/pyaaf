@@ -98,7 +98,7 @@ class TestFile(unittest.TestCase):
             
             opgroup.render = source_clip
             
-            comp_mob.add_timeline_slot("2997/100", opgroup, i+1, "slot_%i" % i, 0)
+            comp_mob.append_new_timeline_slot("2997/100", opgroup, i+1, "slot_%i" % i, 0)
             
         f.storage.add_mob(comp_mob)
         

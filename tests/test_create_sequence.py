@@ -23,7 +23,7 @@ class TestCreateSequence(unittest.TestCase):
         comp_mob = f.create.CompositionMob()
         sequence = f.create.Sequence("picture")
         
-        timeline_slot = comp_mob.add_timeline_slot( video_rate, sequence)
+        timeline_slot = comp_mob.append_new_timeline_slot( video_rate, sequence)
         
         f.storage.add_mob(comp_mob)
         TAPE_LENGTH  = 1 * 60 *60 * 30

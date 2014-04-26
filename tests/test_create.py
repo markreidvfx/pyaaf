@@ -349,7 +349,7 @@ class TestFile(unittest.TestCase):
         video_slot_num = 1
         video_slot_name = "Video Timeline"
         
-        timeline_slot = comp.add_timeline_slot(edit_rate, video_sequence)
+        timeline_slot = comp.append_new_timeline_slot(edit_rate, video_sequence)
         
         
         rate = "25/1"
