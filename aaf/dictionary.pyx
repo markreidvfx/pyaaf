@@ -61,7 +61,7 @@ cdef class Dictionary(AAFObject):
             raise NotImplementedError("Not implented for def type")
         
     def lookup_datadef(self, bytes name):
-        cdef AUID auid = DataDefMap[name.lower()]
+        cdef AUID auid = DataDefMap[name.lower().replace("datadef_", "")]
         cdef DataDef definition =  DataDef.__new__(DataDef)
         error_check(self.ptr.LookupDataDef(auid.get_auid(), &definition.ptr ))
         definition.query_interface()
@@ -196,40 +196,8 @@ cdef class CreateInstance(object):
     def from_name(self, bytes name, *args, **kwargs):
         
         obj_type = lookup_object(name)
-        
-        # first try and use init method all classes going forward should
-        # implement this instead of old depricated initialize method
-        
-        try:
-            return obj_type(self.dictionary.root, *args, **kwargs)
-        except:
-            pass
-        
-        # This code wiil get remove once __init__ is implemented on objects the
-        # curretnly have initialize
-        
-        dummy = obj_type.__new__(obj_type)
-        
-        cdef AUID iid_obj = dummy.class_iid
-        cdef AUID auid_obj = dummy.class_auid
+        return obj_type(self.dictionary.root, *args, **kwargs)
 
-        cdef lib.GUID iid = iid_obj.get_iid()
-        cdef lib.aafUID_t auid = auid_obj.get_auid()
-        
-        cdef AAFBase unknown = AAFBase.__new__(AAFBase)
-                
-        error_check(self.dictionary.ptr.CreateInstance(auid, iid,
-                                         &unknown.base_ptr))
-        
-        cdef AAFBase obj = obj_type.__new__(obj_type)
-        
-        obj.query_interface(unknown)
-        obj.root = self.dictionary.root
-        
-        obj.initialize(*args, **kwargs)
-
-        return obj
-        
         
     def create_instance(self, *args, **kwargs):
         

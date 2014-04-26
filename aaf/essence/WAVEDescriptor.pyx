@@ -26,6 +26,9 @@ cdef class WAVEDescriptor(FileDescriptor):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-            
-    def initialize(self):
+    
+    def __init__(self, root):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+
         error_check(self.ptr.Initialize())

@@ -1,6 +1,6 @@
 
 cdef class TimelineMobSlot(MobSlot):
-    def __cinit__(self, AAFBase obj = None):
+    def __cinit__(self):
         self.iid = lib.IID_IAAFTimelineMobSlot
         self.auid = lib.AUID_AAFTimelineMobSlot
         self.ptr = NULL
@@ -19,9 +19,14 @@ cdef class TimelineMobSlot(MobSlot):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def __init__(self, root):
 
-    def initialize(self):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+
         error_check(self.ptr.Initialize())
+
     
     property origin:
     

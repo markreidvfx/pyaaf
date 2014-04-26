@@ -14,6 +14,7 @@ from .essence cimport EssenceDescriptor, Locator, EssenceAccess
 from .component cimport Segment
 from .define cimport DataDef, CodecDefMap, ContainerDefMap, PullDownKindMap, PulldownDirMap
 from .property cimport TaggedValue
+from .dictionary cimport Dictionary
 
 from wstring cimport wstring, wideToString, toWideString
 

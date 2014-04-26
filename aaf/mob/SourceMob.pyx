@@ -19,9 +19,15 @@ cdef class SourceMob(Mob):
     def __dealloc__(self):
         if self.src_ptr:
             self.src_ptr.Release()
-    
-    def initialize(self):
+            
+    def __init__(self, root, bytes name = None):
+        
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
         error_check(self.src_ptr.Initialize())
+        if name:
+            self.name = name
         
     def add_nil_ref(self, lib.aafSlotID_t slotID, lib.aafLength_t length, media_kind, edit_rate):
         """add_nil_ref(slotID, length, media_kind, edit_rate)

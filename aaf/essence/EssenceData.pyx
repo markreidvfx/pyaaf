@@ -19,8 +19,13 @@ cdef class EssenceData(AAFObject):
         if self.ptr:
             self.ptr.Release()
             
-    def initialize(self, SourceMob source_mob):
+    def __init__(self, root, SourceMob source_mob not None):
+        
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
         error_check(self.ptr.Initialize(source_mob.src_ptr))
+
     
     def read(self, lib.aafUInt32  bytes):
         

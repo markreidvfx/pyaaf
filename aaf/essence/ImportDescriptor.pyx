@@ -18,6 +18,9 @@ cdef class ImportDescriptor(PhysicalDescriptor):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def __init__(self, root):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
     
-    def initialize(self):
         error_check(self.ptr.Initialize())

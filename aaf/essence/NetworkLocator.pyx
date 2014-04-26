@@ -5,7 +5,7 @@ cdef class NetworkLocator(Locator):
         self.ptr = NULL
     
     cdef lib.IUnknown **get_ptr(self):
-        return <lib.IUnknown **> &self.loc_ptr
+        return <lib.IUnknown **> &self.ptr
     
     cdef query_interface(self, AAFBase obj = None):
         if obj is None:
@@ -19,5 +19,9 @@ cdef class NetworkLocator(Locator):
         if self.loc_ptr:
             self.loc_ptr.Release()
             
-    def initialize(self):
+    def __init__(self, root):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
         error_check(self.ptr.Initialize())
+        

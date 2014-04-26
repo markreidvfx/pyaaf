@@ -18,8 +18,12 @@ cdef class Pulldown(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-            
-    def initialize(self, media_kind):
+    
+    def __init__(self, root, bytes media_kind not None):
+        
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
         self.media_kind = media_kind
         
     property kind:

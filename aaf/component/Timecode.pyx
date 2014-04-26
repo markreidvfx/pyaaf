@@ -19,11 +19,12 @@ cdef class Timecode(Segment):
         if self.ptr:
             self.ptr.Release()
             
-    def initialize(self, lib.aafLength_t length, 
-                   lib.aafFrameOffset_t start_frame, 
-                   lib.aafUInt16 fps,
-                   drop = False):
-
+    def __init__(self, root, lib.aafLength_t length, lib.aafFrameOffset_t start_frame, 
+                   lib.aafUInt16 fps, drop = False):
+        
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
         cdef lib.aafTimecode_t timecode
         timecode.startFrame = start_frame
         if drop:

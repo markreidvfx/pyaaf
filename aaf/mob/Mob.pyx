@@ -62,7 +62,9 @@ cdef class Mob(AAFObject):
         if start_time is None:
             start_time = source_slot.origin
             
-        return d.create.SourceClip(self, slotID, length, start_time)
+        cdef SourceRef source_ref = SourceRef(self.mobID, slotID, start_time)
+        
+        return d.create.SourceClip(source_slot.media_kind, length, source_ref)
         
     def add_timeline_slot(self, edit_rate, Segment seg, lib.aafSlotID_t slotID = 0, 
                             bytes slot_name = None, lib.aafPosition_t origin = 0):

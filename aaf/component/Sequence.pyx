@@ -19,7 +19,11 @@ cdef class Sequence(Segment):
         if self.ptr:
             self.ptr.Release()
             
-    def initialize(self, bytes media_kind):
+    def __init__(self, root, bytes media_kind not None):
+        
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
         cdef DataDef media_datadef        
         media_datadef = self.dictionary().lookup_datadef(media_kind)
         error_check(self.ptr.Initialize(media_datadef.ptr))

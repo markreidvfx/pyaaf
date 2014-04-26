@@ -15,7 +15,7 @@ cdef class AAFBase(object):
         self.iid = lib.IID_IUnknown
         self.root = None
           
-    def __init__(self, AAFBase obj = None):
+    def __init__(self, *args, **kwargs):
         raise TypeError("%s cannot be instantiated from Python" %  self.__class__.__name__)
 
     cdef lib.IUnknown **get_ptr(self):
@@ -122,12 +122,6 @@ cdef class AAFObject(AAFBase):
         if self.has_key(key):
             return self[key].value
         return default
-    
-    def initialize(self, *args, **kwargs):
-        """
-        This method gets call when a new instance of a AAFObject is created.
-        """
-        raise NotImplementedError("initialize not implemented for object")
     
     def dictionary(self):
         """

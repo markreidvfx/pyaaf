@@ -3,7 +3,8 @@ cimport lib
 from .util cimport error_check, query_interface, register_object, aaf_integral, fraction_to_aafRational, aafRational_to_fraction, AUID
 from .base cimport AAFObject, AAFBase
 from .define cimport DataDef, DataDefMap, ContainerDef, CompressionDefMap, ContainerDefMap, CodecDefMap
-from .mob cimport SourceMob 
+from .mob cimport SourceMob
+from .dictionary cimport Dictionary
 
 from libcpp.map cimport map
 from libcpp.string cimport string

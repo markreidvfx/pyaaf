@@ -22,8 +22,11 @@ cdef class MasterMob(Mob):
             query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mastermob3_ptr, lib.IID_IAAFMasterMob3)
             
         Mob.query_interface(self, obj)
-    
-    def initialize(self, bytes name = None):
+        
+    def __init__(self, root, bytes name = None):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
         error_check(self.mastermob_ptr.Initialize())
         if name:
             self.name = name
