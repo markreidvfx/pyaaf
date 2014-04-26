@@ -181,7 +181,9 @@ cdef extern from "AAF.h":
         
     cdef GUID IID_IAAFTypeDefCharacter
     cdef cppclass IAAFTypeDefCharacter(IUnknown):
-        pass
+        HRESULT CreateValueFromCharacter(aafCharacter  character, IAAFPropertyValue ** ppCharacterValue)
+        HRESULT GetCharacter(IAAFPropertyValue * pCharacterValue, aafCharacter *  pCharacter)
+        HRESULT SetCharacter(IAAFPropertyValue * pCharacterValue, aafCharacter  character)
 
     cdef GUID IID_IAAFTypeDefEnum
     cdef cppclass IAAFTypeDefEnum(IUnknown):
