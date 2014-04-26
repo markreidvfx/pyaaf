@@ -1,7 +1,6 @@
-CYTHON_SRC = $(shell find aaf -name "*.pyx")
+CYTHON_SRC = $(shell find aaf -name "*.pyx" -maxdepth 1)
 C_SRC = $(CYTHON_SRC:%.pyx=build/cython/%.cpp)
 MOD_SOS = $(CYTHON_SRC:%.pyx=%.so)
-
 
 .PHONY: default build cythonize clean clean-all info test docs
 
@@ -12,7 +11,15 @@ info:
 
 cythonize: $(C_SRC)
 
-build/cython/%.cpp: %.pyx
+build/cython/aaf/%.cpp: aaf/%.pyx aaf/%.pxd aaf/%/*.pyx
+	@ mkdir -p $(shell dirname $@)
+	cython --cplus -I. -Iheaders -o $@ $<
+	
+build/cython/aaf/%.cpp: aaf/%.pyx aaf/%.pxd
+	@ mkdir -p $(shell dirname $@)
+	cython --cplus -I. -Iheaders -o $@ $<
+
+build/cython/aaf/%.cpp: aaf/%.pyx
 	@ mkdir -p $(shell dirname $@)
 	cython --cplus -I. -Iheaders -o $@ $<
 
