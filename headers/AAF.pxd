@@ -653,11 +653,19 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFEssenceDescriptor 
     cdef GUID IID_IAAFEssenceDescriptor
     cdef cppclass IAAFEssenceDescriptor(IUnknown):
+        HRESULT CountLocators(aafUInt32 *  pResult)
         HRESULT AppendLocator(IAAFLocator * pLocator)
+        HRESULT PrependLocator(IAAFLocator * pLocator)
+        HRESULT InsertLocatorAt(aafUInt32  index, IAAFLocator * pLocator)
+        HRESULT GetLocatorAt(aafUInt32  index, IAAFLocator ** ppLocator)
+        HRESULT RemoveLocatorAt(aafUInt32  index)
+        HRESULT GetLocators(IEnumAAFLocators ** ppEnum) 
         
     cdef aafUID_t AUID_AAFFileDescriptor
     cdef GUID IID_IAAFFileDescriptor
     cdef cppclass IAAFFileDescriptor(IUnknown):
+        HRESULT SetLength(aafLength_t  length)
+        HRESULT GetLength(aafLength_t *  pLength)
         HRESULT GetCodecDef(IAAFCodecDef **pCodecDef)
         HRESULT SetCodecDef(IAAFCodecDef * codecDef)
         HRESULT SetSampleRate(aafRational_t &rate)
@@ -669,23 +677,34 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFWAVEDescriptor
     cdef cppclass IAAFWAVEDescriptor(IUnknown):
         HRESULT Initialize()
+        HRESULT GetSummary(aafUInt32  size, aafUInt8 *  pSummary)
+        HRESULT GetSummaryBufferSize(aafUInt32 *  pSize)
+        HRESULT SetSummary(aafUInt32  size, aafUInt8 * pSummary)
         
     cdef aafUID_t AUID_AAFAIFCDescriptor
     cdef GUID IID_IAAFAIFCDescriptor
     cdef cppclass IAAFAIFCDescriptor(IUnknown):
         HRESULT Initialize()
-        HRESULT GetSummary(aafUInt32  size,
-                           aafUInt8  *pSummary
-        )
+        HRESULT GetSummary(aafUInt32  size, aafUInt8  *pSummary)
         HRESULT GetSummaryBufferSize(aafUInt32 *pSize)
-        HRESULT SetSummary(aafUInt32  size,
-                           aafUInt8  *pSummary
-        ) 
+        HRESULT SetSummary(aafUInt32  size, aafUInt8  *pSummary) 
 
     cdef aafUID_t AUID_AAFTIFFDescriptor
     cdef GUID IID_IAAFTIFFDescriptor
     cdef cppclass IAAFTIFFDescriptor(IUnknown):
-        pass
+        HRESULT SetIsUniform(aafBoolean_t  IsUniform)
+        HRESULT GetIsUniform(aafBoolean_t *  pIsUniform)
+        HRESULT SetIsContiguous(aafBoolean_t  IsContiguous)
+        HRESULT GetIsContiguous(aafBoolean_t *  pIsContiguous)
+        HRESULT SetLeadingLines(aafInt32  LeadingLines)
+        HRESULT GetLeadingLines(aafInt32 *  pLeadingLines)
+        HRESULT SetTrailingLines(aafInt32  TrailingLines)
+        HRESULT GetTrailingLines(aafInt32 *  pTrailingLines)
+        HRESULT SetJPEGTableID(aafInt32 JPEGTableID)
+        HRESULT GetJPEGTableID(aafInt32 * JPEGTableID)
+        HRESULT GetSummary(aafUInt32  size, aafUInt8  *pSummary)
+        HRESULT GetSummaryBufferSize(aafUInt32 *pSize)
+        HRESULT SetSummary(aafUInt32  size, aafUInt8  *pSummary) 
             
     cdef aafUID_t AUID_AAFDigitalImageDescriptor
     cdef GUID IID_IAAFDigitalImageDescriptor
@@ -741,6 +760,12 @@ cdef extern from "AAF.h":
         HRESULT GetImageAspectRatio(aafRational_t  *pImageAspectRatio)
         HRESULT SetImageAlignmentFactor(aafUInt32  ImageAlignmentFactor)
         HRESULT GetImageAlignmentFactor(aafUInt32 *pImageAlignmentFactor)
+    
+    cdef aafUID_t AUID_AAFDigitalImageDescriptor2
+    cdef GUID IID_IAAFDigitalImageDescriptor2
+    cdef cppclass IAAFDigitalImageDescriptor2(IUnknown):
+        HRESULT SetCompression(aafUID_t & compression)
+        HRESULT GetCompression(aafUID_t * compression)
 
     cdef aafUID_t AUID_AAFCDCIDescriptor
     cdef GUID IID_IAAFCDCIDescriptor
@@ -784,11 +809,6 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFImportDescriptor
     cdef cppclass IAAFImportDescriptor(IUnknown):
         HRESULT Initialize()
-        
-    cdef aafUID_t AUID_IAAFKLVData
-    cdef GUID IID_IAAFKLVData
-    cdef cppclass IAAFKLVData(IUnknown):
-        HRESULT Initialize(aafUID_t  key, aafUInt32  length, aafDataBuffer_t  pValue) 
         
     # Mobs
     
@@ -1195,7 +1215,12 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFDescriptiveMarker
     cdef GUID IID_IAAFDescriptiveMarker
     cdef cppclass IAAFDescriptiveMarker(IUnknown):
-        pass
+        HRESULT Initialize()
+        
+    cdef aafUID_t AUID_IAAFKLVData
+    cdef GUID IID_IAAFKLVData
+    cdef cppclass IAAFKLVData(IUnknown):
+        HRESULT Initialize(aafUID_t  key, aafUInt32  length, aafDataBuffer_t  pValue) 
         
     cdef cppclass IAAFProgress(IUnknown):
         pass
@@ -1283,6 +1308,13 @@ cdef extern from "AAF.h":
     cdef cppclass IEnumAAFLoadedPlugins(IUnknown):
         HRESULT Clone(IEnumAAFLoadedPlugins **ppEnum)
         HRESULT NextOne(aafUID_t*  ppAAFPluginID)
+        HRESULT Skip(aafUInt32  count)
+        HRESULT Reset()
+        
+    cdef GUID IID_IEnumAAFLocators
+    cdef cppclass IEnumAAFLocators(IUnknown):
+        HRESULT Clone(IEnumAAFLocators **ppEnum)
+        HRESULT NextOne(IAAFLocator ** ppLocator)
         HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
         
