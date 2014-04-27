@@ -207,6 +207,12 @@ cdef extern from "AAFTypes.h":
     ctypedef aafInt32 aafDefinitionCritType_t
     ctypedef aafInt32 aafIdentificationCritType_t
     
+    ctypedef aafInt32 eAAFByteOrder_t
+    
+    cdef enum eAAFByteOrder_e:
+        kAAFByteOrderLittle
+        kAAFByteOrderBig
+    
     cdef enum aafSearchTag_e:
         kAAFNoSearch
         kAAFByMobID

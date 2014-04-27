@@ -187,76 +187,65 @@ cdef extern from "AAF.h":
 
     cdef GUID IID_IAAFTypeDefEnum
     cdef cppclass IAAFTypeDefEnum(IUnknown):
+        HRESULT Initialize(
+            aafUID_constref  id,
+            IAAFTypeDef * pType,
+            aafInt64 *  pElementValues,
+            aafString_t *  pElementNames,
+            aafUInt32  numElems,
+            aafCharacter *pTypeName
+        )
+        HRESULT CreateValueFromName(aafCharacter *Name, IAAFPropertyValue ** ppPropVal)
         HRESULT GetElementType(IAAFTypeDef ** ppTypeDef)
+        HRESULT GetElementValue(aafUInt32  index, aafInt64 *  pOutValue)
+        HRESULT GetElementName(aafUInt32  index, aafCharacter *  pOutValue, aafUInt32  bufSize)
+        HRESULT GetElementNameBufLen(aafUInt32  index, aafUInt32 *  pLen)
         HRESULT CountElements(aafUInt32 *pCount)
-        HRESULT GetElementName(
-            aafUInt32  index,
-            aafCharacter *  pOutValue,
-            aafUInt32  bufSize
-        )
-        HRESULT GetElementNameBufLen(
-            aafUInt32  index,
-            aafUInt32 *  pLen
-        )
-        HRESULT GetElementValue(
-            aafUInt32  index,
-            aafInt64 *  pOutValue
-        )
-        HRESULT GetNameFromValue(
-            IAAFPropertyValue * pValue,
-            aafCharacter *  pName,
-            aafUInt32  bufSize
-        )
-        HRESULT GetNameBufLenFromValue(
-            IAAFPropertyValue * pValue,
-            aafUInt32 *  pLen
-        )
-        HRESULT SetIntegerValue(
-            IAAFPropertyValue *pPropValToSet,
-            aafInt64  valueIn
-        )
+        HRESULT GetNameFromValue(IAAFPropertyValue * pValue, aafCharacter *  pName, aafUInt32  bufSize)
+        HRESULT GetNameBufLenFromValue(IAAFPropertyValue * pValue, aafUInt32 *  pLen)
+        HRESULT GetNameFromInteger(aafInt64  value, aafCharacter *  pName, aafUInt32  bufSize)
+        HRESULT GetNameBufLenFromInteger(aafInt64  value, aafUInt32 *  pLen)
+        HRESULT GetIntegerValue(IAAFPropertyValue * pPropValIn, aafInt64 *  pValueOut)
+        HRESULT SetIntegerValue(IAAFPropertyValue *pPropValToSet, aafInt64  valueIn)
+        HRESULT RegisterSize(aafUInt32  enumSize)
 
     cdef GUID IID_IAAFTypeDefExtEnum
     cdef cppclass IAAFTypeDefExtEnum(IUnknown):
+        HRESULT Initialize(aafUID_constref  id, aafCharacter *pTypeName)
+        HRESULT CreateValueFromName(aafCharacter *Name, IAAFPropertyValue ** ppPropVal)
         HRESULT CountElements(aafUInt32 *pCount)
-        HRESULT GetElementName(
-            aafUInt32  index,
-            aafCharacter *  pOutValue,
-            aafUInt32  bufSize
-        )
-        HRESULT GetElementNameBufLen(
-            aafUInt32  index,
-            aafUInt32 *  pLen
-        )
-        HRESULT GetElementValue(
-            aafUInt32  index,
-            aafUID_t *  pOutValue
-        )
-        
-        HRESULT GetNameFromValue(
-            IAAFPropertyValue * pValue,
-            aafCharacter *  pName,
-            aafUInt32  bufSize
-        )
-        HRESULT GetNameBufLenFromValue(
-            IAAFPropertyValue * pValue,
-            aafUInt32 *  pLen
-        )
-        
+        HRESULT GetElementValue(aafUInt32  index, aafUID_t *  pOutValue)
+        HRESULT GetElementName(aafUInt32  index, aafCharacter *  pOutValue, aafUInt32  bufSize)
+        HRESULT GetElementNameBufLen(aafUInt32  index, aafUInt32 *  pLen)
+        HRESULT GetNameFromValue(IAAFPropertyValue * pValue, aafCharacter *  pName, aafUInt32  bufSize)
+        HRESULT GetNameBufLenFromValue(IAAFPropertyValue * pValue, aafUInt32 *  pLen)
+        HRESULT GetNameFromAUID(aafUID_constref  value, aafCharacter *  pName, aafUInt32  bufSize)
+        HRESULT GetNameBufLenFromAUID(aafUID_constref  value, aafUInt32 *  pLen)
+        HRESULT GetAUIDValue(IAAFPropertyValue * pPropValIn, aafUID_t *  pValueOut)
+        HRESULT SetAUIDValue(IAAFPropertyValue * pPropValToSet, aafUID_constref  valueIn)
+        HRESULT AppendElement(aafUID_constref  value, aafCharacter *pName)
 
     cdef GUID IID_IAAFTypeDefFixedArray
     cdef cppclass IAAFTypeDefFixedArray(IUnknown):
-        HRESULT GetElements(
-            IAAFPropertyValue *PSetPropVal,
-            IEnumAAFPropertyValues ** ppEnum
+        HRESULT Initialize(
+            aafUID_constref  id,
+            IAAFTypeDef * pTypeDef,
+            aafUInt32  nElements,
+            aafCharacter *pTypeName
         )
+        HRESULT GetType(IAAFTypeDef ** ppTypeDef)
+        HRESULT GetCount(aafUInt32 *  pCount)
+        HRESULT CreateValueFromValues(IAAFPropertyValue ** ppElementValues, aafUInt32  numElements, IAAFPropertyValue ** ppPropVal)
+        HRESULT CreateValueFromCArray(aafMemPtr_t  pInitData, aafUInt32  initDataSize, IAAFPropertyValue ** ppPropVal)
+        HRESULT GetElementValue(IAAFPropertyValue * pInPropVal, aafUInt32  index, IAAFPropertyValue ** ppOutPropVal)
+        HRESULT GetCArray(IAAFPropertyValue * pPropVal, aafMemPtr_t  pData, aafUInt32  dataSize)
+        HRESULT SetElementValue(IAAFPropertyValue * pPropVal, aafUInt32  index, IAAFPropertyValue * pMemberPropVal)
+        HRESULT SetCArray(IAAFPropertyValue * pPropVal, aafMemPtr_t  pData, aafUInt32  dataSize)
+        HRESULT GetElements(IAAFPropertyValue *PSetPropVal, IEnumAAFPropertyValues ** ppEnum)
 
     cdef GUID IID_IAAFTypeDefIndirect
     cdef cppclass IAAFTypeDefIndirect(IUnknown):
-        HRESULT CreateValueFromActualValue(
-            IAAFPropertyValue * pActualValue,
-            IAAFPropertyValue ** ppIndirectPropertyValue
-        )
+        HRESULT CreateValueFromActualValue(IAAFPropertyValue * pActualValue, IAAFPropertyValue ** ppIndirectPropertyValue)
         HRESULT CreateValueFromActualData(
             IAAFTypeDef * pActualType,
             aafMemPtr_t  pInitData,
@@ -270,58 +259,59 @@ cdef extern from "AAF.h":
 
     cdef GUID IID_IAAFTypeDefInt
     cdef cppclass IAAFTypeDefInt(IUnknown):
+        HRESULT Initialize(
+            aafUID_constref  id,
+            aafUInt8  intSize,
+            aafBoolean_t  isSigned,
+            aafCharacter *pTypeName
+        )
+        HRESULT CreateValue(aafMemPtr_t  pVal, aafUInt32  valSize, IAAFPropertyValue ** ppPropVal)
+        HRESULT GetInteger(IAAFPropertyValue *pPropVal, aafMemPtr_t  pVal, aafUInt32 valSize)
+        HRESULT SetInteger(IAAFPropertyValue * pPropVal, aafMemPtr_t  pVal, aafUInt32  valSize)
         HRESULT GetSize(aafUInt32 *pSize)
         HRESULT IsSigned(aafBoolean_t *pSigned)
-        HRESULT GetInteger(
-            IAAFPropertyValue *pPropVal,
-            aafMemPtr_t  pVal,
-            aafUInt32 valSize
-        )
-        HRESULT SetInteger(
-            IAAFPropertyValue * pPropVal,
-            aafMemPtr_t  pVal,
-            aafUInt32  valSize
-        )
+
 
     cdef GUID IID_IAAFTypeDefObjectRef
     cdef cppclass IAAFTypeDefObjectRef(IUnknown):
         HRESULT GetObjectType(IAAFClassDef ** ppObjType)
-        HRESULT GetObject(
-            IAAFPropertyValue * pPropVal,
-            GUID iid,
-            IUnknown ** ppObject
-        )
+        HRESULT CreateValue(IUnknown * pObj, IAAFPropertyValue ** ppPropVal)
+        HRESULT GetObject(IAAFPropertyValue * pPropVal, GUID iid, IUnknown ** ppObject)
+        HRESULT SetObject(IAAFPropertyValue * pPropVal, IUnknown * pObject)
 
     cdef GUID IID_IAAFTypeDefOpaque
     cdef cppclass IAAFTypeDefOpaque(IUnknown):
-        pass
+        HRESULT GetActualTypeID(IAAFPropertyValue * pOpaquePropertyValue, aafUID_t *  pActualTypeID)
+        HRESULT GetHandle(
+            IAAFPropertyValue * pPropVal,
+            aafUInt32  handleSize,
+            aafDataBuffer_t  pHandle,
+            aafUInt32*  bytesRead
+        )
+        HRESULT GetHandleBufLen(IAAFPropertyValue * pPropVal, aafUInt32 *  pLen)
+        HRESULT SetHandle(IAAFPropertyValue * pPropVal, aafUInt32  handleSize, aafDataBuffer_t  pHandle)
+        HRESULT CreateValueFromHandle(aafMemPtr_t  pInitData, aafUInt32  initDataSize, IAAFPropertyValue ** ppOpaquePropertyValue)
 
     cdef GUID IID_IAAFTypeDefRecord
     cdef cppclass IAAFTypeDefRecord(IUnknown):
+        HRESULT Initialize(
+            aafUID_constref  id,
+            IAAFTypeDef ** ppMemberTypes,
+            aafString_t *  pMemberNames,
+            aafUInt32  numMembers,
+            aafCharacter *pTypeName
+        )
+        HRESULT GetMemberType(aafUInt32  index, IAAFTypeDef **ppTypeDef)
+        HRESULT GetMemberName(aafUInt32  index, aafCharacter *  pName, aafUInt32  bufSize)
+        HRESULT GetMemberNameBufLen(aafUInt32  index, aafUInt32 *pLen)
+        HRESULT CreateValueFromValues(IAAFPropertyValue ** pMemberValues, aafUInt32  numMembers, IAAFPropertyValue ** ppPropVal)
+        HRESULT CreateValueFromStruct(aafMemPtr_t  pInitData, aafUInt32  initDataSize, IAAFPropertyValue ** ppPropVal)
+        HRESULT GetValue(IAAFPropertyValue * pInPropVal, aafUInt32  index, IAAFPropertyValue **ppOutPropVal)
+        HRESULT GetStruct(IAAFPropertyValue * pPropVal, aafMemPtr_t  pData, aafUInt32  dataSize)
+        HRESULT SetValue(IAAFPropertyValue * pPropVal, aafUInt32  index, IAAFPropertyValue * pMemberPropVal)
+        HRESULT SetStruct(IAAFPropertyValue * pPropVal, aafMemPtr_t  pData, aafUInt32  dataSize)
         HRESULT GetCount(aafUInt32 *pCount)
-        HRESULT GetMemberType(
-            aafUInt32  index,
-            IAAFTypeDef **ppTypeDef
-        )
-        HRESULT GetMemberName(
-            aafUInt32  index,
-            aafCharacter *  pName,
-            aafUInt32  bufSize
-        )
-        HRESULT GetMemberNameBufLen(
-            aafUInt32  index,
-            aafUInt32 *pLen
-        )
-        HRESULT GetValue(
-            IAAFPropertyValue * pInPropVal,
-            aafUInt32  index,
-            IAAFPropertyValue **ppOutPropVal
-        )
-        HRESULT SetValue(
-            IAAFPropertyValue * pPropVal,
-            aafUInt32  index,
-            IAAFPropertyValue * pMemberPropVal
-        )
+        HRESULT RegisterMembers(aafUInt32 *  pOffsets, aafUInt32  numMembers, aafUInt32  structSize)
         
     cdef GUID IID_IAAFTypeDefRename
     cdef cppclass IAAFTypeDefRename(IUnknown):
@@ -332,53 +322,80 @@ cdef extern from "AAF.h":
 
     cdef GUID IID_IAAFTypeDefSet
     cdef cppclass IAAFTypeDefSet(IUnknown):
+        HRESULT Initialize(aafUID_constref  id, IAAFTypeDef * pTypeDef, aafCharacter * pTypeName)
+        HRESULT GetElementType(IAAFTypeDef ** ppTypeDef)
         HRESULT GetElements(
             IAAFPropertyValue *PSetPropVal,
             IEnumAAFPropertyValues ** ppEnum
         )
-
+        HRESULT AddElement(IAAFPropertyValue * pSetPropertyValue, IAAFPropertyValue * pElementPropertyValue)
+        HRESULT RemoveElement(IAAFPropertyValue * pSetPropertyValue, IAAFPropertyValue * pElementPropertyValue)
+        HRESULT ContainsElement(
+            IAAFPropertyValue * pSetPropertyValue,
+            IAAFPropertyValue * pElementPropertyValue,
+            aafBoolean_t*  pContainsElement
+        )
+        HRESULT GetCount(IAAFPropertyValue * pSetPropertyValue, aafUInt32 *  pCount)
+        HRESULT CreateKey(aafDataBuffer_t  pKeyPtr, aafUInt32  length, IAAFPropertyValue ** ppKey)
+        HRESULT LookupElement(
+            IAAFPropertyValue * pSetPropertyValue,
+            IAAFPropertyValue * pKey,
+            IAAFPropertyValue ** ppElementPropertyValue
+        )
+        HRESULT ContainsKey(
+            IAAFPropertyValue * pSetPropertyValue,
+            IAAFPropertyValue * pKey,
+            aafBoolean_t*  pContainsKey
+        )
+        
     cdef GUID IID_IAAFTypeDefStream
     cdef cppclass IAAFTypeDefStream(IUnknown):
-        HRESULT GetSize(
-            IAAFPropertyValue * pStreamPropertyValue,
-            aafInt64 *  pSize
-        )
+        HRESULT GetSize(IAAFPropertyValue * pStreamPropertyValue, aafInt64 *  pSize)
+        HRESULT SetSize(IAAFPropertyValue * pStreamPropertyValue, aafInt64  newSize)
         HRESULT Read(
             IAAFPropertyValue * pStreamPropertyValue,
             aafUInt32  dataSize,
             aafMemPtr_t  pData,
             aafUInt32 *  bytesRead
         )
-        HRESULT GetPosition(
+        HRESULT Write(IAAFPropertyValue * pStreamPropertyValue, aafUInt32  dataSize, aafMemPtr_t  pData)
+        HRESULT GetPosition(IAAFPropertyValue * pStreamPropertyValue, aafInt64 *  pPosition)
+        HRESULT SetPosition(IAAFPropertyValue * pStreamPropertyValue, aafInt64  newPosition)
+        HRESULT Append(IAAFPropertyValue * pStreamPropertyValue, aafUInt32  dataSize, aafMemPtr_t  pData)
+        HRESULT HasStoredByteOrder(IAAFPropertyValue * pStreamPropertyValue, aafBoolean_t *  pHasByteOrder)
+        HRESULT GetStoredByteOrder(IAAFPropertyValue * pStreamPropertyValue, eAAFByteOrder_t *  pByteOrder)
+        HRESULT SetStoredByteOrder(IAAFPropertyValue * pStreamPropertyValue, eAAFByteOrder_t  byteOrder)
+        HRESULT ClearStoredByteOrder(IAAFPropertyValue * pStreamPropertyValue)
+        HRESULT ReadElements(
             IAAFPropertyValue * pStreamPropertyValue,
-            aafInt64 *  pPosition
+            IAAFTypeDef * pElementType,
+            aafUInt32  dataSize,
+            aafMemPtr_t  pData,
+            aafUInt32 *  pBytesRead
         )
-        HRESULT SetPosition(
+        HRESULT WriteElements(
             IAAFPropertyValue * pStreamPropertyValue,
-        aafInt64  newPosition
+            IAAFTypeDef * pElementType,
+            aafUInt32  dataSize,
+            aafMemPtr_t  pData
         )
+        AppendElements(
+            IAAFPropertyValue * pStreamPropertyValue,
+            IAAFTypeDef * pElementType,
+            aafUInt32  dataSize,
+            aafMemPtr_t  pData
+        )
+        
     cdef GUID IID_IAAFTypeDefString
     cdef cppclass IAAFTypeDefString(IUnknown):
-        HRESULT CreateValueFromCString(
-        aafMemPtr_t  pInitData,
-        aafUInt32  initDataSize,
-        IAAFPropertyValue ** ppPropVal
-        )
-        HRESULT SetCString(
-            IAAFPropertyValue * pPropVal,
-            aafMemPtr_t  pData,
-            aafUInt32  dataSize
-        )
-        HRESULT GetType( IAAFTypeDef ** ppTypeDef)
-        HRESULT GetCount(
-            IAAFPropertyValue *pPropVal,
-            aafUInt32 * pCount
-        )
-        HRESULT GetElements(
-            IAAFPropertyValue *pPropVal,
-            aafMemPtr_t  pBuffer,
-            aafUInt32  bufferSize,
-        )
+        HRESULT Initialize(aafUID_constref  id, IAAFTypeDef * pTypeDef, aafCharacter *pTypeName)
+        HRESULT GetType(IAAFTypeDef ** ppTypeDef)
+        HRESULT GetCount(IAAFPropertyValue * pPropVal, aafUInt32 *  pCount)
+        HRESULT CreateValueFromCString(aafMemPtr_t  pInitData, aafUInt32  initDataSize, IAAFPropertyValue ** ppPropVal)
+        HRESULT SetCString(IAAFPropertyValue * pPropVal, aafMemPtr_t  pData, aafUInt32  dataSize)
+        HRESULT AppendElements(IAAFPropertyValue * pInPropVal, aafMemPtr_t  pElements)
+        HRESULT GetElements(IAAFPropertyValue *pPropVal, aafMemPtr_t  pBuffer, aafUInt32  bufferSize)
+        
 
     cdef GUID IID_IAAFTypeDefStrongObjRef
     cdef cppclass IAAFTypeDefStrongObjRef(IUnknown):
