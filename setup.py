@@ -118,11 +118,12 @@ class cythonize_command(Command):
         pass
     def run(self):
         dest_dir = os.path.join(build_dir, 'aaf')
-        for dirname, dirnames, filenames in os.walk('aaf'):
+        for dirname, dirnames, filenames in os.walk('aaf', topdown=True):
             for filename in filenames:
                 if filename.startswith('.') or os.path.splitext(filename)[1] != '.pyx':
                     continue
                 self.cythonize(os.path.join(dirname, filename))
+            break
         
 def get_com_api(debug=True):
     if sys.platform.startswith("win"):
