@@ -28,6 +28,35 @@ cdef class TypeDefInt(TypeDef):
         error_check(self.ptr.IsSigned(&sign))
         return bool(sign)
     
+    def create_value(self, value):
+        cdef lib.aafUInt32 size = self.size()
+        
+        cdef PropertyValue p_value = PropertyValue.__new__(PropertyValue)
+        
+        if self.is_signed():
+            if sizeof(lib.aafInt8) == size:
+                create_int_value[lib.aafInt8](self, p_value, value)
+            elif sizeof(lib.aafInt16) == size:
+                create_int_value[lib.aafInt16](self, p_value, value)
+            elif sizeof(lib.aafInt32) == size:
+                create_int_value[lib.aafInt32](self, p_value, value)
+            else:
+                create_int_value[lib.aafInt64](self, p_value, value)
+        else:
+            if sizeof(lib.aafUInt8) == size:
+                create_int_value[lib.aafUInt8](self, p_value, value)
+            elif sizeof(lib.aafUInt16) == size:
+                create_int_value[lib.aafUInt16](self, p_value, value)
+            elif sizeof(lib.aafUInt32) == size:
+                create_int_value[lib.aafUInt32](self, p_value, value)
+            else:
+                create_int_value[lib.aafUInt64](self, p_value, value)
+        
+        p_value.query_interface()
+        p_value.root = self.root
+        
+        return p_value
+
     def set_value(self, PropertyValue p_value, value):
         
         cdef lib.aafUInt32 size = self.size()
@@ -73,6 +102,9 @@ cdef class TypeDefInt(TypeDef):
                 return get_int[lib.aafUInt32](self, p_value, 0)
             else:
                 return get_int[lib.aafUInt64](self, p_value, 0)
+            
+cdef aaf_integral create_int_value(TypeDefInt typdef, PropertyValue value, aaf_integral i):
+    error_check(typdef.ptr.CreateValue( <lib.aafMemPtr_t>&i, sizeof(aaf_integral), &value.ptr))
             
 cdef aaf_integral get_int(TypeDefInt typdef, PropertyValue value,aaf_integral i):
     error_check(typdef.ptr.GetInteger(value.ptr, 

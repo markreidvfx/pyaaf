@@ -51,6 +51,9 @@ class TestEdgeCode(unittest.TestCase):
         assert edgecode2['Length'].value == 100
         
         
+        edgecode.header = "BOB2"
+
+        
         f.save()
         f.close()
         
@@ -61,7 +64,7 @@ class TestEdgeCode(unittest.TestCase):
         
         edgecode =  mob.slots()[0].segment
         
-        assert edgecode.header == edge_code_header
+        assert edgecode.header == "BOB2"
         
         
         
