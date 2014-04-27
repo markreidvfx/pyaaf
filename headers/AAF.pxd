@@ -785,6 +785,11 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFImportDescriptor(IUnknown):
         HRESULT Initialize()
         
+    cdef aafUID_t AUID_IAAFKLVData
+    cdef GUID IID_IAAFKLVData
+    cdef cppclass IAAFKLVData(IUnknown):
+        HRESULT Initialize(aafUID_t  key, aafUInt32  length, aafDataBuffer_t  pValue) 
+        
     # Mobs
     
     cdef aafUID_t AUID_AAFMob
@@ -1002,23 +1007,42 @@ cdef extern from "AAF.h":
         HRESULT GetLength(aafLength_t * pLength)
         HRESULT GetDataDef(IAAFDataDef ** ppDatadef)
         HRESULT SetDataDef(IAAFDataDef * pDataDef)
+        HRESULT AppendKLVData(IAAFKLVData * pData)
+        HRESULT CountKLVData(aafUInt32 *  pNumData)
+        HRESULT GetKLVData(IEnumAAFKLVData ** ppEnum)
+        HRESULT RemoveKLVData(IAAFKLVData * pData)
         
     cdef aafUID_t AUID_AAFSegment
     cdef GUID IID_IAAFSegment
     cdef cppclass IAAFSegment(IUnknown):
-        pass
+        HRESULT SegmentOffsetToTC(aafPosition_t *  pOffset, aafTimecode_t *  pTimecode)
+        HRESULT SegmentTCToOffset(aafTimecode_t *  pTimecode, aafRational_t *  pEditRate, aafFrameOffset_t *  pOffset)
         
     cdef aafUID_t AUID_AAFTransition
     cdef GUID IID_IAAFTransition
     cdef cppclass IAAFTransition(IUnknown):
+        HRESULT Initialize(
+            IAAFDataDef * pDataDef,
+            aafLength_t  length,
+            aafPosition_t  cutPoint,
+            IAAFOperationGroup * op
+        )
         HRESULT GetCutPoint(aafPosition_t *cutPoint)
+        HRESULT GetOperationGroup(IAAFOperationGroup ** groupObj)
+        HRESULT SetCutPoint(aafPosition_t  cutPoint)
+        HRESULT SetOperationGroup(IAAFOperationGroup * opgroup)
         
     cdef aafUID_t AUID_AAFSequence
     cdef GUID IID_IAAFSequence
     cdef cppclass IAAFSequence(IUnknown):
         HRESULT Initialize(IAAFDataDef * pDataDef)
-        HRESULT GetComponents(IEnumAAFComponents ** ppEnum)
         HRESULT AppendComponent(IAAFComponent * pComponent)
+        HRESULT PrependComponent(IAAFComponent * pComponent)
+        HRESULT InsertComponentAt(aafUInt32  index, IAAFComponent * pComponent)
+        HRESULT GetComponentAt(aafUInt32  index, IAAFComponent ** ppComponent)
+        HRESULT RemoveComponentAt(aafUInt32  index)
+        HRESULT CountComponents(aafUInt32 *  pResult)
+        HRESULT GetComponents(IEnumAAFComponents ** ppEnum)
         
     cdef aafUID_t AUID_AAFTimecode
     cdef GUID IID_IAAFTimecode
@@ -1027,13 +1051,13 @@ cdef extern from "AAF.h":
             aafLength_t  length,
             aafTimecode_t*  pTimecode
         )
+        HRESULT GetTimecode(aafTimecode_t *  pTimecode)
+        HRESULT SetTimecode(aafTimecode_t *  timecode)
         
     cdef aafUID_t AUID_AAFFiller
     cdef GUID IID_IAAFFiller
     cdef cppclass IAAFFiller(IUnknown):
-        HRESULT Initialize(IAAFDataDef * pDataDef,
-                           aafLength_t  length
-       )
+        HRESULT Initialize(IAAFDataDef * pDataDef, aafLength_t  length)
         
     cdef aafUID_t AUID_AAFPulldown
     cdef GUID IID_IAAFPulldown
@@ -1050,7 +1074,10 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFSourceReference
     cdef GUID IID_IAAFSourceReference
     cdef cppclass IAAFSourceReference(IUnknown):
-        pass
+        HRESULT GetSourceID(aafMobID_t *  pSourceID)
+        HRESULT SetSourceID(aafMobID_t & sourceID)
+        HRESULT GetSourceMobSlotID(aafSlotID_t *  pMobSlotID)
+        HRESULT SetSourceMobSlotID(aafSlotID_t   mobSlotID)
         
     cdef aafUID_t AUID_AAFSourceClip
     cdef GUID IID_IAAFSourceClip
@@ -1060,42 +1087,79 @@ cdef extern from "AAF.h":
             aafLength_t&  length,
             aafSourceRef_t  sourceRef
         )
+        HRESULT GetFade(
+            aafLength_t *  pFadeInLen,
+            aafFadeType_t *  pFadeInType,
+            aafBoolean_t *  pFadeInPresent,
+            aafLength_t *  pFadeOutLen,
+            aafFadeType_t *  pFadeOutType,
+            aafBoolean_t *  pFadeOutPresent
+        )
         HRESULT ResolveRef(IAAFMob ** ppMob)
+        HRESULT GetSourceReference(aafSourceRef_t *  pSourceRef)
+        HRESULT SetFade(
+            aafInt32  fadeInLen,
+            aafFadeType_t  fadeInType,
+            aafInt32  fadeOutLen,
+            aafFadeType_t  fadeOutType
+        )
+        HRESULT SetSourceReference(aafSourceRef_t  sourceRef) 
 
     cdef aafUID_t AUID_AAFOperationGroup
     cdef GUID IID_IAAFOperationGroup
     cdef cppclass IAAFOperationGroup(IUnknown):
         HRESULT Initialize(IAAFDataDef * pDataDef, aafLength_t  length, IAAFOperationDef * operationDef)
-        HRESULT GetRender(IAAFSourceReference ** ppSourceRef)
-        HRESULT SetRender(IAAFSourceReference * pSourceRef)
-        HRESULT CountSourceSegments(aafUInt32 *  pResult)
-        HRESULT GetInputSegmentAt(
-            aafUInt32  index,
-            IAAFSegment ** ppInputSegment
-        )
         HRESULT GetOperationDefinition(IAAFOperationDef **ppOperationDef)
-        HRESULT GetParameters(IEnumAAFParameters **ppEnum)
+        HRESULT SetOperationDefinition(IAAFOperationDef * pOperationDef)
+        HRESULT GetRender(IAAFSourceReference ** ppSourceRef)
+        HRESULT IsATimeWarp(aafBoolean_t *  pIsTimeWarp)
+        HRESULT GetBypassOverride(aafUInt32 *  pBypassOverride)
+        HRESULT CountSourceSegments(aafUInt32 *  pResult)
+        HRESULT IsValidTranOperation(aafBoolean_t *  pValidTransition)
+        HRESULT CountParameters(aafUInt32 *  pResult)
         HRESULT AddParameter(IAAFParameter * pParameter)
+        HRESULT AppendInputSegment(IAAFSegment * pSegment)
+        HRESULT PrependInputSegment(IAAFSegment * pSegment)
+        HRESULT InsertInputSegmentAt(aafUInt32  index, IAAFSegment * pSegment)
+        HRESULT SetRender(IAAFSourceReference * pSourceRef)
+        HRESULT SetBypassOverride(aafUInt32  bypassOverride)
+        HRESULT GetParameters(IEnumAAFParameters **ppEnum) 
+        HRESULT LookupParameter(aafUID_t & argID, IAAFParameter ** ppParameter)
+        HRESULT GetInputSegmentAt(aafUInt32  index, IAAFSegment ** ppInputSegment)
+        HRESULT RemoveInputSegmentAt(aafUInt32  index)
+        
+        
 
     cdef aafUID_t AUID_AAFNestedScope
     cdef GUID IID_IAAFNestedScope
     cdef cppclass IAAFNestedScope(IUnknown):
+        HRESULT AppendSegment(IAAFSegment * pSegment)
+        HRESULT PrependSegment(IAAFSegment * pSegment)
+        HRESULT InsertSegmentAt(aafUInt32  index, IAAFSegment * pSegment)
+        HRESULT RemoveSegmentAt(aafUInt32  index)
+        HRESULT CountSegments(aafUInt32 *  pResult)
+        HRESULT GetSegmentAt(aafUInt32  index, IAAFSegment ** ppSegment)
         HRESULT GetSegments(IEnumAAFSegments ** ppEnum)
         
     cdef aafUID_t AUID_AAFScopeReference
     cdef GUID IID_IAAFScopeReference
     cdef cppclass IAAFScopeReference(IUnknown):
-        pass
+        HRESULT Create(aafUInt32  RelativeScope, aafUInt32  RelativeSlot)
+        HRESULT Initialize(IAAFDataDef * pDataDef, aafUInt32  RelativeScope, aafUInt32  RelativeSlot)
+        HRESULT GetRelativeScope(aafUInt32 *  pnRelativeScope)
+        HRESULT GetRelativeSlot(aafUInt32 *  pnRelativeSlot)
     
     cdef aafUID_t AUID_AAFEssenceGroup
     cdef GUID IID_IAAFEssenceGroup
     cdef cppclass IAAFEssenceGroup(IUnknown):
+        HRESULT SetStillFrame(IAAFSourceClip * pStillFrame)
         HRESULT GetStillFrame(IAAFSourceClip **ppStillFrame)
+        HRESULT AppendChoice(IAAFSegment * pChoice)
+        HRESULT PrependChoice(IAAFSegment * pChoice)
+        HRESULT InsertChoiceAt(aafUInt32  index, IAAFSegment * pChoice)
         HRESULT CountChoices(aafUInt32 *pCount)
-        HRESULT GetChoiceAt(
-            aafUInt32  index,
-            IAAFSegment  ** ppChoice
-        )
+        HRESULT GetChoiceAt(aafUInt32  index, IAAFSegment  ** ppChoice)
+        HRESULT RemoveChoiceAt(aafUInt32  index)
         
     cdef aafUID_t AUID_AAFSelector
     cdef GUID IID_IAAFSelector
@@ -1116,12 +1180,17 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFEvent
     cdef GUID IID_IAAFEvent
     cdef cppclass IAAFEvent(IUnknown):
-        pass
+        HRESULT GetPosition(aafPosition_t *  pPosition)
+        HRESULT SetPosition(aafPosition_t  Position)
+        HRESULT SetComment(aafCharacter * pComment)
+        HRESULT GetComment(aafCharacter *  pComment, aafUInt32  bufSize)
+        HRESULT GetCommentBufLen(aafUInt32 *  pBufSize)
     
     cdef aafUID_t AUID_AAFCommentMarker
     cdef GUID IID_IAAFCommentMarker
     cdef cppclass IAAFCommentMarker(IUnknown):
-        pass
+        HRESULT GetAnnotation(IAAFSourceReference ** ppResult)
+        HRESULT SetAnnotation(IAAFSourceReference * pAnnotation)
         
     cdef aafUID_t AUID_AAFDescriptiveMarker
     cdef GUID IID_IAAFDescriptiveMarker
@@ -1327,6 +1396,12 @@ cdef extern from "AAF.h":
     cdef cppclass IEnumAAFTaggedValues(IUnknown):
         HRESULT Clone(IEnumAAFTaggedValues **ppEnum)
         HRESULT NextOne(IAAFTaggedValue ** ppTaggedValues)
+        HRESULT Skip(aafUInt32  count)
+        HRESULT Reset()
+        
+    cdef cppclass IEnumAAFKLVData(IUnknown):
+        HRESULT Clone(IEnumAAFKLVData **ppEnum)
+        HRESULT NextOne(IAAFKLVData ** ppKLVData)
         HRESULT Skip(aafUInt32  count)
         HRESULT Reset()
     
