@@ -55,7 +55,7 @@ cdef class TypeDefVariableArray(TypeDef):
         typedef = self.type()
         
         for item in value:
-            item_value = typedef.create_value(item)
+            item_value = typedef.create_property_value(item)
             out_typedef.append_element(out_value, item_value)
         
         return out_value
