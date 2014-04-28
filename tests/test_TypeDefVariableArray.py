@@ -36,22 +36,15 @@ class TypeDefVariableArray(unittest.TestCase):
         assert variable_array.name == "TEST_VA_TYPE_ID"
         assert variable_array.auid == TEST_VA_TYPE_ID
         
-        component_classdef = None
-        
-        for item in f.dictionary.classdefs():
-            if item.name == 'Component':
-                component_classdef = item
-            
-        if not component_classdef:
-            raise Exception("could not find Component classdef")
-        
+        component_classdef = f.dictionary.lookup_classdef('Component')
         
         # find typedef we added to dictionary
         variable_array = f.dictionary.lookup_typedef("TEST_VA_TYPE_ID")
         
+        # add a New Optional property to Components classes
         propery_def = component_classdef.register_optional_propertydef(variable_array, TEST_PROP_ID, "TEST_PROP")
         
-        print propery_def.name
+        assert propery_def.name == "TEST_PROP"
         
         
 

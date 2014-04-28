@@ -70,8 +70,12 @@ cdef class Dictionary(AAFObject):
             raise NotImplementedError("register_def not implemented for %s"  % str(type(def_obj)))
 
         
-    def lookup_datadef(self, bytes name):
+    def lookup_datadef(self, bytes name not None):
         cdef AUID auid = DataDefMap[name.lower().replace("datadef_", "")]
+        
+        return self.lookup_datadef_by_id(auid)
+    
+    def lookup_datadef_by_id(self, AUID auid not None):
         cdef DataDef definition =  DataDef.__new__(DataDef)
         error_check(self.ptr.LookupDataDef(auid.get_auid(), &definition.ptr ))
         definition.query_interface()
@@ -84,21 +88,35 @@ cdef class Dictionary(AAFObject):
                 return typedef
         
         cdef AUID auid = TypeDefMap[name.lower()]
-        cdef TypeDef definition = TypeDef.__new__(TypeDef)
-        error_check(self.ptr.LookupTypeDef(auid.get_auid(), &definition.typedef_ptr))
-        definition.query_interface()
-        definition.root = self.root
-        return definition.resolve()
+        return self.lookup_typedef_by_id(auid)
     
-    def lookup_containerdef(self, bytes name):
+    def lookup_typedef_by_id(self, AUID auid not None):
+
+        cdef TypeDef typedef = TypeDef.__new__(TypeDef)
+        error_check(self.ptr.LookupTypeDef(auid.get_auid(), &typedef.typedef_ptr))
+        typedef.query_interface()
+        typedef.root = self.root
+        return typedef.resolve()
+    
+    def lookup_containerdef(self, bytes name not None):
         cdef AUID auid = ContainerDefMap[name.lower()]
+        return self.lookup_containerdef_by_id(auid)
+    
+    def lookup_containerdef_by_id(self, AUID auid not None):
         cdef ContainerDef definition = ContainerDef.__new__(ContainerDef)
         error_check(self.ptr.LookupContainerDef(auid.get_auid(), &definition.ptr ))
         definition.query_interface()
         definition.root = self.root
         return definition
     
-    def lookup_classdef(self, AUID auid):        
+    def lookup_classdef(self, bytes name not None):
+        for classdef in self.classdefs():
+            if classdef.name == name:
+                return classdef
+        
+        raise ValueError("Can not find class %s" % name)
+    
+    def lookup_classdef_by_id(self, AUID auid not None):        
         cdef ClassDef classdef = ClassDef.__new__(ClassDef)
         
         error_check(self.ptr.LookupClassDef(auid.get_auid(), &classdef.ptr))
@@ -106,11 +124,19 @@ cdef class Dictionary(AAFObject):
         classdef.query_interface()
         classdef.root = self.root
         return classdef
-
-    def lookup_interpolatordef(self, bytes name):
-        cdef PluginManager manager = PluginManager()
-        
+    
+    def lookup_interpolatordef(self, bytes name not None):
+        for interdef in self.interpolationdefs():
+            if interdef.name == name:
+                return interdef
+            
         cdef AUID auid = InterpolationDefMap[name.lower()]
+        
+        return self.lookup_interpolatordef_by_id(auid)
+        
+
+    def lookup_interpolatordef_by_id(self, AUID auid not None):
+        cdef PluginManager manager = PluginManager()
         
         #cdef InterpolationDef definition = InterpolationDef.__new__(InterpolationDef)
         cdef DefObject definition = DefObject.__new__(DefObject)
@@ -148,39 +174,39 @@ cdef class Dictionary(AAFObject):
         return def_iter
      
     def operationdefs(self):
-        prop = self.get('OperationDefinitions', None)
+        prop = self.get('OperationDefinitions', [])
         if prop:
-            return prop.value
+            return prop.value or []
         return []
     
     def parameterdefs(self):
         prop = self.get('ParameterDefinitions', [])
         if prop:
-            return prop.value
+            return prop.value or []
         return []
 
     def datadefs(self):
         prop = self.get('DataDefinitions', [])
         if prop:
-            return prop.value
+            return prop.value or []
         return []
     
     def containerdefs(self):
         prop = self.get('ContainerDefinitions', [])
         if prop:
-            return prop.value
+            return prop.value or []
         return []
     
     def interpolationdefs(self):
         prop = self.get('InterpolationDefinitions', [])
         if prop:
-            return prop.value
+            return prop.value or []
         return []
                 
     def taggedvaluedefs(self):
         prop = self.get('TaggedValueDefinitions', [])
         if prop:
-            return prop.value
+            return prop.value or []
         return []
         
 cdef class PluginManager(object):
