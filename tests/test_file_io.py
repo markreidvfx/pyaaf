@@ -340,7 +340,7 @@ class TestFile(unittest.TestCase):
             
         for item in mob.comments():
             print '**', item.name, item.value
-            assert d[item.name] == item.value.value
+            assert d[item.name] == item.value
             
         mob.remove_comment_by_name('comment3')
         
