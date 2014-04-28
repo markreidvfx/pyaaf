@@ -23,6 +23,7 @@ cdef class AUID(object):
         
     cdef lib.aafUID_t get_auid(self):
         return self.auid
+    
     cdef lib.GUID get_iid(self):
         cdef lib.GUID iid
         iid.Data1 = self.auid.Data1
@@ -43,6 +44,14 @@ cdef class AUID(object):
         self.auid.Data3 = iid.Data3
         for i in xrange(8):
             self.auid.Data4[i] = iid.Data4[i]
+    
+    @staticmethod
+    def from_list(auid_list):
+        
+        if len(auid_list) != 11:
+            raise ValueError("list must be 11 ints")
+        
+        return AUID("urn:uuid:%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x" % tuple(auid_list))
         
     def to_UUID(self):
         return uuid.UUID(str(self))

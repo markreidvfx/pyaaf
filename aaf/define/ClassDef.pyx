@@ -18,6 +18,20 @@ cdef class ClassDef(MetaDef):
         if self.ptr:
             self.ptr.Release()
             
+    def register_optional_propertydef(self, TypeDef property_typdef not None, 
+                                      AUID property_auid not None, bytes property_name not None):
+        
+        cdef WCharBuffer buf = WCharBuffer.__new__(WCharBuffer)
+        
+        buf.from_string(property_name)
+        
+        cdef PropertyDef propertydef = PropertyDef.__new__(PropertyDef)
+        error_check(self.ptr.RegisterOptionalPropertyDef(property_auid.get_auid(), buf.to_wchar(), property_typdef.typedef_ptr, &propertydef.ptr))
+        propertydef.query_interface()
+        propertydef.root = self.root
+        return propertydef
+        
+            
     def parent(self):
         cdef ClassDef classdef = ClassDef.__new__(ClassDef)
         error_check(self.ptr.GetParent(&classdef.ptr))

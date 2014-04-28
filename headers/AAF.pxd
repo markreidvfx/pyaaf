@@ -68,15 +68,14 @@ cdef extern from "AAF.h":
     cdef aafUID_t AUID_AAFDictionary
     cdef GUID IID_IAAFDictionary
     cdef cppclass IAAFDictionary(IUnknown):
-        HRESULT CreateInstance(
-            aafUID_t id,
-            GUID riid,
-            IUnknown ** ppvObject
-        )
+        HRESULT CreateInstance(aafUID_t id, GUID riid, IUnknown ** ppvObject)
+        HRESULT CreateMetaInstance(aafUID_t & id, GUID riid, IUnknown ** ppMetaDefinition)
+        HRESULT LookupClassDef(aafUID_constref  classId, IAAFClassDef ** ppClassDef)
         HRESULT LookupTypeDef(aafUID_t &dataDefinitionId, IAAFTypeDef ** ppTypeDef)
         HRESULT LookupDataDef(aafUID_t &dataDefinitionId, IAAFDataDef ** ppDataDef)
         HRESULT LookupCodecDef(aafUID_t &dataDefinitionId, IAAFCodecDef ** ppParmDef)
         HRESULT LookupContainerDef(aafUID_t &dataDefinitionId, IAAFContainerDef ** ppParmDef)
+        HRESULT RegisterTypeDef(IAAFTypeDef * pTypeDef)
         HRESULT RegisterOperationDef(IAAFOperationDef * pOperationDef)
         HRESULT RegisterParameterDef(IAAFParameterDef * pParmDef)
         HRESULT RegisterCodecDef(IAAFCodecDef *pParmDef)
@@ -435,7 +434,8 @@ cdef extern from "AAF.h":
     cdef GUID IID_IAAFTypeDefStrongObjRef
     cdef cppclass IAAFTypeDefStrongObjRef(IUnknown):
         HRESULT Initialize(aafUID_constref  id, IAAFClassDef * pObjType, aafCharacter *pTypeName)
-
+        
+    cdef aafUID_t AUID_AAFTypeDefVariableArray
     cdef GUID IID_IAAFTypeDefVariableArray
     cdef cppclass IAAFTypeDefVariableArray(IUnknown):
         HRESULT Initialize(aafUID_constref  id, IAAFTypeDef * pTypeDef, aafCharacter  *pTypeName)

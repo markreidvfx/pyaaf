@@ -2,7 +2,7 @@
 cimport lib
 
 from .base cimport AAFBase, AAFObject
-from .define cimport DefObject, TypeDef, DataDef, ContainerDef, OperationDef, ParameterDef, InterpolationDef, TypeDefMap, ContainerDefMap, DataDefMap, ExtEnumDefMap, InterpolationDefMap
+from .define cimport DefObject, ClassDef, TypeDef, DataDef, ContainerDef, OperationDef, ParameterDef, InterpolationDef, TypeDefMap, ContainerDefMap, DataDefMap, ExtEnumDefMap, InterpolationDefMap
 from .util cimport error_check, query_interface, register_object, lookup_object, AUID
 from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter, LoadedPluginIter
 from wstring cimport wstring,toWideString
@@ -43,12 +43,21 @@ cdef class Dictionary(AAFObject):
         obj.query_interface()
         obj.root = self.root
         
-    def register_def(self, DefObject def_obj not None):
+    cdef create_meta_instance(self, TypeDef obj, lib.aafUID_t auid):
+        error_check(self.ptr.CreateMetaInstance(auid, obj.iid, obj.get_ptr()))
+        obj.query_interface()
+        obj.root = self.root
+        
+    def register_def(self, AAFBase def_obj not None):
         cdef OperationDef op_def
         cdef ParameterDef param_def
         cdef InterpolationDef interp_def
+        cdef TypeDef typedef
         
-        if isinstance(def_obj, OperationDef):
+        if isinstance(def_obj, TypeDef):
+            typedef = def_obj
+            error_check(self.ptr.RegisterTypeDef(typedef.typedef_ptr))
+        elif isinstance(def_obj, OperationDef):
             op_def = def_obj
             error_check(self.ptr.RegisterOperationDef(op_def.ptr))
         elif isinstance(def_obj, ParameterDef):
@@ -58,7 +67,8 @@ cdef class Dictionary(AAFObject):
             interp_def = def_obj
             error_check(self.ptr.RegisterInterpolationDef(interp_def.ptr))
         else:
-            raise NotImplementedError("Not implented for def type")
+            raise NotImplementedError("register_def not implemented for %s"  % str(type(def_obj)))
+
         
     def lookup_datadef(self, bytes name):
         cdef AUID auid = DataDefMap[name.lower().replace("datadef_", "")]
@@ -67,7 +77,12 @@ cdef class Dictionary(AAFObject):
         definition.query_interface()
         definition.root = self.root
         return definition
+    
     def lookup_typedef(self, bytes name not None):
+        for typedef in self.type_defs():
+            if typedef.name == name:
+                return typedef
+        
         cdef AUID auid = TypeDefMap[name.lower()]
         cdef TypeDef definition = TypeDef.__new__(TypeDef)
         error_check(self.ptr.LookupTypeDef(auid.get_auid(), &definition.typedef_ptr))
@@ -83,6 +98,15 @@ cdef class Dictionary(AAFObject):
         definition.root = self.root
         return definition
     
+    def lookup_classdef(self, AUID auid):        
+        cdef ClassDef classdef = ClassDef.__new__(ClassDef)
+        
+        error_check(self.ptr.LookupClassDef(auid.get_auid(), &classdef.ptr))
+        
+        classdef.query_interface()
+        classdef.root = self.root
+        return classdef
+
     def lookup_interpolatordef(self, bytes name):
         cdef PluginManager manager = PluginManager()
         
