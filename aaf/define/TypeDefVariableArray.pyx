@@ -18,15 +18,15 @@ cdef class TypeDefVariableArray(TypeDef):
         if self.ptr:
             self.ptr.Release()
             
-    def __init__(self, root, TypeDef array_type not None, AUID array_auid not None, bytes array_type_name not None):
+    def __init__(self, root, TypeDef typedef not None, AUID auid not None, bytes name not None):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_meta_instance(self, lib.AUID_AAFTypeDefVariableArray)
         
         cdef WCharBuffer buf = WCharBuffer.__new__(WCharBuffer)
+        buf.from_string(name)
         
-        buf.from_string(array_type_name)
-        error_check(self.ptr.Initialize(array_auid.get_auid(), array_type.typedef_ptr, buf.to_wchar()))
-        
+        error_check(self.ptr.Initialize(auid.get_auid(), typedef.typedef_ptr, buf.to_wchar()))
+
         dictionary.register_def(self)
 
     def create_empty_value(self):

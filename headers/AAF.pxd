@@ -192,7 +192,7 @@ cdef extern from "AAF.h":
             IAAFTypeDef * pTypeDef,
             IAAFPropertyDef ** ppPropDef
         )
-        HRESULT LookupPropertyDef(aafUID_constref  propID, IAAFPropertyDef ** ppPropDef)
+        HRESULT LookupPropertyDef(aafUID_t & propID, IAAFPropertyDef ** ppPropDef)
         HRESULT GetName(aafCharacter *  pName, aafUInt32  bufSize)
         HRESULT GetNameBufLen(aafUInt32 *  pBufSize)
         HRESULT GetParent(IAAFClassDef ** ppClassDef)
@@ -430,7 +430,7 @@ cdef extern from "AAF.h":
         HRESULT AppendElements(IAAFPropertyValue * pInPropVal, aafMemPtr_t  pElements)
         HRESULT GetElements(IAAFPropertyValue *pPropVal, aafMemPtr_t  pBuffer, aafUInt32  bufferSize)
         
-
+    cdef aafUID_t AUID_AAFTypeDefStrongObjRef
     cdef GUID IID_IAAFTypeDefStrongObjRef
     cdef cppclass IAAFTypeDefStrongObjRef(IUnknown):
         HRESULT Initialize(aafUID_constref  id, IAAFClassDef * pObjType, aafCharacter *pTypeName)

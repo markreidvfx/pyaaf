@@ -30,17 +30,48 @@ cdef class ClassDef(MetaDef):
         propertydef.query_interface()
         propertydef.root = self.root
         return propertydef
+    
+    def count_propertydefs(self):
+        cdef lib.aafUInt32 count
+        error_check(self.ptr.CountPropertyDefs(&count))
         
+        return count
+    
+    def lookup_propertydef_by_id(self, AUID auid):
+        
+        cdef PropertyDef propertydef = PropertyDef.__new__(PropertyDef)
+        
+        error_check(self.ptr.LookupPropertyDef(auid.get_auid(), &propertydef.ptr))
+        propertydef.query_interface()
+        propertydef.root = self.root
+        return propertydef
             
     def parent(self):
         cdef ClassDef classdef = ClassDef.__new__(ClassDef)
-        error_check(self.ptr.GetParent(&classdef.ptr))
-        classdef.query_interface()
-        classdef.root = self.root
-        return classdef
+        result = self.ptr.GetParent(&classdef.ptr)
+        
+        if result == lib.AAFRESULT_SUCCESS:
+            classdef.query_interface()
+            classdef.root = self.root
+            return classdef
+    
+        elif result == lib.AAFRESULT_IS_ROOT_CLASS:
+            return None
+        else:
+            error_check(result)
             
     def propertydefs(self):
         cdef PropertyDefsIter propdefs_iter = PropertyDefsIter.__new__(PropertyDefsIter)
         error_check(self.ptr.GetPropertyDefs(&propdefs_iter.ptr))
         propdefs_iter.root = self.root
         return propdefs_iter
+    
+    def all_propertydefs(self):
+        
+        item = self
+        
+        while item:
+            for p in item.propertydefs():
+                yield p
+            item = item.parent()
+        

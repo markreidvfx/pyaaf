@@ -75,7 +75,7 @@ cdef class AAFObject(AAFBase):
         cdef PropertyDef propdef
         cdef AAFObject new_obj 
         classdef = self.classdef()
-        for propdef in classdef.propertydefs():
+        for propdef in classdef.all_propertydefs():
             if propdef.name == x:
                 new_obj = AAFObject.__new__(AAFObject)
                 new_obj.query_interface(self)
@@ -95,7 +95,7 @@ cdef class AAFObject(AAFBase):
     
     def all_keys(self):
         
-        return [p.name for p in self.classdef().propertydefs()]
+        return [p.name for p in self.classdef().all_propertydefs()]
     
     def has_key(self, bytes key):
         """
