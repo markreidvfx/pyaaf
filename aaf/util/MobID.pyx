@@ -51,6 +51,15 @@ cdef class MobID(object):
     cdef lib.aafMobID_t get_aafMobID_t(self):
         return self.mobID
     
+    @staticmethod
+    def from_list(mobid_list):
+        f = b"urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
+             "%02x"  + \
+             "%02x%02x%02x." + \
+             "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"
+             
+        return MobID(f % tuple(mobid_list))
+    
     def __richcmp__(x, y, int op):
         if op == 2:
             if str(x) == str(y):

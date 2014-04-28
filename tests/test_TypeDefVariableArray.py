@@ -7,7 +7,7 @@ import aaf.storage
 import aaf.component
 import aaf.util
 
-from aaf.util import AUID
+from aaf.util import AUID, MobID
 
 import unittest
 import os
@@ -33,6 +33,9 @@ TEST_PROP_ID = AUID.from_list([ 0x47240c2f, 0x19d, 0x11d4, 0x8e, 0x3d, 0x0, 0x90
 ComponentAttributesProperty1ID = AUID.from_list([0x198e0c80, 0xba40, 0x11d4, 0xa8, 0x12, 0x8e, 0x54, 0x1b, 0x97, 0x2e, 0xa3])
 ComponentAttributesProperty2ID = AUID.from_list([0x198e0c81, 0xba40, 0x11d4,  0xa8, 0x12, 0x8e, 0x54, 0x1b, 0x97, 0x2e, 0xa3])
 MobReferencedMobsPropertyID = AUID.from_list([0x6f7b3c85, 0x7f57, 0x490b, 0xa3, 0xa8, 0xe5, 0xf2, 0xb4, 0xb1, 0x44, 0x34])
+
+TEST_MobID = MobID.from_list([0x06, 0x0c, 0x2b, 0x34, 0x02, 0x05, 0x11, 0x01, 0x01, 0x00, 0x10, 0x00, 0x13,
+                               0x00, 0x00, 0x00, 0xda5ab5f4, 0x0405, 0x11d4, 0x8e, 0x3d, 0x00, 0x90, 0x27, 0xdf, 0xca, 0x7c])
 
 class TypeDefVariableArray(unittest.TestCase):
     
@@ -75,20 +78,17 @@ class TypeDefVariableArray(unittest.TestCase):
         property_def = mob_classdef.register_optional_propertydef(mob_weakref_array, MobReferencedMobsPropertyID, "Mob ReferencedMobs property")
         
         master_mob = f.create.MasterMob()
-
+        master_mob.mobID = TEST_MobID
         
         filler = f.create.Filler("Sound", 10)
 
         filler['TEST_PROP'].value = [1, 2, 3]
         
-        
-        print filler.all_keys()
-        
         tagged_values = [f.create.TaggedValue(name, value) for name, value in [("tag 1", "value 1"), ("tag 2", "value 2")]]
 
         filler['Component Attributes property1'].value = tagged_values
         
-        tagged_values = [f.create.TaggedValue(name, value, 'Int16') for name, value in [("tag 1", 10), ("tag 2", 12)]]
+        tagged_values = [f.create.TaggedValue(name, value, 'Int16') for name, value in [("tag 1", 1), ("tag 2", 2)]]
         
         filler['Component Attributes property2'].value = tagged_values
         
@@ -98,10 +98,38 @@ class TypeDefVariableArray(unittest.TestCase):
         mobslot['SlotName'].value = "Slot containing our VA Segment"
         
         master_mob.append_slot(mobslot)
+        f.storage.add_mob(master_mob)
         
+        weakref_mobs = []
+        for i in xrange(10):
+            mob = f.create.MasterMob()
+            f.storage.add_mob(mob)
+            weakref_mobs.append(mob)
+            
+        master_mob["Mob ReferencedMobs property"].value = weakref_mobs
         f.save()
-
-
+        f.close()
+        
+        
+        f = aaf.open(main_test_file, 'r')
+        
+        master_mob = f.storage.lookup_mob(TEST_MobID)
+        assert len(master_mob['Mob ReferencedMobs property'].value) == 10
+        
+        filler = master_mob.slots()[0].segment
+        
+        assert list(filler['TEST_PROP'].value) == [1, 2, 3]
+        
+        for i, tag in enumerate(filler['Component Attributes property1'].value):
+            assert tag.name == 'tag %i' % (i+1)
+            assert tag.value == 'value %i' % (i+1)
+            
+        for i, tag in enumerate(filler['Component Attributes property2'].value):
+            assert tag.name == 'tag %i' % (i+1)
+            assert tag.value == i + 1
+        
+        
+        
 
 if __name__ == "__main__":
     unittest.main()
