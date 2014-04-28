@@ -79,7 +79,7 @@ cdef class Dictionary(AAFObject):
         return definition
     
     def lookup_typedef(self, bytes name not None):
-        for typedef in self.type_defs():
+        for typedef in self.typedefs():
             if typedef.name == name:
                 return typedef
         
@@ -117,67 +117,67 @@ cdef class Dictionary(AAFObject):
         error_check(manager.ptr.CreatePluginDefinition(auid.get_auid(), self.ptr, &definition.defobject_ptr))
         return definition.resolve()
 
-    def class_defs(self):
+    def classdefs(self):
         cdef ClassDefIter def_iter = ClassDefIter.__new__(ClassDefIter)
         error_check(self.ptr.GetClassDefs(&def_iter.ptr))
         def_iter.root = self.root
         return def_iter
 
-    def codec_defs(self):
+    def codecdefs(self):
         cdef CodecDefIter def_iter = CodecDefIter.__new__(CodecDefIter)
         error_check(self.ptr.GetCodecDefs(&def_iter.ptr))
         def_iter.root = self.root
         return def_iter
     
-    def type_defs(self):
+    def typedefs(self):
         cdef TypeDefIter def_iter = TypeDefIter.__new__(TypeDefIter)
         error_check(self.ptr.GetTypeDefs(&def_iter.ptr))
         def_iter.root = self.root
         return def_iter
     
-    def plugin_defs(self):
+    def plugindefs(self):
         cdef PluginDefIter def_iter = PluginDefIter.__new__(PluginDefIter)
         error_check(self.ptr.GetPluginDefs(&def_iter.ptr))
         def_iter.root = self.root
         return def_iter
      
-    def klvdata_defs(self):
+    def klvdatadefs(self):
         cdef KLVDataDefIter def_iter = KLVDataDefIter.__new__(KLVDataDefIter)
         error_check(self.ptr2.GetKLVDataDefs(&def_iter.ptr))
         def_iter.root = self.root
         return def_iter
      
-    def operation_defs(self):
+    def operationdefs(self):
         prop = self.get('OperationDefinitions', None)
         if prop:
             return prop.value
         return []
     
-    def parameter_defs(self):
+    def parameterdefs(self):
         prop = self.get('ParameterDefinitions', [])
         if prop:
             return prop.value
         return []
 
-    def data_defs(self):
+    def datadefs(self):
         prop = self.get('DataDefinitions', [])
         if prop:
             return prop.value
         return []
     
-    def container_defs(self):
+    def containerdefs(self):
         prop = self.get('ContainerDefinitions', [])
         if prop:
             return prop.value
         return []
     
-    def interpolation_defs(self):
+    def interpolationdefs(self):
         prop = self.get('InterpolationDefinitions', [])
         if prop:
             return prop.value
         return []
                 
-    def taggedvalue_defs(self):
+    def taggedvaluedefs(self):
         prop = self.get('TaggedValueDefinitions', [])
         if prop:
             return prop.value

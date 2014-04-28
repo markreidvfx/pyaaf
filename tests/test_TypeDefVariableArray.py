@@ -38,7 +38,7 @@ class TypeDefVariableArray(unittest.TestCase):
         
         component_classdef = None
         
-        for item in f.dictionary.class_defs():
+        for item in f.dictionary.classdefs():
             if item.name == 'Component':
                 component_classdef = item
             

@@ -379,44 +379,44 @@ class TestFile(unittest.TestCase):
         header = f.header
         d = f.dictionary
         
-        for item in d.class_defs():
+        for item in d.classdefs():
             pass
             #c,name = item.class_name, item.name
             print item
-        for item in d.codec_defs():
+        for item in d.codecdefs():
             c,name = item.class_name, item.name
             #print c,name
-        for item in d.type_defs():
+        for item in d.typedefs():
             pass
             print item
             #c,name = item.class_name, item.name
             #print c,name
-        for item in d.plugin_defs():
+        for item in d.plugindefs():
             print item
             c,name = item.class_name, item.name
             #print c,name
         print "klv"
-        for item in d.klvdata_defs():
+        for item in d.klvdatadefs():
             print item
             c,name = item.class_name, item.name
             #print c,name
         print "operation"        
-        for item in d.operation_defs():
+        for item in d.operationdefs():
             c,name = item.class_name, item.name
             #print c,name
-        for item in d.parameter_defs():
+        for item in d.parameterdefs():
             c,name =  item.class_name, item.name
             #print c,name
-        for item in d.data_defs():
+        for item in d.datadefs():
             c,name =  item.class_name, item.name
             #print c,name
-        for item in d.container_defs():
+        for item in d.containerdefs():
             c,name =  item.class_name, item.name
             #print c,name
-        for item in d.interpolation_defs():
+        for item in d.interpolationdefs():
             c,name =  item.class_name, item.name
             #print c,name
-        for item in d.taggedvalue_defs():
+        for item in d.taggedvaluedefs():
             c,name =  item.class_name, item.name
             #print c,name
     def test_plugin_manager(self):
