@@ -27,4 +27,4 @@ cdef class EventMobSlot(MobSlot):
     cdef lib.IAAFEventMobSlot *ptr
     
 cdef class StaticMobSlot(MobSlot):
-    pass
+    cdef lib.IAAFStaticMobSlot *ptr

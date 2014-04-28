@@ -29,6 +29,7 @@ include "mob/SourceMob.pyx"
 include "mob/MobSlot.pyx"            
 include "mob/TimelineMobSlot.pyx"
 include "mob/EventMobSlot.pyx"
+include "mob/StaticMobSlot.pyx"
             
 register_object(Mob)           
 register_object(MasterMob)
@@ -37,3 +38,4 @@ register_object(SourceMob)
 register_object(MobSlot)
 register_object(TimelineMobSlot)
 register_object(EventMobSlot)
+register_object(StaticMobSlot)

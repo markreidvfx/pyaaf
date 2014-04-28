@@ -88,13 +88,12 @@ class TypeDefVariableArray(unittest.TestCase):
 
         filler['Component Attributes property1'].value = tagged_values
         
-        print list(filler['Component Attributes property1'].value)
-        
         tagged_values = [f.create.TaggedValue(name, value, 'Int16') for name, value in [("tag 1", 10), ("tag 2", 12)]]
-   
-        for item in tagged_values:
-            print item.name, item.value
         
+        filler['Component Attributes property2'].value = tagged_values
+        
+        mobslot = f.create.StaticMobSlot(f)
+   
         f.save()
 
 
