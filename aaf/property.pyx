@@ -1,7 +1,8 @@
 cimport lib
-from .util cimport error_check, query_interface, register_object
+from .util cimport error_check, query_interface, register_object, WCharBuffer
 
-from .define cimport PropertyDef, TypeDef,resolve_typedef, TypeDefString
+from .define cimport PropertyDef, TypeDef, TypeDefString, resolve_typedef, TypeDefString
+from .dictionary cimport Dictionary
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -216,6 +217,21 @@ cdef class TaggedValue(AAFObject):
         if self.ptr:
             self.ptr.Release()
     
+    def __init__(self, root, bytes name not None, value, typedef = "String"):
+        
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+        
+        if not isinstance(typedef, TypeDef):
+            typedef = self.dictionary().lookup_typedef(typedef)
+            
+        if isinstance(typedef, TypeDefString):
+            initialize_string_tagged_value(self, name, value)
+        
+        else:
+            raise NotImplementedError("Not implemented yet for: %s" % typedef.name)
+
+    
     def typedef(self):
         cdef TypeDef type_def = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetTypeDefinition(&type_def.typedef_ptr))
@@ -225,19 +241,27 @@ cdef class TaggedValue(AAFObject):
             
     property value:
         def __get__(self):
-            return self['Value']
+            return self['Value'].value
         def __set__(self, value):
-            typedef = self.typedef()
-            if isinstance(typedef, TypeDefString):
-                set_tag_bytes(self, value)
-                return
+            self['Value'].value = value
             
-            raise NotImplementedError("set not implemented for %s", str(typedef))
-            
-cdef object set_tag_bytes(TaggedValue tag, bytes value):
-    cdef wstring w_value = toWideString(value)
-    cdef lib.aafUInt32 size_in_bytes = len(value) * sizeof(lib.aafCharacter)
-    error_check(tag.ptr.SetValue(size_in_bytes,<lib.aafDataBuffer_t> w_value.c_str()))
+cdef initialize_string_tagged_value(TaggedValue tag, bytes name, bytes value):
+    
+    cdef TypeDef typedef = tag.dictionary().lookup_typedef("String")
+    
+    cdef WCharBuffer name_buf = WCharBuffer.__new__(WCharBuffer)    
+    name_buf.from_string(name)
+    
+    cdef WCharBuffer value_buf = WCharBuffer.__new__(WCharBuffer)  
+    value_buf.from_string(value)
+    
+    error_check(tag.ptr.Initialize(name_buf.to_wchar(), 
+                                   typedef.typedef_ptr, 
+                                   value_buf.size_in_bytes(), 
+                                   <lib.aafDataBuffer_t > value_buf.to_wchar()))
+    
+    
+    
 
 register_object(TaggedValue)
         

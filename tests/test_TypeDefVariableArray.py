@@ -35,6 +35,17 @@ ComponentAttributesProperty2ID = AUID.from_list([0x198e0c81, 0xba40, 0x11d4,  0x
 MobReferencedMobsPropertyID = AUID.from_list([0x6f7b3c85, 0x7f57, 0x490b, 0xa3, 0xa8, 0xe5, 0xf2, 0xb4, 0xb1, 0x44, 0x34])
 
 
+def create_str_tagged_value(f, name, value):
+
+    
+    tag = f.create.TaggedValue( name, value)
+    
+    assert tag.name == name
+    assert tag.value == value
+    
+    return tag
+
+
 class TypeDefVariableArray(unittest.TestCase):
     
     def test_basic(self):
@@ -54,10 +65,8 @@ class TypeDefVariableArray(unittest.TestCase):
         strongref_array = aaf.define.TypeDefVariableArray(f, strongref_typedef, TaggedValueVariableArrayTypeID, "TaggedValueVariableArray type")
         
         # Create MobWeakRef
-        
         mob_weakref = f.dictionary.lookup_typedef("MobWeakReference")
         mob_weakref_array = aaf.define.TypeDefVariableArray(f, mob_weakref, MobWeakRefVariableArrayTypeID, "MobWeakRefVariableArray type")
-        
         
         # Add Arrays to Component Class 
         component_classdef = f.dictionary.lookup_classdef('Component')
@@ -78,11 +87,19 @@ class TypeDefVariableArray(unittest.TestCase):
         property_def = mob_classdef.register_optional_propertydef(mob_weakref_array, MobReferencedMobsPropertyID, "Mob ReferencedMobs property")
         
         master_mob = f.create.MasterMob()
+
         
         filler = f.create.Filler("Sound", 10)
 
         filler['TEST_PROP'].value = [1, 2, 3]
         
+        
+        print filler.all_keys()
+        
+        tagged_values = [create_str_tagged_value(f, tag, value) for tag, value in [("tag 1", "value 1"), ("tag 2", "value 2")]]
+        print tagged_values
+        
+        print filler['Component Attributes property1'].typedef
    
         
         
