@@ -34,18 +34,6 @@ ComponentAttributesProperty1ID = AUID.from_list([0x198e0c80, 0xba40, 0x11d4, 0xa
 ComponentAttributesProperty2ID = AUID.from_list([0x198e0c81, 0xba40, 0x11d4,  0xa8, 0x12, 0x8e, 0x54, 0x1b, 0x97, 0x2e, 0xa3])
 MobReferencedMobsPropertyID = AUID.from_list([0x6f7b3c85, 0x7f57, 0x490b, 0xa3, 0xa8, 0xe5, 0xf2, 0xb4, 0xb1, 0x44, 0x34])
 
-
-def create_str_tagged_value(f, name, value):
-
-    
-    tag = f.create.TaggedValue( name, value)
-    
-    assert tag.name == name
-    assert tag.value == value
-    
-    return tag
-
-
 class TypeDefVariableArray(unittest.TestCase):
     
     def test_basic(self):
@@ -96,12 +84,16 @@ class TypeDefVariableArray(unittest.TestCase):
         
         print filler.all_keys()
         
-        tagged_values = [create_str_tagged_value(f, tag, value) for tag, value in [("tag 1", "value 1"), ("tag 2", "value 2")]]
-        print tagged_values
+        tagged_values = [f.create.TaggedValue(name, value) for name, value in [("tag 1", "value 1"), ("tag 2", "value 2")]]
+
+        filler['Component Attributes property1'].value = tagged_values
         
-        print filler['Component Attributes property1'].typedef
+        print list(filler['Component Attributes property1'].value)
+        
+        tagged_values = [f.create.TaggedValue(name, value, 'Int16') for name, value in [("tag 1", 10), ("tag 2", 12)]]
    
-        
+        for item in tagged_values:
+            print item.name, item.value
         
         f.save()
 

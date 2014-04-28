@@ -1,7 +1,7 @@
 cimport lib
-from .util cimport error_check, query_interface, register_object, WCharBuffer
+from .util cimport error_check, query_interface, register_object, WCharBuffer, aaf_integral
 
-from .define cimport PropertyDef, TypeDef, TypeDefString, resolve_typedef, TypeDefString
+from .define cimport PropertyDef, TypeDef, TypeDefString, TypeDefInt, resolve_typedef, TypeDefString
 from .dictionary cimport Dictionary
 
 from libcpp.vector cimport vector
@@ -228,6 +228,9 @@ cdef class TaggedValue(AAFObject):
         if isinstance(typedef, TypeDefString):
             initialize_string_tagged_value(self, name, value)
         
+        elif isinstance(typedef, TypeDefInt):
+            initialize_int_tagged_value(self, name, value, typedef)
+        
         else:
             raise NotImplementedError("Not implemented yet for: %s" % typedef.name)
 
@@ -261,6 +264,34 @@ cdef initialize_string_tagged_value(TaggedValue tag, bytes name, bytes value):
                                    <lib.aafDataBuffer_t > value_buf.to_wchar()))
     
     
+cdef initialize_int_tagged_value(TaggedValue tag, bytes name, value, TypeDefInt typedef):
+    cdef lib.aafUInt32 size = typedef.size()
+    if typedef.is_signed():
+        if sizeof(lib.aafInt8) == size:
+            init_aaf_integral_tagged_value[lib.aafInt8](tag, name, value, typedef)
+        elif sizeof(lib.aafInt16) == size:
+            init_aaf_integral_tagged_value[lib.aafInt16](tag, name, value, typedef)
+        elif sizeof(lib.aafInt32) == size:
+            init_aaf_integral_tagged_value[lib.aafInt32](tag, name, value, typedef)
+        else:
+            init_aaf_integral_tagged_value[lib.aafInt64](tag, name, value, typedef)
+    else:
+        if sizeof(lib.aafUInt8) == size:
+            init_aaf_integral_tagged_value[lib.aafUInt8](tag, name, value, typedef)
+        elif sizeof(lib.aafUInt16) == size:
+            init_aaf_integral_tagged_value[lib.aafUInt16](tag, name, value, typedef)
+        elif sizeof(lib.aafUInt32) == size:
+            init_aaf_integral_tagged_value[lib.aafUInt32](tag, name, value, typedef)
+        else:
+            init_aaf_integral_tagged_value[lib.aafUInt64](tag, name, value, typedef)
+    
+
+cdef init_aaf_integral_tagged_value(TaggedValue tag, bytes name,  aaf_integral value, TypeDefInt typedef):
+    cdef WCharBuffer name_buf = WCharBuffer.__new__(WCharBuffer)    
+    name_buf.from_string(name)
+    
+    error_check(tag.ptr.Initialize(name_buf.to_wchar(),  typedef.typedef_ptr,  
+                                   typedef.size(),  <lib.aafDataBuffer_t > &value))
     
 
 register_object(TaggedValue)

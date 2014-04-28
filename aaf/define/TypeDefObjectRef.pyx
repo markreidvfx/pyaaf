@@ -17,7 +17,14 @@ cdef class TypeDefObjectRef(TypeDef):
     def __dealloc__(self):
         if self.ref_ptr:
             self.ref_ptr.Release()
-    
+            
+    def create_property_value(self, AAFBase value not None):
+        cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
+        error_check(self.ref_ptr.CreateValue(value.base_ptr, &out_value.ptr))
+        out_value.query_interface()
+        out_value.root = self.root
+        return out_value
+        
     def object_type(self):
         cdef ClassDef class_def = ClassDef.__new__(ClassDef)
         error_check(self.ref_ptr.GetObjectType(&class_def.ptr))
