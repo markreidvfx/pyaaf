@@ -92,8 +92,13 @@ class TypeDefVariableArray(unittest.TestCase):
         
         filler['Component Attributes property2'].value = tagged_values
         
-        mobslot = f.create.StaticMobSlot(f)
-   
+        mobslot = f.create.StaticMobSlot()
+        mobslot.segment = filler
+        mobslot.slotID = 7
+        mobslot['SlotName'].value = "Slot containing our VA Segment"
+        
+        master_mob.append_slot(mobslot)
+        
         f.save()
 
 

@@ -824,6 +824,16 @@ cdef extern from "AAF.h":
         )
         HRESULT SetName(aafCharacter *pName)
         HRESULT CountSlots(aafNumSlots_t *  pNumSlots)
+        HRESULT AppendSlot(IAAFMobSlot * pSlot)
+        HRESULT PrependSlot(IAAFMobSlot * pSlot)
+        HRESULT InsertSlotAt(aafUInt32  index, IAAFMobSlot * pSlot)
+        HRESULT RemoveSlotAt(aafUInt32  index)
+        HRESULT GetSlotAt(aafUInt32  index, IAAFMobSlot ** ppSlot)
+        HRESULT GetSlots(IEnumAAFMobSlots ** ppEnum)
+        HRESULT AppendComment(aafCharacter *  pCategory, const aafCharacter *  pComment)
+        HRESULT CountComments(aafUInt32 *  pNumComments)
+        HRESULT GetComments(IEnumAAFTaggedValues ** ppEnum)
+        HRESULT RemoveComment(IAAFTaggedValue * pComment)
         HRESULT AppendNewTimelineSlot(
             aafRational_t  editRate,
             IAAFSegment * pSegment,
@@ -832,22 +842,6 @@ cdef extern from "AAF.h":
             aafPosition_t  origin,
             IAAFTimelineMobSlot ** ppNewSlot
         )
-        HRESULT PrependSlot(IAAFMobSlot * pSlot)
-        HRESULT InsertSlotAt(
-            aafUInt32  index,
-            IAAFMobSlot * pSlot
-        )
-        HRESULT AppendComment(
-            aafCharacter *  pCategory,
-            const aafCharacter *  pComment
-        )
-        HRESULT RemoveSlotAt(aafUInt32  index)
-        HRESULT GetSlotAt(aafUInt32  index, IAAFMobSlot ** ppSlot)
-        HRESULT GetSlots(IEnumAAFMobSlots **ppEnum)
-        HRESULT CountComments(aafUInt32 *  pNumComments)
-        HRESULT GetComments(IEnumAAFTaggedValues ** ppEnum)
-        HRESULT RemoveComment(IAAFTaggedValue * pComment)
-
         HRESULT CloneExternal(
             aafDepend_t  resolveDependencies,
             aafIncMedia_t  includeMedia,

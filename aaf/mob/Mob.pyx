@@ -45,6 +45,9 @@ cdef class Mob(AAFObject):
         """
         error_check(self.ptr.InsertSlotAt(index, slot.slot_ptr))
         
+    def append_slot(self, MobSlot slot not None):
+        error_check(self.ptr.AppendSlot(slot.slot_ptr))
+        
     def create_clip(self, slotID = None, length = None, start_time = None):
         """create_clip(slotID = None, length = None, start_time = None)
         """
