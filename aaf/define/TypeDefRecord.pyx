@@ -57,7 +57,7 @@ cdef class TypeDefRecord(TypeDef):
             record_name_list.append(record_name)
             typedef_list.append(typedef)
             
-        cdef WCharBuffer wchar_buf
+        cdef AAFCharBuffer wchar_buf
         
         cdef lib.IAAFTypeDef** typedef_array = <lib.IAAFTypeDef**> malloc(len(record_name_list) * sizeof(lib.IAAFTypeDef*))
         cdef lib.aafCharacter ** record_name_array = <lib.aafCharacter** >malloc(len(record_name_list) * sizeof(lib.aafCharacter*))
@@ -66,13 +66,13 @@ cdef class TypeDefRecord(TypeDef):
             for i, (record_name, typedef) in enumerate(zip(record_name_list, typedef_list )):
                 typedef_array[i] = typedef.typedef_ptr
                 
-                wchar_buf = WCharBuffer.__new__(WCharBuffer)
+                wchar_buf = AAFCharBuffer.__new__(AAFCharBuffer)
                 wchar_buf.from_string(record_name)
                 
                 wchar_buf_list.append(wchar_buf)
                 record_name_array[i] = wchar_buf.to_wchar()
                 
-            wchar_buf = WCharBuffer.__new__(WCharBuffer)
+            wchar_buf = AAFCharBuffer.__new__(AAFCharBuffer)
             wchar_buf.from_string(name)
             error_check(self.ptr.Initialize(auid.get_auid(), typedef_array, record_name_array, len(record_name_list), wchar_buf.to_wchar()))
         

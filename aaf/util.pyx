@@ -84,45 +84,8 @@ cdef object aafRational_to_fraction(lib.aafRational_t& r):
 
     return AAFFraction(r.numerator, r.denominator)
 
-cdef class WCharBuffer(object):
-    
-    cdef from_wstring(self, wstring value):
-        self.buf = vector[lib.aafCharacter]()
-        cdef const wchar_t *ptr = value.c_str()
-        cdef wchar_t item
-        for i in xrange(value.size()):
-            item = ptr[i]
-            self.buf.push_back(item)
-        # Added null terminator
-        self.buf.push_back('\0')
-        
-    cdef from_string(self, bytes value):
-        self.from_wstring(toWideString(value))
-        
-    cdef bytes to_string(self):
-        return wideToString(self.to_wstring())
-    
-    cdef wstring to_wstring(self):
-        cdef wstring value = wstring(&self.buf[0], self.buf.size())
-        return value
-
-    cdef wchar_t* to_wchar(self):
-        return <wchar_t *> &self.buf[0]
-    
-    cdef set_size(self, size_t size):
-        self.buf = vector[lib.aafCharacter](size)
-    
-    cdef size_t size(self):
-        return self.buf.size()
-    
-    cdef size_t size_in_bytes(self):
-        return self.buf.size() * sizeof(lib.aafCharacter)
-    
-    def __str__(self):
-        return self.to_string()
-
 # Utility Classes
-
+include "util/AAFCharBuffer.pyx"
 include "util/AUID.pyx"
 include "util/MobID.pyx"
 include "util/SourceRef.pyx"

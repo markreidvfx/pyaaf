@@ -21,7 +21,7 @@ cdef class ClassDef(MetaDef):
     def register_optional_propertydef(self, TypeDef property_typdef not None, 
                                       AUID property_auid not None, bytes property_name not None):
         
-        cdef WCharBuffer buf = WCharBuffer.__new__(WCharBuffer)
+        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
         
         buf.from_string(property_name)
         

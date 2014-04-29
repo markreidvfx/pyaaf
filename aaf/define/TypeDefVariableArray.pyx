@@ -22,7 +22,7 @@ cdef class TypeDefVariableArray(TypeDef):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_meta_instance(self, lib.AUID_AAFTypeDefVariableArray)
         
-        cdef WCharBuffer buf = WCharBuffer.__new__(WCharBuffer)
+        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
         buf.from_string(name)
         
         error_check(self.ptr.Initialize(auid.get_auid(), typedef.typedef_ptr, buf.to_wchar()))

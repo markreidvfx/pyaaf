@@ -1,7 +1,7 @@
 
 cimport lib
 from .base cimport AAFBase, AAFObject
-from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func, AUID, MobID, WCharBuffer
+from .util cimport error_check, query_interface, aaf_integral, register_object, lookup_object, set_resolve_object_func, AUID, MobID, AAFCharBuffer
 from .property cimport PropertyValue
 
 from .iterator cimport PropertyDefsIter, TypeDefStreamDataIter, PropValueIter, PropValueResolveIter

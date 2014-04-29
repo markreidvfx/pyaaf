@@ -1,5 +1,5 @@
 cimport lib
-from .util cimport error_check, query_interface, register_object, WCharBuffer, aaf_integral
+from .util cimport error_check, query_interface, register_object, AAFCharBuffer, aaf_integral
 
 from .define cimport PropertyDef, TypeDef, TypeDefString, TypeDefInt, resolve_typedef, TypeDefString
 from .dictionary cimport Dictionary
@@ -252,10 +252,10 @@ cdef initialize_string_tagged_value(TaggedValue tag, bytes name, bytes value):
     
     cdef TypeDef typedef = tag.dictionary().lookup_typedef("String")
     
-    cdef WCharBuffer name_buf = WCharBuffer.__new__(WCharBuffer)    
+    cdef AAFCharBuffer name_buf = AAFCharBuffer.__new__(AAFCharBuffer)    
     name_buf.from_string(name)
     
-    cdef WCharBuffer value_buf = WCharBuffer.__new__(WCharBuffer)  
+    cdef AAFCharBuffer value_buf = AAFCharBuffer.__new__(AAFCharBuffer)  
     value_buf.from_string(value)
     
     error_check(tag.ptr.Initialize(name_buf.to_wchar(), 
@@ -287,7 +287,7 @@ cdef initialize_int_tagged_value(TaggedValue tag, bytes name, value, TypeDefInt 
     
 
 cdef init_aaf_integral_tagged_value(TaggedValue tag, bytes name,  aaf_integral value, TypeDefInt typedef):
-    cdef WCharBuffer name_buf = WCharBuffer.__new__(WCharBuffer)    
+    cdef AAFCharBuffer name_buf = AAFCharBuffer.__new__(AAFCharBuffer)    
     name_buf.from_string(name)
     
     error_check(tag.ptr.Initialize(name_buf.to_wchar(),  typedef.typedef_ptr,  

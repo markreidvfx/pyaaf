@@ -3,7 +3,7 @@ cimport lib
 from libc.stddef cimport wchar_t
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from wstring cimport wstring
+from wstring cimport wstring, print_wchar
 
 cdef object error_check(int ret)
 cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID guid)
@@ -17,16 +17,27 @@ cdef object set_resolve_object_func(object obj)
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r)
 cdef object aafRational_to_fraction(lib.aafRational_t& r)
 
-cdef class WCharBuffer(object):
+cdef class AAFCharBuffer(object):
     cdef vector[lib.aafCharacter] buf
+    cdef lib.aafUInt64 python_maxunicode
+    cdef lib.aafUInt64 aaf_maxunicode
     cdef from_wstring(self, wstring value)
-    cdef from_string(self, bytes value)
-    cdef bytes to_string(self)
+    cpdef null_terminate(self)
+    cdef write_aafchar(self, lib.aafCharacter c)
+    cpdef write_unicode(self, unicode value)
+    cpdef write_bytes(self, bytes value)
+    cpdef write_str(self, object string)
+    cpdef unicode read_unicode(self)
+    cpdef bytes read_bytes(self)
+    cpdef from_string(self, bytes value)
+    cpdef bytes to_string(self)
     cdef wstring to_wstring(self)
+    cdef lib.aafCharacter * to_aafchar(self)
     cdef wchar_t * to_wchar(self)
-    cdef set_size(self, size_t size)
-    cdef size_t size(self)
-    cdef size_t size_in_bytes(self)
+    cpdef set_size(self, size_t size)
+    cpdef size_t size(self)
+    cpdef size_t size_in_bytes(self)
+    cpdef bytes raw_data(self)
     
 cdef class SourceRef(object):
     cdef lib.aafSourceRef_t source_ref

@@ -27,7 +27,7 @@ cdef class TypeDefString(TypeDef):
             
     def set_value(self, PropertyValue p_value, bytes value):
 
-        cdef WCharBuffer buf = WCharBuffer.__new__(WCharBuffer)
+        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
         
         buf.from_string(value)
         
