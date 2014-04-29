@@ -23,8 +23,9 @@ cdef class TypeDefStrongObjRef(TypeDefObjectRef):
         dictionary.create_meta_instance(self, lib.AUID_AAFTypeDefStrongObjRef)
         
         cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
-        buf.from_string(name)
+        buf.write_str(name)
+        buf.null_terminate()
         
-        error_check(self.ptr.Initialize(auid.get_auid(), classdef.ptr, buf.to_wchar()))
+        error_check(self.ptr.Initialize(auid.get_auid(), classdef.ptr, buf.to_aafchar()))
         
         dictionary.register_def(self)

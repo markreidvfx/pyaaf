@@ -23,10 +23,11 @@ cdef class ClassDef(MetaDef):
         
         cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
         
-        buf.from_string(property_name)
+        buf.write_str(property_name)
+        buf.null_terminate()
         
         cdef PropertyDef propertydef = PropertyDef.__new__(PropertyDef)
-        error_check(self.ptr.RegisterOptionalPropertyDef(property_auid.get_auid(), buf.to_wchar(), property_typdef.typedef_ptr, &propertydef.ptr))
+        error_check(self.ptr.RegisterOptionalPropertyDef(property_auid.get_auid(), buf.to_aafchar(), property_typdef.typedef_ptr, &propertydef.ptr))
         propertydef.query_interface()
         propertydef.root = self.root
         return propertydef

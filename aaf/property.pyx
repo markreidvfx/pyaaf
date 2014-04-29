@@ -253,15 +253,17 @@ cdef initialize_string_tagged_value(TaggedValue tag, bytes name, bytes value):
     cdef TypeDef typedef = tag.dictionary().lookup_typedef("String")
     
     cdef AAFCharBuffer name_buf = AAFCharBuffer.__new__(AAFCharBuffer)    
-    name_buf.from_string(name)
+    name_buf.write_str(name)
+    name_buf.null_terminate()
     
     cdef AAFCharBuffer value_buf = AAFCharBuffer.__new__(AAFCharBuffer)  
-    value_buf.from_string(value)
+    value_buf.write_str(value)
+    value_buf.null_terminate()
     
-    error_check(tag.ptr.Initialize(name_buf.to_wchar(), 
+    error_check(tag.ptr.Initialize(name_buf.to_aafchar(), 
                                    typedef.typedef_ptr, 
                                    value_buf.size_in_bytes(), 
-                                   <lib.aafDataBuffer_t > value_buf.to_wchar()))
+                                   <lib.aafDataBuffer_t > value_buf.to_aafchar()))
     
     
 cdef initialize_int_tagged_value(TaggedValue tag, bytes name, value, TypeDefInt typedef):
@@ -288,9 +290,10 @@ cdef initialize_int_tagged_value(TaggedValue tag, bytes name, value, TypeDefInt 
 
 cdef init_aaf_integral_tagged_value(TaggedValue tag, bytes name,  aaf_integral value, TypeDefInt typedef):
     cdef AAFCharBuffer name_buf = AAFCharBuffer.__new__(AAFCharBuffer)    
-    name_buf.from_string(name)
+    name_buf.write_str(name)
+    name_buf.null_terminate()
     
-    error_check(tag.ptr.Initialize(name_buf.to_wchar(),  typedef.typedef_ptr,  
+    error_check(tag.ptr.Initialize(name_buf.to_aafchar(),  typedef.typedef_ptr,  
                                    typedef.size(),  <lib.aafDataBuffer_t > &value))
     
 

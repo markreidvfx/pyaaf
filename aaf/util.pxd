@@ -19,25 +19,24 @@ cdef object aafRational_to_fraction(lib.aafRational_t& r)
 
 cdef class AAFCharBuffer(object):
     cdef vector[lib.aafCharacter] buf
-    cdef lib.aafUInt64 python_maxunicode
-    cdef lib.aafUInt64 aaf_maxunicode
     cdef from_wstring(self, wstring value)
     cpdef null_terminate(self)
+    
     cdef write_aafchar(self, lib.aafCharacter c)
     cpdef write_unicode(self, unicode value)
     cpdef write_bytes(self, bytes value)
     cpdef write_str(self, object string)
+    
+    cpdef bytes read_raw(self)
     cpdef unicode read_unicode(self)
     cpdef bytes read_bytes(self)
-    cpdef from_string(self, bytes value)
+    
     cpdef bytes to_string(self)
     cdef wstring to_wstring(self)
     cdef lib.aafCharacter * to_aafchar(self)
-    cdef wchar_t * to_wchar(self)
     cpdef set_size(self, size_t size)
     cpdef size_t size(self)
     cpdef size_t size_in_bytes(self)
-    cpdef bytes raw_data(self)
     
 cdef class SourceRef(object):
     cdef lib.aafSourceRef_t source_ref

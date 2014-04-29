@@ -1,4 +1,3 @@
-import sys
 
 cdef class AAFCharBuffer(object):
 
@@ -16,9 +15,7 @@ cdef class AAFCharBuffer(object):
 
     def __cinit__(self):
         self.buf = vector[lib.aafCharacter]()
-        self.python_maxunicode = sys.maxunicode
-        self.aaf_maxunicode = 0x10FFFF
-    
+        
     cdef from_wstring(self, wstring value):
         
         cdef const wchar_t *ptr = value.c_str()
@@ -38,10 +35,7 @@ cdef class AAFCharBuffer(object):
     cpdef write_unicode(self, unicode value):
         cdef Py_UNICODE c
         
-        for c in value:
-            if <unsigned long> c > self.aaf_maxunicode:
-                raise ValueError()
-            
+        for c in value:            
             self.buf.push_back(c)
 
     cpdef write_bytes(self, bytes value):
@@ -73,13 +67,14 @@ cdef class AAFCharBuffer(object):
             
         return bytes_str
     
+    cpdef bytes read_raw(self):
+        cdef char * data = <char *> &self.buf[0]
+        return data[:self.size_in_bytes()]
+    
     cpdef write_str(self, object string):
         if isinstance(string, unicode):
             self.write_unicode(string)
         self.write_bytes(string)
-        
-    cpdef from_string(self, bytes value):
-        self.from_wstring(toWideString(value))
         
     cpdef bytes to_string(self):
         return wideToString(self.to_wstring())
@@ -90,9 +85,6 @@ cdef class AAFCharBuffer(object):
     
     cdef lib.aafCharacter* to_aafchar(self):
         return <lib.aafCharacter *> &self.buf[0]
-
-    cdef wchar_t* to_wchar(self):
-        return <wchar_t *> &self.buf[0]
     
     cpdef set_size(self, size_t size):
         self.buf.resize(size)
@@ -108,10 +100,6 @@ cdef class AAFCharBuffer(object):
     
     def unicode_size(self):
         return sizeof(Py_UNICODE)
-    
-    cpdef bytes raw_data(self):
-        cdef char * data = <char *> &self.buf[0]
-        return data[:self.size_in_bytes()]
     
     def w_dump(self):
         print_wchar(self.to_aafchar())

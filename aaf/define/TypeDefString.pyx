@@ -29,13 +29,14 @@ cdef class TypeDefString(TypeDef):
 
         cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
         
-        buf.from_string(value)
+        buf.write_str(value)
+        buf.null_terminate()
         
         #print len(value), buf.size(), buf.size_in_bytes()
 
         #cdef lib.aafUInt32 size_in_bytes =  buf.buf.size() * sizeof(lib.aafCharacter)
         error_check(self.ptr.SetCString(p_value.ptr,
-                                        <lib.aafMemPtr_t> buf.to_wchar(),
+                                        <lib.aafMemPtr_t> buf.to_aafchar(),
                                         buf.size_in_bytes()))
         
         #print self.value(p_value)
