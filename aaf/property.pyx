@@ -262,7 +262,7 @@ cdef initialize_string_tagged_value(TaggedValue tag, bytes name, bytes value):
     
     error_check(tag.ptr.Initialize(name_buf.to_aafchar(), 
                                    typedef.typedef_ptr, 
-                                   value_buf.size_in_bytes(), 
+                                   value_buf.size_in_bytes, 
                                    <lib.aafDataBuffer_t > value_buf.to_aafchar()))
     
     

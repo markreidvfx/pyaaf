@@ -49,7 +49,7 @@ cdef class AAFCharBuffer(object):
 
         cdef lib.aafCharacter * aaf_ptr = self.to_aafchar()
         
-        for i in xrange(self.size()):
+        for i in xrange(self.size):
             c = aaf_ptr[i]
             unicode_str += c
             
@@ -61,7 +61,7 @@ cdef class AAFCharBuffer(object):
         
         cdef lib.aafCharacter * aaf_ptr = self.to_aafchar()
         
-        for i in xrange(self.size()):
+        for i in xrange(self.size):
             c = aaf_ptr[i]
             bytes_str += <bytes> c
             
@@ -69,7 +69,7 @@ cdef class AAFCharBuffer(object):
     
     cpdef bytes read_raw(self):
         cdef char * data = <char *> &self.buf[0]
-        return data[:self.size_in_bytes()]
+        return data[:self.size_in_bytes]
     
     cpdef write_str(self, object string):
         if isinstance(string, unicode):
@@ -86,23 +86,26 @@ cdef class AAFCharBuffer(object):
     cdef lib.aafCharacter* to_aafchar(self):
         return <lib.aafCharacter *> &self.buf[0]
     
-    cpdef set_size(self, size_t size):
-        self.buf.resize(size)
+    property size_in_bytes:
+        def __get__(self):
+            return self.buf.size() * sizeof(lib.aafCharacter)
     
-    cpdef size_t size(self):
-        return self.buf.size()
+    property size:
+        def __get__(self):
+            return self.buf.size()
+        
+        def __set__(self, size_t size):
+            self.buf.resize(size)
     
-    cpdef size_t size_in_bytes(self):
-        return self.buf.size() * sizeof(lib.aafCharacter)
+    property aafchar_size:
     
-    def aafchar_size(self):
-        return sizeof(lib.aafCharacter)
+        def __get__(self):
+            return sizeof(lib.aafCharacter)
     
-    def unicode_size(self):
-        return sizeof(Py_UNICODE)
+    property unicode_size:
+    
+        def __get__(self):
+            return sizeof(Py_UNICODE)
     
     def w_dump(self):
         print_wchar(self.to_aafchar())
-    
-    def __str__(self):
-        return self.to_string()

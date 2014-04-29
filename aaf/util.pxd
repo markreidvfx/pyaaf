@@ -19,7 +19,6 @@ cdef object aafRational_to_fraction(lib.aafRational_t& r)
 
 cdef class AAFCharBuffer(object):
     cdef vector[lib.aafCharacter] buf
-    cdef from_wstring(self, wstring value)
     cpdef null_terminate(self)
     
     cdef write_aafchar(self, lib.aafCharacter c)
@@ -33,10 +32,10 @@ cdef class AAFCharBuffer(object):
     
     cpdef bytes to_string(self)
     cdef wstring to_wstring(self)
+    cdef from_wstring(self, wstring value)
+    
     cdef lib.aafCharacter * to_aafchar(self)
-    cpdef set_size(self, size_t size)
-    cpdef size_t size(self)
-    cpdef size_t size_in_bytes(self)
+
     
 cdef class SourceRef(object):
     cdef lib.aafSourceRef_t source_ref

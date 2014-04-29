@@ -21,6 +21,9 @@ class TestAAFCharBuffer(unittest.TestCase):
         buf = aaf.util.AAFCharBuffer()
         buf2 = aaf.util.AAFCharBuffer()
         
+        print buf.aafchar_size
+        print buf.unicode_size
+        
         buf.write_bytes(b"Hello")
         buf.null_terminate()
         
@@ -35,9 +38,9 @@ class TestAAFCharBuffer(unittest.TestCase):
        
         print len(buf.read_raw()), len(buf2.read_raw())
         
-        buf.w_dump()
-        print "**"
-        buf2.w_dump()
+        #buf.w_dump()
+        #print "**"
+        #buf2.w_dump()
         
         #buf2.write_unicode(unichr(0x10000))
 

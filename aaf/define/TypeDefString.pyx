@@ -37,7 +37,7 @@ cdef class TypeDefString(TypeDef):
         #cdef lib.aafUInt32 size_in_bytes =  buf.buf.size() * sizeof(lib.aafCharacter)
         error_check(self.ptr.SetCString(p_value.ptr,
                                         <lib.aafMemPtr_t> buf.to_aafchar(),
-                                        buf.size_in_bytes()))
+                                        buf.size_in_bytes))
         
         #print self.value(p_value)
     
