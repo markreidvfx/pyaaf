@@ -1,3 +1,6 @@
+
+from libc.stdlib cimport malloc, free
+
 cdef class TypeDefRecord(TypeDef):
     def __cinit__(self):
         self.ptr = NULL
@@ -17,7 +20,66 @@ cdef class TypeDefRecord(TypeDef):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-    
+            
+    def __init__(self, root, record_name_typedef_pairs, AUID auid not None, bytes name not None):
+        """
+        Valid TypeDefs
+        - TypeDefInt
+        - TypeDefRecord
+        - TypeDefEnum
+        - TypeDefExtEnum
+        - TypeDefFixedArray
+        """
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_meta_instance(self, lib.AUID_AAFTypeDefRecord)
+        
+        
+        cdef TypeDef typedef
+        cdef bytes record_name
+        
+        record_name_list = []
+        typedef_list = []
+        
+        wchar_buf_list = []
+        
+        for item in record_name_typedef_pairs:
+            if len(item) is not 2:
+                raise ValueError("key_typedef_pairs must be pairs [ (element_name, [typedef_name or TypeDef]), ...] ")
+            record_name = item[0]
+            if isinstance(item[1], TypeDef):
+                typedef = item[1]
+            else:
+                typedef = dictionary.lookup_typedef(item[1])
+                
+            if not isinstance(typedef, (TypeDefInt, TypeDefRecord, TypeDefEnum, TypeDefExtEnum, TypeDefFixedArray)):
+                raise ValueError("Typedef can only be TypeDefInt, TypeDefRecord, TypeDefEnum, TypeDefExtEnum orTypeDefFixedArray")
+            
+            record_name_list.append(record_name)
+            typedef_list.append(typedef)
+            
+        cdef WCharBuffer wchar_buf
+        
+        cdef lib.IAAFTypeDef** typedef_array = <lib.IAAFTypeDef**> malloc(len(record_name_list) * sizeof(lib.IAAFTypeDef*))
+        cdef lib.aafCharacter ** record_name_array = <lib.aafCharacter** >malloc(len(record_name_list) * sizeof(lib.aafCharacter*))
+        try:
+            
+            for i, (record_name, typedef) in enumerate(zip(record_name_list, typedef_list )):
+                typedef_array[i] = typedef.typedef_ptr
+                
+                wchar_buf = WCharBuffer.__new__(WCharBuffer)
+                wchar_buf.from_string(record_name)
+                
+                wchar_buf_list.append(wchar_buf)
+                record_name_array[i] = wchar_buf.to_wchar()
+                
+            wchar_buf = WCharBuffer.__new__(WCharBuffer)
+            wchar_buf.from_string(name)
+            error_check(self.ptr.Initialize(auid.get_auid(), typedef_array, record_name_array, len(record_name_list), wchar_buf.to_wchar()))
+        
+        finally:
+            free(typedef_array)
+            free(record_name_array)
+            
     def size(self):
         cdef lib.aafUInt32 count
         error_check(self.ptr.GetCount(&count))
@@ -58,7 +120,7 @@ cdef class TypeDefRecord(TypeDef):
         cdef wstring value = wstring(&buf[0])
         return wideToString(value)
     
-    def member_type(self, lib.aafUInt32 index):
+    def member_typedef(self, lib.aafUInt32 index):
         cdef TypeDef typedef = TypeDef.__new__(TypeDef)
         
         error_check(self.ptr.GetMemberType(index, &typedef.typedef_ptr))
@@ -165,7 +227,7 @@ cdef class TypeDefRecord(TypeDef):
 
         for i in xrange(self.size()):
             value_prop = self.member_value(p_value, i)
-            value_type = self.member_type(i)
+            value_type = self.member_typedef(i)
             value_dict[self.member_name(i)] = resolve_typedef(value_type).value(value_prop)
         
         return value_dict

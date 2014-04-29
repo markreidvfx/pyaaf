@@ -263,7 +263,7 @@ class TestFile(unittest.TestCase):
                     #print p.name
                     for x in xrange(recordDef.size()):
                         member_name = recordDef.member_name(x)
-                        member_type = recordDef.member_type(x)
+                        member_type = recordDef.member_typedef(x)
                         
                     record_value = recordDef.value(value)
                     #for key,value in record_value.items():
