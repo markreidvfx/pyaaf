@@ -16,16 +16,6 @@ cdef class AAFCharBuffer(object):
     def __cinit__(self):
         self.buf = vector[lib.aafCharacter]()
         
-    cdef from_wstring(self, wstring value):
-        
-        cdef const wchar_t *ptr = value.c_str()
-        cdef wchar_t item
-        for i in xrange(value.size()):
-            item = ptr[i]
-            self.buf.push_back(item)
-        # Added null terminator
-        self.null_terminate()
-        
     cpdef null_terminate(self):
         self.buf.push_back('\0')
         
@@ -75,13 +65,6 @@ cdef class AAFCharBuffer(object):
         if isinstance(string, unicode):
             self.write_unicode(string)
         self.write_bytes(string)
-        
-    cpdef bytes to_string(self):
-        return wideToString(self.to_wstring())
-    
-    cdef wstring to_wstring(self):
-        cdef wstring value = wstring(&self.buf[0], self.buf.size())
-        return value
     
     cdef lib.aafCharacter* to_aafchar(self):
         return <lib.aafCharacter *> &self.buf[0]
@@ -107,5 +90,5 @@ cdef class AAFCharBuffer(object):
         def __get__(self):
             return sizeof(Py_UNICODE)
     
-    def w_dump(self):
+    def dump(self):
         print_wchar(self.to_aafchar())

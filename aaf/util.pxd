@@ -30,10 +30,6 @@ cdef class AAFCharBuffer(object):
     cpdef unicode read_unicode(self)
     cpdef bytes read_bytes(self)
     
-    cpdef bytes to_string(self)
-    cdef wstring to_wstring(self)
-    cdef from_wstring(self, wstring value)
-    
     cdef lib.aafCharacter * to_aafchar(self)
 
     
