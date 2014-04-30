@@ -16,7 +16,7 @@ cdef object RESOLVE_OBJECT_FUNC = None
 
 cdef dict OBJECT_MAP = {}
 
-cdef object error_check(int ret):
+cpdef object error_check(lib.HRESULT ret):
     if not lib.SUCCEEDED(ret):
         message = HRESULT2str(ret)
         raise RuntimeError("failed with [%d]: %s" % (ret, message))
@@ -24,25 +24,22 @@ cdef object error_check(int ret):
     return ret
 
 cdef object HRESULT2str(lib.HRESULT result):
-    cdef lib.aafUInt32 bufflen
-    ret = lib.AAFResultToTextBufLen(result, &bufflen)
+    cdef lib.aafUInt32 size_in_bytes
+    ret = lib.AAFResultToTextBufLen(result, &size_in_bytes)
     
     if not lib.SUCCEEDED(ret):
         return "Unknown Error"
     
-    cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter](bufflen)
-    cdef lib.aafUInt32 bytes_read
     
-    ret = lib.AAFResultToText(result,
-                              &buf[0],
-                              bufflen
-                              )
+    cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
+    buf.size_in_bytes = size_in_bytes
+    
+    ret = lib.AAFResultToText(result, buf.get_ptr(), buf.size_in_bytes)
     
     if not lib.SUCCEEDED(ret):
         return "Unknown Error"
-    
-    cdef wstring name = wstring(&buf[0])
-    message = wideToString(name)
+
+    message = buf.read_bytes()
     message = message.replace("AAFRESULT_", "").replace("_", " ").lower()    
     return message
 

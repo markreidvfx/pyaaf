@@ -5,7 +5,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from wstring cimport wstring, print_wchar
 
-cdef object error_check(int ret)
+cpdef object error_check(lib.HRESULT ret)
 cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID guid)
 
 cdef object register_object(object obj)
