@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import traceback
 from optparse import OptionParser
@@ -24,7 +25,7 @@ def walk_properties(space, iter_item):
         if hasattr(item, 'name'):
             name = item.name or ""
         
-        print space,name, value
+        print(space,name, value)
         
         if isinstance(value, aaf.dictionary.Dictionary) and not options.show_dict:
             continue

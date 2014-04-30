@@ -40,10 +40,11 @@ cdef class EdgeCode(Segment):
         if header:
             if len(header) > 8:
                 raise ValueError("header can only be 8 or less characters")
-            c_header = header
-            memcpy(<void *> edge_code.header, c_header, len(header))
-        
+
         error_check(self.ptr.Initialize(length, edge_code))
+        
+        if header:
+            self.header = header
         
     
     property header:
@@ -53,7 +54,7 @@ cdef class EdgeCode(Segment):
             
             error_check(self.ptr.GetEdgecode(&edge_code))
             
-            return unicode(edge_code.header)
+            return edge_code.header.decode("UTF-8")
         
         def __set__(self, value not None):
             
@@ -62,11 +63,11 @@ cdef class EdgeCode(Segment):
             
             int_list = [0 for i in xrange(8)]
             
-            cdef lib.aafUInt8 *int_value
+            cdef lib.aafUInt8 int_value
             
             for i, item in enumerate(value):
-                int_value = <lib.aafUInt8 *> item
-                int_list[i] = int_value[0]
+                int_value = ord(item)
+                int_list[i] = int_value
 
             self['Header'].value = int_list
             

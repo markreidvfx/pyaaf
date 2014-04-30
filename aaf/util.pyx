@@ -60,7 +60,7 @@ cdef object lookup_object(object name):
     rename = name
     for n,r in (("",""), ("Definition", "Def")):
         rename = rename.replace(n,r)
-        if OBJECT_MAP.has_key(rename):
+        if rename in OBJECT_MAP:
             return OBJECT_MAP[rename]
     raise KeyError("No object named %s" % name)
 

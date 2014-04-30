@@ -34,7 +34,7 @@ class AAFFraction(Fraction):
                 self._denominator = value._denominator
                 return self
 
-            elif isinstance(numerator, basestring):
+            elif isinstance(numerator, str):
                 # Handle construction from strings.
                 m = _RATIONAL_FORMAT.match(numerator)
                 if m is None:

@@ -101,13 +101,13 @@ cdef class File(AAFBase):
 
         productInfo = self.productInfo
         
-        company_name = "CompanyName"
-        product_name = "pyaaf"
-        product_version_string = "0"
+        cdef AAFCharBuffer company_name = AAFCharBuffer("CompanyName")
+        cdef AAFCharBuffer product_name = AAFCharBuffer("PyAAF")
+        cdef AAFCharBuffer product_version_string = AAFCharBuffer("0.8.0")
         
-        productInfo.companyName = <lib.aafCharacter* > toWideString(company_name).c_str()
-        productInfo.productName = <lib.aafCharacter* > toWideString(product_name).c_str()
-        productInfo.productVersionString = <lib.aafCharacter* > toWideString(product_version_string).c_str()
+        productInfo.companyName = company_name.get_ptr()
+        productInfo.productName = product_name.get_ptr()
+        productInfo.productVersionString = product_version_string.get_ptr()
         productInfo.productID = productUID
 
         cdef lib.aafUID_t kind = lib.kAAFFileKind_Aaf4KBinary

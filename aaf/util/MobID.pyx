@@ -53,7 +53,7 @@ cdef class MobID(object):
     
     @staticmethod
     def from_list(mobid_list):
-        f = b"urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
+        f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
              "%02x"  + \
              "%02x%02x%02x." + \
              "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"
@@ -78,7 +78,7 @@ cdef class MobID(object):
 
     def __str__(self):
         
-        f = b"urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
+        f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
              "%02x"  + \
              "%02x%02x%02x." + \
              "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"

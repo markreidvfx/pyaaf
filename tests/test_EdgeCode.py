@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.mob
 import aaf.define
@@ -40,7 +41,7 @@ class TestEdgeCode(unittest.TestCase):
         
         mob.append_new_timeline_slot("0/1", edgecode, 0, "edgecode", 0)
         
-         
+        #print(edgecode.header)
         assert edgecode.header == edge_code_header
         
         

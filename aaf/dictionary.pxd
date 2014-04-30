@@ -14,5 +14,5 @@ cdef class PluginManager(object):
     cdef lib.IAAFPluginManager *ptr
     
 cdef class CreateInstance(object):
-   cdef bytes class_name
+   cdef object class_name
    cdef Dictionary dictionary
