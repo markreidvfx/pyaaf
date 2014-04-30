@@ -108,20 +108,14 @@ cdef class TypeDefRecord(TypeDef):
         return d
     
     def member_name(self, lib.aafUInt32 index):
-        cdef lib.aafUInt32 sizeInChars
-        cdef lib.aafUInt32 sizeInBytes
+        cdef lib.aafUInt32 size_in_bytes
+        error_check(self.ptr.GetMemberNameBufLen(index, &size_in_bytes))
         
-        error_check(self.ptr.GetMemberNameBufLen(index, &sizeInBytes))
-        sizeInChars = sizeInBytes / sizeof(lib.aafCharacter) + 1
+        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
+        buf.size_in_bytes = size_in_bytes
+        error_check(self.ptr.GetMemberName(index, buf.get_ptr(), buf.size_in_bytes))
         
-        cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter](sizeInChars)
-        
-        error_check(self.ptr.GetMemberName(index,
-                                           &buf[0],
-                                           sizeInBytes))
-        
-        cdef wstring value = wstring(&buf[0])
-        return wideToString(value)
+        return buf.read_bytes()[:-1]
     
     def member_typedef(self, lib.aafUInt32 index):
         cdef TypeDef typedef = TypeDef.__new__(TypeDef)
