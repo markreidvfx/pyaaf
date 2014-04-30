@@ -39,9 +39,19 @@ cdef class AIFCDescriptor(FileDescriptor):
             
             error_check(self.ptr.GetSummary(bufer_size, <lib.aafUInt8 *> &buf[0]))
             cdef lib.aafUInt8 *data = <lib.aafUInt8 *>  &buf[0]
-            return data[:bufer_size]
+            cdef bytes byte_data = data[:bufer_size]
+            
+            return byte_data.decode("UTF-8")
             #HRESULT GetSummaryBufferSize(aafUInt32 *pSize)
 
-        def __set__(self, bytes value):
-            cdef lib.aafUInt32 bufer_size =  len(value) * sizeof(lib.aafUInt8)
-            error_check(self.ptr.SetSummary(bufer_size, <lib.aafUInt8 *> value ))
+        def __set__(self, value):
+            
+            cdef bytes data
+            if isinstance(value, bytes):
+                data = value
+            else:
+                data = value.encode("UTF-8")
+                
+            cdef lib.aafUInt32 bufer_size =  len(data) * sizeof(lib.aafUInt8)
+            
+            error_check(self.ptr.SetSummary(bufer_size, <lib.aafUInt8 *> data ))

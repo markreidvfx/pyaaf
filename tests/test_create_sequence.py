@@ -1,3 +1,4 @@
+from __future__ import print_function
 import unittest
 import traceback
 import os
@@ -31,7 +32,7 @@ class TestCreateSequence(unittest.TestCase):
         filler_len = 100
         tape_tc = aaf.util.Timecode(108000, "NonDrop", 30)
  
-        for i in xrange(10):
+        for i in range(10):
             
             # Make the Tape MOB
             tape_mob = f.create.SourceMob()
@@ -90,7 +91,7 @@ class TestCreateSequence(unittest.TestCase):
         f = aaf.open(output_aaf, 'r')
         
         for mob in f.storage.master_mobs():
-            print mob.name
+            print(mob.name)
         
         
 
