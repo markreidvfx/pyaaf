@@ -70,7 +70,7 @@ cdef class Mob(AAFObject):
         return d.create.SourceClip(source_slot.media_kind, length, source_ref)
         
     def append_new_timeline_slot(self, edit_rate, Segment seg, lib.aafSlotID_t slotID = 0, 
-                            bytes slot_name = None, lib.aafPosition_t origin = 0):
+                                 slot_name = None, lib.aafPosition_t origin = 0):
         
         """append_new_timeline_slot(edit_rate, seg, slotID = 0, slot_name = None, origin = 0)
         
@@ -78,21 +78,20 @@ cdef class Mob(AAFObject):
         """
         
         if not slot_name:
-            slot_name = b'timeline slot %d' % slotID
+            slot_name = 'timeline slot %d' % slotID
         
         cdef TimelineMobSlot timeline = TimelineMobSlot.__new__(TimelineMobSlot)
         
         cdef lib.aafRational_t edit_rate_t
         
-        
         fraction_to_aafRational(edit_rate, edit_rate_t)
-        
-        cdef wstring w_slot_name = toWideString(slot_name)
+
+        cdef AAFCharBuffer slot_name_buf = AAFCharBuffer(slot_name)
         
         error_check(self.ptr.AppendNewTimelineSlot(edit_rate_t,
                                                   seg.seg_ptr,
                                                   slotID,
-                                                  w_slot_name.c_str(),
+                                                  slot_name_buf.get_ptr(),
                                                   origin,
                                                   &timeline.ptr
                                                   ))

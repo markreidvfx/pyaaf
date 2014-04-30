@@ -28,7 +28,7 @@ cdef class FileDescriptor(EssenceDescriptor):
             return self['SampleRate']
             
     property container_format:
-        def __set__(self, bytes value):
+        def __set__(self, value):
             cdef ContainerDef cont_def = self.dictionary().lookup_containerdef(value)
             error_check(self.file_ptr.SetContainerFormat(cont_def.ptr))
         def __get__(self):

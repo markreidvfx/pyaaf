@@ -31,7 +31,7 @@ cdef class MobSlot(AAFObject):
         def __get__(self):
             return self.get_value("SlotName", None)
         
-        def __set__(self, bytes value):
+        def __set__(self, value):
             self['SlotName'].value = value
         
     property segment:

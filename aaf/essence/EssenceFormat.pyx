@@ -31,10 +31,10 @@ cdef class EssenceFormat(AAFBase):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-    def __setitem__(self, bytes x, y):
+    def __setitem__(self, x, y):
         self.set_format_specifier(x,y)
         
-    def __getitem__(self, bytes x):
+    def __getitem__(self, x):
         for i in xrange(self.count()):
             name = self.get_format_specifier_name(i)
             if name.lower() == x.lower():
@@ -47,7 +47,7 @@ cdef class EssenceFormat(AAFBase):
             keys.append(self.get_format_specifier_name(i))
         return keys
     
-    def has_key(self, bytes x):
+    def has_key(self, x):
         if x.lower() in self.keys():
             return True
         return False
@@ -135,7 +135,7 @@ cdef class EssenceFormat(AAFBase):
         else:
             raise NotImplementedError("get_format_specifier_value not implemented for: %s" % specifier_type)
 
-    def set_format_specifier(self, bytes specifier, object value ):
+    def set_format_specifier(self, specifier, object value ):
 
         specifier = specifier.lower()
         cdef AUID auid_obj = EssenceFormatDefMap[specifier][0]

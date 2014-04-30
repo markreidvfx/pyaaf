@@ -40,9 +40,6 @@ cdef class Locator(AAFObject):
             return buf.read_str()[:-1]
 
         def __set__(self, bytes value):
-            cdef AAFCharBuffer buf = AAFCharBuffer()
+            cdef AAFCharBuffer buf = AAFCharBuffer(value)
             
-            buf.write_str(value)
-            buf.null_terminate()
-
             error_check(self.loc_ptr.SetPath(buf.get_ptr()))

@@ -20,7 +20,7 @@ cdef class SourceMob(Mob):
         if self.src_ptr:
             self.src_ptr.Release()
             
-    def __init__(self, root, bytes name = None):
+    def __init__(self, root, name = None):
         
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
@@ -43,10 +43,10 @@ cdef class SourceMob(Mob):
                      lib.aafSlotID_t slotID, media_kind, 
                      SourceRef source_ref,
                      lib.aafLength_t src_ref_length,
-                     bytes pulldown_kind = b"TwentyFourToSixtyPD",
+                     pulldown_kind = "TwentyFourToSixtyPD",
                      lib.aafPhaseFrame_t phase_frame = 0,
-                     bytes direction = b"TapeToFilmSpeed",
-                     bytes add_type = b"append"):
+                     direction = "TapeToFilmSpeed",
+                     add_type = "append"):
         """add_pulldown(edit_rate, slotID, media_kind, source_ref, src_ref_length, pulldown_kind = "TwentyFourToSixtyPD", phase_frame = 0, direction = "TapeToFilmSpeed", add_type = b"append")
         """
         

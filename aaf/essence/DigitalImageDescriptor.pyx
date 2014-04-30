@@ -27,7 +27,7 @@ cdef class DigitalImageDescriptor(FileDescriptor):
             self.im_ptr.Release()
     
     property compression:
-        def __set__(self, bytes value):
+        def __set__(self, value):
             cdef AUID auid = CompressionDefMap[value.lower()]
             error_check(self.im_ptr.SetCompression(auid.get_auid()))
         
@@ -134,7 +134,7 @@ cdef class DigitalImageDescriptor(FileDescriptor):
         Note: value is always converted to lowercase
         """
         
-        def __set__(self, bytes value):
+        def __set__(self, value):
             value = value.lower()
             if value == "none":
                 value = None
