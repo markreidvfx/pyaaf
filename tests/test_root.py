@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.mob
 import aaf.define
@@ -18,7 +19,7 @@ if not os.path.exists(sandbox):
     os.makedirs(sandbox)
 
 main_test_file = os.path.join(cur_dir,"files/test_file_01.aaf")
-print main_test_file
+print(main_test_file)
 assert os.path.exists(main_test_file)
 
 
@@ -47,9 +48,9 @@ class TestFile(unittest.TestCase):
 
             for item in iter_item:
                 value = item
-                if isinstance(item, aaf.property.Property):
+                if isinstance(item, aaf.property.PropertyItem):
                     value = item.value
-                    print space, item.root
+                    print(space, item.root)
                     assert item.root is not None
                 name = ""
                 
@@ -60,14 +61,15 @@ class TestFile(unittest.TestCase):
                 s = space + '   '
                 
                 if isinstance(value, aaf.base.AAFBase):
+                    #print("***", item, value)
                     assert value.root is not None
                 
                 if isinstance(value, aaf.base.AAFObject):
-                    print space, value.root
+                    #print(space, value.root)
                     assert value.root is not None
                     walk_properties(s, value.properties())
                 if isinstance(value, aaf.iterator.BaseIterator):
-                    print space,value, value.root
+                    print(space,value, value.root)
                     assert value.root is not None
                     walk_properties(s, value)
         

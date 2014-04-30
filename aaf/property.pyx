@@ -39,6 +39,7 @@ cdef class PropertyItem(AAFBase):
                 value = PropertyValue.__new__(PropertyValue)
                 error_check(self.parent.obj_ptr.GetPropertyValue(self.property_def.ptr, &value.ptr))
                 value.query_interface()
+                value.root = self.root
                 return value.value
             
             else:
