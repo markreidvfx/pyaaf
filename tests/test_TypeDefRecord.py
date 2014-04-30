@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.mob
 import aaf.define
@@ -33,7 +34,7 @@ class TypeDefRecord(unittest.TestCase):
             
         except ValueError:
             pass
-            #print traceback.format_exc()
+            print(traceback.format_exc())
         else:
             raise
         
@@ -49,7 +50,7 @@ class TypeDefRecord(unittest.TestCase):
         
         typedef = aaf.define.TypeDefRecord(f, record_name_typedef_pairs, TypeId_Mixed, 'MixedRecord')
         
-        print typedef.keys(), typedef.typedef_dict()
+        print(typedef.keys(), typedef.typedef_dict())
 
 
 if __name__ == "__main__":

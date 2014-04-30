@@ -49,10 +49,10 @@ cdef register_formatdefs(map[string, pair[ lib.aafUID_t, string] ] def_map, dict
     for pair in def_map:
         auid_obj = AUID()
         auid_obj.from_auid(pair.second.first)
-        name = unicode(pair.first)
+        name = pair.first.decode('UTF-8')
         for n in replace:
             name = name.replace(n, '')
-        d[name.lower()] = (auid_obj, unicode(pair.second.second))
+        d[name.lower()] = (auid_obj, pair.second.second.decode('UTF-8'))
         
 register_formatdefs(lib.get_essenceformats_def_map(), EssenceFormatDefMap, ['kAAF'])
 

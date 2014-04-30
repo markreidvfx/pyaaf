@@ -86,7 +86,6 @@ cdef class Dictionary(AAFObject):
         for typedef in self.typedefs():
             if typedef.name == name:
                 return typedef
-        
         cdef AUID auid = TypeDefMap[name.lower()]
         return self.lookup_typedef_by_id(auid)
     
