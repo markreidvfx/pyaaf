@@ -30,7 +30,7 @@ cdef class AAFCharBuffer(object):
     cpdef unicode read_unicode(self)
     cpdef bytes read_bytes(self)
     
-    cdef lib.aafCharacter * to_aafchar(self)
+    cdef lib.aafCharacter * get_ptr(self)
 
     
 cdef class SourceRef(object):

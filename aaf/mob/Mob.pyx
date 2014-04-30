@@ -113,7 +113,7 @@ cdef class Mob(AAFObject):
         name_buf.null_terminate()
         value_buf.null_terminate()
 
-        error_check(self.ptr.AppendComment(name_buf.to_aafchar(), value_buf.to_aafchar() ))
+        error_check(self.ptr.AppendComment(name_buf.get_ptr(), value_buf.get_ptr() ))
     
     def comments(self):
         cdef TaggedValueIter tags = TaggedValueIter.__new__(TaggedValueIter)

@@ -26,7 +26,7 @@ cdef class TypeDefVariableArray(TypeDef):
         buf.write_str(name)
         buf.null_terminate()
         
-        error_check(self.ptr.Initialize(auid.get_auid(), typedef.typedef_ptr, buf.to_aafchar()))
+        error_check(self.ptr.Initialize(auid.get_auid(), typedef.typedef_ptr, buf.get_ptr()))
 
         dictionary.register_def(self)
 

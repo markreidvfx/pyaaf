@@ -260,10 +260,10 @@ cdef initialize_string_tagged_value(TaggedValue tag, bytes name, bytes value):
     value_buf.write_str(value)
     value_buf.null_terminate()
     
-    error_check(tag.ptr.Initialize(name_buf.to_aafchar(), 
+    error_check(tag.ptr.Initialize(name_buf.get_ptr(), 
                                    typedef.typedef_ptr, 
                                    value_buf.size_in_bytes, 
-                                   <lib.aafDataBuffer_t > value_buf.to_aafchar()))
+                                   <lib.aafDataBuffer_t > value_buf.get_ptr()))
     
     
 cdef initialize_int_tagged_value(TaggedValue tag, bytes name, value, TypeDefInt typedef):
@@ -293,7 +293,7 @@ cdef init_aaf_integral_tagged_value(TaggedValue tag, bytes name,  aaf_integral v
     name_buf.write_str(name)
     name_buf.null_terminate()
     
-    error_check(tag.ptr.Initialize(name_buf.to_aafchar(),  typedef.typedef_ptr,  
+    error_check(tag.ptr.Initialize(name_buf.get_ptr(),  typedef.typedef_ptr,  
                                    typedef.size(),  <lib.aafDataBuffer_t > &value))
     
 

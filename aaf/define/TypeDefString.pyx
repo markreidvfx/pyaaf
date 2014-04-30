@@ -32,7 +32,7 @@ cdef class TypeDefString(TypeDef):
         buf.write_str(value)
         buf.null_terminate()
         error_check(self.ptr.SetCString(p_value.ptr,
-                                        <lib.aafMemPtr_t> buf.to_aafchar(),
+                                        <lib.aafMemPtr_t> buf.get_ptr(),
                                         buf.size_in_bytes))
         
     def get_value(self, PropertyValue p_value):
@@ -44,7 +44,7 @@ cdef class TypeDefString(TypeDef):
         
         buf.size = size_in_chars
         
-        error_check(self.ptr.GetElements(p_value.ptr, <lib.aafMemPtr_t> buf.to_aafchar(), buf.size_in_bytes))
+        error_check(self.ptr.GetElements(p_value.ptr, <lib.aafMemPtr_t> buf.get_ptr(), buf.size_in_bytes))
         
         # strip off Null Terminator
         return buf.read_bytes()[:-1]

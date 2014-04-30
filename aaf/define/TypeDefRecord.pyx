@@ -71,13 +71,13 @@ cdef class TypeDefRecord(TypeDef):
                 wchar_buf.null_terminate()
                 
                 wchar_buf_list.append(wchar_buf)
-                record_name_array[i] = wchar_buf.to_aafchar()
+                record_name_array[i] = wchar_buf.get_ptr()
                 
             wchar_buf = AAFCharBuffer.__new__(AAFCharBuffer)
             wchar_buf.write_str(name)
             wchar_buf.null_terminate()
             
-            error_check(self.ptr.Initialize(auid.get_auid(), typedef_array, record_name_array, len(record_name_list), wchar_buf.to_aafchar()))
+            error_check(self.ptr.Initialize(auid.get_auid(), typedef_array, record_name_array, len(record_name_list), wchar_buf.get_ptr()))
         
         finally:
             free(typedef_array)
