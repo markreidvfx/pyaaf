@@ -31,4 +31,4 @@ cdef class DefObject(AAFObject):
             error_check(self.defobject_ptr.GetName(buf.get_ptr(),  buf.size_in_bytes))
             
             # strip off Null Terminator
-            return buf.read_bytes()[:-1]
+            return buf.read_str()[:-1]

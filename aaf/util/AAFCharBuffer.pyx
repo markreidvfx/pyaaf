@@ -57,6 +57,9 @@ cdef class AAFCharBuffer(object):
             
         return bytes_str
     
+    cpdef object read_str(self):
+        return self.read_bytes()
+    
     cpdef bytes read_raw(self):
         cdef char * data = <char *> &self.buf[0]
         return data[:self.size_in_bytes]

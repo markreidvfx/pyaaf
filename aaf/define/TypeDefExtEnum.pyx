@@ -35,7 +35,7 @@ cdef class TypeDefExtEnum(TypeDef):
         error_check(self.ptr.GetElementName(index, buf.get_ptr(), buf.size_in_bytes))
         
         # strip off Null Terminator
-        return buf.read_bytes()[:-1]
+        return buf.read_str()[:-1]
     
     def element_name_from_value(self, PropertyValue p_value):
         cdef lib.aafUInt32 size_in_bytes
@@ -48,7 +48,7 @@ cdef class TypeDefExtEnum(TypeDef):
         error_check(self.ptr.GetNameFromValue(p_value.ptr, buf.get_ptr(), buf.size_in_bytes))
         
         # strip off Null Terminator
-        return buf.read_bytes()[:-1]
+        return buf.read_str()[:-1]
     
     def element_value(self, lib.aafUInt32 index):
 

@@ -39,7 +39,7 @@ cdef object HRESULT2str(lib.HRESULT result):
     if not lib.SUCCEEDED(ret):
         return "Unknown Error"
 
-    message = buf.read_bytes()
+    message = buf.read_str()
     message = message.replace("AAFRESULT_", "").replace("_", " ").lower()    
     return message
 

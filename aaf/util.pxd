@@ -26,9 +26,10 @@ cdef class AAFCharBuffer(object):
     cpdef write_bytes(self, bytes value)
     cpdef write_str(self, object string)
     
-    cpdef bytes read_raw(self)
     cpdef unicode read_unicode(self)
     cpdef bytes read_bytes(self)
+    cpdef object read_str(self)
+    cpdef bytes read_raw(self)
     
     cdef lib.aafCharacter * get_ptr(self)
 

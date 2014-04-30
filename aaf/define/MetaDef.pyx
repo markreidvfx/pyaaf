@@ -30,7 +30,7 @@ cdef class MetaDef(AAFBase):
             error_check(self.meta_ptr.GetName(buf.get_ptr(),  buf.size_in_bytes))
             
             # strip off Null Terminator
-            return buf.read_bytes()[:-1]
+            return buf.read_str()[:-1]
 
         
     property description:
@@ -44,7 +44,7 @@ cdef class MetaDef(AAFBase):
             error_check(self.meta_ptr.GetDescription(buf.get_ptr(),  buf.size_in_bytes))
             
             # strip off Null Terminator
-            return buf.read_bytes()[:-1]
+            return buf.read_str()[:-1]
     
     property auid:
         def __get__(self):
