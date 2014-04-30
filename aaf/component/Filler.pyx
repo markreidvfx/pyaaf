@@ -19,7 +19,7 @@ cdef class Filler(Segment):
         if self.ptr:
             self.ptr.Release()
             
-    def __init__(self, root,  bytes media_kind not None, lib.aafLength_t length):
+    def __init__(self, root, media_kind not None, lib.aafLength_t length):
         
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)

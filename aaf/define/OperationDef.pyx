@@ -19,15 +19,16 @@ cdef class OperationDef(DefObject):
         if self.ptr:
             self.ptr.Release()
     
-    def __init__(self, root, auid, bytes name, bytes description):
+    def __init__(self, root, auid, name, description):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
         
         cdef AUID auid_obj = AUID(auid)
-        cdef wstring w_name = toWideString(name)
-        cdef wstring w_description = toWideString(description)
         
-        error_check(self.ptr.Initialize(auid_obj.get_auid(), w_name.c_str(), w_description.c_str()))
+        cdef AAFCharBuffer name_buf = AAFCharBuffer(name)
+        cdef AAFCharBuffer description_buf = AAFCharBuffer(name)
+        
+        error_check(self.ptr.Initialize(auid_obj.get_auid(), name_buf.get_ptr(), description_buf.get_ptr()))
         
         # Automaticly set category to effect_category
         effect_category = "0D010102-0101-0100-060E-2B3404010101"
@@ -44,7 +45,7 @@ cdef class OperationDef(DefObject):
             data_def.query_interface()
             return data_def.name.replace("DataDef_", "")
 
-        def __set__(self, bytes value):
+        def __set__(self, value):
             cdef Dictionary dictionary = self.root.dictionary
             cdef DataDef data_def = dictionary.lookup_datadef(value)
             error_check(self.ptr.SetDataDef(data_def.ptr))

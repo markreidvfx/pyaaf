@@ -2,7 +2,7 @@ class ParametersHelper(object):
     def __init__(self, obj):
         self.obj = obj
         
-    def __getitem__(self, bytes index):
+    def __getitem__(self, index):
         for p in self.obj.parameters():
             if p.name == index:
                 return p
@@ -13,7 +13,7 @@ class ParametersHelper(object):
         """
         return [p.name for p in self.obj.parameters()]
     
-    def has_key(self, bytes key):
+    def has_key(self, key):
         """
         Test for the presence of key in the parameter names
         """
@@ -51,7 +51,7 @@ cdef class OperationGroup(Segment):
         if self.ptr:
             self.ptr.Release()
             
-    def __init__(self, root, bytes media_kind, lib.aafLength_t length, OperationDef op_def not None):
+    def __init__(self, root, media_kind, lib.aafLength_t length, OperationDef op_def not None):
         
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)

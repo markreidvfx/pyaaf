@@ -19,15 +19,16 @@ cdef class ParameterDef(DefObject):
         if self.ptr:
             self.ptr.Release()
     
-    def __init__(self, root, auid, bytes name, bytes description, TypeDef typedef not None):
+    def __init__(self, root, auid, name, description, TypeDef typedef not None):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
         
         cdef AUID auid_obj = AUID(auid)
-        cdef wstring w_name = toWideString(name)
-        cdef wstring w_description = toWideString(description)
         
-        error_check(self.ptr.Initialize(auid_obj.get_auid(), w_name.c_str(), w_description.c_str(), typedef.typedef_ptr))
+        cdef AAFCharBuffer name_buf = AAFCharBuffer(name)
+        cdef AAFCharBuffer description_buf = AAFCharBuffer(name)
+        
+        error_check(self.ptr.Initialize(auid_obj.get_auid(), name_buf.get_ptr(), description_buf.get_ptr(), typedef.typedef_ptr))
         
     def typedef(self):
         cdef TypeDef typedef = TypeDef.__new__(TypeDef) 

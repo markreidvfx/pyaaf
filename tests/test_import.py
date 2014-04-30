@@ -235,7 +235,7 @@ class TestImport(unittest.TestCase):
             mastermob = d.create.MasterMob(name)
             f.storage.add_mob(mastermob)
             
-            mastermob.append_comment("Encoding Format", name)
+            mastermob.append_comment(u"Encoding Format", unicode(name))
 
             essence = mastermob.create_essence(1,
                                                "picture",
@@ -555,7 +555,7 @@ class TestImport(unittest.TestCase):
         
         video_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, nb_frames, name, False)
         
-        mastermob.import_video_essence(video_path, frame_rate)
+        mastermob.import_video_essence(unicode(video_path), frame_rate)
         
         
         duration = nb_frames / float(Fraction(frame_rate))

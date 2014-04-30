@@ -19,7 +19,7 @@ cdef class EdgeCode(Segment):
         if self.ptr:
             self.ptr.Release()
     def __init__(self, root, lib.aafLength_t length = 0, lib.aafFrameOffset_t start_frame = 0, 
-                 bytes film_kind = b"35mm", bytes code_format = b"keycode", bytes header = None):
+                  film_kind = "35mm", code_format = "keycode", header = None):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
         

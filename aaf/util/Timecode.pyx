@@ -1,6 +1,6 @@
 cdef class Timecode(object):
     
-    def __init__(self, lib.aafFrameOffset_t start_frame = 0, bytes drop = b"NonDrop", lib.aafUInt16 fps = 25):
+    def __init__(self, lib.aafFrameOffset_t start_frame = 0, drop = "NonDrop", lib.aafUInt16 fps = 25):
         
         self.start_frame = start_frame
         self.drop = drop
@@ -28,7 +28,7 @@ cdef class Timecode(object):
             else:
                 return 'drop'
             
-        def __set__(self, bytes value):
+        def __set__(self, value):
             if value.lower() == "nondrop":
                 self.timecode.drop = lib.kAAFTcNonDrop
             elif value.lower() == 'drop':

@@ -21,7 +21,7 @@ cdef class TypeDefRecord(TypeDef):
         if self.ptr:
             self.ptr.Release()
             
-    def __init__(self, root, record_name_typedef_pairs, AUID auid not None, bytes name not None):
+    def __init__(self, root, record_name_typedef_pairs, AUID auid not None, name not None):
         """
         Valid TypeDefs
         - TypeDefInt
@@ -35,17 +35,14 @@ cdef class TypeDefRecord(TypeDef):
         
         
         cdef TypeDef typedef
-        cdef bytes record_name
         
         record_name_list = []
         typedef_list = []
         
-        wchar_buf_list = []
-        
         for item in record_name_typedef_pairs:
             if len(item) is not 2:
                 raise ValueError("key_typedef_pairs must be pairs [ (element_name, [typedef_name or TypeDef]), ...] ")
-            record_name = item[0]
+            record_name = AAFCharBuffer(item[0])
             if isinstance(item[1], TypeDef):
                 typedef = item[1]
             else:
@@ -57,7 +54,7 @@ cdef class TypeDefRecord(TypeDef):
             record_name_list.append(record_name)
             typedef_list.append(typedef)
             
-        cdef AAFCharBuffer wchar_buf
+        cdef AAFCharBuffer aafchar_buf
         
         cdef lib.IAAFTypeDef** typedef_array = <lib.IAAFTypeDef**> malloc(len(record_name_list) * sizeof(lib.IAAFTypeDef*))
         cdef lib.aafCharacter ** record_name_array = <lib.aafCharacter** >malloc(len(record_name_list) * sizeof(lib.aafCharacter*))
@@ -66,18 +63,12 @@ cdef class TypeDefRecord(TypeDef):
             for i, (record_name, typedef) in enumerate(zip(record_name_list, typedef_list )):
                 typedef_array[i] = typedef.typedef_ptr
                 
-                wchar_buf = AAFCharBuffer.__new__(AAFCharBuffer)
-                wchar_buf.write_str(record_name)
-                wchar_buf.null_terminate()
+                aafchar_buf = record_name
+                record_name_array[i] = aafchar_buf.get_ptr()
                 
-                wchar_buf_list.append(wchar_buf)
-                record_name_array[i] = wchar_buf.get_ptr()
-                
-            wchar_buf = AAFCharBuffer.__new__(AAFCharBuffer)
-            wchar_buf.write_str(name)
-            wchar_buf.null_terminate()
+            aafchar_buf = AAFCharBuffer(name)
             
-            error_check(self.ptr.Initialize(auid.get_auid(), typedef_array, record_name_array, len(record_name_list), wchar_buf.get_ptr()))
+            error_check(self.ptr.Initialize(auid.get_auid(), typedef_array, record_name_array, len(record_name_list), aafchar_buf.get_ptr()))
         
         finally:
             free(typedef_array)

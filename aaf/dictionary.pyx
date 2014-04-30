@@ -217,7 +217,7 @@ cdef class PluginManager(object):
         if self.ptr:
             self.ptr.Release()
             
-    def loaded_plugins(self, bytes category):
+    def loaded_plugins(self, category):
         """
         categories are:
             -codec

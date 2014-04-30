@@ -19,7 +19,7 @@ cdef class Pulldown(Segment):
         if self.ptr:
             self.ptr.Release()
     
-    def __init__(self, root, bytes media_kind not None):
+    def __init__(self, root, media_kind not None):
         
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
@@ -29,13 +29,13 @@ cdef class Pulldown(Segment):
     property kind:
         def __get__(self):
             return self['PulldownKind'].value
-        def __set__(self, bytes value):
+        def __set__(self, value):
             self['PulldownKind'].value = value
         
     property direction:
         def __get__(self):
             return self['PulldownDirection'].value
-        def __set__(self, bytes value):
+        def __set__(self, value):
             self['PulldownDirection'].value = value
     
     property phase:

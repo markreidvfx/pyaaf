@@ -19,12 +19,9 @@ cdef class ClassDef(MetaDef):
             self.ptr.Release()
             
     def register_optional_propertydef(self, TypeDef property_typdef not None, 
-                                      AUID property_auid not None, bytes property_name not None):
+                                      AUID property_auid not None, property_name not None):
         
-        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
-        
-        buf.write_str(property_name)
-        buf.null_terminate()
+        cdef AAFCharBuffer buf = AAFCharBuffer(property_name)
         
         cdef PropertyDef propertydef = PropertyDef.__new__(PropertyDef)
         error_check(self.ptr.RegisterOptionalPropertyDef(property_auid.get_auid(), buf.get_ptr(), property_typdef.typedef_ptr, &propertydef.ptr))

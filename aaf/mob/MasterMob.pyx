@@ -23,7 +23,7 @@ cdef class MasterMob(Mob):
             
         Mob.query_interface(self, obj)
         
-    def __init__(self, root, bytes name = None):
+    def __init__(self, root, name = None):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
         
@@ -44,7 +44,7 @@ cdef class MasterMob(Mob):
                                                   ref.get_aafSourceRef_t(),
                                                   srcRefLength)) 
             
-    def open_essence(self, lib.aafSlotID_t  slotID, bytes mode = b'r', bool compression = False):
+    def open_essence(self, lib.aafSlotID_t  slotID, mode = 'r', bool compression = False):
         """open_essence(slotID, mode = "r", compression = False)
         
         Opens a single channel of a file mob and returns EssenceAccess Object.
@@ -89,12 +89,12 @@ cdef class MasterMob(Mob):
         return access
     
     def create_essence(self,lib.aafSlotID_t slot_index, 
-                            bytes media_kind,
-                            bytes codec_name,
+                            media_kind,
+                            codec_name,
                             edit_rate, sample_rate, 
                             bool compress=False,
                             Locator locator=None, 
-                            bytes fileformat = b"aaf"):
+                            fileformat = "aaf"):
         """create_essence(slot_index, media_kind, codec_name, edit_rate, sample_rate, compress = False, locator = None, fileformat = "aaf")
         """
         
@@ -136,7 +136,7 @@ cdef class MasterMob(Mob):
         access.root = self.root
         return access
     
-    def import_video_essence(self, bytes path, object frame_rate):
+    def import_video_essence(self, path, object frame_rate):
         """import_video_essence(path, frame_rate)
         
         Import raw dnxhd video stream from file.
@@ -211,7 +211,7 @@ cdef class MasterMob(Mob):
         finally:
             fclose(cfile)
 
-    def import_audio_essence(self, bytes path, lib.aafUInt32 channels, object sample_rate):
+    def import_audio_essence(self, path, lib.aafUInt32 channels, object sample_rate):
         """import_audio_essence(path, channels, sample_rate)
         
         Import raw PCM audio stream from file.
@@ -285,7 +285,7 @@ cdef class MasterMob(Mob):
 
     
     def add_master_slot(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
-                        lib.aafSlotID_t master_slotID, bytes slot_name=None):
+                        lib.aafSlotID_t master_slotID, slot_name=None):
         """add_master_slot(media_kind, source_slotID, source_mob, master_slotID, slot_name = None)
         Add a slot that references the specified a slot in the specified Source Mob.
         """
@@ -293,15 +293,15 @@ cdef class MasterMob(Mob):
         media_datadef = self.dictionary().lookup_datadef(media_kind)
         
         if not slot_name:
-            slot_name = b""
+            slot_name = ""
         
-        cdef wstring w_slot_name = toWideString(slot_name)
+        cdef AAFCharBuffer slot_name_buf = AAFCharBuffer(slot_name)
 
         error_check(self.mastermob_ptr.AddMasterSlot(media_datadef.ptr,
                                                      source_slotID,
                                                      source_mob.src_ptr,
                                                      master_slotID,
-                                                     w_slot_name.c_str()))
+                                                     slot_name_buf.get_ptr()))
         for slot in self.slots():
             if slot.slotID == master_slotID:
                 return slot
@@ -309,23 +309,23 @@ cdef class MasterMob(Mob):
         raise RuntimeError("could not find added master slot")
         
     def add_master_slot_with_sequence(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
-                                      lib.aafSlotID_t master_slotID, bytes slot_name = None):
+                                      lib.aafSlotID_t master_slotID, slot_name = None):
         """add_master_slot_with_sequence(media_kind, source_slotID, source_mob, master_slotID, slot_name = None)
         """
         
-        cdef DataDef media_datadef        
+        cdef DataDef media_datadef
         media_datadef = self.dictionary().lookup_datadef(media_kind)
         
         if not slot_name:
             slot_name = b""
         
-        cdef wstring w_slot_name = toWideString(slot_name)
+        cdef AAFCharBuffer slot_name_buf = AAFCharBuffer(slot_name)
         
         error_check(self.mastermob3_ptr.AddMasterSlotWithSequence(media_datadef.ptr,
                                                      source_slotID,
                                                      source_mob.src_ptr,
                                                      master_slotID,
-                                                     w_slot_name.c_str()))
+                                                     slot_name_buf.get_ptr()))
         for slot in self.slots():
             if slot.slotID == master_slotID:
                 return slot

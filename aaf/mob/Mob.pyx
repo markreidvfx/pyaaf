@@ -100,18 +100,12 @@ cdef class Mob(AAFObject):
         timeline.root = self.root
         return timeline
     
-    def append_comment(self, bytes name not None, bytes value not None):
+    def append_comment(self, name not None, value not None):
         """append_comment(name, value)
         """
         
-        cdef AAFCharBuffer name_buf = AAFCharBuffer.__new__(AAFCharBuffer)
-        cdef AAFCharBuffer value_buf = AAFCharBuffer.__new__(AAFCharBuffer)
-        
-        name_buf.write_str(name)
-        value_buf.write_str(value)
-        
-        name_buf.null_terminate()
-        value_buf.null_terminate()
+        cdef AAFCharBuffer name_buf = AAFCharBuffer(name)
+        cdef AAFCharBuffer value_buf = AAFCharBuffer(value)
 
         error_check(self.ptr.AppendComment(name_buf.get_ptr(), value_buf.get_ptr() ))
     
@@ -125,7 +119,7 @@ cdef class Mob(AAFObject):
             error_check(hr)
         
         return tags
-    def remove_comment_by_name(self, bytes name not None):
+    def remove_comment_by_name(self, name not None):
         """remove_comment_by_name(name)
         """
         
@@ -183,9 +177,9 @@ cdef class Mob(AAFObject):
 
             return None
         
-        def __set__(self, bytes value):
-            cdef wstring name = toWideString(value)
-            error_check(self.ptr.SetName(name.c_str()))
+        def __set__(self, value):
+            cdef AAFCharBuffer name_buf = AAFCharBuffer(value)
+            error_check(self.ptr.SetName(name_buf.get_ptr()))
             
     property nb_slots:
         def __get__(self):

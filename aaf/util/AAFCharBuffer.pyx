@@ -17,7 +17,7 @@ cdef class AAFCharBuffer(object):
         self.buf = vector[lib.aafCharacter]()
         
     def __init__(self, value=None):
-        if value:
+        if value is not None:
             self.write_str(value)
             self.null_terminate()
         
@@ -71,7 +71,7 @@ cdef class AAFCharBuffer(object):
         return bytes_str
     
     cpdef object read_str(self):
-        return self.read_bytes()
+        return self.read_unicode()
     
     cpdef bytes read_raw(self):
         cdef char * data = <char *> &self.buf[0]

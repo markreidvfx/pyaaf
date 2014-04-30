@@ -68,12 +68,8 @@ cdef class File(AAFBase):
         if not path:
             path = b""
             
-        cdef AAFCharBuffer path_buf = AAFCharBuffer.__new__(AAFCharBuffer)
-        path_buf.write_str(path)
-        path_buf.null_terminate()
-        
-        #cdef wstring w_path = toWideString(path)
-        
+        cdef AAFCharBuffer path_buf = AAFCharBuffer(path)
+
         mode = mode.lower()
         
         if mode == 'r':
@@ -93,9 +89,7 @@ cdef class File(AAFBase):
         
     cdef object setup_new_file(self, path, mode=b'w'):
     
-        cdef AAFCharBuffer path_buf = AAFCharBuffer.__new__(AAFCharBuffer)
-        path_buf.write_str(path)
-        path_buf.null_terminate()
+        cdef AAFCharBuffer path_buf = AAFCharBuffer(path)
             
         # setup product id
         cdef lib.aafUID_t productUID
@@ -142,7 +136,7 @@ cdef class File(AAFBase):
         error_check(lib.AAFFileOpenNewModifyEx(path_buf.get_ptr(), 
                                                &kind, 0, &productInfo, 
                                                &self.ptr))
-    def save(self,bytes path = None):
+    def save(self, path = None):
         """save(path = None)
         
         Save AAF file to disk. If path is ``None`` and the mode is ``"rw"`` or ``"w"`` it will overwrite or modify

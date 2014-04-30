@@ -97,7 +97,7 @@ cdef class AAFObject(AAFBase):
         
         return [p.name for p in self.classdef().all_propertydefs()]
     
-    def has_key(self, bytes key):
+    def has_key(self, key):
         """
         Test for the presence of key in the AAFObject property names
         """

@@ -18,13 +18,11 @@ cdef class TypeDefStrongObjRef(TypeDefObjectRef):
         if self.ptr:
             self.ptr.Release()
             
-    def __init__(self, root, ClassDef classdef not None, AUID auid not None, bytes name not None):
+    def __init__(self, root, ClassDef classdef not None, AUID auid not None, name not None):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_meta_instance(self, lib.AUID_AAFTypeDefStrongObjRef)
         
-        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
-        buf.write_str(name)
-        buf.null_terminate()
+        cdef AAFCharBuffer buf = AAFCharBuffer(name)
         
         error_check(self.ptr.Initialize(auid.get_auid(), classdef.ptr, buf.get_ptr()))
         
