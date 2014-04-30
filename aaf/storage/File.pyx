@@ -47,7 +47,7 @@ cdef class File(AAFBase):
                 error_check(ret)
             self.ptr.Release()
     
-    def __init__(self, path, mode = b'r'):
+    def __init__(self, path, mode = 'r'):
         """__init__(path, mode = 'r')
         
         :param str path: AAF file path, set to `None` if in opening in transient mode.
@@ -66,7 +66,7 @@ cdef class File(AAFBase):
         """
         
         if not path:
-            path = b""
+            path = ""
             
         cdef AAFCharBuffer path_buf = AAFCharBuffer(path)
 
@@ -87,7 +87,7 @@ cdef class File(AAFBase):
         self.mode = mode
         self.query_interface()
         
-    cdef object setup_new_file(self, path, mode=b'w'):
+    cdef object setup_new_file(self, path, mode='w'):
     
         cdef AAFCharBuffer path_buf = AAFCharBuffer(path)
             

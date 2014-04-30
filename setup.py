@@ -1,9 +1,11 @@
+from __future__ import print_function
 from distutils.core import setup, Extension, Command 
 from distutils.command.build_ext import build_ext
 import os
 import subprocess
 import sys
 import shutil
+
 
 #os.environ['CXX'] = 'g++'
 #os.environ['ARCHFLAGS'] ="-arch x86_64"
@@ -24,15 +26,15 @@ else:
 space = '   '
 if AAF_ROOT is None:
 
-    print space, "Unable to locate AAF Development libraries."
-    print space, "Please specify with --aaf-root or AAF_ROOT env variable"
-    print space, "AAF SDK can be found from http://aaf.sourceforge.net"
-    print space, "Pre-built devel libraries can be found here"
-    print space, "http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6"
+    print( space, "Unable to locate AAF Development libraries.")
+    print( space, "Please specify with --aaf-root or AAF_ROOT env variable")
+    print( space, "AAF SDK can be found from http://aaf.sourceforge.net")
+    print( space, "Pre-built devel libraries can be found here")
+    print( space, "http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6")
     sys.exit(-1)
     
 if not os.path.exists(AAF_ROOT):
-    print space, "AAF_ROOT direcotry does not exist: %s" % AAF_ROOT
+    print(space, "AAF_ROOT direcotry does not exist: %s" % AAF_ROOT)
     sys.exit(-1)
     
 AAF_INCLUDE = os.path.join(AAF_ROOT,'include')
@@ -66,7 +68,7 @@ if sys.platform.startswith('win'):
     ext_extra['library_dirs'].extend([os.path.join(AAF_ROOT, 'lib'),
                                         os.path.join(AAF_ROOT, 'bin')])
     
-print "AAF_ROOT =",AAF_ROOT
+print("AAF_ROOT =",AAF_ROOT)
 
 # Construct the modules that we find in the "build/cython" directory.
 ext_modules = []
@@ -106,7 +108,7 @@ class cythonize_command(Command):
 
         cmd.extend(['-o', dst, src])
         cmd.insert(0,'cython')
-        print subprocess.list2cmdline(cmd)
+        print(subprocess.list2cmdline(cmd))
 
         dirname = os.path.dirname(dst)
         if not os.path.exists(dirname):
@@ -137,7 +139,7 @@ def get_com_api(debug=True):
             com_api = os.path.join(dirname, 'AAFCOAPI.dll')
             libaafintp =  os.path.join(dirname, 'aafext', 'AAFINTP.dll')
             libaafpgapi =  os.path.join(dirname, 'aafext', 'AAFPGAPI.dll')
-            print com_api
+            print(com_api)
             if all([os.path.exists(item) for item in (com_api,libaafintp,libaafpgapi)]):
                 return com_api, libaafintp, libaafpgapi
         raise Exception("Unable to find AAFCOAPI.dll, AAFINTP.dll, AAFPGAPI.dll")
@@ -156,31 +158,31 @@ def get_com_api(debug=True):
 
 def copy_com_api(debug=True):
     com_api, libaafintp, libaafpgapi = get_com_api(debug)
-    print  com_api, libaafintp, libaafpgapi
+    print(com_api, libaafintp, libaafpgapi)
     
     dir = os.path.dirname(__file__)
     
     # copy libcom-api
     basename = os.path.basename(com_api)
     dest = os.path.join(dir, 'aaf', basename)
-    print com_api, '->', dest
+    print(com_api, '->', dest)
     shutil.copy(com_api, dest)
     
     # create ext dir
     aafext_dir = os.path.join(dir, 'aaf', 'aafext')
     if not os.path.exists(aafext_dir):
-        print 'creating', aafext_dir
+        print('creating', aafext_dir)
         os.makedirs(aafext_dir)
         
     # copy libaafintp
     basename = os.path.basename(libaafintp)
     intp_dest = os.path.join(aafext_dir,basename)
-    print libaafintp, '->', intp_dest
+    print(libaafintp, '->', intp_dest)
     shutil.copy(libaafintp, intp_dest)
     # copy libaafpgapi
     basename = os.path.basename(libaafpgapi)
     pgapi_dest = os.path.join(aafext_dir,basename)
-    print libaafpgapi, '->', pgapi_dest
+    print(libaafpgapi, '->', pgapi_dest)
     shutil.copy(libaafpgapi, pgapi_dest)
     
     return dest,intp_dest, pgapi_dest
@@ -188,7 +190,7 @@ def copy_com_api(debug=True):
 def name_tool_fix_com_api(path):
     
     cmd = ['install_name_tool', '-id', 'libcom-api.dylib', path]
-    print subprocess.list2cmdline(cmd)
+    print(subprocess.list2cmdline(cmd))
     subprocess.check_call(cmd)
     
     #'install_name_tool -id libcom-api.dylib aaf/libcom-api.dylib'
@@ -209,7 +211,7 @@ class build_pyaaf_ext(build_ext):
         if sys.platform == 'darwin':
             for item in self.get_outputs():
                 install_name_tool(item)
-        print "done!"
+        print("done!")
 
         
 com_api, libaafintp, libaafpgapi = get_com_api()
