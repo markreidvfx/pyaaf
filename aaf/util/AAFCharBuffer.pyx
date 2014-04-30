@@ -72,6 +72,9 @@ cdef class AAFCharBuffer(object):
     property size_in_bytes:
         def __get__(self):
             return self.buf.size() * sizeof(lib.aafCharacter)
+        
+        def __set__(self, size_t size):
+            self.buf.resize(size / self.aafchar_size)
     
     property size:
         def __get__(self):
