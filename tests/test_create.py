@@ -1,4 +1,4 @@
-
+from __future__ import print_function
 import unittest
 import traceback
 import os
@@ -17,7 +17,7 @@ if not os.path.exists(sandbox):
 def chunks(l, n):
     """ Yield successive n-sized chunks from l.
     """
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i+n]
 
 class TestFile(unittest.TestCase):
@@ -90,10 +90,10 @@ class TestFile(unittest.TestCase):
         
         frames = 4
         
-        for i in xrange(frames):
+        for i in range(frames):
             data = [1 for x in range(width * height * 3)] # Not sure how to calculate size, this is to big but works
             ret= picture_essence.write(data, 1,'UInt8')
-            print 'wrote', ret
+            print('wrote', ret)
         picture_essence.complete_write()
         f.save()
         f.save(output_xml)
@@ -136,10 +136,10 @@ class TestFile(unittest.TestCase):
         format['AudioSampleBits'] =  16
         sound_essence.set_fileformat(format)
         
-        numSamples = 20 * rateHz / 25 # 2 pal frames in duration.
+        numSamples = int(20 * rateHz / 25) # 2 pal frames in duration.
         samplesToWrite = 10
         
-        for c in chunks([1 for i in xrange(numSamples)], samplesToWrite):
+        for c in chunks([1 for i in range(numSamples)], samplesToWrite):
             ret = sound_essence.write(c, len(c), 'UInt16')
             #print "wrote", ret
         
@@ -187,9 +187,9 @@ class TestFile(unittest.TestCase):
         pulldown.direction = "TapeToFilmSpeed"
         pulldown.phase = 0
         
-        print pulldown.kind
-        print pulldown.direction
-        print pulldown.phase
+        print(pulldown.kind)
+        print(pulldown.direction)
+        print(pulldown.phase)
         
         timeline.segment = pulldown
 
@@ -219,7 +219,7 @@ class TestFile(unittest.TestCase):
         desc = d.create.CDCIDescriptor()
         
         for item in desc.classdef().propertydefs():
-            print '  ', item.name, item.optional
+            print('  ', item.name, item.optional)
         
         loc = d.create.NetworkLocator()
         
@@ -231,9 +231,9 @@ class TestFile(unittest.TestCase):
         desc.append_locator(loc)
         desc.sample_rate = "23976/1000"
         desc.container_format = "AAFKLV"
-        print desc.container_format
+        print(desc.container_format)
         desc.compression = "Avid_DNxHD_Legacy"
-        print desc.compression
+        print(desc.compression)
         width,height = 1280, 720
         
         desc.stored_view = (width, height)
@@ -286,7 +286,7 @@ class TestFile(unittest.TestCase):
         f.storage.add_mob(source_mob)
         
         # Now add Video and Audio Tracks
-        for track in xrange(3):
+        for track in range(3):
             
             # Create A New Slot
             timeline = d.create.TimelineMobSlot()
@@ -344,7 +344,7 @@ class TestFile(unittest.TestCase):
         comp = d.create.CompositionMob("Comp Example")
         storage.add_mob(comp)
         
-        print comp.mobID
+        print(comp.mobID)
         
         audio_sequence = d.create.Sequence("Sound")
         video_sequence = d.create.Sequence("Picture")
@@ -366,13 +366,13 @@ class TestFile(unittest.TestCase):
         
         slot = list(picture_mastermob1.slots())[0]
         
-        print slot.media_kind, slot.slotID
+        print(slot.media_kind, slot.slotID)
         
         slot.segment.length = 100
-        print slot.segment.length
+        print(slot.segment.length)
         
         #clip = d.create.SourceClip(picture_mastermob1,slot.slotID, 10, 0 )
-        print "****", slot.slotID
+        print("****", slot.slotID)
         clip = picture_mastermob1.create_clip(slot.slotID, 10, 0)
         clip2 = picture_mastermob1.create_clip(slot.slotID)
         clip3 = picture_mastermob1.create_clip(slot.slotID, 20, 10)

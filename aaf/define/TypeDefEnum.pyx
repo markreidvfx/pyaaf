@@ -70,7 +70,7 @@ cdef class TypeDefEnum(TypeDef):
             d[name] = value
         return d
     
-    def set_value(self, PropertyValue p_value, bytes value):
+    def set_value(self, PropertyValue p_value, value):
         cdef lib.aafInt64 enum_value
         for key,enum_value in self.elements().items():
             if key.lower() == value.lower():

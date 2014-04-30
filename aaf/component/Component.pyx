@@ -37,6 +37,6 @@ cdef class Component(AAFObject):
     property media_kind:
         def __get__(self):
             return self.datadef().name
-        def __set__(self, bytes value):
+        def __set__(self, value):
             cdef DataDef data_def = self.dictionary().lookup_datadef(value)
             self.comp_ptr.SetDataDef(data_def.ptr)

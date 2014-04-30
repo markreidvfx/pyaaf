@@ -100,7 +100,7 @@ cdef class EssenceAccess(EssenceMultiAccess):
         """
         error_check(self.ptr.CompleteWrite())
         
-    def write(self, data, lib.aafUInt32 samples=1, bytes data_type = b'uint8'):
+    def write(self, data, lib.aafUInt32 samples=1, data_type = 'uint8'):
         """
         Writes data to the given essence stream.
         A single video frame is ONE sample.

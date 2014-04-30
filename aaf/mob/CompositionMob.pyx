@@ -29,9 +29,9 @@ cdef class CompositionMob(Mob):
         if not name:
             name = b"composition mob"
         
-        cdef wstring w_name = toWideString(name)
+        cdef AAFCharBuffer name_buf = AAFCharBuffer(name)
         
-        error_check(self.compositionmob_ptr.Initialize(w_name.c_str()))
+        error_check(self.compositionmob_ptr.Initialize(name_buf.get_ptr()))
             
     def __dealloc__(self):
         if self.compositionmob_ptr:
