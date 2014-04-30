@@ -4,7 +4,7 @@ cimport lib
 from base cimport AAFBase, AAFObject
 from dictionary cimport Dictionary
 
-from .util cimport error_check, query_interface, register_object, lookup_object, AUID, MobID
+from .util cimport error_check, query_interface, register_object, lookup_object, AUID, MobID, AAFCharBuffer
 from .iterator cimport EssenceDataIter, MobIter
 from .mob cimport Mob
 from .essence cimport EssenceData

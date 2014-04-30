@@ -70,7 +70,7 @@ cdef class Dictionary(AAFObject):
             raise NotImplementedError("register_def not implemented for %s"  % str(type(def_obj)))
 
         
-    def lookup_datadef(self, bytes name not None):
+    def lookup_datadef(self, name not None):
         cdef AUID auid = DataDefMap[name.lower().replace("datadef_", "")]
         
         return self.lookup_datadef_by_id(auid)
@@ -82,7 +82,7 @@ cdef class Dictionary(AAFObject):
         definition.root = self.root
         return definition
     
-    def lookup_typedef(self, bytes name not None):
+    def lookup_typedef(self, name not None):
         for typedef in self.typedefs():
             if typedef.name == name:
                 return typedef
@@ -98,7 +98,7 @@ cdef class Dictionary(AAFObject):
         typedef.root = self.root
         return typedef.resolve()
     
-    def lookup_containerdef(self, bytes name not None):
+    def lookup_containerdef(self, name not None):
         cdef AUID auid = ContainerDefMap[name.lower()]
         return self.lookup_containerdef_by_id(auid)
     
@@ -109,7 +109,7 @@ cdef class Dictionary(AAFObject):
         definition.root = self.root
         return definition
     
-    def lookup_classdef(self, bytes name not None):
+    def lookup_classdef(self, name not None):
         for classdef in self.classdefs():
             if classdef.name == name:
                 return classdef
@@ -125,7 +125,7 @@ cdef class Dictionary(AAFObject):
         classdef.root = self.root
         return classdef
     
-    def lookup_interpolatordef(self, bytes name not None):
+    def lookup_interpolatordef(self, name not None):
         for interdef in self.interpolationdefs():
             if interdef.name == name:
                 return interdef
@@ -243,7 +243,7 @@ cdef class CreateInstance(object):
         
         return self.create_instance
     
-    def from_name(self, bytes name, *args, **kwargs):
+    def from_name(self, name, *args, **kwargs):
         
         obj_type = lookup_object(name)
         return obj_type(self.dictionary.root, *args, **kwargs)

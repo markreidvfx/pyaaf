@@ -47,7 +47,7 @@ cdef class File(AAFBase):
                 error_check(ret)
             self.ptr.Release()
     
-    def __init__(self, bytes path, bytes mode = b'r'):
+    def __init__(self, path, mode = b'r'):
         """__init__(path, mode = 'r')
         
         :param str path: AAF file path, set to `None` if in opening in transient mode.
@@ -65,18 +65,19 @@ cdef class File(AAFBase):
         
         """
         
-        #self.proxy = IAAFFileProxy()
-        #self.proxy = IAAFFileProxy.__new__(IAAFFileProxy)
-        
         if not path:
             path = b""
+            
+        cdef AAFCharBuffer path_buf = AAFCharBuffer.__new__(AAFCharBuffer)
+        path_buf.write_str(path)
+        path_buf.null_terminate()
         
-        cdef wstring w_path = toWideString(path)
+        #cdef wstring w_path = toWideString(path)
         
         mode = mode.lower()
         
         if mode == 'r':
-            error_check(lib.AAFFileOpenExistingRead(w_path.c_str(),
+            error_check(lib.AAFFileOpenExistingRead(path_buf.get_ptr(),
                                                     0,
                                                     &self.ptr))
         elif mode == 'rw':
@@ -90,7 +91,11 @@ cdef class File(AAFBase):
         self.mode = mode
         self.query_interface()
         
-    cdef object setup_new_file(self, bytes path, bytes mode=b'w'):
+    cdef object setup_new_file(self, path, mode=b'w'):
+    
+        cdef AAFCharBuffer path_buf = AAFCharBuffer.__new__(AAFCharBuffer)
+        path_buf.write_str(path)
+        path_buf.null_terminate()
             
         # setup product id
         cdef lib.aafUID_t productUID
@@ -110,13 +115,12 @@ cdef class File(AAFBase):
         productInfo.productName = <lib.aafCharacter* > toWideString(product_name).c_str()
         productInfo.productVersionString = <lib.aafCharacter* > toWideString(product_version_string).c_str()
         productInfo.productID = productUID
-        
-        cdef wstring w_path = toWideString(path)
+
         cdef lib.aafUID_t kind = lib.kAAFFileKind_Aaf4KBinary
         
         if mode == 'rw' and os.path.exists(path):
             #d = dict(productUID)
-            error_check(lib.AAFFileOpenExistingModify(w_path.c_str(),
+            error_check(lib.AAFFileOpenExistingModify(path_buf.get_ptr(),
                                                       0, &productInfo,
                                                       &self.ptr))
             return
@@ -135,7 +139,7 @@ cdef class File(AAFBase):
         if ext.lower() in ('.xml'):
             kind = lib.kAAFFileKind_AafXmlText
         
-        error_check(lib.AAFFileOpenNewModifyEx(w_path.c_str(), 
+        error_check(lib.AAFFileOpenNewModifyEx(path_buf.get_ptr(), 
                                                &kind, 0, &productInfo, 
                                                &self.ptr))
     def save(self,bytes path = None):

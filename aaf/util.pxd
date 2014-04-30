@@ -9,7 +9,7 @@ cpdef object error_check(lib.HRESULT ret)
 cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID guid)
 
 cdef object register_object(object obj)
-cdef object lookup_object(bytes name)
+cdef object lookup_object(object name)
 
 cdef object resolve_object(object obj)
 cdef object set_resolve_object_func(object obj)

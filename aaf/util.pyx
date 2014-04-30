@@ -55,7 +55,7 @@ cdef object register_object(object obj):
     global OBJECT_MAP
     OBJECT_MAP[obj.__name__] = obj
 
-cdef object lookup_object(bytes name):
+cdef object lookup_object(object name):
     global OBJECT_MAP
     rename = name
     for n,r in (("",""), ("Definition", "Def")):

@@ -19,7 +19,7 @@ cdef class SourceClip(SourceReference):
         if self.ptr:
             self.ptr.Release()
             
-    def __init__(self, root, bytes media_kind, lib.aafLength_t length, SourceRef source_ref = None):
+    def __init__(self, root, media_kind, lib.aafLength_t length, SourceRef source_ref = None):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
         

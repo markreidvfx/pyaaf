@@ -45,7 +45,7 @@ def resolve_object_func(AAFBase obj):
             return new_obj
         except:
             #print traceback.format_exc()
-            #print "no lookup for %s" % AAFObj.class_name
+            #print "no lookup for %s" % obj.class_name
             if isinstance(obj, AAFObject):
                 return obj
             else:
