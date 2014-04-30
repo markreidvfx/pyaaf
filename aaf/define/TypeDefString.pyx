@@ -25,7 +25,7 @@ cdef class TypeDefString(TypeDef):
         typedef.root = self.root
         return resolve_typedef(TypeDef(typedef))
             
-    def set_value(self, PropertyValue p_value, bytes value):
+    def set_value(self, PropertyValue p_value, value):
 
         cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
         

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.mob
 import aaf.define
@@ -60,35 +61,36 @@ class TestFile(unittest.TestCase):
         
         tape_description = f.create.TapeDescriptor()
         
-        print tape_description['ManufacturerID'].value
+        print(tape_description['ManufacturerID'].value)
+        print(tape_description['ManufacturerID'].typedef)
         
         tape_description['ManufacturerID'].value = manufacturer
-        print "~~~", tape_description['ManufacturerID'].value
+        print("~~~", tape_description['ManufacturerID'].value)
         assert tape_description['ManufacturerID'].value == manufacturer
         #tape_description['ManufacturerID'].value = manufacturer + '2'
         
         tape_description['Model'].value = model
-        print "~~~", tape_description['Model'].value
+        print("~~~", tape_description['Model'].value)
         tape_description['FormFactor'].value = form_factor
-        print "~~~", tape_description['FormFactor'].value
+        print("~~~", tape_description['FormFactor'].value)
         tape_description['VideoSignal'].value = video_signal_type
-        print "~~~", tape_description['VideoSignal'].value
+        print("~~~", tape_description['VideoSignal'].value)
         tape_description['TapeFormat'].value = tape_format
-        print "~~~", tape_description['TapeFormat'].value
+        print("~~~", tape_description['TapeFormat'].value)
         
-        print tape_description['FormFactor'].typedef.elements()
-        print tape_description['VideoSignal'].typedef.elements()
-        print tape_description['TapeFormat'].typedef.elements()
+        print(tape_description['FormFactor'].typedef.elements())
+        print(tape_description['VideoSignal'].typedef.elements())
+        print(tape_description['TapeFormat'].typedef.elements())
         tape_description['Length'].value = tape_length
-        print "~~~", tape_description['Length'].value
+        print("~~~", tape_description['Length'].value)
         
         source_mob.essence_descriptor = tape_description
         
         
-        for i in xrange(NumMobSlots):
+        for i in range(NumMobSlots):
             source_mob.add_nil_ref(i, tape_mob_length, slot_defs[i], slot_rates[i])
             
-        for i in xrange(NumMobSlots):
+        for i in range(NumMobSlots):
             src_mob = f.create.SourceMob()
             source_ref = aaf.util.SourceRef(source_mob.mobID, i, tape_mob_offset)
             if i == 0:
@@ -103,9 +105,9 @@ class TestFile(unittest.TestCase):
             f.storage.add_mob(src_mob)
             
             if i == NumMobSlots -1:
-                print mob.add_master_slot_with_sequence(slot_defs[i], i, src_mob, i+1, slot_names[i])
+                print(mob.add_master_slot_with_sequence(slot_defs[i], i, src_mob, i+1, slot_names[i]))
             else:
-                print mob.add_master_slot(slot_defs[i], i, src_mob, i+1, slot_names[i])
+                print(mob.add_master_slot(slot_defs[i], i, src_mob, i+1, slot_names[i]))
         #add_master_slot_with_sequence
         f.save()
         f.save(main_test_file_xml)
@@ -118,11 +120,11 @@ class TestFile(unittest.TestCase):
         assert mob.name == mob_name
         
         for i, slot in enumerate(mob.slots()):
-            print slot.name
+            print(slot.name)
             assert slot.name == slot_names[i]
             
             seg = slot.segment
-            print seg
+            print(seg)
             if slot.slotID == NumMobSlots:
                 assert isinstance(seg, aaf.component.Sequence)
             else:
@@ -132,13 +134,13 @@ class TestFile(unittest.TestCase):
                 for s in src_mob.slots():
                     tape_mob = s.segment.resolve_ref()
                     tape_description = tape_mob.essence_descriptor
-                    print tape_mob
-                    print tape_description
-                    print "ManufacturerID =", tape_description['ManufacturerID'].value
+                    print(tape_mob)
+                    print(tape_description)
+                    print("ManufacturerID =", tape_description['ManufacturerID'].value)
                     assert tape_description['ManufacturerID'].value == manufacturer
-                    print "Model", tape_description['Model'].value
+                    print("Model", tape_description['Model'].value)
                     assert tape_description['Model'].value == model
-                    print "FormFactor", tape_description['FormFactor'].value
+                    print("FormFactor", tape_description['FormFactor'].value)
                     
             
         
