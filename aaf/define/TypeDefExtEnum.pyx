@@ -24,36 +24,31 @@ cdef class TypeDefExtEnum(TypeDef):
         return count
     
     def element_name(self, lib.aafUInt32 index):
-        cdef lib.aafUInt32 sizeInChars
-        cdef lib.aafUInt32 sizeInBytes
         
-        error_check(self.ptr.GetElementNameBufLen(index, &sizeInBytes))
-        sizeInChars = sizeInBytes / sizeof(lib.aafCharacter) + 1
+        cdef lib.aafUInt32 size_in_bytes
+        error_check(self.ptr.GetElementNameBufLen(index, &size_in_bytes))
         
-        cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter](sizeInChars)
+        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
         
-        error_check(self.ptr.GetElementName(index,
-                                           &buf[0],
-                                           sizeInBytes))
+        buf.size_in_bytes = size_in_bytes
         
-        cdef wstring value = wstring(&buf[0])
-        return wideToString(value)
+        error_check(self.ptr.GetElementName(index, buf.get_ptr(), buf.size_in_bytes))
+        
+        # strip off Null Terminator
+        return buf.read_bytes()[:-1]
     
     def element_name_from_value(self, PropertyValue p_value):
-        cdef lib.aafUInt32 sizeInChars
-        cdef lib.aafUInt32 sizeInBytes
+        cdef lib.aafUInt32 size_in_bytes
+        error_check(self.ptr.GetNameBufLenFromValue(p_value.ptr, &size_in_bytes))
         
-        error_check(self.ptr.GetNameBufLenFromValue(p_value.ptr, &sizeInBytes))
-        sizeInChars = sizeInBytes / sizeof(lib.aafCharacter) + 1
+        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
         
-        cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter](sizeInChars)
+        buf.size_in_bytes = size_in_bytes
         
-        error_check(self.ptr.GetNameFromValue(p_value.ptr,
-                                           &buf[0],
-                                           sizeInBytes))
+        error_check(self.ptr.GetNameFromValue(p_value.ptr, buf.get_ptr(), buf.size_in_bytes))
         
-        cdef wstring value = wstring(&buf[0])
-        return wideToString(value)
+        # strip off Null Terminator
+        return buf.read_bytes()[:-1]
     
     def element_value(self, lib.aafUInt32 index):
 
