@@ -21,7 +21,7 @@ cdef class CompositionMob(Mob):
             
         Mob.query_interface(self, obj)
     
-    def __init__(self, root,  bytes name = None):
+    def __init__(self, root,  name = None):
         
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)

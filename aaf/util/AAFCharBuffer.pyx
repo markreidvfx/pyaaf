@@ -16,14 +16,27 @@ cdef class AAFCharBuffer(object):
     def __cinit__(self):
         self.buf = vector[lib.aafCharacter]()
         
+    def __init__(self, value=None):
+        if value:
+            self.write_str(value)
+            self.null_terminate()
+        
     cpdef null_terminate(self):
         self.buf.push_back('\0')
+        
+    cpdef write_str(self, object string):
+        if isinstance(string, unicode):
+            self.write_unicode(string)
+        elif isinstance(string, bytes):
+            self.write_bytes(string)
+        else:
+            self.write_unicode(unicode(string))
         
     cdef write_aafchar(self, lib.aafCharacter value):
         self.buf.push_back(value)
         
     cpdef write_unicode(self, unicode value):
-        cdef Py_UNICODE c
+        cdef Py_UCS4 c
         
         for c in value:            
             self.buf.push_back(c)
@@ -35,7 +48,7 @@ cdef class AAFCharBuffer(object):
         
     cpdef unicode read_unicode(self):
         cdef unicode unicode_str = u""
-        cdef Py_UNICODE c
+        cdef Py_UCS4 c
 
         cdef lib.aafCharacter * aaf_ptr = self.get_ptr()
         
@@ -63,11 +76,6 @@ cdef class AAFCharBuffer(object):
     cpdef bytes read_raw(self):
         cdef char * data = <char *> &self.buf[0]
         return data[:self.size_in_bytes]
-    
-    cpdef write_str(self, object string):
-        if isinstance(string, unicode):
-            self.write_unicode(string)
-        self.write_bytes(string)
     
     cdef lib.aafCharacter* get_ptr(self):
         return <lib.aafCharacter *> &self.buf[0]

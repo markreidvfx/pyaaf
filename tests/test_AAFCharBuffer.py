@@ -38,11 +38,14 @@ class TestAAFCharBuffer(unittest.TestCase):
        
         print len(buf.read_raw()), len(buf2.read_raw())
         
-        #buf.w_dump()
-        #print "**"
-        #buf2.w_dump()
         
-        #buf2.write_unicode(unichr(0x10000))
+        for text in (unichr(40960), b'cow', u'cow', unichr(255), "some text", u"\U0001F600"):
+            buf = aaf.util.AAFCharBuffer(text)
+            result = buf.read_unicode()[:-1]
+            print [result, text]
+            print result, text
+            assert result == text
+
 
 if __name__ == "__main__":
     unittest.main()

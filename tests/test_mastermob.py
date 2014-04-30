@@ -122,7 +122,7 @@ class TestFile(unittest.TestCase):
             assert slot.name == slot_names[i]
             
             seg = slot.segment
-            #print seg
+            print seg
             if slot.slotID == NumMobSlots:
                 assert isinstance(seg, aaf.component.Sequence)
             else:
