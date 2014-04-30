@@ -222,7 +222,11 @@ class TestFile(unittest.TestCase):
             print '  ', item.name, item.optional
         
         loc = d.create.NetworkLocator()
-        loc.path = "file:///Giraffe/Avid%20MediaFiles/MXF/1/IMG_4943.JPG1378511522A699C.mxf"
+        
+        loc_path = "file:///Giraffe/Avid%20MediaFiles/MXF/1/IMG_4943.JPG1378511522A699C.mxf"
+        loc.path = loc_path
+        
+        assert loc.path == loc_path
         
         desc.append_locator(loc)
         desc.sample_rate = "23976/1000"

@@ -28,16 +28,21 @@ cdef class Locator(AAFObject):
         """
         def __get__(self):
             
-            cdef lib.aafUInt32  size_in_bytes
+            cdef lib.aafUInt32 size_in_bytes = 0
             error_check(self.loc_ptr.GetPathBufLen(&size_in_bytes))
-            cdef int size_in_chars = (size_in_bytes / sizeof(lib.aafCharacter)) + 1
-            cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter]( size_in_chars )
             
-            error_check(self.loc_ptr.GetPath(&buf[0], size_in_bytes))            
-            cdef wstring w_name = wstring(&buf[0])
-            return wideToString(w_name)
+            cdef AAFCharBuffer buf = AAFCharBuffer()
+            buf.size_in_bytes = size_in_bytes
+                        
+            error_check(self.loc_ptr.GetPath(buf.get_ptr(),  buf.size_in_bytes))
+            
+            # strip off Null Terminator
+            return buf.read_bytes()[:-1]
 
         def __set__(self, bytes value):
+            cdef AAFCharBuffer buf = AAFCharBuffer()
             
-            cdef wstring w_value = toWideString(value)
-            error_check(self.loc_ptr.SetPath(w_value.c_str()))
+            buf.write_str(value)
+            buf.null_terminate()
+
+            error_check(self.loc_ptr.SetPath(buf.get_ptr()))

@@ -21,13 +21,14 @@ cdef class DefObject(AAFObject):
             
     property name:
         def __get__(self):
-            cdef lib.aafUInt32 sizeInBytes = 0
-            error_check(self.defobject_ptr.GetNameBufLen(&sizeInBytes))
             
-            cdef int sizeInChars = (sizeInBytes / sizeof(lib.aafCharacter)) + 1
-            cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter](sizeInChars)
+            cdef lib.aafUInt32 size_in_bytes = 0
+            error_check(self.defobject_ptr.GetNameBufLen(&size_in_bytes))
             
-            error_check(self.defobject_ptr.GetName(&buf[0], sizeInChars*sizeof(lib.aafCharacter) ))
+            cdef AAFCharBuffer buf = AAFCharBuffer()
+            buf.size_in_bytes = size_in_bytes
+                        
+            error_check(self.defobject_ptr.GetName(buf.get_ptr(),  buf.size_in_bytes))
             
-            cdef wstring name = wstring(&buf[0])
-            return wideToString(name)
+            # strip off Null Terminator
+            return buf.read_bytes()[:-1]
