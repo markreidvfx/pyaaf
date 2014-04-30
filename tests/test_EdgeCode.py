@@ -51,7 +51,9 @@ class TestEdgeCode(unittest.TestCase):
         assert edgecode2['Length'].value == 100
         
         
-        edgecode.header = "BOB2"
+        edgecode.header = u"BOB2"
+        
+        assert edgecode.header == "BOB2"
 
         
         f.save()

@@ -2,7 +2,7 @@
 cimport lib
 from .util cimport error_check
 
-def register_all(bytes path=None):
+def register_all(path=None):
     """
     Loads AAF dll and registers shared plugins.
     """

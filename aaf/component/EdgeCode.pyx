@@ -39,7 +39,7 @@ cdef class EdgeCode(Segment):
         
         if header:
             if len(header) > 8:
-                raise ValueError("header can only be 8 or less charactors")
+                raise ValueError("header can only be 8 or less characters")
             c_header = header
             memcpy(<void *> edge_code.header, c_header, len(header))
         
@@ -53,12 +53,12 @@ cdef class EdgeCode(Segment):
             
             error_check(self.ptr.GetEdgecode(&edge_code))
             
-            return edge_code.header
+            return unicode(edge_code.header)
         
-        def __set__(self, bytes value not None):
+        def __set__(self, value not None):
             
             if len(value) > 8:
-                raise ValueError("header can only be 8 or less charactors")
+                raise ValueError("header can only be 8 or less characters")
             
             int_list = [0 for i in xrange(8)]
             
