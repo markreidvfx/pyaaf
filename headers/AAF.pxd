@@ -843,7 +843,7 @@ cdef extern from "AAF.h":
         HRESULT RemoveSlotAt(aafUInt32  index)
         HRESULT GetSlotAt(aafUInt32  index, IAAFMobSlot ** ppSlot)
         HRESULT GetSlots(IEnumAAFMobSlots ** ppEnum)
-        HRESULT AppendComment(aafCharacter *  pCategory, const aafCharacter *  pComment)
+        HRESULT AppendComment(aafCharacter *  pCategory, aafCharacter *  pComment)
         HRESULT CountComments(aafUInt32 *  pNumComments)
         HRESULT GetComments(IEnumAAFTaggedValues ** ppEnum)
         HRESULT RemoveComment(IAAFTaggedValue * pComment)

@@ -31,33 +31,24 @@ cdef class TypeDefString(TypeDef):
         
         buf.write_str(value)
         buf.null_terminate()
-        
-        #print len(value), buf.size(), buf.size_in_bytes()
-
-        #cdef lib.aafUInt32 size_in_bytes =  buf.buf.size() * sizeof(lib.aafCharacter)
         error_check(self.ptr.SetCString(p_value.ptr,
                                         <lib.aafMemPtr_t> buf.to_aafchar(),
                                         buf.size_in_bytes))
         
-        #print self.value(p_value)
+    def get_value(self, PropertyValue p_value):
+        
+        cdef lib.aafUInt32 size_in_chars
+        error_check(self.ptr.GetCount(p_value.ptr, &size_in_chars))
+        
+        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
+        
+        buf.size = size_in_chars
+        
+        error_check(self.ptr.GetElements(p_value.ptr, <lib.aafMemPtr_t> buf.to_aafchar(), buf.size_in_bytes))
+        
+        # strip off Null Terminator
+        return buf.read_bytes()[:-1]
     
-    def value(self, PropertyValue p_value ):
-        
-        cdef lib.aafUInt32 sizeInChars
-        cdef int sizeInBytes
-        
-        error_check(self.ptr.GetCount(p_value.ptr, &sizeInChars))
-        sizeInBytes = sizeof(lib.aafCharacter)*sizeInChars
-        
-        if not sizeInBytes:
-            return None
-        
-        cdef vector[lib.aafCharacter] buf = vector[lib.aafCharacter]( sizeInChars )
-        
-        
-        error_check(self.ptr.GetElements(p_value.ptr,
-                                         <lib.aafMemPtr_t> &buf[0],
-                                         sizeInBytes))
-        
-        cdef wstring value = wstring(&buf[0])
-        return wideToString(value)
+    def value(self, PropertyValue p_value):
+        return self.get_value(p_value)
+    

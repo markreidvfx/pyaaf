@@ -234,6 +234,8 @@ class TestImport(unittest.TestCase):
 
             mastermob = d.create.MasterMob(name)
             f.storage.add_mob(mastermob)
+            
+            mastermob.append_comment("Encoding Format", name)
 
             essence = mastermob.create_essence(1,
                                                "picture",

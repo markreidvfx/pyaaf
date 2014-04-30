@@ -103,10 +103,17 @@ cdef class Mob(AAFObject):
     def append_comment(self, bytes name not None, bytes value not None):
         """append_comment(name, value)
         """
-        cdef wstring w_name = toWideString(name)
-        cdef wstring w_value = toWideString(value)
         
-        error_check(self.ptr.AppendComment(<lib.aafCharacter *> w_name.c_str(), w_value.c_str()))
+        cdef AAFCharBuffer name_buf = AAFCharBuffer.__new__(AAFCharBuffer)
+        cdef AAFCharBuffer value_buf = AAFCharBuffer.__new__(AAFCharBuffer)
+        
+        name_buf.write_str(name)
+        value_buf.write_str(value)
+        
+        name_buf.null_terminate()
+        value_buf.null_terminate()
+
+        error_check(self.ptr.AppendComment(name_buf.to_aafchar(), value_buf.to_aafchar() ))
     
     def comments(self):
         cdef TaggedValueIter tags = TaggedValueIter.__new__(TaggedValueIter)

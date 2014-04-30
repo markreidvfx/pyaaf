@@ -7,7 +7,7 @@ from cpython cimport bool
 
 from libc.stdio cimport FILE, fopen, fclose, fread
 
-from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, SourceRef, Timecode, AUID, MobID
+from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, SourceRef, Timecode, AUID, MobID, AAFCharBuffer
 from .iterator cimport MobSlotIter, TaggedValueIter
 from .component cimport Segment
 from .essence cimport EssenceDescriptor, Locator, EssenceAccess
