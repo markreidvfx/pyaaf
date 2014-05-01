@@ -100,7 +100,7 @@ cdef class EssenceAccess(EssenceMultiAccess):
         """
         error_check(self.ptr.CompleteWrite())
         
-    def write(self, data, lib.aafUInt32 samples=1, data_type = 'uint8'):
+    def write(self, data, lib.aafUInt32 samples=1, data_type = 'bytes'):
         """
         Writes data to the given essence stream.
         A single video frame is ONE sample.
@@ -108,12 +108,10 @@ cdef class EssenceAccess(EssenceMultiAccess):
         """
         data_type = data_type.lower()
         cdef lib.aafUInt32 samples2
-        
-        if isinstance(data, bytes):
-            return essence_write_bytes(self, data, samples)
-        
-        
-        if data_type == 'uint16':
+
+        if isinstance(data, bytes) or data_type == "bytes":
+            return essence_write_bytes(self, data, samples)      
+        elif data_type == 'uint16':
             return essence_write_samples[lib.aafUInt16](self, data, samples, 0)
         elif data_type == 'uint8':
             return essence_write_samples[lib.aafUInt8](self, data, samples, 0)
@@ -139,16 +137,17 @@ cdef class EssenceAccess(EssenceMultiAccess):
             return max_size
     
     property codec_flavour:
-        def __set__(self, bytes value):
+        def __set__(self, value):
             cdef AUID auid = CodecDefMap[value.lower()]
             error_check(self.ptr.SetEssenceCodecFlavour(auid.get_auid()))
             
     property codec_name:
         def __get__(self):
-            cdef lib.aafCharacter name[1024]
-            error_check(self.ptr.GetCodecName(1024, name))
-            cdef wstring w_name = wstring(name)
-            return wideToString(w_name)
+            cdef AAFCharBuffer name = AAFCharBuffer()
+            name.size = 1024
+            error_check(self.ptr.GetCodecName(name.size, name.get_ptr()))
+            
+            return name.read_str().rstrip("\0")
             
     property codecID:
         def __get__(self):
@@ -161,22 +160,16 @@ cdef class EssenceAccess(EssenceMultiAccess):
         
 cdef object essence_write_bytes(EssenceAccess essence, bytes data, lib.aafUInt32 samples):
     cdef lib.aafUInt32 size = len(data)
-    cdef lib.aafUInt32 byte_size = sizeof(lib.UChar) * size
+    cdef lib.aafUInt32 byte_size = len(data)
     cdef lib.aafUInt32 samples_written =0
     cdef lib.aafUInt32 bytes_written =0
     
-    cdef vector[lib.aafUInt8] buf = vector[lib.aafUInt8](size)
-    
-    cdef char *c
-    for i,v in enumerate(data):
-        c = v
-        buf[i] = <lib.aafUInt8> c[0]
         
     #print len(buf), byte_size, buf.size(),samples
 
     error_check(essence.ptr.WriteSamples(samples,
                                          byte_size,
-                                         <lib.aafUInt8 *> &buf[0],
+                                         <lib.aafUInt8 *> data,
                                          &samples_written,
                                          &bytes_written
                                          ))

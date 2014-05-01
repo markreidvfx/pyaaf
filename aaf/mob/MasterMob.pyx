@@ -145,6 +145,13 @@ cdef class MasterMob(Mob):
         :param frame_rate: frame rate of dnxhd file
         """
         
+        cdef bytes c_path 
+        if isinstance(path, bytes):
+            c_path = path
+        else:
+            c_path = path.encode("ascii")
+        
+        
         f = open(path, 'rb')
         dnx_header = f.read(640)
         f.close()
@@ -181,10 +188,9 @@ cdef class MasterMob(Mob):
         video = open(path)
         readsize = essence.max_sample_size
         
-        
         cdef FILE* cfile
     
-        cfile = fopen(path, 'rb')
+        cfile = fopen(c_path, 'rb')
         if cfile == NULL:
             raise ValueError()
         
@@ -221,6 +227,13 @@ cdef class MasterMob(Mob):
         :param sample_rate: sample rate of pcm file
         """
         
+        cdef bytes c_path 
+        
+        if isinstance(path, bytes):
+            c_path = path
+        else:
+            c_path = path.encode("ascii")
+        
         slot_index = 0
         for slot in self.slots():
             slot_index = max(slot_index, slot.slotID)
@@ -253,7 +266,8 @@ cdef class MasterMob(Mob):
         
         cdef FILE* cfile
         
-        cfile = fopen(path, 'rb')
+        cfile = fopen(c_path, 'rb')
+        
         if cfile == NULL:
             raise ValueError()
         

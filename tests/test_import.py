@@ -1,3 +1,4 @@
+from __future__ import print_function
 import unittest
 import traceback
 import os
@@ -80,11 +81,11 @@ def encode_dnxhd(size, bit_rate, pix_fmt, frame_rate, frames, name, iterlaced=Fa
     
     cmd.extend([outfile])
     
-    print subprocess.list2cmdline(cmd)
+    print(subprocess.list2cmdline(cmd))
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,stderr = subprocess.PIPE)
     
     stdout,stderr = p.communicate()
-    print stderr
+    print(stderr)
     if p.returncode < 0:
         
         return Exception("error encoding footage")
@@ -106,10 +107,10 @@ def generate_pcm_audio_mono(name, sample_rate = 48000, duration = 2, format='pcm
     
     cmd.extend([outfile])
     
-    print subprocess.list2cmdline(cmd)
+    print(subprocess.list2cmdline(cmd))
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,stderr = subprocess.PIPE)
     stdout,stderr = p.communicate()
-    print stderr
+    print(stderr)
     if p.returncode < 0:
         return Exception("error encoding footage")
     return outfile
@@ -127,10 +128,10 @@ def generate_pcm_audio_stereo(name, sample_rate = 48000, duration = 2):
     
     cmd.extend([outfile])
     
-    print subprocess.list2cmdline(cmd)
+    print(subprocess.list2cmdline(cmd))
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,stderr = subprocess.PIPE)
     stdout,stderr = p.communicate()
-    print stderr
+    print(stderr)
     if p.returncode < 0:
         return Exception("error encoding footage")
     return outfile
@@ -208,7 +209,7 @@ class TestImport(unittest.TestCase):
             frame_rate = item['frame_rate']
             pix_fmt = item['pix_fmt']
             bitrate = item['bitrate']
-            print num, item
+            print(num, item)
             
             nb_frames = 10
             
@@ -230,12 +231,12 @@ class TestImport(unittest.TestCase):
             
             name = "%s_%dM_%s_%0.3ffps" % (item['size'], bitrate, pix_fmt, float(Fraction(frame_rate)))
             
-            print name
+            print(name)
 
             mastermob = d.create.MasterMob(name)
             f.storage.add_mob(mastermob)
             
-            mastermob.append_comment(u"Encoding Format", unicode(name))
+            mastermob.append_comment(u"Encoding Format", name)
 
             essence = mastermob.create_essence(1,
                                                "picture",
@@ -252,7 +253,7 @@ class TestImport(unittest.TestCase):
             else:
                 essence.codec_flavour = "Flavour_VC3_1253"
                 
-            
+            print("!!", essence.codec_name)
             
             dnx_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, nb_frames, name, interlaced)
 
@@ -262,18 +263,18 @@ class TestImport(unittest.TestCase):
             
             width, height = unpack(">24xhh", dnx_header[:28])
             cid = unpack(">40xi", dnx_header[:44])[0]
-            print "header:", width, height ,'compression id:',cid
+            print("header:", width, height ,'compression id:',cid)
             essence.codec_flavour = "Flavour_VC3_%d" % cid
             dnx.close()
             
             dnx = open(dnx_path, 'rb')
-            print "getting read size"
+            print("getting read size")
             readsize = essence.max_sample_size
             
-            print "readsize =",readsize
+            print("readsize =",readsize)
             count = 0
             while True:
-                print "count", count
+                print("count", count)
                 data = dnx.read(readsize)
                 if not data:
                     break
@@ -291,7 +292,7 @@ class TestImport(unittest.TestCase):
             duration = nb_frames / float(Fraction(frame_rate))
             audio_essences = []
             
-            for i in xrange(2):
+            for i in range(2):
 
                 essence = mastermob.create_essence(i + 2,
                                            "sound",
@@ -317,7 +318,7 @@ class TestImport(unittest.TestCase):
             
             data = None
             
-            print "writing audio data"
+            print("writing audio data")
 
             
             count = 0
@@ -348,29 +349,29 @@ class TestImport(unittest.TestCase):
             
             count += 1
             
-        print "wrote", count/2, "audio samples"
+        print("wrote", count/2, "audio samples")
             
         f.save()
-        print "save"
+        print("save")
         f.save(output_xml)
         f.close()
         
-        print "reading"
+        print("reading")
         # test reading
         f = aaf.open(output_aaf)
 
         storage = f.storage
         #time.sleep(10)
         for mob in storage.master_mobs():
-            print "Opening essence", mob.name
+            print("Opening essence", mob.name)
             essence = mob.open_essence(1)
             c= 0
             while True:
-                print "reading data"
+                print("reading data")
                 data = essence.read()
                 if not data:
                     break
-                print "read", len(data), 'bytes'
+                print("read", len(data), 'bytes')
                 c += 1
     
             assert c == nb_frames
@@ -506,7 +507,7 @@ class TestImport(unittest.TestCase):
         # readsize should be 2 UInt16_t or unsigned short is 2 bytes
         readsize= essence_left.max_sample_size
         #readsize = 1000
-        print "max",readsize
+        print("max",readsize)
 
         pcm = open(pcm_file, 'rb')
         
@@ -520,8 +521,7 @@ class TestImport(unittest.TestCase):
 
             if len(chunk) != readsize or len(chunk2) != readsize:
                 break
-            
-            
+
             essence_left.write(chunk)
             essence_right.write(chunk2)
 
@@ -555,7 +555,7 @@ class TestImport(unittest.TestCase):
         
         video_path = encode_dnxhd(size, bitrate, pix_fmt, frame_rate, nb_frames, name, False)
         
-        mastermob.import_video_essence(unicode(video_path), frame_rate)
+        mastermob.import_video_essence(video_path, frame_rate)
         
         
         duration = nb_frames / float(Fraction(frame_rate))
