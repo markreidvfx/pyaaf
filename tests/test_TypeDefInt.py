@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.mob
 import aaf.define

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.util
 import aaf.mob
@@ -68,7 +69,7 @@ class TestFile(unittest.TestCase):
         else:
             raise
         
-        for i in xrange(len(iterable)):
+        for i in range(len(iterable)):
             assert iterable[i] == iterable[i-len(iterable)]
             
     def test_slice(self):
@@ -78,7 +79,7 @@ class TestFile(unittest.TestCase):
         
         s = iterable[1:10]
         l = []
-        for i in xrange(1, 10):
+        for i in range(1, 10):
             l.append(iterable[i])
         
         assert s == l
@@ -87,7 +88,7 @@ class TestFile(unittest.TestCase):
         
         l = []
         
-        for i in xrange(100, len(iterable)-10, 2):
+        for i in range(100, len(iterable)-10, 2):
             l.append(iterable[i])
         
         assert s == l

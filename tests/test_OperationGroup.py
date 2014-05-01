@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.mob
 import aaf.define
@@ -73,18 +74,18 @@ class TestFile(unittest.TestCase):
             
             
             p = varying_value.add_point(0, 1)
-            print 'original:', p['Value'].value
+            print('original:', p['Value'].value)
             p['Value'].value = "1/255"
-            print "new->", p['Value'].value
+            print("new->", p['Value'].value)
             
             p['Value'].value = (1,8)
-            print "new->", p['Value'].value
+            print("new->", p['Value'].value)
             
             p['Value'].value = [1,9]
-            print "new->", p['Value'].value
+            print("new->", p['Value'].value)
             
             p['Value'].value = 5.3121323333423
-            print "new->", float(p['Value'].value)
+            print("new->", float(p['Value'].value))
             
             p.value = point_values[0]
             

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.mob
 import aaf.define
@@ -101,7 +102,7 @@ class TypeDefVariableArray(unittest.TestCase):
         f.storage.add_mob(master_mob)
         
         weakref_mobs = []
-        for i in xrange(10):
+        for i in range(10):
             mob = f.create.MasterMob()
             f.storage.add_mob(mob)
             weakref_mobs.append(mob)

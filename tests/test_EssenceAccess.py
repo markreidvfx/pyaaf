@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.mob
 import aaf.define
@@ -58,7 +59,7 @@ class TestEssenceAccess(unittest.TestCase):
         
         samples = wave_file.getnframes()
         
-        print bitsPerSample,numCh, sampleRate
+        print(bitsPerSample,numCh, sampleRate)
         
         essence_access = mob.create_essence(1, "Sound", "WAVE", sampleRate, sampleRate, False, )
         
@@ -98,15 +99,15 @@ class TestEssenceAccess(unittest.TestCase):
         
         data = essence_access.read(samples)
         
-        export_wave = wave.open(export_file, 'w')
+        export_wave = wave.open(export_file, 'wb')
         
-        export_wave.setsampwidth(audiosamplebits/8)
+        export_wave.setsampwidth(int(audiosamplebits/8))
         export_wave.setnchannels(numCh)
         export_wave.setframerate(sampleRate)
-        export_wave.writeframes(data)
-        export_wave.close()
         
-        #print data
+        #print(dir(export_wave))
+        export_wave.writeframesraw(data)
+        export_wave.close()
 
 if __name__ == "__main__":
     unittest.main()

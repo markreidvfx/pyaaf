@@ -1,3 +1,4 @@
+from __future__ import print_function
 import aaf
 import aaf.mob
 import aaf.define
@@ -18,7 +19,7 @@ if not os.path.exists(sandbox):
     os.makedirs(sandbox)
 
 main_test_file = os.path.join(cur_dir,"files/test_file_01.aaf")
-print main_test_file
+print(main_test_file)
 assert os.path.exists(main_test_file)
 
 class TestFile(unittest.TestCase):
@@ -90,11 +91,11 @@ class TestFile(unittest.TestCase):
         dictionary = f.dictionary
         storage = f.storage
         
-        print storage.count_mobs()
+        print(storage.count_mobs())
         
         for mob in storage.master_mobs():
             #mob.count_properties()
-            print mob
+            print(mob)
 
     def test_comp_mobs(self):
         
@@ -110,7 +111,7 @@ class TestFile(unittest.TestCase):
         #print storage.count_mobs()
         
         for mob in storage.composition_mobs():
-            print mob
+            print(mob)
 
     def test_toplevel_mobs(self):
         
@@ -123,7 +124,7 @@ class TestFile(unittest.TestCase):
         dictionary = f.dictionary
         storage = f.storage
         
-        print storage.count_mobs()
+        print(storage.count_mobs())
         
         for mob in storage.toplevel_mobs():
             compMob = mob
@@ -165,7 +166,7 @@ class TestFile(unittest.TestCase):
             value_typedef = p.typedef
             
             value =  p.value
-            print p.name, value_typedef, value_typedef.category,p.property_def
+            print(p.name, value_typedef, value_typedef.category,p.property_def)
             
             if isinstance(value, aaf.iterator.BaseIterator):
                 for item in value:
@@ -185,7 +186,7 @@ class TestFile(unittest.TestCase):
         for p in dictionary.properties():
             pass
             #print p.name, p.value_typedef(),p.property_def(), p.value
-        print dictionary.classdef().parent().name
+        print(dictionary.classdef().parent().name)
         
         
     def test_properties(self):
@@ -198,7 +199,7 @@ class TestFile(unittest.TestCase):
         dictionary = f.dictionary
         storage = f.storage
         
-        print storage.count_mobs()
+        print(storage.count_mobs())
         
         for mob in storage.mobs():
             #print mob.count_properties()
@@ -208,7 +209,7 @@ class TestFile(unittest.TestCase):
                 
                 if valuedef.value(value) is None:
                     #pass
-                    print "** missing", valuedef,valuedef.category
+                    print("** missing", valuedef,valuedef.category)
                 #print valuedef
                 #print p,valuedef.name,
                 #print valuedef.category
@@ -261,7 +262,7 @@ class TestFile(unittest.TestCase):
                     #recordDef = aaf.define.TypeDefRecord(valuedef)
                     #print '   ',p.name, recordDef, recordDef.value(value)
                     #print p.name
-                    for x in xrange(recordDef.size()):
+                    for x in range(recordDef.size()):
                         member_name = recordDef.member_name(x)
                         member_type = recordDef.member_typedef(x)
                         
@@ -320,9 +321,9 @@ class TestFile(unittest.TestCase):
             
             comments = list(mob.comments())
             if comments:
-                print mob.name
+                print(mob.name)
                 for c in comments:
-                    print '  ', c.name, c.value
+                    print('  ', c.name, c.value)
                     
     def test_create_comments(self):
         test_file = os.path.join(sandbox, 'comments_create.aaf')
@@ -339,7 +340,7 @@ class TestFile(unittest.TestCase):
             mob.append_comment(key,value)
             
         for item in mob.comments():
-            print '**', item.name, item.value
+            print('**', item.name, item.value)
             assert d[item.name] == item.value
             
         mob.remove_comment_by_name('comment3')
@@ -370,7 +371,7 @@ class TestFile(unittest.TestCase):
             raise
             
         keys = d.keys()
-        print keys
+        print(keys)
         for item in d['OperationDefinitions'].value:
             pass
     def test_dictionary_defs(self):
@@ -382,25 +383,25 @@ class TestFile(unittest.TestCase):
         for item in d.classdefs():
             pass
             #c,name = item.class_name, item.name
-            print item
+            print(item)
         for item in d.codecdefs():
             c,name = item.class_name, item.name
             #print c,name
         for item in d.typedefs():
             pass
-            print item
+            print(item)
             #c,name = item.class_name, item.name
             #print c,name
         for item in d.plugindefs():
-            print item
+            print(item)
             c,name = item.class_name, item.name
             #print c,name
-        print "klv"
+        print("klv")
         for item in d.klvdatadefs():
-            print item
+            print(item)
             c,name = item.class_name, item.name
             #print c,name
-        print "operation"        
+        print("operation")     
         for item in d.operationdefs():
             c,name = item.class_name, item.name
             #print c,name
@@ -422,7 +423,7 @@ class TestFile(unittest.TestCase):
     def test_plugin_manager(self):
         manager = aaf.dictionary.PluginManager()
         
-        print list(manager.loaded_plugins('codec'))
+        print(list(manager.loaded_plugins('codec')))
 
 if __name__ == '__main__':
     unittest.main()
