@@ -1,3 +1,4 @@
+from __future__ import print_function
 import struct
 
 def parse_chunk(id,data):
@@ -156,16 +157,16 @@ if __name__ == "__main__":
     
     for pct_item in d:
          
-        print "%s:" % pct_item['type']
+        print("%s:" % pct_item['type'])
          
         for key,value in sorted(pct_item.items()):
             if key == "data":
                 if options.verbose:
-                    print '   Data:'
+                    print('   Data:')
                     for s in chunks(repr(value)[1:-1], 80):
-                        print "    ", s
+                        print("    ", s)
             elif key in ('type'):
                 pass
             else:
-                print "   %s = %s" % (key, str(value)) 
+                print("   %s = %s" % (key, str(value)))
 

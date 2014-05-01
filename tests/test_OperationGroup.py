@@ -66,7 +66,7 @@ class TestFile(unittest.TestCase):
         comp_mob.name = "OperationGroupTest"
         comp_mob.mobID = mob_id
         
-        for i in xrange(2):
+        for i in range(2):
             opgroup = aaf.component.OperationGroup(f, "picture", 10, op_def)
             filler = f.create.Filler("picture", 10)
             

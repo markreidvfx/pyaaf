@@ -132,7 +132,7 @@ cdef class TypeDefRecord(TypeDef):
         
         value_dict = self.value_dict(p_value)
         for key, item in value.items():
-            if not value_dict.has_key(key):
+            if key not in value_dict:
                 raise ValueError("TypeDefRecord does not have key %s" % key)
             
         cdef PropertyValue member_value
