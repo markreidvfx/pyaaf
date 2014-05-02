@@ -2,15 +2,18 @@
 cdef class AAFCharBuffer(object):
 
     """
-    A helper Object for allocating aafCharacter 
-    Note: all strings/characters in AAF files are 2-byte unicode, (UTF-16)
-    However he AAF SDK uses wchar_t whichs size of which varies across platforms(sometimes 2 or for 4).
+    A helper Object for allocating aafCharacters 
+    All strings/characters in AAF files are 2-byte unicode, (UTF-16-LE)
+    However the AAF SDK exposes strings as wchar_t, and its size varies across platforms(sometimes 2 or for 4).
     The SDK transforms the in memory wchar_t, whatever size it is, to 2-byte automatically when writing file data.
-    However Python can also have different bytes sizes of unicode, 
-    example:
-        on a macosx 10.9.2, python 2.7
-        sizeof(wchar_t) == 4
-        sizeof(Py_UNICODE) == 2
+    On platforms that have 4 byte wide wchar_t, all python strings get encoded to UTF-32-LE.
+    On platforms that have 2 byte wide wchat_t, all python strings get encoded to  UTF-16-LE.
+    
+    If a unicode string is provide to this object it gets encode directly to the required encoding
+    
+    If as bytes string is provide to this object it will get decoded to unicode as ascii 
+    and then encode to the required encoding
+    
     """
 
     def __cinit__(self):
