@@ -29,8 +29,8 @@ class TestAAFCharBuffer(unittest.TestCase):
         buf = aaf.util.AAFCharBuffer()
         buf2 = aaf.util.AAFCharBuffer()
         
-        print(buf.aafchar_size)
-        print(buf.unicode_size)
+        print("AAFCharacter size =", buf.aafchar_size)
+        print("AAFCharacter encoding =", buf.encoding)
         
         buf.write_bytes(b"Hello")
         buf.null_terminate()
@@ -52,7 +52,7 @@ class TestAAFCharBuffer(unittest.TestCase):
             result = buf.read_unicode()[:-1]
             
             if isinstance(text, bytes):
-                text = text.decode("UTF-8")
+                text = text.decode("ascii")
             
             print([result, text])
             print(result, text)

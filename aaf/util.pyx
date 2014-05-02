@@ -5,6 +5,7 @@ from wstring cimport wstring, toWideString, wideToString, print_wchar
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libc.stddef cimport wchar_t
+from libc.string cimport memset, memcpy
 
 from .fraction_util import AAFFraction
 

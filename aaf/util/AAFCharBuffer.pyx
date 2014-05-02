@@ -16,6 +16,13 @@ cdef class AAFCharBuffer(object):
     def __cinit__(self):
         self.buf = vector[lib.aafCharacter]()
         
+        if sizeof(lib.aafCharacter) == 4:
+            self.encoding = "utf_32_le"
+        elif sizeof(lib.aafCharacter) == 2:
+            self.encoding = "utf_16_le"
+        else:
+            raise RuntimeError("Unknown aafCharacter encoding")
+        
     def __init__(self, value=None):
         if value is not None:
             self.write_str(value)
@@ -36,39 +43,24 @@ cdef class AAFCharBuffer(object):
         self.buf.push_back(value)
         
     cpdef write_unicode(self, unicode value):
-        cdef Py_UCS4 c
+    
+        cdef bytes data = value.encode(self.encoding)
         
-        for c in value:            
-            self.buf.push_back(c)
+        self.size_in_bytes = len(data)
+        
+        cdef char * c_data = data 
+        memcpy(self.get_ptr(), c_data, len(data))
 
     cpdef write_bytes(self, bytes value):
-        cdef char c
-        for c in value:
-            self.buf.push_back(c)
+        self.write_unicode(value.decode("ascii"))
         
     cpdef unicode read_unicode(self):
-        cdef unicode unicode_str = u""
-        cdef Py_UCS4 c
+    
+        cdef bytes data = self.read_raw()
+        return data.decode(self.encoding)
 
-        cdef lib.aafCharacter * aaf_ptr = self.get_ptr()
-        
-        for i in xrange(self.size):
-            c = aaf_ptr[i]
-            unicode_str += c
-            
-        return unicode_str
-        
-    cpdef bytes read_bytes(self):
-        cdef bytes bytes_str = b""
-        cdef char c
-        
-        cdef lib.aafCharacter * aaf_ptr = self.get_ptr()
-        
-        for i in xrange(self.size):
-            c = aaf_ptr[i]
-            bytes_str += <bytes> c
-            
-        return bytes_str
+    cpdef bytes read_bytes(self): 
+        return self.read_unicode().encode("ascii")
     
     cpdef object read_str(self):
         return self.read_unicode()
@@ -98,11 +90,6 @@ cdef class AAFCharBuffer(object):
     
         def __get__(self):
             return sizeof(lib.aafCharacter)
-    
-    property unicode_size:
-    
-        def __get__(self):
-            return sizeof(Py_UNICODE)
     
     def dump(self):
         print_wchar(self.get_ptr())

@@ -19,6 +19,7 @@ cdef object aafRational_to_fraction(lib.aafRational_t& r)
 
 cdef class AAFCharBuffer(object):
     cdef vector[lib.aafCharacter] buf
+    cdef readonly object encoding
     cpdef null_terminate(self)
     
     cdef write_aafchar(self, lib.aafCharacter c)
