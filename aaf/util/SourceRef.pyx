@@ -3,13 +3,13 @@ cdef class SourceRef(object):
     def __cinit__(self):
         memset(&self.source_ref, 0 , sizeof(lib.aafSourceRef_t))
 
-    def __init__(self, source_id = None, source_slot_id = None, start_time = None):
+    def __init__(self, mob_id = None, slot_id = None, start_time = None):
 
-        if source_id is not None:
-            self.source_id= source_id
+        if mob_id is not None:
+            self.mob_id= mob_id
         
-        if source_slot_id is not None:
-            self.source_slot_id = source_slot_id
+        if slot_id is not None:
+            self.slot_id = slot_id
         
         if start_time is not None:
             self.start_time = start_time
@@ -24,7 +24,7 @@ cdef class SourceRef(object):
             self.source_id, self.source_slot_id, self.start_time,
             id(self))
     
-    property source_id:
+    property mob_id:
         def __get__(self):
             cdef MobID mob_id = MobID()
             mob_id.mobID = self.source_ref.sourceID
@@ -33,7 +33,7 @@ cdef class SourceRef(object):
             cdef MobID mob_id = MobID(value)
             self.source_ref.sourceID = mob_id.get_aafMobID_t()
         
-    property source_slot_id:
+    property slot_id:
         def __get__(self):
             return self.source_ref.sourceSlotID
         def __set__(self, lib.aafSlotID_t value):
