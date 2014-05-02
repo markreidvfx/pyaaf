@@ -17,20 +17,36 @@ cdef class TypeDefRename(TypeDef):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def create_property_value(self, PropertyValue p_value):
+        cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
+        error_check(self.ptr.CreateValue(p_value.ptr, &out_value.ptr))
+        out_value.query_interface()
+        out_value.root = self.root
+        return out_value
     
-    def resolve_rename(self, PropertyValue p_value):
+    def base_typedef(self):
+        cdef TypeDef typdef = TypeDef.__new__(TypeDef)
+        
+        error_check(self.ptr.GetBaseType(&typdef.typedef_ptr))
+        typdef.query_interface()
+        typdef.root = self.root
+        return typdef.resolve()
+    
+    def base_property_value(self, PropertyValue p_value):
         cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
         error_check(self.ptr.GetBaseValue(p_value.ptr, &out_value.ptr))
         out_value.query_interface()
         out_value.root = self.root
         return out_value
             
-    def set_value(self, PropertyValue p_value, value):        
-        self.resolve_rename(p_value).value = value
-
+    def set_value(self, PropertyValue p_value, value):
+        new_value = self.base_typedef().create_property_value(value)
+        new_rename = self.create_property_value(new_value)
+        return new_rename
             
     def value(self, PropertyValue p_value):
-        cdef PropertyValue out_value = self.resolve_rename(p_value)
+        cdef PropertyValue out_value = self.base_property_value(p_value)
         
         value =  out_value.value
         if value is None:

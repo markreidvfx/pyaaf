@@ -23,4 +23,4 @@ cdef class StaticMobSlot(MobSlot):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
         
-        # Has Not Initialize
+        # Has No Initialize

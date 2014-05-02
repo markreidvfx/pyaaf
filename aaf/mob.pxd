@@ -22,6 +22,7 @@ cdef class MobSlot(AAFObject):
     
 cdef class TimelineMobSlot(MobSlot):
     cdef lib.IAAFTimelineMobSlot *ptr
+    cdef lib.IAAFTimelineMobSlot2 *ptr2
 
 cdef class EventMobSlot(MobSlot):
     cdef lib.IAAFEventMobSlot *ptr
