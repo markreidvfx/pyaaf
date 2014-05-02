@@ -38,6 +38,8 @@ cdef class SourceMob(Mob):
         
         error_check(self.src_ptr.AddNilReference(slotID, length, data_def.ptr, edit_rate_t))
         
+        return self.slot_at(slotID)
+        
     def add_pulldown(self, 
                      edit_rate, 
                      lib.aafSlotID_t slotID, media_kind, 

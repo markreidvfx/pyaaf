@@ -1129,13 +1129,13 @@ cdef extern from "AAF.h":
         )
         HRESULT ResolveRef(IAAFMob ** ppMob)
         HRESULT GetSourceReference(aafSourceRef_t *  pSourceRef)
+        HRESULT SetSourceReference(aafSourceRef_t  sourceRef)
         HRESULT SetFade(
             aafInt32  fadeInLen,
             aafFadeType_t  fadeInType,
             aafInt32  fadeOutLen,
             aafFadeType_t  fadeOutType
         )
-        HRESULT SetSourceReference(aafSourceRef_t  sourceRef) 
 
     cdef aafUID_t AUID_AAFOperationGroup
     cdef GUID IID_IAAFOperationGroup

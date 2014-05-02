@@ -19,21 +19,16 @@ cdef class SourceClip(SourceReference):
         if self.ptr:
             self.ptr.Release()
             
-    def __init__(self, root, media_kind, lib.aafLength_t length, SourceRef source_ref = None):
+    def __init__(self, root, media_kind, lib.aafLength_t length = 0, SourceRef source_ref = None):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
         
         cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
         
-        cdef lib.aafSourceRef_t source_ref_t
-        
-        if source_ref:
-            source_ref_t = source_ref.get_aafSourceRef_t()
-        else:
-            memset(&source_ref_t,0 , sizeof(source_ref))
-        
-        
-        error_check(self.ptr.Initialize(data_def.ptr, length, source_ref_t))
+        if source_ref is None:
+            source_ref = SourceRef()
+            
+        error_check(self.ptr.Initialize(data_def.ptr, length, source_ref.get_aafSourceRef_t()))
         
             
     def resolve_ref(self):
@@ -42,3 +37,15 @@ cdef class SourceClip(SourceReference):
         mob.query_interface()
         mob.root = self.root
         return mob.resolve()
+    
+    property source_ref:
+        
+        def __get__(self):
+            cdef SourceRef value = SourceRef.__new__(SourceRef)
+            error_check(self.ptr.GetSourceReference(&value.source_ref))
+            return value
+            
+        def __set__(self, SourceRef value):
+            
+            error_check(self.ptr.SetSourceReference(value.get_aafSourceRef_t()))
+            
