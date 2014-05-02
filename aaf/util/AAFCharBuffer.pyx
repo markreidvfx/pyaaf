@@ -66,7 +66,7 @@ cdef class AAFCharBuffer(object):
         return self.read_unicode().encode("ascii")
     
     cpdef object read_str(self):
-        return self.read_unicode()
+        return self.read_unicode().rstrip("\0")
     
     cpdef bytes read_raw(self):
         cdef char * data = <char *> &self.buf[0]
@@ -80,7 +80,7 @@ cdef class AAFCharBuffer(object):
             return self.buf.size() * sizeof(lib.aafCharacter)
         
         def __set__(self, size_t size):
-            self.buf.resize(size / self.aafchar_size)
+            self.buf.resize( (size / self.aafchar_size) + 1)
     
     property size:
         def __get__(self):

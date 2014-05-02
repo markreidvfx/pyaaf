@@ -106,7 +106,7 @@ cdef class TypeDefRecord(TypeDef):
         buf.size_in_bytes = size_in_bytes
         error_check(self.ptr.GetMemberName(index, buf.get_ptr(), buf.size_in_bytes))
         
-        return buf.read_str()[:-1]
+        return buf.read_str()
     
     def member_typedef(self, lib.aafUInt32 index):
         cdef TypeDef typedef = TypeDef.__new__(TypeDef)

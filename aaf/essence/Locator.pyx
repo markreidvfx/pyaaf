@@ -37,7 +37,7 @@ cdef class Locator(AAFObject):
             error_check(self.loc_ptr.GetPath(buf.get_ptr(),  buf.size_in_bytes))
             
             # strip off Null Terminator
-            return buf.read_str()[:-1]
+            return buf.read_str()
 
         def __set__(self, value):
             cdef AAFCharBuffer buf = AAFCharBuffer(value)

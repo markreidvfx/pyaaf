@@ -147,7 +147,7 @@ cdef class EssenceAccess(EssenceMultiAccess):
             name.size = 1024
             error_check(self.ptr.GetCodecName(name.size, name.get_ptr()))
             
-            return name.read_str().rstrip("\0")
+            return name.read_str()
             
     property codecID:
         def __get__(self):

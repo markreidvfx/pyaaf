@@ -49,7 +49,7 @@ class TestAAFCharBuffer(unittest.TestCase):
         
         for text in (char_num(40960), b'cow', u'cow', char_num(255), "some text", u"\U0001F600"):
             buf = aaf.util.AAFCharBuffer(text)
-            result = buf.read_unicode()[:-1]
+            result = buf.read_str()
             
             if isinstance(text, bytes):
                 text = text.decode("ascii")

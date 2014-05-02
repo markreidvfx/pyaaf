@@ -47,7 +47,7 @@ cdef class TypeDefString(TypeDef):
         error_check(self.ptr.GetElements(p_value.ptr, <lib.aafMemPtr_t> buf.get_ptr(), buf.size_in_bytes))
         
         # strip off Null Terminator
-        return buf.read_str()[:-1]
+        return buf.read_str()
     
     def value(self, PropertyValue p_value):
         return self.get_value(p_value)
