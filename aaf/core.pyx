@@ -6,8 +6,15 @@ def register_all(path=None):
     """
     Loads AAF dll and registers shared plugins.
     """
+    
+    cdef bytes c_path
+    
     if path:
-        error_check(lib.AAFLoad(path))
+        if isinstance(path, unicode):
+            c_path = path.encode("ascii")
+        else:
+            c_path = path
+        error_check(lib.AAFLoad(c_path))
     else:
         error_check(lib.AAFLoad(NULL))
         
