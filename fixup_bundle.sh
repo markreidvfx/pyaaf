@@ -10,12 +10,13 @@ echo $CORE
 
 DYLIB=libcom-api.dylib
 
-OLD_PATH=`otool -L $CORE | grep $DYLIB | cut -d'(' -f1`
+OLD_PATH=`otool -L $CORE | grep $DYLIB | cut -s -d '(' -f1`
 NEW_PATH="@loader_path/$DYLIB"
 
 #easy way to trim off tabs
 OLD_PATH=`echo $OLD_PATH`
 
 echo "$OLD_PATH -> $NEW_PATH"
+echo "install_name_tool -change $OLD_PATH $NEW_PATH $CORE"
 install_name_tool -change $OLD_PATH $NEW_PATH $CORE
 
