@@ -11,6 +11,10 @@ info:
 
 cythonize: $(C_SRC)
 
+build/cython/aaf/%.cpp: aaf/%.pyx aaf/%.pxd aaf/%/*.pyx aaf/%/*.cpp
+	@ mkdir -p $(shell dirname $@)
+	cython --cplus -I. -Iheaders -o $@ $<
+
 build/cython/aaf/%.cpp: aaf/%.pyx aaf/%.pxd aaf/%/*.pyx
 	@ mkdir -p $(shell dirname $@)
 	cython --cplus -I. -Iheaders -o $@ $<

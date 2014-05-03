@@ -5,7 +5,7 @@ import os
 import subprocess
 import sys
 import shutil
-
+import glob
 
 #os.environ['CXX'] = 'g++'
 #os.environ['ARCHFLAGS'] ="-arch x86_64"
@@ -81,9 +81,17 @@ for dirname, dirnames, filenames in os.walk(build_dir):
 
         path = os.path.join(dirname, filename)
         name = os.path.splitext(os.path.relpath(path, build_dir))[0].replace(os.sep, '.')
+        
+        sources = [path]
+
+        extra_src_dir = os.path.join(os.path.dirname(__file__), 'aaf', os.path.splitext(filename)[0])
+        extra_src = glob.glob(os.path.join(extra_src_dir, '*.cpp'))
+        
+        sources.extend(extra_src)
+        
         ext_modules.append(Extension(
             name,
-            sources=[path],
+            sources=sources,
             language="c++",
             **ext_extra
         ))

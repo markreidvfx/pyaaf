@@ -12,3 +12,4 @@ cdef extern from "AAFResult.h":
     cdef int AAFRESULT_END_OF_DATA
     cdef int AAFRESULT_PROP_NOT_PRESENT
     cdef int AAFRESULT_IS_ROOT_CLASS
+    cdef int AAFRESULT_UNEXPECTED_EXCEPTION

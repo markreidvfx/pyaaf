@@ -88,4 +88,5 @@ include "util/AUID.pyx"
 include "util/MobID.pyx"
 include "util/SourceRef.pyx"
 include "util/Timecode.pyx"
+include "util/progress_callback.pyx"
         

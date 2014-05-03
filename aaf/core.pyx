@@ -1,6 +1,6 @@
 
 cimport lib
-from .util cimport error_check
+from .util cimport error_check, setup_progress_callback
 
 def register_all(path=None):
     """
@@ -26,3 +26,5 @@ def register_all(path=None):
     finally:
         if plugin_manager:
             plugin_manager.Release()
+
+    setup_progress_callback()

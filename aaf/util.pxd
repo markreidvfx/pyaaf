@@ -63,3 +63,5 @@ cdef fused aaf_integral:
     lib.aafUInt16
     lib.aafUInt32
     lib.aafUInt64
+    
+cdef setup_progress_callback()
