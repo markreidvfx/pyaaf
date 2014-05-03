@@ -68,7 +68,10 @@ class TestDiagnosticOutput(unittest.TestCase):
         # there should be something in the log
         assert len(LOG)
         
+        print("Diagnostic Log:\n")
         print(LOG)
+        
+        print("A stack track and a diagnostic should print out, this is corrrect!")
 
 
 if __name__ == "__main__":

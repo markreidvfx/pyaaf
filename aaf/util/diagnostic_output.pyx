@@ -31,10 +31,10 @@ cdef lib.HRESULT diagnostic_output_handler(const lib.aafCharacter *p_message , s
     return lib.AAFRESULT_SUCCESS
 
 cdef setup_diagnostic_output_callback():
-    cdef lib.DiagnosticOutput *p = NULL
+    cdef lib.IAAFDiagnosticOutput *p = NULL
     try:
-        error_check(lib.CreateDiagnosticOutputCallback(<lib.IAAFDiagnosticOutput **>&p, diagnostic_output_handler))
-        error_check(lib.AAFSetDiagnosticOutput(<lib.IAAFDiagnosticOutput *>p))
+        error_check(lib.CreateDiagnosticOutputCallback(&p, diagnostic_output_handler))
+        error_check(lib.AAFSetDiagnosticOutput(p))
     except:
         raise
     finally:
