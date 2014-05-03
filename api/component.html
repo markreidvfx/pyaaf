@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>aaf.component &mdash; pyaaf 0.7.1 documentation</title>
+    <title>aaf.component &mdash; pyaaf 0.8.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.7.1',
+        VERSION:     '0.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="pyaaf 0.7.1 documentation" href="../index.html" />
+    <link rel="top" title="pyaaf 0.8.0 documentation" href="../index.html" />
     <link rel="next" title="aaf.essence" href="essence.html" />
     <link rel="prev" title="aaf.mob" href="mob.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="mob.html" title="aaf.mob"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">pyaaf 0.7.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">pyaaf 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -124,11 +124,6 @@
 <tt class="descname">components</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.components" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="aaf.component.Sequence.initialize">
-<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.initialize" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div></blockquote>
@@ -140,11 +135,6 @@
 <dt id="aaf.component.Timecode">
 <em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Timecode</tt><a class="headerlink" href="#aaf.component.Timecode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
-<dl class="method">
-<dt id="aaf.component.Timecode.initialize">
-<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Timecode.initialize" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div></blockquote>
@@ -156,11 +146,6 @@
 <dt id="aaf.component.Filler">
 <em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Filler</tt><a class="headerlink" href="#aaf.component.Filler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
-<dl class="method">
-<dt id="aaf.component.Filler.initialize">
-<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Filler.initialize" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div></blockquote>
@@ -175,11 +160,6 @@
 <dl class="attribute">
 <dt id="aaf.component.Pulldown.direction">
 <tt class="descname">direction</tt><a class="headerlink" href="#aaf.component.Pulldown.direction" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="aaf.component.Pulldown.initialize">
-<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Pulldown.initialize" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -220,13 +200,13 @@
 <em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">SourceClip</tt><a class="headerlink" href="#aaf.component.SourceClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.component.SourceReference" title="aaf.component.SourceReference"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.SourceReference</span></tt></a></p>
 <dl class="method">
-<dt id="aaf.component.SourceClip.initialize">
-<tt class="descname">initialize</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.SourceClip.initialize" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="aaf.component.SourceClip.resolve_ref">
 <tt class="descname">resolve_ref</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.SourceClip.resolve_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.SourceClip.source_ref">
+<tt class="descname">source_ref</tt><a class="headerlink" href="#aaf.component.SourceClip.source_ref" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -352,6 +332,11 @@
 <dt id="aaf.component.EdgeCode">
 <em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">EdgeCode</tt><a class="headerlink" href="#aaf.component.EdgeCode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
+<dl class="attribute">
+<dt id="aaf.component.EdgeCode.header">
+<tt class="descname">header</tt><a class="headerlink" href="#aaf.component.EdgeCode.header" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div></blockquote>
@@ -621,7 +606,7 @@
         <li class="right" >
           <a href="mob.html" title="aaf.mob"
              >previous</a> |</li>
-        <li><a href="../index.html">pyaaf 0.7.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">pyaaf 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

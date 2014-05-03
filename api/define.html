@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>aaf.define &mdash; pyaaf 0.7.1 documentation</title>
+    <title>aaf.define &mdash; pyaaf 0.8.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.7.1',
+        VERSION:     '0.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="pyaaf 0.7.1 documentation" href="../index.html" />
+    <link rel="top" title="pyaaf 0.8.0 documentation" href="../index.html" />
     <link rel="next" title="aaf.iterator" href="iterator.html" />
     <link rel="prev" title="aaf.property" href="property.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="property.html" title="aaf.property"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">pyaaf 0.7.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">pyaaf 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -88,6 +88,21 @@
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">ClassDef</tt><a class="headerlink" href="#aaf.define.ClassDef" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.MetaDef" title="aaf.define.MetaDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.MetaDef</span></tt></a></p>
 <dl class="method">
+<dt id="aaf.define.ClassDef.all_propertydefs">
+<tt class="descname">all_propertydefs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.ClassDef.all_propertydefs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.ClassDef.count_propertydefs">
+<tt class="descname">count_propertydefs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.ClassDef.count_propertydefs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.ClassDef.lookup_propertydef_by_id">
+<tt class="descname">lookup_propertydef_by_id</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.ClassDef.lookup_propertydef_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="aaf.define.ClassDef.parent">
 <tt class="descname">parent</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.ClassDef.parent" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -95,6 +110,11 @@
 <dl class="method">
 <dt id="aaf.define.ClassDef.propertydefs">
 <tt class="descname">propertydefs</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.ClassDef.propertydefs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.ClassDef.register_optional_propertydef">
+<tt class="descname">register_optional_propertydef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.ClassDef.register_optional_propertydef" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -327,6 +347,16 @@
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">TypeDefInt</tt><a class="headerlink" href="#aaf.define.TypeDefInt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.TypeDef" title="aaf.define.TypeDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.TypeDef</span></tt></a></p>
 <dl class="method">
+<dt id="aaf.define.TypeDefInt.create_property_value">
+<tt class="descname">create_property_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefInt.create_property_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefInt.get_value">
+<tt class="descname">get_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefInt.get_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="aaf.define.TypeDefInt.is_signed">
 <tt class="descname">is_signed</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefInt.is_signed" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -357,6 +387,11 @@
 <dt id="aaf.define.TypeDefObjectRef">
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">TypeDefObjectRef</tt><a class="headerlink" href="#aaf.define.TypeDefObjectRef" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.TypeDef" title="aaf.define.TypeDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.TypeDef</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.define.TypeDefObjectRef.create_property_value">
+<tt class="descname">create_property_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefObjectRef.create_property_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="aaf.define.TypeDefObjectRef.object_type">
 <tt class="descname">object_type</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefObjectRef.object_type" title="Permalink to this definition">¶</a></dt>
@@ -411,8 +446,8 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="aaf.define.TypeDefRecord.member_type">
-<tt class="descname">member_type</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.member_type" title="Permalink to this definition">¶</a></dt>
+<dt id="aaf.define.TypeDefRecord.member_typedef">
+<tt class="descname">member_typedef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRecord.member_typedef" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -467,8 +502,18 @@
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">TypeDefRename</tt><a class="headerlink" href="#aaf.define.TypeDefRename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.TypeDef" title="aaf.define.TypeDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.TypeDef</span></tt></a></p>
 <dl class="method">
-<dt id="aaf.define.TypeDefRename.resolve_rename">
-<tt class="descname">resolve_rename</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRename.resolve_rename" title="Permalink to this definition">¶</a></dt>
+<dt id="aaf.define.TypeDefRename.base_property_value">
+<tt class="descname">base_property_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRename.base_property_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefRename.base_typedef">
+<tt class="descname">base_typedef</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRename.base_typedef" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefRename.create_property_value">
+<tt class="descname">create_property_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefRename.create_property_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -551,6 +596,11 @@
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">TypeDefString</tt><a class="headerlink" href="#aaf.define.TypeDefString" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.TypeDef" title="aaf.define.TypeDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.TypeDef</span></tt></a></p>
 <dl class="method">
+<dt id="aaf.define.TypeDefString.get_value">
+<tt class="descname">get_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefString.get_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="aaf.define.TypeDefString.set_value">
 <tt class="descname">set_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefString.set_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -577,8 +627,23 @@
 <em class="property">class </em><tt class="descclassname">aaf.define.</tt><tt class="descname">TypeDefVariableArray</tt><a class="headerlink" href="#aaf.define.TypeDefVariableArray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.define.TypeDef" title="aaf.define.TypeDef"><tt class="xref py py-class docutils literal"><span class="pre">aaf.define.TypeDef</span></tt></a></p>
 <dl class="method">
-<dt id="aaf.define.TypeDefVariableArray.iter_property_value">
-<tt class="descname">iter_property_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefVariableArray.iter_property_value" title="Permalink to this definition">¶</a></dt>
+<dt id="aaf.define.TypeDefVariableArray.append_element">
+<tt class="descname">append_element</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefVariableArray.append_element" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefVariableArray.create_empty_value">
+<tt class="descname">create_empty_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefVariableArray.create_empty_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefVariableArray.property_values">
+<tt class="descname">property_values</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefVariableArray.property_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.define.TypeDefVariableArray.set_value">
+<tt class="descname">set_value</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.define.TypeDefVariableArray.set_value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -823,7 +888,7 @@
         <li class="right" >
           <a href="property.html" title="aaf.property"
              >previous</a> |</li>
-        <li><a href="../index.html">pyaaf 0.7.1 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">pyaaf 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

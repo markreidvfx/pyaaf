@@ -16,7 +16,7 @@ Basic Demo
 
     import aaf
     
-    f - aaf.open("path/to/file.aaf", "r")
+    f = aaf.open("path/to/file.aaf", "r")
     
     # get the main composition
     main_compostion = f.storage.toplevel_mobs()[0]
