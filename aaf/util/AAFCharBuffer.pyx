@@ -40,7 +40,7 @@ cdef class AAFCharBuffer(object):
         elif isinstance(string, bytes):
             self.write_bytes(string)
         else:
-            self.write_unicode(unicode(string))
+            raise ValueError("must be bytes or unicode string")
         
     cdef write_aafchar(self, lib.aafCharacter value):
         self.buf.push_back(value)
