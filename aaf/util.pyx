@@ -89,4 +89,5 @@ include "util/MobID.pyx"
 include "util/SourceRef.pyx"
 include "util/Timecode.pyx"
 include "util/progress_callback.pyx"
+include "util/diagnostic_output.pyx"
         

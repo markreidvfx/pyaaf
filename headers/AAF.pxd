@@ -1237,6 +1237,9 @@ cdef extern from "AAF.h":
     cdef cppclass IAAFProgress(IUnknown):
         pass
         
+    cdef cppclass IAAFDiagnosticOutput(IUnknown):
+        pass
+        
     ## Parameters
     
     cdef aafUID_t AUID_AAFParameter
@@ -1484,5 +1487,6 @@ cdef extern from "AAF.h":
                                  aafUInt32  resultTextSize)
          
     cdef HRESULT AAFSetProgressCallback(IAAFProgress*  pProgress)
+    cdef HRESULT AAFSetDiagnosticOutput(IAAFDiagnosticOutput*  pOutput)
     cdef HRESULT AAFLoad(char *dllname)
     cdef HRESULT AAFGetPluginManager(IAAFPluginManager **ppPluginManager)

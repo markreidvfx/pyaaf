@@ -65,3 +65,4 @@ cdef fused aaf_integral:
     lib.aafUInt64
     
 cdef setup_progress_callback()
+cdef setup_diagnostic_output_callback()
