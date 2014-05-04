@@ -29,6 +29,7 @@ def diagnostic_output_callback(message):
 
 class TestDiagnosticOutput(unittest.TestCase):
     
+    # This Test only works on debug builds
     def test_basic(self):
         
         aaf.util.set_diagnostic_output_callback(diagnostic_output_callback)

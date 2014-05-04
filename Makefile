@@ -31,7 +31,7 @@ build_dev: cythonize
 	python setup.py build_ext --inplace --debug
 
 build: cythonize
-	python setup.py build_ext
+	python setup.py build_ext --debug
 
 install: build
 	python setup.py install
