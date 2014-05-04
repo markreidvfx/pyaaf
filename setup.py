@@ -22,6 +22,8 @@ if '--aaf-root' in copy_args:
     del copy_args[index]
 else:
     AAF_ROOT = os.environ.get("AAF_ROOT")
+    
+USE_AAF_SDK_DEBUG = bool(int(os.environ.get("USE_AAF_SDK_DEBUG", "1")))
 
 space = '   '
 if AAF_ROOT is None:
@@ -58,7 +60,7 @@ if sys.platform.startswith('win'):
     import platform
     if platform.architecture()[0] == '64bit':
         WIN_ARCH = 'x64'
-    if '--debug' in copy_args:
+    if '--debug' in copy_args or USE_AAF_SDK_DEBUG:
         ext_extra['library_dirs'] = [os.path.join(AAF_ROOT,WIN_ARCH ,'Debug','Refimpl')]
         ext_extra['libraries'] = ['AAFD', 'AAFIIDD']
     else:
@@ -138,7 +140,7 @@ class cythonize_command(Command):
 def get_com_api(debug=True):
     if sys.platform.startswith("win"):
         dir = os.path.join(AAF_ROOT,'%s' % str(WIN_ARCH))
-        if debug:
+        if debug or USE_AAF_SDK_DEBUG:
             dir = os.path.join(dir, "Debug")
         else:
             dir = os.path.join(dir, "Release")
@@ -155,7 +157,7 @@ def get_com_api(debug=True):
     if sys.platform == 'darwin':
         ext = '.dylib'
     dir = os.path.join(AAF_ROOT, 'bin')
-    if debug:
+    if debug or USE_AAF_SDK_DEBUG:
         dir = os.path.join(dir, 'debug')
     
     com_api = os.path.join(dir, 'libcom-api' + ext)
@@ -166,7 +168,9 @@ def get_com_api(debug=True):
 
 def copy_com_api(debug=True):
     com_api, libaafintp, libaafpgapi = get_com_api(debug)
-    print(com_api, libaafintp, libaafpgapi)
+    
+    for item in [com_api, libaafintp, libaafpgapi]:
+        print(os.path.basename(item), '=', item)
     
     dir = os.path.dirname(__file__)
     
