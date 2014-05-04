@@ -37,7 +37,7 @@ install: build
 	python setup.py install
 	
 test:
-	cd tests;nosetests
+	cd tests;nosetests -v --processes 1 --process-timeout 60 --process-restartworker
 
 docs: build
 	make -C docs html

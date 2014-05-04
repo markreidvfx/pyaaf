@@ -4,6 +4,8 @@ cdef object PROGRESS_CALLBACK = None
 def set_progress_callback(callback):
     """Warning exceptions raised during callback function will be ignored
     """
+    setup_progress_callback()
+    
     global PROGRESS_CALLBACK
     PROGRESS_CALLBACK = callback
 

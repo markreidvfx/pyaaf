@@ -6,6 +6,7 @@ import sys
 def set_diagnostic_output_callback(callback):
     """Warning exceptions raised during callback function will be ignored
     """
+    setup_diagnostic_output_callback()
     global DIAGNOSTIC_OUTPUT_CALLBACK
     DIAGNOSTIC_OUTPUT_CALLBACK = callback
 
