@@ -149,7 +149,7 @@ def get_com_api(debug=True):
             com_api = os.path.join(dirname, 'AAFCOAPI.dll')
             libaafintp =  os.path.join(dirname, 'aafext', 'AAFINTP.dll')
             libaafpgapi =  os.path.join(dirname, 'aafext', 'AAFPGAPI.dll')
-            print(com_api)
+            #print(os.path.basename(com_api), '=', com_api)
             if all([os.path.exists(item) for item in (com_api,libaafintp,libaafpgapi)]):
                 return com_api, libaafintp, libaafpgapi
         raise Exception("Unable to find AAFCOAPI.dll, AAFINTP.dll, AAFPGAPI.dll")
@@ -177,7 +177,7 @@ def copy_com_api(debug=True):
     # copy libcom-api
     basename = os.path.basename(com_api)
     dest = os.path.join(dir, 'aaf', basename)
-    print(com_api, '->', dest)
+    print("copying", os.path.basename(com_api), '->', dest)
     shutil.copy(com_api, dest)
     
     # create ext dir
@@ -189,12 +189,12 @@ def copy_com_api(debug=True):
     # copy libaafintp
     basename = os.path.basename(libaafintp)
     intp_dest = os.path.join(aafext_dir,basename)
-    print(libaafintp, '->', intp_dest)
+    print("copying", os.path.basename(libaafintp), '->', intp_dest)
     shutil.copy(libaafintp, intp_dest)
     # copy libaafpgapi
     basename = os.path.basename(libaafpgapi)
     pgapi_dest = os.path.join(aafext_dir,basename)
-    print(libaafpgapi, '->', pgapi_dest)
+    print("copying", os.path.basename(libaafpgapi), '->', pgapi_dest)
     shutil.copy(libaafpgapi, pgapi_dest)
     
     return dest,intp_dest, pgapi_dest
