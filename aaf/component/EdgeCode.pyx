@@ -54,7 +54,7 @@ cdef class EdgeCode(Segment):
             
             error_check(self.ptr.GetEdgecode(&edge_code))
             
-            return edge_code.header.decode("UTF-8")
+            return edge_code.header.decode("ascii")
         
         def __set__(self, value not None):
             

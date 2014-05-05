@@ -158,7 +158,7 @@ cdef register_defs(map[string, lib.aafUID_t] def_map, dict d, replace=[]):
     for pair in def_map:
         auid_obj = AUID()
         auid_obj.from_auid(pair.second)
-        name = pair.first.decode('UTF-8')
+        name = pair.first.decode('ascii')
         for n in replace:
             name = name.replace(n, '')
         d[name.lower()] = auid_obj

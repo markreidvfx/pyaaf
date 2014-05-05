@@ -41,7 +41,7 @@ cdef class AIFCDescriptor(FileDescriptor):
             cdef lib.aafUInt8 *data = <lib.aafUInt8 *>  &buf[0]
             cdef bytes byte_data = data[:bufer_size]
             
-            return byte_data.decode("UTF-8")
+            return byte_data
             #HRESULT GetSummaryBufferSize(aafUInt32 *pSize)
 
         def __set__(self, value):
@@ -50,7 +50,7 @@ cdef class AIFCDescriptor(FileDescriptor):
             if isinstance(value, bytes):
                 data = value
             else:
-                data = value.encode("UTF-8")
+                data = value.encode("ascii")
                 
             cdef lib.aafUInt32 bufer_size =  len(data) * sizeof(lib.aafUInt8)
             
