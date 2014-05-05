@@ -74,6 +74,23 @@ class TestDiagnosticOutput(unittest.TestCase):
         
         print("A stack track and a diagnostic should print out, this is corrrect!")
 
+    def test_get_library_path_name(self):
+        path = aaf.util.get_library_path_name()
+        assert os.path.exists(path)
+        print("com api =", path)
+        
+    def test_get_static_library_version(self):
+        v = aaf.util.get_static_library_version()
+        assert v
+        
+        version_string = "%i.%i.%i.%i-%s" % (v['major'], v['minor'], v['tertiary'], v['patchLevel'], v['type'])
+        print("static library version =", version_string)
+
+    def test_get_library_version(self):
+        v = aaf.util.get_library_version()
+        assert v
+        version_string = "%i.%i.%i.%i-%s" % (v['major'], v['minor'], v['tertiary'], v['patchLevel'], v['type'])
+        print("library version =", version_string)
 
 if __name__ == "__main__":
     unittest.main()

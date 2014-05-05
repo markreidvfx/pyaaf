@@ -1488,5 +1488,9 @@ cdef extern from "AAF.h":
          
     cdef HRESULT AAFSetProgressCallback(IAAFProgress*  pProgress)
     cdef HRESULT AAFSetDiagnosticOutput(IAAFDiagnosticOutput*  pOutput)
+    cdef HRESULT AAFGetLibraryVersion(aafProductVersion_t *  pVersion)
+    cdef HRESULT AAFGetStaticLibraryVersion(aafProductVersion_t *  pVersion)
+    cdef HRESULT AAFGetLibraryPathNameBufLen(aafUInt32 *  pBufSize)
+    cdef HRESULT AAFGetLibraryPathName(aafCharacter *  pLibraryPathName, aafUInt32  bufSize)
     cdef HRESULT AAFLoad(char *dllname)
     cdef HRESULT AAFGetPluginManager(IAAFPluginManager **ppPluginManager)

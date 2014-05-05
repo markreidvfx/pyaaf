@@ -90,4 +90,53 @@ include "util/SourceRef.pyx"
 include "util/Timecode.pyx"
 include "util/progress_callback.pyx"
 include "util/diagnostic_output.pyx"
+
+cdef dict VersionTypes = {'Unknown' : 0, 
+                          'Released' : 1, 
+                          'Debug' : 2, 
+                          'Patched' : 3,  
+                          'Beta' : 4, 
+                          'PrivateBuild' : 5}
+
+def get_library_version():
+    cdef lib.aafProductVersion_t version
+    error_check(lib.AAFGetLibraryVersion(&version))
+    dict_version = dict(version)
+    
+    # set a nicer VersionType name
+    for key, value in VersionTypes.items():
+        if dict_version['type'] == value:
+            dict_version['type'] = key
+            break
+    else:
+        dict_version['type'] = "Unknown" 
+    
+    return dict_version
+
+def get_static_library_version():
+    cdef lib.aafProductVersion_t version
+    error_check(lib.AAFGetStaticLibraryVersion(&version))
+    dict_version = dict(version)
+    
+    # set a nicer VersionType name
+    for key, value in VersionTypes.items():
+        if dict_version['type'] == value:
+            dict_version['type'] = key
+            break
+    else:
+        dict_version['type'] = "Unknown" 
+    
+    return dict_version
+
+def get_library_path_name():
+    cdef lib.aafUInt32 size_in_bytes
+    error_check(lib.AAFGetLibraryPathNameBufLen(&size_in_bytes))
+    
+    cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
+    buf.size_in_bytes =  size_in_bytes
+    
+    error_check(lib.AAFGetLibraryPathName(buf.get_ptr(), size_in_bytes))
+    
+    return buf.read_str()
+
         
