@@ -99,7 +99,7 @@ class TestFile(unittest.TestCase):
                 src_mob.append_phys_source_ref(slot_rates[i], i, slot_defs[i], source_ref, tape_mob_length)
                 
             desc = f.create.AIFCDescriptor()
-            desc.summary = "TEST"
+            desc.summary = b"TEST"
             src_mob.essence_descriptor = desc
             src_mob.name = "source mob"
             f.storage.add_mob(src_mob)

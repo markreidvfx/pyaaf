@@ -48,8 +48,8 @@ class TestCreateSequence(unittest.TestCase):
             # Make a FileMob
             file_mob = f.create.SourceMob()
             file_description = f.create.AIFCDescriptor()
-            file_description.summary = "TEST"
-            assert file_description.summary == "TEST"
+            file_description.summary = b"TEST"
+            assert file_description.summary == b"TEST"
             
             # Make a locator, and attach it to the EssenceDescriptor
             
