@@ -24,6 +24,15 @@ def char_num(n):
 
 class TestAAFCharBuffer(unittest.TestCase):
     
+    def test_wrong_args(self):
+        try:
+            bad_interger_arg = 100
+            buf = aaf.util.AAFCharBuffer(bad_interger_arg)
+        except ValueError:
+            pass
+        else:
+            raise Exception("should raise ValueError")
+    
     def test_basic(self):
         
         buf = aaf.util.AAFCharBuffer()
