@@ -236,7 +236,7 @@ package_data = {'aaf':package_data}
 setup(
     script_args=copy_args,
     name='PyAAF',
-    version='0.8.0',
+    version='0.8.1',
     description='Python Bindings for the Advanced Authoring Format (AAF)',
     
     author="Mark Reid",
