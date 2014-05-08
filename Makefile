@@ -2,9 +2,9 @@ CYTHON_SRC = $(shell find aaf -maxdepth 1 -name "*.pyx")
 C_SRC = $(CYTHON_SRC:%.pyx=build/cython/%.cpp)
 MOD_SOS = $(CYTHON_SRC:%.pyx=%.so)
 
-.PHONY: default build cythonize clean clean-all info test docs
+.PHONY: default build_ext build cythonize clean clean-all info test docs
 
-default: build_dev
+default: build
 
 info:
 	@ echo Cython sources: $(CYTHON_SRC)
@@ -27,11 +27,14 @@ build/cython/aaf/%.cpp: aaf/%.pyx
 	@ mkdir -p $(shell dirname $@)
 	cython --cplus -I. -Iheaders -o $@ $<
 
-build_dev: cythonize
+dev: cythonize
 	python setup.py build_ext --inplace --debug
 
-build: cythonize
+build_ext: cythonize
 	python setup.py build_ext --debug
+
+build: build_ext
+	python setup.py build
 
 install: build
 	python setup.py install
@@ -39,7 +42,7 @@ install: build
 test:
 	cd tests;nosetests -v
 
-docs: build
+docs: build_ext
 	make -C docs html
 
 clean:
