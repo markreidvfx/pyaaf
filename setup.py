@@ -6,6 +6,7 @@ import subprocess
 import sys
 import shutil
 import glob
+from Cython.Build import cythonize
 
 #os.environ['CXX'] = 'g++'
 #os.environ['ARCHFLAGS'] ="-arch x86_64"
@@ -24,6 +25,7 @@ else:
     AAF_ROOT = os.environ.get("AAF_ROOT")
     
 USE_AAF_SDK_DEBUG = bool(int(os.environ.get("USE_AAF_SDK_DEBUG", "1")))
+NTHREADS= int(os.environ.get("NTHREADS",1))
 
 space = '   '
 if AAF_ROOT is None:
@@ -72,17 +74,15 @@ if sys.platform.startswith('win'):
     
 print("AAF_ROOT =",AAF_ROOT)
 
-# Construct the modules that we find in the "build/cython" directory.
-ext_modules = []
-build_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'build', 'cython'))
 
-for dirname, dirnames, filenames in os.walk(build_dir):
+ext_modules = []
+for dirname, dirnames, filenames in os.walk("aaf", topdown=True):
     for filename in filenames:
-        if filename.startswith('.') or os.path.splitext(filename)[1] != '.cpp':
+        if filename.startswith('.') or os.path.splitext(filename)[1] != '.pyx':
             continue
 
         path = os.path.join(dirname, filename)
-        name = os.path.splitext(os.path.relpath(path, build_dir))[0].replace(os.sep, '.')
+        name = os.path.splitext(path)[0]
         
         sources = [path]
 
@@ -90,53 +90,14 @@ for dirname, dirnames, filenames in os.walk(build_dir):
         extra_src = glob.glob(os.path.join(extra_src_dir, '*.cpp'))
         
         sources.extend(extra_src)
-        
-        ext_modules.append(Extension(
-            name,
-            sources=sources,
-            language="c++",
-            **ext_extra
-        ))
-        
-class cythonize_command(Command):
-    description = "Cythonize .pyx files into c++ .cpp files"
-    user_options = []
+        extension = Extension(name,
+                              sources=sources,
+                              language="c++",
+                              **ext_extra)
 
-    def initialize_options(self):
-        from Cython.Compiler.Main import main
-        self.main = main
-        
-    def cythonize(self, src):
+        ext_modules.append(extension)
+    break
 
-        cmd = ['--cplus']
-
-        for item in ext_extra['include_dirs']:
-            cmd.append('-I%s'% item)
-
-        name, ext = os.path.splitext(src)
-        dst = os.path.join(build_dir, name + '.cpp')
-
-        cmd.extend(['-o', dst, src])
-        cmd.insert(0,'cython')
-        print(subprocess.list2cmdline(cmd))
-
-        dirname = os.path.dirname(dst)
-        if not os.path.exists(dirname):
-            os.makedirs(dirname)
-        sys.argv = cmd
-        self.main(command_line = 1)
-    
-    def finalize_options(self):
-        pass
-    def run(self):
-        dest_dir = os.path.join(build_dir, 'aaf')
-        for dirname, dirnames, filenames in os.walk('aaf', topdown=True):
-            for filename in filenames:
-                if filename.startswith('.') or os.path.splitext(filename)[1] != '.pyx':
-                    continue
-                self.cythonize(os.path.join(dirname, filename))
-            break
-        
 def get_com_api(debug=True):
     if sys.platform.startswith("win"):
         dir = os.path.join(AAF_ROOT,'%s' % str(WIN_ARCH))
@@ -202,7 +163,7 @@ def copy_com_api(debug=True):
 def name_tool_fix_com_api(path):
     
     cmd = ['install_name_tool', '-id', 'libcom-api.dylib', path]
-    print(subprocess.list2cmdline(cmd))
+    #print(subprocess.list2cmdline(cmd))
     subprocess.check_call(cmd)
     
     #'install_name_tool -id libcom-api.dylib aaf/libcom-api.dylib'
@@ -218,12 +179,13 @@ class build_pyaaf_ext(build_ext):
         if sys.platform == 'darwin':
             name_tool_fix_com_api(com_api)
         
-        build_ext.build_extensions(self)
+        result = build_ext.build_extensions(self)
         
         if sys.platform == 'darwin':
             for item in self.get_outputs():
                 install_name_tool(item)
         print("done!")
+        return result
 
         
 com_api, libaafintp, libaafpgapi = get_com_api()
@@ -232,6 +194,9 @@ for item in (libaafintp, libaafpgapi):
     package_data.append(os.path.join('aafext', os.path.basename(item)))
         
 package_data = {'aaf':package_data}
+
+include_path = ext_extra['include_dirs']
+include_path.append("aaf")
 
 setup(
     script_args=copy_args,
@@ -245,9 +210,8 @@ setup(
     url="https://github.com/markreidvfx/pyaaf",
     license='MIT',
     packages=['aaf'],
-    ext_modules=ext_modules,
-    cmdclass = {'build_ext':build_pyaaf_ext,
-                'cythonize':cythonize_command},
+    ext_modules=cythonize(ext_modules, include_path=include_path, build_dir="build/cython", nthreads=NTHREADS),
+    cmdclass = {'build_ext':build_pyaaf_ext},
     package_data=package_data
 
 )
