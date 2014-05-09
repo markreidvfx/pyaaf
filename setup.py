@@ -25,7 +25,7 @@ else:
     AAF_ROOT = os.environ.get("AAF_ROOT")
     
 USE_AAF_SDK_DEBUG = bool(int(os.environ.get("USE_AAF_SDK_DEBUG", "1")))
-NTHREADS= int(os.environ.get("NTHREADS",1))
+NTHREADS= int(os.environ.get("NTHREADS",0))
 
 space = '   '
 if AAF_ROOT is None:
@@ -82,7 +82,7 @@ for dirname, dirnames, filenames in os.walk("aaf", topdown=True):
             continue
 
         path = os.path.join(dirname, filename)
-        name = os.path.splitext(path)[0]
+        name = "aaf." + os.path.splitext(os.path.basename(path))[0]
         
         sources = [path]
 
@@ -196,7 +196,9 @@ for item in (libaafintp, libaafpgapi):
 package_data = {'aaf':package_data}
 
 include_path = ext_extra['include_dirs']
-include_path.append("aaf")
+include_path.append(os.path.abspath("aaf"))
+
+build_dir = os.path.abspath(os.path.join("build", "cython"))
 
 setup(
     script_args=copy_args,
@@ -210,7 +212,7 @@ setup(
     url="https://github.com/markreidvfx/pyaaf",
     license='MIT',
     packages=['aaf'],
-    ext_modules=cythonize(ext_modules, include_path=include_path, build_dir="build/cython", nthreads=NTHREADS),
+    ext_modules=cythonize(ext_modules, include_path=include_path, build_dir=build_dir, nthreads=NTHREADS),
     cmdclass = {'build_ext':build_pyaaf_ext},
     package_data=package_data
 
