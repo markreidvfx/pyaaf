@@ -28,6 +28,20 @@ cdef class Sequence(Segment):
         media_datadef = self.dictionary().lookup_datadef(media_kind)
         error_check(self.ptr.Initialize(media_datadef.ptr))
         
+    def component_at_time(self, time):
+        length  = 0
+    
+        for component in self.components():
+            if isinstance(component, Transition):
+                raise NotImplemented("not implemented transition handling")
+            
+            length += component.length
+            
+            if length >= time:
+                return component
+        
+        return None
+        
     def components(self):
         cdef ComponentIter comp_inter = ComponentIter.__new__(ComponentIter)
         error_check(self.ptr.GetComponents(&comp_inter.ptr))

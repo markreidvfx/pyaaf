@@ -50,6 +50,33 @@ cdef class SourceClip(SourceReference):
         mob = self.resolve_ref()
         if mob:
             return mob.slot_at(self.source_ref.slot_id)
+        
+    def walk(self):
+        
+        slot = self.resolve_slot()
+        if not slot:
+            return
+        
+        segment = slot.segment
+        
+        if isinstance(segment, SourceClip):
+            yield segment
+            for item in segment.walk():
+                yield item
+        
+        elif isinstance(segment, Sequence):
+            clip = segment.component_at_time(self.start_time)
+            if isinstance(clip, SourceClip):
+                yield clip
+                for item in clip.walk():
+                    yield item
+            else:
+                raise NotImplementedError("Sequence returned %s not implemented" %  str(type(segment)))
+        
+        else:
+            raise NotImplementedError("walking %s not implemented" %  str(type(segment)))
+            
+        
     
     property start_time:
         def __get__(self):
