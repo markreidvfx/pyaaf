@@ -28,7 +28,7 @@ cdef class Selector(Segment):
         value.root = self.root
         return value
             
-    property segment:
+    property selected:
         def __get__(self):
             cdef Segment seg = Segment.__new__(Segment)
             error_check(self.ptr.GetSelectedSegment(&seg.seg_ptr))
