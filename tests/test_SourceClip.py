@@ -23,7 +23,7 @@ if not os.path.exists(sandbox):
 class TestSourceClip(unittest.TestCase):
     
     def test_basic(self):
-        
+
         test_file = os.path.join(sandbox, "test_SourceClip.aaf")
         
         f = aaf.open(None, 't')
@@ -44,6 +44,14 @@ class TestSourceClip(unittest.TestCase):
         print(source_clip.source_ref.slot_id) 
         
         assert source_clip.source_ref.slot_id == slot.slotID
+        
+        s = str(source_clip.source_ref)
+        
+        #slot = source_clip.resolve_slot()
+
+        assert source_clip.start_time == 10
+        source_clip.start_time = 5
+        assert source_clip.start_time == 5
         
         # this wont reslove unless sourclip is actually added to file
         #assert source_clip.resolve_ref() == source_mob

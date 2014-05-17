@@ -38,6 +38,20 @@ cdef class SourceClip(SourceReference):
         mob.root = self.root
         return mob.resolve()
     
+    def resolve_slot(self):
+        mob = self.resolve_ref()
+        if mob:
+            return mob.slot_at(self.source_ref.slot_id)
+    
+    property start_time:
+        def __get__(self):
+            return self.source_ref.start_time
+        
+        def __set__(self, value):
+            source_ref = self.source_ref
+            source_ref.start_time = value
+            self.source_ref = source_ref
+    
     property source_ref:
         
         def __get__(self):

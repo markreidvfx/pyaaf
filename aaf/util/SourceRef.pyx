@@ -21,7 +21,7 @@ cdef class SourceRef(object):
         return '<%s.%s of %s source_slot_id:%si start_time:%i at 0x%x>' % (
             self.__class__.__module__,
             self.__class__.__name__,
-            self.source_id, self.source_slot_id, self.start_time,
+            self.mob_id, self.slot_id, self.start_time,
             id(self))
     
     property mob_id:
