@@ -33,7 +33,15 @@ cdef class SourceClip(SourceReference):
             
     def resolve_ref(self):
         cdef Mob mob = Mob.__new__(Mob)
-        error_check(self.ptr.ResolveRef(&mob.ptr))
+        cdef lib.HRESULT result
+        
+        result = self.ptr.ResolveRef(&mob.ptr)
+        
+        if result == lib.AAFRESULT_MOB_NOT_FOUND:
+            return None
+        else:
+            error_check(result)
+            
         mob.query_interface()
         mob.root = self.root
         return mob.resolve()

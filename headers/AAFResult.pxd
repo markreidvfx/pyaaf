@@ -13,3 +13,4 @@ cdef extern from "AAFResult.h":
     cdef int AAFRESULT_PROP_NOT_PRESENT
     cdef int AAFRESULT_IS_ROOT_CLASS
     cdef int AAFRESULT_UNEXPECTED_EXCEPTION
+    cdef int AAFRESULT_MOB_NOT_FOUND
