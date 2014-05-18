@@ -40,3 +40,22 @@ cdef class EssenceGroup(Segment):
             cdef lib.aafUInt32 value
             error_check(self.ptr.CountChoices(&value))
             return value
+        
+    property still_frame:
+        def __get__(self):
+            cdef SourceClip clip = SourceClip.__new__(SourceClip)
+            
+            cdef lib.HRESULT result
+            result = self.ptr.GetStillFrame(&clip.ptr)
+            
+            if result == lib.AAFRESULT_PROP_NOT_PRESENT:
+                return None
+            else:
+                error_check(result)
+                
+            clip.query_interface()
+            clip.root = self.root
+            return clip
+        
+        def __set__(self, SourceClip value not None):            
+            error_check(self.ptr.SetStillFrame(value.ptr))

@@ -94,9 +94,11 @@ def walk_sourceclip(item,space = ""):
         
         mob = None
         if isinstance(sourceclip, aaf.component.EssenceGroup):
-             print space, sourceclip
+             print space, sourceclip,sourceclip.still_frame
+             
+ 
              for item in sourceclip.choices():
-                 walk_sourceclip(item, space + "--")
+                walk_sourceclip(item, space + "--")
              
              continue
         
