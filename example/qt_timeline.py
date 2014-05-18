@@ -733,7 +733,17 @@ def get_transition_offset(index,component_list):
 def get_source_clip_name(item):
 
     ref = item.resolve_ref()
-    return ref.name or "SourceClip"
+    if ref:
+        if ref.name:
+            return ref.name
+        
+    for clip in item.walk():
+        ref = clip.resolve_ref()
+        if ref:
+            if ref.name:
+                return ref.name
+    
+    return "SourceClip"
 
 
 def get_operation_group_name(item):
@@ -754,6 +764,19 @@ def get_operation_group_name(item):
                     if name:
                         return "%s(%s)" % (name,operation_name)
 
+def get_selector_name(item):
+    segment = item.selected
+    
+    if isinstance(segment, aaf.component.SourceClip):
+        return get_source_clip_name(segment)
+    
+    elif isinstance(segment, aaf.component.Sequence):
+         for component in segment.components():
+             if isinstance(component, aaf.component.SourceClip):
+                 return get_source_clip_name(component)
+    
+    
+    return "Selector"
 
 def SetMob(mob,grahicsview):
 
@@ -794,21 +817,18 @@ def SetMob(mob,grahicsview):
             #transition_offset = get_transition_offset(i,components)
 
             component_length = component.length - transition_offset
-            
-            
-            
             clip = track.addClip(component_length,component, transtion)
             
             
             last_clip = clip
             #make filler and scope grey
+            
+            name = None 
+            
             if isinstance(component,(aaf.component.Filler, aaf.component.ScopeReference)):
                 color = Qt.gray
             
-            
-                
-            name = None 
-            if isinstance(component, aaf.component.SourceClip):
+            elif isinstance(component, aaf.component.SourceClip):
                 name = get_source_clip_name(component)
                 
             elif isinstance(component, aaf.component.OperationGroup):
@@ -818,8 +838,13 @@ def SetMob(mob,grahicsview):
                 if not name:
                     name = component.operation
                     
-                    
+            if isinstance(component, aaf.component.Selector):
+                name = get_selector_name(component)
+                color - Qt.darkYellow
+
+
             clip.setBrush(color)
+              
             if name:
                 clip.name = name
                 clip.adjust()
@@ -827,6 +852,7 @@ def SetMob(mob,grahicsview):
             length += component_length
 
 
+    scene.updateSceneRect()
 if __name__ == "__main__":
     
    
