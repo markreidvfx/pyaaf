@@ -24,3 +24,8 @@ cdef class Transition(Component):
             cdef lib.aafPosition_t value
             error_check(self.ptr.GetCutPoint(&value))
             return value
+        
+    property operation_group:
+        def __get__(self):
+            return self['OperationGroup'].value
+            

@@ -72,7 +72,13 @@ cdef class SourceClip(SourceReference):
                     yield item
             else:
                 raise NotImplementedError("Sequence returned %s not implemented" %  str(type(segment)))
-        
+            
+        elif isinstance(segment, EssenceGroup):
+            yield segment
+
+        elif isinstance(segment, Filler):
+            yield segment
+                
         else:
             raise NotImplementedError("walking %s not implemented" %  str(type(segment)))
             

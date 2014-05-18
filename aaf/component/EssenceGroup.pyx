@@ -21,3 +21,22 @@ cdef class EssenceGroup(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+            
+    def choice_at(self, lib.aafUInt32 index):
+        cdef Segment seg = Segment.__new__(Segment)
+        error_check(self.ptr.GetChoiceAt(index, &seg.seg_ptr))
+        
+        seg.query_interface()
+        seg.root = self.root
+        return seg.resolve()
+
+            
+    def choices(self):
+        for i in xrange(self.count):
+            yield self.choice_at(i)
+        
+    property count:
+        def __get__(self):
+            cdef lib.aafUInt32 value
+            error_check(self.ptr.CountChoices(&value))
+            return value
