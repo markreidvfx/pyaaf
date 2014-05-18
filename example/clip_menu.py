@@ -42,6 +42,8 @@ def box_message(text):
     layout.addWidget(box)
     
     dialog.setLayout(layout)
+    
+    dialog.resize(1200, 600)
 
     dialog.exec_()
     
@@ -94,7 +96,7 @@ def walk_sourceclip(item,space = ""):
         
         mob = None
         if isinstance(sourceclip, aaf.component.EssenceGroup):
-             print space, sourceclip,sourceclip.still_frame
+             print space, sourceclip,sourceclip.still_frame, sourceclip.all_keys()
              
  
              for item in sourceclip.choices():
@@ -143,8 +145,10 @@ def walk_properties(space, iter_item, text):
             continue
         # don't dump out stream data, its ugly
         if isinstance(value, aaf.iterator.TypeDefStreamDataIter):
-            text.write("TypeDefStreamDataIter ...\n")
+            text.write("%s    TypeDefStreamDataIter ...\n" % space)
             continue
+       # elif isinstance(value, aaf.iterator.PropValueResolveIter):
+            #text.write("%s    PropValueResolveIter ...\n" % space)
         
         if isinstance(value, aaf.component.SourceClip):
 

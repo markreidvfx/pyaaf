@@ -168,6 +168,9 @@ class GraphicsTrack(QtGui.QGraphicsRectItem):
             y = self.parent.y()
             self.setY(y + self.parent.height + spacing)
             
+        for clip in self.clips:
+            clip.adjust()
+            
 class AAFTimeline(QtGui.QGraphicsScene):
     
     def __init__(self,parent=None):
@@ -224,7 +227,15 @@ class AAFTimeline(QtGui.QGraphicsScene):
         self.timeSlider.edge_space = self.edge_spacing
         self.timeSlider.setPos(0,0)
         
-        self.addItem(self.timeSlider)        
+        self.addItem(self.timeSlider)
+        
+    def adjustHeight(self, value):
+        for track in self.tracks:
+            track.height += value
+            track.adjust()
+        
+        self.updateSceneRect()
+
         
 class AAFTimelineGraphicsView(QtGui.QGraphicsView):
     
@@ -452,6 +463,14 @@ class AAFTimelineGraphicsView(QtGui.QGraphicsView):
                     mode = Qt.IgnoreAspectRatio           
                 self.fitInView(scene.sceneRect(),mode=mode)
                 
+            elif event.key() == Qt.Key_L:
+                if event.modifiers() == Qt.ControlModifier:
+                    scene.adjustHeight(2)
+            
+            elif event.key() == Qt.Key_K:
+                if event.modifiers() == Qt.ControlModifier:
+                    scene.adjustHeight(-2)
+
             elif event.key() == Qt.Key_Right:
                 self.setCurrentFrame(self.currentFrame() + 1)
             
