@@ -15,6 +15,7 @@ def clip_menu(event, item):
     
     menu = QtGui.QMenu()
     menu.addAction("Dump Clip", lambda x=item.getReference():dump_source(x))
+    menu.addAction("Dump Positions", lambda x=item:dump_positions(x))
     menu.addAction("Walk Source", lambda x=item.getReference():walk_component(x))
     menu.exec_(event.screenPos())
     
@@ -30,6 +31,11 @@ def dump_source(item):
     
     
     box_message(data)
+    
+def dump_positions(clip):
+    
+    for item in clip.track._reference.positions():
+        print item
     
 def box_message(text):
     dialog = QtGui.QDialog()

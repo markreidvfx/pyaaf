@@ -28,19 +28,77 @@ cdef class Sequence(Segment):
         media_datadef = self.dictionary().lookup_datadef(media_kind)
         error_check(self.ptr.Initialize(media_datadef.ptr))
         
-    def component_at_time(self, time):
-        length  = 0
-    
-        for component in self.components():
-            if isinstance(component, Transition):
-                raise NotImplemented("not implemented transition handling")
-            
-            length += component.length
-            
-            if length >= time:
-                return component
+    def component_at(self, lib.aafUInt32 index):
+        """
+        return the component at the given index
+        """
         
-        return None
+        cdef Component component = Component.__new__(Component)
+        
+        error_check(self.ptr.GetComponentAt(index, &component.comp_ptr))
+        
+        component.query_interface()
+        component.root = self.root
+        return component.resolve()
+    
+        
+    def component_at_time(self, time):
+        """
+        return the component at a given time (position in edit units)
+        """
+    
+        return self.component_at(self.index_at_time(time))
+        
+    def index_at_time(self, time):
+        """
+        return the index of the component at a given time (position in edit units)
+        """
+        length  = 0
+        
+        last_position = None
+        last_component = None
+        last_index = None
+        
+        for index, position, component in self.positions():
+            
+            # if component is a transition it will have the same position
+            # as the next item in the sequence 
+            if isinstance(component, Transition):
+                if time >= position and time <= position +component.length:
+                    return last_index
+                
+            if last_component:
+                if position >= time:
+                    return last_index
+                
+            last_component = component
+            last_index = index
+            
+        return last_index
+    
+    def time_at_index(self, index):
+        """
+        return the time (position in edit units) of a given index
+        """
+        for i, position, component in self.positions():
+            if index == i:
+                return position
+        
+        raise IndexError()
+    
+    def positions(self):
+        """
+        yields (index, edit_start_time, component) of items in the sequence 
+        """
+        length = 0
+        for i, component in enumerate(self.components()):
+            if isinstance(component, Transition):
+                length -= component.length
+                yield (i, length, component)
+            else:
+                yield (i, length, component)
+                length += component.length    
+                    
         
     def components(self):
         cdef ComponentIter comp_inter = ComponentIter.__new__(ComponentIter)
@@ -48,5 +106,5 @@ cdef class Sequence(Segment):
         comp_inter.root = self.root
         return comp_inter
     
-    def append(self, Component component):
+    def append(self, Component component not None):
         error_check(self.ptr.AppendComponent(component.comp_ptr))

@@ -92,6 +92,8 @@ class GraphicsClip(QtGui.QGraphicsRectItem):
         if self.name:
             p.save()
             nameRect = QtCore.QRectF(self.rect())
+            #setCosmetic(True)
+            p.pen().setCosmetic(True)
             p.drawText(nameRect,Qt.AlignLeft,self.name)
             p.restore()
             
@@ -100,13 +102,19 @@ class GraphicsClip(QtGui.QGraphicsRectItem):
         clip_menu.clip_menu(contextEvent, self)
 
 class GraphicsClipTransition(GraphicsClip):
+    def __init__(self,length, parent=None):
+        super(GraphicsClipTransition,self).__init__(length, parent)
+        self.cutpoint = 0
     
-     def paint(self,p,opt,w):
+    def paint(self,p,opt,w):
         
         super(GraphicsClipTransition,self).paint(p,opt,w)
         p.save()
         rect = self.rect()
         p.drawLine(rect.bottomLeft(), rect.topRight())
+        p.drawLine(rect.bottomLeft() + QtCore.QPointF(self.cutpoint, 0),
+                   rect.topLeft() + QtCore.QPointF(self.cutpoint, 0),)
+        
         p.restore()
         
 
@@ -119,6 +127,7 @@ class GraphicsTrack(QtGui.QGraphicsRectItem):
         self.height = 20
         self.length = 0
         self.name = "Track"
+        self._reference = None
         
         self.timeline = None
         
@@ -132,6 +141,7 @@ class GraphicsTrack(QtGui.QGraphicsRectItem):
         
         if transtion:
             clip = GraphicsClipTransition(length)
+            clip.cutpoint = reference.cutpoint
         else:
             clip = GraphicsClip(length)
         clip.track = self
@@ -440,17 +450,31 @@ class AAFTimelineGraphicsView(QtGui.QGraphicsView):
 
 
     def wheelEvent(self, event):
-        
-        self.setTransformationAnchor(QtGui.QGraphicsView.AnchorUnderMouse)
-        scaleFactorX = 1.15
-        scaleFactorY = scaleFactorX
+
         if event.modifiers() == Qt.AltModifier:
-            scaleFactorY = 1    
-        if event.delta() > 0:
-            
-            self.scale(scaleFactorX, scaleFactorY)
+            self.setTransformationAnchor(QtGui.QGraphicsView.AnchorUnderMouse)
+            scaleFactorX = 1.15
+            scaleFactorY = 1
+             
+            if event.delta() > 0:
+                
+                self.scale(scaleFactorX, 1)
+            else:
+                self.scale(1.0 / scaleFactorX, 1)
         else:
-            self.scale(1.0 / scaleFactorX, 1.0 / scaleFactorY)
+            super(AAFTimelineGraphicsView,self).wheelEvent(event)
+            
+    def zoom(self, value):
+        self.setTransformationAnchor(QtGui.QGraphicsView.AnchorViewCenter)
+        scaleFactorX = 1.15
+        
+        #transform = self.transform()
+        
+        
+        if value > 0:
+            self.scale(scaleFactorX, 1)
+        else:
+            self.scale(1.0 / scaleFactorX, 1)
 
     def keyPressEvent(self, event):
         
@@ -462,15 +486,20 @@ class AAFTimelineGraphicsView(QtGui.QGraphicsView):
                 if event.modifiers() == Qt.ShiftModifier:
                     mode = Qt.IgnoreAspectRatio           
                 self.fitInView(scene.sceneRect(),mode=mode)
-                
-            elif event.key() == Qt.Key_L:
-                if event.modifiers() == Qt.ControlModifier:
-                    scene.adjustHeight(2)
             
-            elif event.key() == Qt.Key_K:
-                if event.modifiers() == Qt.ControlModifier:
+            elif event.modifiers() == Qt.ControlModifier:
+                if event.key() == Qt.Key_L:
+                    scene.adjustHeight(2)
+                
+                elif event.key() == Qt.Key_K:
                     scene.adjustHeight(-2)
-
+                
+                elif event.key() == Qt.Key_BracketLeft:
+                    self.zoom(-1)
+                
+                elif event.key() == Qt.Key_BracketRight:
+                    self.zoom(1)
+                    
             elif event.key() == Qt.Key_Right:
                 self.setCurrentFrame(self.currentFrame() + 1)
             
@@ -709,23 +738,23 @@ def get_tracks(mob,trackType= 'Picture'):
                 for nested_segment in segment.segments():
                     
                     if isinstance(nested_segment, aaf.component.Sequence):
-                        tracks.append(list(nested_segment.components()))
+                        tracks.append(nested_segment)
                         
                 
             elif isinstance(segment, aaf.component.Sequence):
-                tracks.append(list(segment.components()))
+                tracks.append(segment)
                 
             elif isinstance(segment, aaf.component.SourceClip):
                 tracks.append([segment])
                 
             elif isinstance(segment, aaf.component.Selector):
-                tracks.append(list(segment.alternate_segments()))
+                tracks.append([segment.selected])
                 
             elif isinstance(segment, aaf.component.EssenceGroup):
-                choices = []
-                for c in xrange(segment.CountChoices()):
-                    choices.append(segment.GetChoiceAt(c))
-                tracks.append(choices)
+                #choices = []
+                #for c in xrange(segment.CountChoices()):
+                    #choices.append(segment.GetChoiceAt(c))
+                tracks.append([segment])
     return tracks
 
 def get_transition_offset(index,component_list):
@@ -805,10 +834,17 @@ def SetMob(mob,grahicsview):
     
     video_tracks = get_tracks(mob)
     last_clip = None
-    for track_num, components in reversed(list(enumerate(video_tracks))):
+    for track_num, segment in reversed(list(enumerate(video_tracks))):
         track = scene.addTrack()
         track.name = "Track V%i" % (track_num+1)
+        track._reference = video_tracks[track_num]
         length = 0
+        
+        if isinstance(segment, list):
+            components = segment
+        else:
+            components = segment.components()
+        
         for i,component in enumerate(components):
             
             color =Qt.red
