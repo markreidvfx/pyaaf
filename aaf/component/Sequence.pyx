@@ -106,5 +106,35 @@ cdef class Sequence(Segment):
         comp_inter.root = self.root
         return comp_inter
     
+    def insert(self, lib.aafUInt32 index, Component component not None):
+        """
+        Insert Component at given index
+        """
+        error_check(self.ptr.InsertComponentAt(index, component.comp_ptr))
+    
     def append(self, Component component not None):
+        """
+        Append Component at end of Sequence
+        """
         error_check(self.ptr.AppendComponent(component.comp_ptr))
+        
+    def prepend(self, Component component not None):
+        """
+        Prepend Component at beginning of Sequence
+        """
+        error_check(self.ptr.PrependComponent(component.comp_ptr))
+        
+    def remove(self, lib.aafUInt32 index):
+        """
+        Remove Component at given index
+        """
+        error_check(self.ptr.RemoveComponentAt(index))
+        
+    property count:
+        """
+        Number of Components in Sequence
+        """
+        def __get__(self):
+            cdef lib.aafUInt32 value
+            error_check(self.ptr.CountComponents(&value))
+            return value
