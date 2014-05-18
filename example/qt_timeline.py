@@ -9,6 +9,8 @@ import aaf
 
 from qt_aafmodel import AAFModel
 
+import clip_menu
+
 class GraphicsTimeSlider(QtGui.QGraphicsRectItem):
     
     
@@ -92,9 +94,21 @@ class GraphicsClip(QtGui.QGraphicsRectItem):
             nameRect = QtCore.QRectF(self.rect())
             p.drawText(nameRect,Qt.AlignLeft,self.name)
             p.restore()
-        
-        
+            
+    def contextMenuEvent(self, contextEvent):
+        reload(clip_menu)
+        clip_menu.clip_menu(contextEvent, self)
 
+class GraphicsClipTransition(GraphicsClip):
+    
+     def paint(self,p,opt,w):
+        
+        super(GraphicsClipTransition,self).paint(p,opt,w)
+        p.save()
+        rect = self.rect()
+        p.drawLine(rect.bottomLeft(), rect.topRight())
+        p.restore()
+        
 
 class GraphicsTrack(QtGui.QGraphicsRectItem):
     
@@ -114,9 +128,12 @@ class GraphicsTrack(QtGui.QGraphicsRectItem):
         
         
 
-    def addClip(self,length,reference=None):
+    def addClip(self,length,reference=None, transtion=False):
         
-        clip = GraphicsClip(length)
+        if transtion:
+            clip = GraphicsClipTransition(length)
+        else:
+            clip = GraphicsClip(length)
         clip.track = self
         clip._reference = reference
         
@@ -745,43 +762,69 @@ def SetMob(mob,grahicsview):
     scene.clear()
     
     video_tracks = get_tracks(mob)
-    
+    last_clip = None
     for track_num, components in reversed(list(enumerate(video_tracks))):
         track = scene.addTrack()
         track.name = "Track V%i" % (track_num+1)
         length = 0
         for i,component in enumerate(components):
             
-            if not isinstance(component,aaf.component.Transition):
+            color =Qt.red
+            transtion = False
+            if isinstance(component,aaf.component.Transition):
+                last_clip.length -= component.length
+                track.length -= component.length
+                last_clip.adjust()
+                color = Qt.yellow
+                transtion = True
+                #continue
                 
-                transition_offset = get_transition_offset(i,components)
-                component_length = component.length + transition_offset
-                
-                clip = track.addClip(component_length,component)
-                last_clip = clip
-                #make filler and scope grey
-                if isinstance(component,(aaf.component.Filler, aaf.component.ScopeReference)):
-                    clip.setBrush(Qt.gray)
+            
+            transition_offset = 0
+            if last_clip:
+                if isinstance(last_clip._reference, aaf.component.Transition):
+                    transition_offset = last_clip._reference.length - last_clip._reference.cutpoint
+                    transition_offset = last_clip._reference.length 
 
-                else:
-                    clip.setBrush(Qt.red)
-                    
-                name = None 
-                if isinstance(component, aaf.component.SourceClip):
-                    name = get_source_clip_name(component)
-                    
-                elif isinstance(component, aaf.component.OperationGroup):
-                    
-                    #segment = component.GetInputSegmentAt(0)
-                    name = get_operation_group_name(component)
-                    if not name:
-                        name = component.operation
+                    #print component, component.cutpoint, component.length
+                #continue
+            
+            #if not isinstance(component,aaf.component.Transition):
                 
-                if name:
-                    clip.name = name
-                    clip.adjust()
+            #transition_offset = get_transition_offset(i,components)
+
+            component_length = component.length - transition_offset
+            
+            
+            
+            clip = track.addClip(component_length,component, transtion)
+            
+            
+            last_clip = clip
+            #make filler and scope grey
+            if isinstance(component,(aaf.component.Filler, aaf.component.ScopeReference)):
+                color = Qt.gray
+            
+            
                 
-                length += component_length
+            name = None 
+            if isinstance(component, aaf.component.SourceClip):
+                name = get_source_clip_name(component)
+                
+            elif isinstance(component, aaf.component.OperationGroup):
+                color = Qt.magenta
+                #segment = component.GetInputSegmentAt(0)
+                name = get_operation_group_name(component)
+                if not name:
+                    name = component.operation
+                    
+                    
+            clip.setBrush(color)
+            if name:
+                clip.name = name
+                clip.adjust()
+            
+            length += component_length
 
 
 if __name__ == "__main__":
