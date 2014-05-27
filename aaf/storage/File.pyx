@@ -69,13 +69,19 @@ cdef class File(AAFBase):
             path = ""
             
         cdef AAFCharBuffer path_buf = AAFCharBuffer(path)
+        cdef lib.HRESULT result
+        cdef lib.aafCharacter *path_ptr
 
         mode = mode.lower()
         
         if mode == 'r':
-            error_check(lib.AAFFileOpenExistingRead(path_buf.get_ptr(),
-                                                    0,
-                                                    &self.ptr))
+            path_ptr = path_buf.get_ptr()
+            with nogil:
+                result = lib.AAFFileOpenExistingRead(path_ptr,
+                                                     0,
+                                                     &self.ptr)
+                
+            error_check(result)
         elif mode == 'rw':
             self.setup_new_file(path, mode)
         elif mode == 'w':

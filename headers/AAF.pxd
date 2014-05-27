@@ -2,7 +2,7 @@
 cdef extern from "AAFStoredObjectIDs.h":
     pass
 
-cdef extern from "AAF.h":
+cdef extern from "AAF.h" nogil:
 
     ctypedef struct GUID:
         DWORD Data1
