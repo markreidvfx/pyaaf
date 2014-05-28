@@ -9,8 +9,8 @@ def set_progress_callback(callback):
     global PROGRESS_CALLBACK
     PROGRESS_CALLBACK = callback
 
-cdef lib.HRESULT progress_callback_handler():
-    
+cdef lib.HRESULT progress_callback_handler()with gil:
+
     global PROGRESS_CALLBACK
     if PROGRESS_CALLBACK:
         PROGRESS_CALLBACK()

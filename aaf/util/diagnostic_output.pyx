@@ -10,7 +10,7 @@ def set_diagnostic_output_callback(callback):
     global DIAGNOSTIC_OUTPUT_CALLBACK
     DIAGNOSTIC_OUTPUT_CALLBACK = callback
 
-cdef lib.HRESULT diagnostic_output_handler(const lib.aafCharacter *p_message , size_t size):
+cdef lib.HRESULT diagnostic_output_handler(const lib.aafCharacter *p_message , size_t size)with gil:
     
     # copy message to AAFCharBuffer
     
