@@ -19,9 +19,12 @@ cdef class NetworkLocator(Locator):
         if self.loc_ptr:
             self.loc_ptr.Release()
             
-    def __init__(self, root):
+    def __init__(self, root, path=None):
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
         
         error_check(self.ptr.Initialize())
+        
+        if path:
+            self.path = path
         
