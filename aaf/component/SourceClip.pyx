@@ -93,6 +93,15 @@ cdef class SourceClip(SourceReference):
             source_ref.start_time = value
             self.source_ref = source_ref
     
+    property slot_id:
+        def __get__(self):
+            return self.source_ref.slot_id
+        
+        def __set__(self, value):
+            source_ref = self.source_ref
+            source_ref.slot_id = value
+            self.source_ref = source_ref
+    
     property source_ref:
         
         def __get__(self):

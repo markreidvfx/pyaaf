@@ -82,6 +82,8 @@ cdef class SourceMob(Mob):
                                                  direction_t
                                                  ))
         
+        return self.slot_at(slotID)
+        
     def append_timecode_slot(self, edit_rate, lib.aafSlotID_t  slotID, Timecode startTC, lib.aafFrameLength_t frame_length):
         """append_timecode_slot(edit_rate, slotID, startTC, frame_length)
         """
@@ -94,6 +96,8 @@ cdef class SourceMob(Mob):
                                                     startTC.get_timecode_t(),
                                                     frame_length
                                                     ))   
+        
+        return self.slot_at(slotID)
     
     def new_phys_source_ref(self, edit_rate, lib.aafSlotID_t  slotID, media_kind, SourceRef ref, lib.aafLength_t  srcRefLength):
         """new_phys_source_ref(edit_rate, slotID, media_kind, ref, srcRefLength)
@@ -121,6 +125,8 @@ cdef class SourceMob(Mob):
                                                      data_def.ptr,
                                                      ref.get_aafSourceRef_t(),
                                                      srcRefLength))
+        
+        return self.slot_at(slotID)
                                             
     property essence_descriptor:
         def __get__(self):
