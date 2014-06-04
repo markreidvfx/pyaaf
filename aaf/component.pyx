@@ -18,6 +18,8 @@ include "component/Segment.pyx"
 include "component/Transition.pyx"
 include "component/Sequence.pyx"
 include "component/Timecode.pyx"
+include "component/TimecodeStream.pyx"
+include "component/TimecodeStream12M.pyx"
 include "component/Filler.pyx"
 include "component/Pulldown.pyx"
 include "component/SourceReference.pyx"
@@ -43,6 +45,8 @@ register_object(Segment)
 register_object(Transition)
 register_object(Sequence)
 register_object(Timecode)
+register_object(TimecodeStream)
+register_object(TimecodeStream12M)
 register_object(Filler)
 register_object(Pulldown)
 register_object(SourceReference)

@@ -61,10 +61,10 @@ cdef class GPITrigger(Event):
     pass
     
 cdef class TimecodeStream(Segment):
-    pass
+    cdef lib.IAAFTimecodeStream *timecode_stream_ptr
     
 cdef class TimecodeStream12M(TimecodeStream):
-    pass
+    cdef lib.IAAFTimecodeStream12M *ptr
     
 cdef class Parameter(AAFObject):
     cdef lib.IAAFParameter *param_ptr

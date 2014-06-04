@@ -1085,6 +1085,16 @@ cdef extern from "AAF.h" nogil:
         )
         HRESULT GetTimecode(aafTimecode_t *  pTimecode)
         HRESULT SetTimecode(aafTimecode_t *  timecode)
+    
+    cdef aafUID_t AUID_AAFTimecodeStream
+    cdef GUID IID_IAAFTimecodeStream
+    cdef cppclass IAAFTimecodeStream(IUnknown):
+        pass
+    
+    cdef aafUID_t AUID_AAFTimecodeStream12M
+    cdef GUID IID_IAAFTimecodeStream12M
+    cdef cppclass IAAFTimecodeStream12M(IUnknown):
+        pass
         
     cdef aafUID_t AUID_AAFFiller
     cdef GUID IID_IAAFFiller
