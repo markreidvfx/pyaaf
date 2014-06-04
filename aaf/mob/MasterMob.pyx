@@ -216,6 +216,8 @@ cdef class MasterMob(Mob):
             essence.complete_write()
         finally:
             fclose(cfile)
+            
+        return self.slot_at(slot_index)
 
     def import_audio_essence(self, path, lib.aafUInt32 channels, object sample_rate):
         """import_audio_essence(path, channels, sample_rate)
@@ -296,6 +298,8 @@ cdef class MasterMob(Mob):
                 essence.complete_write()
         finally:            
             fclose(cfile)
+            
+        return self.slot_at(slot_index)
 
     
     def add_master_slot(self, media_kind, lib.aafSlotID_t source_slotID, SourceMob source_mob, 
