@@ -65,6 +65,12 @@ cdef extern from "AAF.h" nogil:
         HRESULT GetContentStorage(IAAFContentStorage **ppStorage)
         HRESULT AddMob(IAAFMob * pMob)
     
+    cdef aafUID_t AUID_AAFHeader2
+    cdef GUID IID_IAAFHeader2   
+    cdef cppclass IAAFHeader2(IUnknown):
+        HRESULT GetOperationalPattern(aafUID_t *  pOperationalPatternID)
+        HRESULT SetOperationalPattern(aafUID_t &  operationalPatternID)
+    
     cdef aafUID_t AUID_AAFDictionary
     cdef GUID IID_IAAFDictionary
     cdef cppclass IAAFDictionary(IUnknown):

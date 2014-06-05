@@ -10,6 +10,7 @@ cdef class File(AAFBase):
     
 cdef class Header(AAFObject):
     cdef lib.IAAFHeader *ptr
+    cdef lib.IAAFHeader2 *ptr2
     
 cdef class ContentStorage(AAFObject):
     cdef lib.IAAFContentStorage *ptr
