@@ -55,6 +55,12 @@ cdef class AUID(object):
         
     def to_UUID(self):
         return uuid.UUID(str(self))
+    
+    def to_auid_dict(self):
+        return {'Data1': self.auid.Data1, 
+                'Data2': self.auid.Data2, 
+                'Data3': self.auid.Data3, 
+                'Data4': [self.auid.Data4[i] for i in xrange(8)]}
         
     def __richcmp__(x, y, int op):
         if op == 2:

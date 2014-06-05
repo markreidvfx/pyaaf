@@ -173,6 +173,12 @@ cdef class TypeDefRecord(TypeDef):
             frac = AAFFraction(value).limit_denominator(200000000)
             self.set_value_from_dict(p_value, {'Numerator':frac.numerator, 'Denominator': frac.denominator})
             return
+        
+        auid_typdef.from_auid(lib.kAAFTypeID_AUID)
+        if self.auid == auid_typdef:
+            print self.keys()
+            self.set_value_from_dict(p_value, AUID(value).to_auid_dict())
+            return
 
         raise NotImplementedError("setting record for for format not supported yet")
     
