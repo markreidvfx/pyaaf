@@ -2,7 +2,7 @@
 cimport lib
 
 from .base cimport AAFBase, AAFObject
-from .define cimport DefObject, ClassDef, TypeDef, DataDef, ContainerDef, OperationDef, ParameterDef, InterpolationDef, TypeDefMap, ContainerDefMap, DataDefMap, ExtEnumDefMap, InterpolationDefMap
+from .define cimport DefObject, ClassDef, TypeDef, DataDef, ContainerDef, OperationDef, ParameterDef, InterpolationDef, TaggedValueDef, TypeDefMap, ContainerDefMap, DataDefMap, ExtEnumDefMap, InterpolationDefMap
 from .util cimport error_check, query_interface, register_object, lookup_object, AUID
 from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter, LoadedPluginIter
 from wstring cimport wstring,toWideString
@@ -53,6 +53,7 @@ cdef class Dictionary(AAFObject):
         cdef ParameterDef param_def
         cdef InterpolationDef interp_def
         cdef TypeDef typedef
+        cdef TaggedValueDef taggedvalue_def
         
         if isinstance(def_obj, TypeDef):
             typedef = def_obj
@@ -66,6 +67,9 @@ cdef class Dictionary(AAFObject):
         elif isinstance(def_obj, InterpolationDef):
             interp_def = def_obj
             error_check(self.ptr.RegisterInterpolationDef(interp_def.ptr))
+        elif isinstance(def_obj, TaggedValueDef):
+            taggedvalue_def = def_obj
+            error_check(self.ptr2.RegisterTaggedValueDef(taggedvalue_def.ptr))
         else:
             raise NotImplementedError("register_def not implemented for %s"  % str(type(def_obj)))
 

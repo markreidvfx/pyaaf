@@ -90,6 +90,8 @@ cdef extern from "AAF.h" nogil:
     cdef GUID IID_IAAFDictionary2
     cdef cppclass IAAFDictionary2(IUnknown):
         HRESULT GetKLVDataDefs(IEnumAAFKLVDataDefs ** ppEnum)
+        HRESULT RegisterTaggedValueDef(IAAFTaggedValueDefinition * pDef)
+        HRESULT LookupTaggedValueDef(aafUID_t &defId, IAAFTaggedValueDefinition ** ppDef)
         
     cdef aafUID_t AUID_AAFContentStorage
     cdef GUID IID_IAAFContentStorage

@@ -149,6 +149,10 @@ cdef class Mob(AAFObject):
         cdef AAFCharBuffer value_buf = AAFCharBuffer(value)
 
         error_check(self.mob2_ptr.AppendAttribute(name_buf.get_ptr(), value_buf.get_ptr() ))
+        
+        for item in self['Attributes'].value:
+            if item.name == name:
+                return item
     
     def __richcmp__(x, y, int op):
         if op == 2:
