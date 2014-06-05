@@ -133,7 +133,10 @@ cdef extern from "AAF.h" nogil:
     cdef aafUID_t AUID_AAFIdentification
     cdef GUID IID_IAAFIdentification
     cdef cppclass IAAFIdentification(IUnknown):
-        pass
+        HRESULT Initialize(aafCharacter *companyName,
+                           aafCharacter *productName,
+                           aafCharacter *productVersionString,
+                           aafUID_t  &productID)
         
     # Properties
     
