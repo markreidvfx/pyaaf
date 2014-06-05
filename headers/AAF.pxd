@@ -865,6 +865,13 @@ cdef extern from "AAF.h" nogil:
             aafCharacter *pDestMobName,
             IAAFMob ** ppDestMob
         )
+    
+    cdef aafUID_t AUID_AAFMob2
+    cdef GUID IID_IAAFMob2
+    cdef cppclass IAAFMob2(IUnknown):
+        HRESULT AppendAttribute(aafCharacter *pName, aafCharacter *pValue)
+    
+        
     cdef aafUID_t AUID_AAFMasterMob
     cdef GUID IID_IAAFMasterMob
     cdef cppclass IAAFMasterMob(IUnknown):

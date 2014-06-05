@@ -17,11 +17,17 @@ cdef class Mob(AAFObject):
         else:
             query_interface(obj.get_ptr(), <lib.IUnknown**>&self.ptr, lib.IID_IAAFMob)
             
+        if not self.mob2_ptr:
+            query_interface(obj.get_ptr(), <lib.IUnknown**>&self.mob2_ptr, lib.IID_IAAFMob2)
+            
         AAFObject.query_interface(self, obj)
             
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+        
+        if self.mob2_ptr:
+            self.mob2_ptr.Release()
             
     def slots(self):
         cdef MobSlotIter slot_iter = MobSlotIter.__new__(MobSlotIter)
@@ -134,6 +140,15 @@ cdef class Mob(AAFObject):
         """remove_comment(tag)
         """
         error_check(self.ptr.RemoveComment(tag.ptr))
+        
+    def append_attribute(self, name not None, value not None):
+        """append_attribute(name, value):
+        """
+        
+        cdef AAFCharBuffer name_buf = AAFCharBuffer(name)
+        cdef AAFCharBuffer value_buf = AAFCharBuffer(value)
+
+        error_check(self.mob2_ptr.AppendAttribute(name_buf.get_ptr(), value_buf.get_ptr() ))
     
     def __richcmp__(x, y, int op):
         if op == 2:

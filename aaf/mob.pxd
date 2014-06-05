@@ -4,6 +4,7 @@ from base cimport AAFObject
 
 cdef class Mob(AAFObject):
     cdef lib.IAAFMob *ptr
+    cdef lib.IAAFMob2 *mob2_ptr
     
 cdef class MasterMob(Mob):
     cdef lib.IAAFMasterMob *mastermob_ptr
