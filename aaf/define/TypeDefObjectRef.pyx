@@ -32,6 +32,10 @@ cdef class TypeDefObjectRef(TypeDef):
         class_def.root = self.root
         return class_def
     
+    def set_value(self, PropertyValue p_value, value):
+        new_value = self.create_property_value(value)
+        return new_value
+    
     def value(self, PropertyValue p_value ):
         cdef AAFBase obj = AAFBase.__new__(AAFBase)
         error_check(self.ref_ptr.GetObject(p_value.ptr, lib.IID_IUnknown, &obj.base_ptr))
