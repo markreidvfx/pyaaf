@@ -30,6 +30,39 @@ cdef class TypeDefFixedArray(TypeDef):
         error_check(self.ptr.GetCount(&count))
         return count
     
+    def create_property_value(self, value):
+        
+        cdef lib.aafUInt32 num_elements = self.size()
+        
+        if len(value) != num_elements:
+            raise ValueError("not enough values, expected %i got %i" % (num_elements, len(value)))
+        
+        typedef = self.typedef()
+        
+        property_values = []
+        
+        for item in value:
+            property_values.append(typedef.create_property_value(item))
+        
+        cdef PropertyValue working_value 
+        cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
+        
+        cdef lib.IAAFPropertyValue ** element_values = <lib.IAAFPropertyValue **> malloc(num_elements * sizeof(lib.IAAFPropertyValue*))
+        if not element_values:
+            raise MemoryError()
+        
+        try:
+            for i,working_value in enumerate(property_values):
+                element_values[i] = working_value.ptr
+            
+            error_check(self.ptr.CreateValueFromValues(element_values, num_elements, &out_value.ptr))
+            out_value.query_interface()
+            out_value.root = self.root
+            return out_value
+        
+        finally:
+            free(element_values)
+    
     def iter_property_value(self, PropertyValue p_value):
         cdef PropValueIter prop_iter = PropValueIter.__new__(PropValueIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))
