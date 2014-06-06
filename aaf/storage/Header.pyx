@@ -28,6 +28,9 @@ cdef class Header(AAFObject):
         if self.ptr:
             self.ptr.Release()
         
+        if self.ptr2:
+           self.ptr2.Release() 
+        
     def dictionary(self):
         """
         :returns: :class:`aaf.dictionary.Dictionary`
