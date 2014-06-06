@@ -116,9 +116,11 @@ cdef class Dictionary(AAFObject):
         for classdef in self.classdefs():
             if classdef.name == name:
                 return classdef
-        
-        raise ValueError("Can not find class %s" % name)
-    
+            
+        obj_type = lookup_object(name)
+        instance = obj_type.__new__(obj_type)
+        return self.lookup_classdef_by_id(instance.class_auid)
+
     def lookup_classdef_by_id(self, AUID auid not None):        
         cdef ClassDef classdef = ClassDef.__new__(ClassDef)
         
