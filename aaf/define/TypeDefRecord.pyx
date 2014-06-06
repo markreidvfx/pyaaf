@@ -98,6 +98,46 @@ cdef class TypeDefRecord(TypeDef):
             d[self.member_name(i)] = self.member_value(p_value, i)
         return d
     
+    def create_property_value(self, value):
+        
+        property_values = []
+        
+        cdef lib.aafUInt32 num_members = self.size()
+        
+        if isinstance(value, dict):
+            raise ValueError("dict not supported yet")
+        
+        value_list = value
+        
+        for i,v in enumerate(value_list):
+            typdef = self.member_typedef(i)
+            property_values.append(typdef.create_property_value(v))
+            
+        if len(property_values) != num_members:
+            raise ValueError("not enough values")
+            
+        cdef PropertyValue working_value 
+        cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
+        
+        cdef lib.IAAFPropertyValue ** member_values = <lib.IAAFPropertyValue **> malloc(num_members * sizeof(lib.IAAFPropertyValue*))
+        if not member_values:
+            raise MemoryError()
+        
+        try:
+            for i,working_value in enumerate(property_values):
+                member_values[i] = working_value.ptr
+            
+            error_check(self.ptr.CreateValueFromValues(member_values, num_members, &out_value.ptr))
+            out_value.query_interface()
+            out_value.root = self.root
+            return out_value
+        
+            
+        finally:
+            free(member_values)
+        #cdef lib.IAAFTypeDef** typedef_array = <lib.IAAFTypeDef**> malloc(len(record_name_list) * sizeof(lib.IAAFTypeDef*))
+        #HRESULT CreateValueFromValues(IAAFPropertyValue ** pMemberValues, aafUInt32  numMembers, IAAFPropertyValue ** ppPropVal)
+    
     def member_name(self, lib.aafUInt32 index):
         cdef lib.aafUInt32 size_in_bytes
         error_check(self.ptr.GetMemberNameBufLen(index, &size_in_bytes))
@@ -115,11 +155,14 @@ cdef class TypeDefRecord(TypeDef):
         typedef.query_interface()
         typedef.root = self.root
         return resolve_typedef(typedef)
-        
+    
+    def member_create_property_value(self, lib.aafUInt32 index, value):
+        typdef = self.member_typedef(index)
+        return typdef.create_property_value(value)
     
     def member_value(self, PropertyValue p_value, lib.aafUInt32 index):
         cdef PropertyValue member_value = PropertyValue.__new__(PropertyValue)
-        
+
         error_check(self.ptr.GetValue(p_value.ptr,
                                        index,
                                        &member_value.ptr
@@ -127,24 +170,26 @@ cdef class TypeDefRecord(TypeDef):
         member_value.query_interface()
         member_value.root = self.root
         return member_value
+
     
     def set_value_from_dict(self, PropertyValue p_value, dict value):
         
-        value_dict = self.value_dict(p_value)
-        for key, item in value.items():
-            if key not in value_dict:
-                raise ValueError("TypeDefRecord does not have key %s" % key)
-            
-        cdef PropertyValue member_value
-        
         keys = self.keys()
         
-        cdef lib.aafUInt32 index
         for key, item in value.items():
-            member_value = value_dict[key] 
-            member_value.value = item
-            index = keys.index(key)
-            error_check(self.ptr.SetValue(p_value.ptr, index, member_value.ptr))
+            if key not in keys:
+                raise ValueError("TypeDefRecord does not have key %s" % key)
+        
+        value_list = []
+        
+        for key in self.keys():
+            value_list.append(value[key])
+            
+        if len(value_list) != self.size():
+            raise ValueError("Not enough values expected %i items got %i" % (self.size(), len(value_list)))
+        
+        return self.create_property_value(value_list)
+            
     
     def set_value_from_list(self, PropertyValue p_value, object value):
         
@@ -158,11 +203,11 @@ cdef class TypeDefRecord(TypeDef):
     def set_value(self, PropertyValue p_value, value):
         
         if isinstance(value, dict):
-            self.set_value_from_dict(p_value, value)
-            return
+            return self.set_value_from_dict(p_value, value)
+            
         if isinstance(value, (list, tuple)):
-            self.set_value_from_list(p_value, value)
-            return
+            return self.set_value_from_list(p_value, value)
+            
         
         
         cdef AUID auid_typdef = AUID()
@@ -171,13 +216,13 @@ cdef class TypeDefRecord(TypeDef):
         
         if self.auid == auid_typdef:
             frac = AAFFraction(value).limit_denominator(200000000)
-            self.set_value_from_dict(p_value, {'Numerator':frac.numerator, 'Denominator': frac.denominator})
-            return
+            return self.set_value_from_dict(p_value, {'Numerator':frac.numerator, 'Denominator': frac.denominator})
+            
         
         auid_typdef.from_auid(lib.kAAFTypeID_AUID)
         if self.auid == auid_typdef:
-            self.set_value_from_dict(p_value, AUID(value).to_auid_dict())
-            return
+            return self.set_value_from_dict(p_value, AUID(value).to_auid_dict())
+            
 
         raise NotImplementedError("setting record for for format not supported yet")
     
