@@ -50,6 +50,14 @@ class TestFile(unittest.TestCase):
             assert auid == u
             assert u == auid
             assert u == auid.to_UUID()
+            
+            
+        smpte_ul = aaf.util.AUID.from_urn_smpte_ul("urn:smpte:ul:060e2b34.01040101.0e040301.02000000")
+        print("urn:smpte:ul:060e2b34.01040101.0e040301.02000000")
+        print(smpte_ul.to_urn_smpte_ul())
+        print("   ",smpte_ul)
+        
+        assert smpte_ul.to_urn_smpte_ul() == "urn:smpte:ul:060e2b34.01040101.0e040301.02000000"
         
         
         

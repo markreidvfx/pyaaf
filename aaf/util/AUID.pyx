@@ -52,6 +52,36 @@ cdef class AUID(object):
             raise ValueError("list must be 11 ints")
         
         return AUID("urn:uuid:%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x" % tuple(auid_list))
+    
+    @staticmethod
+    def from_urn_smpte_ul(string):
+        
+        items = string.replace('urn:smpte:ul:', '').replace('-', '.').split('.')
+        
+        cdef AUID i = AUID()
+        
+        i.auid.Data4[0] = int(items[0][0:2], 16)
+        i.auid.Data4[1] = int(items[0][2:4], 16)
+        i.auid.Data4[2] = int(items[0][4:6], 16)
+        i.auid.Data4[3] = int(items[0][6:8], 16)
+        
+        i.auid.Data4[4] = int(items[1][0:2], 16)
+        i.auid.Data4[5] = int(items[1][2:4], 16)
+        i.auid.Data4[6] = int(items[1][4:6], 16)
+        i.auid.Data4[7] = int(items[1][6:8], 16)
+        
+        i.auid.Data1 = int(items[2], 16)
+        i.auid.Data2 = int(items[3][0:4], 16)
+        i.auid.Data3 = int(items[3][4:8], 16)
+        
+        return i
+
+    def to_urn_smpte_ul(self):
+        
+        return "urn:smpte:ul:%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x" % (
+             self.auid.Data4[0], self.auid.Data4[1], self.auid.Data4[2], self.auid.Data4[3],
+             self.auid.Data4[4], self.auid.Data4[5], self.auid.Data4[6], self.auid.Data4[7],
+             self.auid.Data1, self.auid.Data2, self.auid.Data3)
         
     def to_UUID(self):
         return uuid.UUID(str(self))
