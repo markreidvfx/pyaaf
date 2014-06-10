@@ -21,3 +21,6 @@ cdef class EssenceDescriptor(AAFObject):
     
     def append_locator(self, Locator loc):
         error_check(self.essence_ptr.AppendLocator(loc.loc_ptr))
+        
+    def locators(self):
+        return self['Locator'].value
