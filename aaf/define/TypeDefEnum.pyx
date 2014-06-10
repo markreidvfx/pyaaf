@@ -23,6 +23,19 @@ cdef class TypeDefEnum(TypeDef):
         error_check(self.ptr.CountElements(&count))
         return count
     
+    def create_property_value(self, value):
+        
+        cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
+        buf.write_str(value)
+        
+        cdef PropertyValue out_value = PropertyValue.__new__(PropertyValue)
+        
+        error_check(self.ptr.CreateValueFromName(buf.get_ptr(), &out_value.ptr))
+        
+        out_value.query_interface()
+        out_value.root = self.root
+        return out_value
+
     def element_typedef(self):
         cdef TypeDef typedef = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetElementType(&typedef.typedef_ptr))
