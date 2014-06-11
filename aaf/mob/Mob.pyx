@@ -124,6 +124,13 @@ cdef class Mob(AAFObject):
             error_check(hr)
         
         return tags
+
+    def comment_dict(self):
+        d = {}
+        for item in self.comments():
+            d[item.name] = item.value
+        return d
+    
     def remove_comment_by_name(self, name not None):
         """remove_comment_by_name(name)
         """
