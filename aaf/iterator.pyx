@@ -393,7 +393,13 @@ cdef class MobIter(BaseIterator):
     
     def __next__(self):
         cdef Mob value = Mob.__new__(Mob)
-        ret = self.ptr.NextOne(&value.ptr)
+        
+        cdef lib.IAAFMob **ptr = &value.ptr
+        
+        with nogil:
+            ret = self.ptr.NextOne(ptr)
+            
+            
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
         elif ret == lib.AAFRESULT_SUCCESS:
@@ -554,7 +560,11 @@ cdef class PropItemIter(BaseIterator):
         cdef PropertyItem item = PropertyItem.__new__(PropertyItem)
         cdef AAFObject new_obj = AAFObject.__new__(AAFObject)
         cdef Property value = Property.__new__(Property)
-        ret = self.ptr.NextOne(&value.ptr)
+        
+        cdef lib.IAAFProperty **ptr = &value.ptr
+        
+        with nogil:
+            ret = self.ptr.NextOne(ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
