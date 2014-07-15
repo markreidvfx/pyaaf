@@ -34,8 +34,9 @@ cdef class Sequence(Segment):
         """
         
         cdef Component component = Component.__new__(Component)
-        
-        error_check(self.ptr.GetComponentAt(index, &component.comp_ptr))
+        with nogil:
+            ret = self.ptr.GetComponentAt(index, &component.comp_ptr)
+        error_check(ret)
         
         component.query_interface()
         component.root = self.root
@@ -107,7 +108,9 @@ cdef class Sequence(Segment):
         
     def components(self):
         cdef ComponentIter comp_inter = ComponentIter.__new__(ComponentIter)
-        error_check(self.ptr.GetComponents(&comp_inter.ptr))
+        with nogil:
+            ret = self.ptr.GetComponents(&comp_inter.ptr)
+        error_check(ret)
         comp_inter.root = self.root
         return comp_inter
     

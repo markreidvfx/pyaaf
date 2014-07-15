@@ -83,7 +83,8 @@ cdef class ClassDefIter(BaseIterator):
     
     def __next__(self):
         cdef ClassDef value = ClassDef.__new__(ClassDef)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -122,7 +123,8 @@ cdef class CodecDefIter(BaseIterator):
 
     def __next__(self):
         cdef CodecDef value = CodecDef.__new__(CodecDef)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -161,7 +163,9 @@ cdef class ComponentIter(BaseIterator):
             
     def __next__(self):
         cdef Component value = Component.__new__(Component)
-        ret = self.ptr.NextOne(&value.comp_ptr)
+        
+        with nogil:
+            ret = self.ptr.NextOne(&value.comp_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -200,7 +204,8 @@ cdef class ControlPointIter(BaseIterator):
     
     def __next__(self):
         cdef ControlPoint value = ControlPoint.__new__(ControlPoint)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -239,7 +244,8 @@ cdef class EssenceDataIter(BaseIterator):
     
     def __next__(self):
         cdef EssenceData value = EssenceData.__new__(EssenceData)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -278,7 +284,8 @@ cdef class KLVDataDefIter(BaseIterator):
             
     def __next__(self):
         cdef KLVDataDef value = KLVDataDef.__new__(KLVDataDef)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -317,7 +324,8 @@ cdef class LoadedPluginIter(BaseIterator):
     
     def __next__(self):
         cdef AUID auid = AUID()
-        ret = self.ptr.NextOne(&auid.auid)
+        with nogil:
+            ret = self.ptr.NextOne(&auid.auid)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -354,7 +362,8 @@ cdef class MobSlotIter(BaseIterator):
     
     def __next__(self):
         cdef MobSlot value = MobSlot.__new__(MobSlot)
-        ret = self.ptr.NextOne(&value.slot_ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.slot_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -437,7 +446,8 @@ cdef class ParamIter(BaseIterator):
     
     def __next__(self):
         cdef Parameter value = Parameter.__new__(Parameter)
-        ret = self.ptr.NextOne(&value.param_ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.param_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -476,7 +486,8 @@ cdef class PluginDefIter(BaseIterator):
     
     def __next__(self):
         cdef PluginDef value = PluginDef.__new__(PluginDef)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -515,7 +526,8 @@ cdef class PropIter(BaseIterator):
     
     def __next__(self):
         cdef Property value = Property.__new__(Property)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -609,7 +621,8 @@ cdef class PropertyDefsIter(BaseIterator):
     
     def __next__(self):
         cdef PropertyDef value = PropertyDef.__new__(PropertyDef)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -648,7 +661,8 @@ cdef class PropValueIter(BaseIterator):
     
     def __next__(self):
         cdef PropertyValue value = PropertyValue.__new__(PropertyValue)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -687,7 +701,8 @@ cdef class PropValueResolveIter(BaseIterator):
     
     def __next__(self):
         cdef PropertyValue value = PropertyValue.__new__(PropertyValue)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -726,7 +741,8 @@ cdef class SegmentIter(BaseIterator):
     
     def __next__(self):
         cdef Segment value = Segment.__new__(Segment)
-        ret = self.ptr.NextOne(&value.seg_ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.seg_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -765,7 +781,8 @@ cdef class TaggedValueIter(BaseIterator):
     
     def __next__(self):
         cdef TaggedValue value = TaggedValue.__new__(TaggedValue)
-        ret = self.ptr.NextOne(&value.ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()
@@ -804,7 +821,8 @@ cdef class TypeDefIter(BaseIterator):
     
     def __next__(self):
         cdef TypeDef value = TypeDef.__new__(TypeDef)
-        ret = self.ptr.NextOne(&value.typedef_ptr)
+        with nogil:
+            ret = self.ptr.NextOne(&value.typedef_ptr)
         
         if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
             raise StopIteration()

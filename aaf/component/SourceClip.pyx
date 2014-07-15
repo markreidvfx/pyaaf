@@ -38,7 +38,8 @@ cdef class SourceClip(SourceReference):
         cdef Mob mob = Mob.__new__(Mob)
         cdef lib.HRESULT result
         
-        result = self.ptr.ResolveRef(&mob.ptr)
+        with nogil:
+            result = self.ptr.ResolveRef(&mob.ptr)
         
         if result == lib.AAFRESULT_MOB_NOT_FOUND:
             return None

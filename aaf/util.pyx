@@ -50,7 +50,10 @@ cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID gui
     if dst[0]:
         raise RuntimeError("dst needs to be a null pointer")
     
-    error_check(src[0].QueryInterface(guid, <void**> dst))
+    cdef lib.HRESULT ret
+    with nogil:
+        ret = src[0].QueryInterface(guid, <void**> dst)
+    error_check(ret)
 
 cdef object register_object(object obj):
     global OBJECT_MAP
