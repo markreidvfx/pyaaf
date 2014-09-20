@@ -67,6 +67,34 @@ cdef class MobID(object):
                 'instanceLow': self.mobID.instanceLow,
                 'SMPTELabel': SMPTELabel
                 }
+    @staticmethod
+    def from_dict(dict d):
+        m = MobID()
+        
+        m.mobID.length = d.get("length", 0)
+        m.mobID.instanceHigh = d.get("instanceHigh", 0)
+        m.mobID.instanceMid = d.get("instanceMid", 0)
+        m.mobID.instanceLow = d.get("instanceLow", 0)
+        
+        material = d.get("material", {'Data1':0, 'Data2':0, 'Data3':0})
+        
+        m.mobID.material.Data1 = material.get('Data1', 0)
+        m.mobID.material.Data2 = material.get('Data2', 0)
+        m.mobID.material.Data3 = material.get('Data3', 0)
+        
+        Data4 = material.get("Data4", [0 for i in xrange(8)])
+        
+        for i in xrange(8):
+            if i >= len(Data4):
+                break
+            m.mobID.material.Data4[i] = Data4[i]
+            
+        SMPTELabel = d.get("SMPTELabel", [0 for i in xrange(12)])
+        for i in xrange(12):
+            if i >= len(SMPTELabel):
+                break
+            m.mobID.SMPTELabel[i] = SMPTELabel[i]
+        return m
     
     @staticmethod
     def from_list(mobid_list):
@@ -78,10 +106,14 @@ cdef class MobID(object):
         return MobID(f % tuple(mobid_list))
     
     def __richcmp__(x, y, int op):
-        if op == 2:
+        if op == 2 or 3:
+            result = False
             if str(x) == str(y):
-                return True
-            return False
+                result = True
+            if op == 3:
+                return not result
+            return result
+        
         raise NotImplemented("richcmp %d not not Implemented" % op)
         
     

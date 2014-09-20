@@ -104,14 +104,18 @@ cdef class TypeDefRecord(TypeDef):
         
         cdef lib.aafUInt32 num_members = self.size()
         
+        value_list = []
         if isinstance(value, dict):
-            raise ValueError("dict not supported yet")
-        
-        value_list = value
-        
-        for i,v in enumerate(value_list):
-            typdef = self.member_typedef(i)
-            property_values.append(typdef.create_property_value(v))
+            type_def_dict =self.typedef_dict()
+            for key in self.keys():
+                v = value[key]
+                typdef = type_def_dict[key]
+                property_values.append(typdef.create_property_value(v))
+
+        else:
+            for i,v in enumerate(value):
+                typdef = self.member_typedef(i)
+                property_values.append(typdef.create_property_value(v))
             
         if len(property_values) != num_members:
             raise ValueError("not enough values")
@@ -187,7 +191,7 @@ cdef class TypeDefRecord(TypeDef):
             
         if len(value_list) != self.size():
             raise ValueError("Not enough values expected %i items got %i" % (self.size(), len(value_list)))
-        
+
         return self.create_property_value(value_list)
             
     
@@ -207,24 +211,24 @@ cdef class TypeDefRecord(TypeDef):
             
         if isinstance(value, (list, tuple)):
             return self.set_value_from_list(p_value, value)
-            
-        
         
         cdef AUID auid_typdef = AUID()
-        
         auid_typdef.from_auid(lib.kAAFTypeID_Rational)
         
         if self.auid == auid_typdef:
             frac = AAFFraction(value).limit_denominator(200000000)
             return self.set_value_from_dict(p_value, {'Numerator':frac.numerator, 'Denominator': frac.denominator})
             
-        
         auid_typdef.from_auid(lib.kAAFTypeID_AUID)
         if self.auid == auid_typdef:
             return self.set_value_from_dict(p_value, AUID(value).to_auid_dict())
+        
+        auid_typdef.from_auid(lib.kAAFTypeID_MobIDType)
+        if self.auid == auid_typdef:
+            return self.set_value_from_dict(p_value, MobID(value).to_dict())
             
 
-        raise NotImplementedError("setting record for for format not supported yet")
+        raise ValueError("setting record by %s not supported" % str(type(value)))
     
     def value(self, PropertyValue p_value):
         value_dict = {}
