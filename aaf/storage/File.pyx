@@ -166,7 +166,7 @@ cdef class File(AAFBase):
         
         error_check(self.ptr.SaveCopyAs(new_file.ptr))
         
-        return new_file
+        new_file.close()
 
     def close(self):
         """Close the file. A closed file cannot be read or written any more."""
