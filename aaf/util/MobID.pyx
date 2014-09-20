@@ -51,6 +51,23 @@ cdef class MobID(object):
     cdef lib.aafMobID_t get_aafMobID_t(self):
         return self.mobID
     
+    def to_dict(self):
+        
+        material = {'Data1': self.mobID.material.Data1,
+                    'Data2': self.mobID.material.Data2,
+                    'Data3': self.mobID.material.Data3,
+                    'Data4': [self.mobID.material.Data4[i] for i in xrange(8)]
+                    }
+        SMPTELabel = [self.mobID.SMPTELabel[i] for i in xrange(12)]
+        
+        return {'material':material, 
+                'length': self.mobID.length,
+                'instanceHigh': self.mobID.instanceHigh,
+                'instanceMid': self.mobID.instanceMid,
+                'instanceLow': self.mobID.instanceLow,
+                'SMPTELabel': SMPTELabel
+                }
+    
     @staticmethod
     def from_list(mobid_list):
         f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
