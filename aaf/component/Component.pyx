@@ -32,7 +32,7 @@ cdef class Component(AAFObject):
                 return self['Length'].value
             return None
         def __set__(self, lib.aafLength_t value):
-            error_check(self.comp_ptr.SetLength(value))
+            self['Length'].value = value
             
     property media_kind:
         def __get__(self):
