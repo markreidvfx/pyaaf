@@ -53,6 +53,9 @@ cdef class AUID(object):
 cdef class MobID(object):
     cdef lib.aafMobID_t mobID
     cdef lib.aafMobID_t get_aafMobID_t(self)
+    cdef object _from_list(self, object id_list)
+    cdef object _from_dict(self, dict d)
+    cdef object _from_str(self, object mob_id)
 
 cdef fused aaf_integral:
     lib.aafInt8

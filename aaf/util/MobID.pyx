@@ -3,8 +3,16 @@ cdef class MobID(object):
     def __init__(self, mobID = None):
         if not mobID:
             return
+        if isinstance(mobID, dict):
+            self._from_dict(mobID)
+        elif isinstance(mobID, (tuple, list)):
+            self._from_list(mobID)
+        else:
+            self._from_str(mobID)
 
-        s = str(mobID).replace("urn:smpte:umid:" ,"")
+    cdef object _from_str(self, object mob_id):
+    
+        s = str(mob_id).replace("urn:smpte:umid:" ,"")
         
         items = s.split(".")
         
@@ -48,8 +56,69 @@ cdef class MobID(object):
         self.mobID.material.Data2 = int(items[7][0:4], 16)
         self.mobID.material.Data3 = int(items[7][4:], 16)
         
+    cdef object _from_list(self, object id_list):
+        f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
+             "%02x"  + \
+             "%02x%02x%02x." + \
+             "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"
+             
+        self._from_str(f % tuple(id_list))
+    
+    cdef object _from_dict(self, dict d):
+        self.mobID.length = d.get("length", 0)
+        self.mobID.instanceHigh = d.get("instanceHigh", 0)
+        self.mobID.instanceMid = d.get("instanceMid", 0)
+        self.mobID.instanceLow = d.get("instanceLow", 0)
+        
+        material = d.get("material", {'Data1':0, 'Data2':0, 'Data3':0})
+        
+        self.mobID.material.Data1 = material.get('Data1', 0)
+        self.mobID.material.Data2 = material.get('Data2', 0)
+        self.mobID.material.Data3 = material.get('Data3', 0)
+        
+        Data4 = material.get("Data4", [0 for i in xrange(8)])
+        
+        for i in xrange(8):
+            if i >= len(Data4):
+                break
+            self.mobID.material.Data4[i] = Data4[i]
+            
+        SMPTELabel = d.get("SMPTELabel", [0 for i in xrange(12)])
+        for i in xrange(12):
+            if i >= len(SMPTELabel):
+                break
+            self.mobID.SMPTELabel[i] = SMPTELabel[i]
+
+
     cdef lib.aafMobID_t get_aafMobID_t(self):
         return self.mobID
+    
+    @staticmethod
+    def from_dict(dict d):
+        return MobID(d)
+
+    @staticmethod
+    def from_list(mobid_list):
+        return MobID(mobid_list)
+    
+    def to_list(self):
+        l = []
+        for i in xrange(12):
+            l.append(self.mobID.SMPTELabel[i])
+        
+        l.append(self.mobID.length)
+        l.append(self.mobID.instanceHigh)
+        l.append(self.mobID.instanceMid)
+        l.append(self.mobID.instanceLow)
+        
+        for i in xrange(8):
+            l.append(self.mobID.material.Data4[i])
+            
+        l.append(self.mobID.material.Data1)
+        l.append(self.mobID.material.Data2)
+        l.append(self.mobID.material.Data3)
+        
+        return l
     
     def to_dict(self):
         
@@ -67,43 +136,6 @@ cdef class MobID(object):
                 'instanceLow': self.mobID.instanceLow,
                 'SMPTELabel': SMPTELabel
                 }
-    @staticmethod
-    def from_dict(dict d):
-        m = MobID()
-        
-        m.mobID.length = d.get("length", 0)
-        m.mobID.instanceHigh = d.get("instanceHigh", 0)
-        m.mobID.instanceMid = d.get("instanceMid", 0)
-        m.mobID.instanceLow = d.get("instanceLow", 0)
-        
-        material = d.get("material", {'Data1':0, 'Data2':0, 'Data3':0})
-        
-        m.mobID.material.Data1 = material.get('Data1', 0)
-        m.mobID.material.Data2 = material.get('Data2', 0)
-        m.mobID.material.Data3 = material.get('Data3', 0)
-        
-        Data4 = material.get("Data4", [0 for i in xrange(8)])
-        
-        for i in xrange(8):
-            if i >= len(Data4):
-                break
-            m.mobID.material.Data4[i] = Data4[i]
-            
-        SMPTELabel = d.get("SMPTELabel", [0 for i in xrange(12)])
-        for i in xrange(12):
-            if i >= len(SMPTELabel):
-                break
-            m.mobID.SMPTELabel[i] = SMPTELabel[i]
-        return m
-    
-    @staticmethod
-    def from_list(mobid_list):
-        f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
-             "%02x"  + \
-             "%02x%02x%02x." + \
-             "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"
-             
-        return MobID(f % tuple(mobid_list))
     
     def __richcmp__(x, y, int op):
         if op == 2 or 3:
