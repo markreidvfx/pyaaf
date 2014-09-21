@@ -205,16 +205,19 @@ cdef class TypeDefRecord(TypeDef):
         self.set_value_from_dict(p_value, value_dict)
     
     def set_value(self, PropertyValue p_value, value):
+        cdef AUID auid_typdef = AUID()
         
         if isinstance(value, dict):
             return self.set_value_from_dict(p_value, value)
-            
-        if isinstance(value, (list, tuple)):
+        
+        auid_typdef.from_auid(lib.kAAFTypeID_MobIDType)
+        if isinstance(value, (list, tuple)) and self.auid != auid_typdef:
             return self.set_value_from_list(p_value, value)
         
-        cdef AUID auid_typdef = AUID()
-        auid_typdef.from_auid(lib.kAAFTypeID_Rational)
+        if self.auid == auid_typdef:
+            return self.set_value_from_dict(p_value, MobID(value).to_dict())
         
+        auid_typdef.from_auid(lib.kAAFTypeID_Rational)
         if self.auid == auid_typdef:
             frac = AAFFraction(value).limit_denominator(200000000)
             return self.set_value_from_dict(p_value, {'Numerator':frac.numerator, 'Denominator': frac.denominator})
@@ -222,11 +225,6 @@ cdef class TypeDefRecord(TypeDef):
         auid_typdef.from_auid(lib.kAAFTypeID_AUID)
         if self.auid == auid_typdef:
             return self.set_value_from_dict(p_value, AUID(value).to_auid_dict())
-        
-        auid_typdef.from_auid(lib.kAAFTypeID_MobIDType)
-        if self.auid == auid_typdef:
-            return self.set_value_from_dict(p_value, MobID(value).to_dict())
-            
 
         raise ValueError("setting record by %s not supported" % str(type(value)))
     

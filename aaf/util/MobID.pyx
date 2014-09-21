@@ -140,7 +140,7 @@ cdef class MobID(object):
     def __richcmp__(x, y, int op):
         if op == 2 or 3:
             result = False
-            if str(x) == str(y):
+            if str(MobID(x)) == str(MobID(y)):
                 result = True
             if op == 3:
                 return not result

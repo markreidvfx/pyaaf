@@ -102,6 +102,13 @@ cdef class SourceClip(SourceReference):
             source_ref.slot_id = value
             self.source_ref = source_ref
     
+    property mob_id:
+        def __get__(self):
+            return self['SourceID'].value
+        
+        def __set__(self, value):
+            self['SourceID'].value = value
+            
     property source_ref:
         
         def __get__(self):

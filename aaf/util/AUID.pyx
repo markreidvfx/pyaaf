@@ -93,16 +93,19 @@ cdef class AUID(object):
                 'Data4': [self.auid.Data4[i] for i in xrange(8)]}
         
     def __richcmp__(x, y, int op):
-        if op == 2:
+        if op == 2 or op == 3:
             if isinstance(x, uuid.UUID):
                 x = x.urn
                 
             if isinstance(y, uuid.UUID):
                 y = y.urn
-            
+            result = False
             if str(x) == str(y):
-                return True
-            return False
+                result = True
+            if op == 3:
+                return not result
+            return result
+        
         raise NotImplemented("richcmp %d not not Implemented" % op)
         
     def __repr__(self):

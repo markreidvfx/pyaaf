@@ -23,6 +23,9 @@ main_test_file = os.path.join(cur_dir,"files/test_file_01.aaf")
 
 assert os.path.exists(main_test_file)
 
+test_mob_id = [0x06, 0x0c, 0x2b, 0x34, 0x02, 0x05, 0x11, 0x01, 0x01, 0x00, 0x10, 0x00, 0x13,
+                               0x00, 0x00, 0x00, 0xda5ab5f4, 0x0405, 0x11d4, 0x8e, 0x3d, 0x00, 0x90, 0x27, 0xdf, 0xca, 0x7c]
+
 class TestMobID(unittest.TestCase):
         
     
@@ -71,7 +74,25 @@ class TestMobID(unittest.TestCase):
         d = mob_id.to_dict()
         d['SMPTELabel'] = [0x10 for i in range(12)]
         assert mob_id != aaf.util.MobID(d)
+        
+    def test_sourclip(self):
 
+        f = aaf.open(main_test_file)
+        
+        mob = f.storage.master_mobs()[0]
+        
+        clip = mob.create_clip()
+        
+        vv = clip['SourceID'].value
+        clip['SourceID'].value = vv
+        
+        assert clip['SourceID'].value == vv
+        assert clip['SourceID'].value == mob.mobID
+        assert clip.mob_id == vv
 
+        clip.mob_id = test_mob_id
+        assert clip['SourceID'].value == test_mob_id
+        assert clip.mob_id == aaf.util.MobID(test_mob_id).to_dict()
+        
 if __name__ == '__main__':
     unittest.main()
