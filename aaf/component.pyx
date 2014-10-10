@@ -3,7 +3,7 @@ cimport lib
 from libc.string cimport memset, memcpy
 
 from .util cimport error_check, query_interface, register_object, fraction_to_aafRational, aafRational_to_fraction, AUID, MobID, SourceRef
-
+cimport util
 from .base cimport AAFObject, AAFBase
 from .mob cimport Mob 
 from .define cimport TypeDef, DataDef, OperationDef, ParameterDef, InterpolationDef, EdgeTypeMap, FilmTypeMap
