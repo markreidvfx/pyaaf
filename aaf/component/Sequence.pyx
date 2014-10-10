@@ -96,7 +96,7 @@ cdef class Sequence(Segment):
         cdef lib.aafUInt32 count
         error_check(self.ptr.CountComponents(&count))
         
-        for i in xrange(count):
+        for i in range(count):
             component = self.component_at(i)
             if isinstance(component, Transition):
                 length -= component.length
