@@ -91,7 +91,12 @@ cdef class Sequence(Segment):
         yields (index, edit_start_time, component) of items in the sequence 
         """
         length = 0
-        for i, component in enumerate(self.components()):
+        
+        cdef lib.aafUInt32 count
+        error_check(self.ptr.CountComponents(&count))
+        
+        for i in xrange(count):
+            component = self.component_at(i)
             if isinstance(component, Transition):
                 length -= component.length
                 yield (i, length, component)
