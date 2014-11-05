@@ -55,7 +55,7 @@ cdef class LoadedPluginIter(BaseIterator):
     cdef lib.IEnumAAFLoadedPlugins *ptr
     
 cdef class LocatorIter(BaseIterator):
-    pass
+    cdef lib.IEnumAAFLocators *ptr
     
 cdef class MobSlotIter(BaseIterator):
     cdef lib.IEnumAAFMobSlots *ptr

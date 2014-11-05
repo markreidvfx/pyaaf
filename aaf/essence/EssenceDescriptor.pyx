@@ -23,4 +23,7 @@ cdef class EssenceDescriptor(AAFObject):
         error_check(self.essence_ptr.AppendLocator(loc.loc_ptr))
         
     def locators(self):
-        return self['Locator'].value
+        cdef LocatorIter loc_iter = LocatorIter.__new__(LocatorIter)
+        error_check(self.essence_ptr.GetLocators(&loc_iter.ptr)) 
+        loc_iter.root = self.root   
+        return loc_iter

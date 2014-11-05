@@ -6,7 +6,7 @@ from .mob cimport Mob,MobSlot
 from .property cimport Property, PropertyItem, PropertyValue, TaggedValue
 from .component cimport Component, Segment, Parameter, ControlPoint
 from .define cimport ClassDef,PropertyDef, TypeDef, CodecDef, PluginDef, KLVDataDef, resolve_typedef
-from .essence cimport EssenceData
+from .essence cimport EssenceData, Locator
 
 cdef class BaseIterator(object):
     def __cinit__(self):
@@ -333,6 +333,47 @@ cdef class LoadedPluginIter(BaseIterator):
             return auid
         else:
             error_check(ret)
+            
+cdef class LocatorIter(BaseIterator):
+    def __cinit__(self):
+        self.ptr = NULL
+        
+    def __dealloc__(self):
+        if self.ptr:
+            self.ptr.Release()
+            
+    def reset(self):
+        error_check(self.ptr.Reset())
+        
+    def clone(self):
+        cdef LocatorIter value = LocatorIter.__new__(LocatorIter)
+        error_check(self.ptr.Clone(&value.ptr))
+        value.root = self.root
+        return value
+    
+    def skip(self, lib.aafUInt32  count = 1):
+        ret = self.ptr.Skip(count)
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise IndexError("skip count exceeded number of remaining objects")
+        elif ret == lib.AAFRESULT_SUCCESS:
+            return
+        else:
+            error_check(ret)
+    
+    def __next__(self):
+        cdef Locator value = Locator.__new__(Locator)
+        with nogil:
+            ret = self.ptr.NextOne(&value.loc_ptr)
+        
+        if ret == lib.AAFRESULT_NO_MORE_OBJECTS:
+            raise StopIteration()
+        elif ret == lib.AAFRESULT_SUCCESS:
+            value.query_interface()
+            value.root = self.root
+            return value
+        else:
+            error_check(ret)
+            
 
 cdef class MobSlotIter(BaseIterator):
     def __cinit__(self):

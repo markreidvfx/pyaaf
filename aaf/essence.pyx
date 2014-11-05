@@ -5,6 +5,7 @@ from .base cimport AAFObject, AAFBase
 from .define cimport DataDef, DataDefMap, ContainerDef, CompressionDefMap, ContainerDefMap, CodecDefMap
 from .mob cimport SourceMob
 from .dictionary cimport Dictionary
+from .iterator cimport LocatorIter
 
 from libcpp.map cimport map
 from libcpp.string cimport string
