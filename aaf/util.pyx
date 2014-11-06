@@ -45,13 +45,12 @@ cdef object HRESULT2str(lib.HRESULT result):
     return message
 
 cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID guid):
-    if not src[0]:
-        raise RuntimeError("src can not be a null pointer")
-    if dst[0]:
-        raise RuntimeError("dst needs to be a null pointer")
-    
     cdef lib.HRESULT ret
     with nogil:
+        if not src[0]:
+            with gil: raise RuntimeError("src can not be a null pointer")
+        if dst[0]:
+            with gil: raise RuntimeError("dst needs to be a null pointer")
         ret = src[0].QueryInterface(guid, <void**> dst)
     error_check(ret)
 
