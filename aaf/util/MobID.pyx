@@ -173,3 +173,10 @@ cdef class MobID(object):
              mobID.material.Data4[0], mobID.material.Data4[1], mobID.material.Data4[2], mobID.material.Data4[3],
              mobID.material.Data4[4], mobID.material.Data4[5], mobID.material.Data4[6], mobID.material.Data4[7],
              mobID.material.Data1, mobID.material.Data2, mobID.material.Data3)
+        
+    property material:
+        
+        def __get__(self):
+            cdef AUID auid = AUID()
+            auid.auid = self.mobID.material
+            return auid
