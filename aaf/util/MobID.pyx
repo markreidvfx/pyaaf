@@ -180,3 +180,6 @@ cdef class MobID(object):
             cdef AUID auid = AUID()
             auid.auid = self.mobID.material
             return auid
+        def __set__(self, value):
+            cdef AUID auid = AUID(value)
+            self.mobID.material = auid.auid

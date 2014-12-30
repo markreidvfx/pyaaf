@@ -211,6 +211,16 @@ cdef class Mob(AAFObject):
             cdef lib.aafNumSlots_t nb_slots
             error_check(self.ptr.CountSlots(&nb_slots))
             return nb_slots
+
+    property material_id:
+        def __get__(self):
+            return self.mobID.material
+
+        def __set__(self, value):
+            mob_id = self.mobID
+            mob_id.material = value
+            self.mobID = mob_id
+
     property mobID:
         """
         The unique Mob ID associated with this mob. Get Returns MobID Object
