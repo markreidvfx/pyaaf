@@ -1,3 +1,4 @@
+from libc.stdio cimport sscanf
 
 cdef class MobID(object):
 
@@ -9,61 +10,20 @@ cdef class MobID(object):
         elif isinstance(mobID, (tuple, list)):
             self._from_list(mobID)
         else:
-            self._from_str(mobID)
+            self.urn = mobID
 
     cdef object _from_str(self, object mob_id):
-    
-        s = str(mob_id).replace("urn:smpte:umid:" ,"")
-        
-        items = s.split(".")
-        
-        if len(items) != 8:
-            raise ValueError("Invalid MobID")
-
-        
-        self.mobID.SMPTELabel[0] = int(items[0][:2], 16)
-        self.mobID.SMPTELabel[1] = int(items[0][2:4], 16)
-        self.mobID.SMPTELabel[2] = int(items[0][4:6], 16)
-        self.mobID.SMPTELabel[3] = int(items[0][6:8], 16)
-        
-        self.mobID.SMPTELabel[4] = int(items[1][:2], 16)
-        self.mobID.SMPTELabel[5] = int(items[1][2:4], 16)
-        self.mobID.SMPTELabel[6] = int(items[1][4:6], 16)
-        self.mobID.SMPTELabel[7] = int(items[1][6:8], 16)
-        
-        self.mobID.SMPTELabel[8] = int(items[2][:2], 16)
-        self.mobID.SMPTELabel[9] = int(items[2][2:4], 16)
-        self.mobID.SMPTELabel[10] = int(items[2][4:6], 16)
-        self.mobID.SMPTELabel[11] = int(items[2][6:8], 16)
-        
-        self.mobID.length = int(items[3][:2], 16)
-        
-        self.mobID.instanceHigh = int(items[3][2:4], 16)
-        self.mobID.instanceMid = int(items[3][4:6], 16)
-        self.mobID.instanceLow = int(items[3][6:8], 16)
-        
-        self.mobID.material.Data4[0] = int(items[4][:2], 16)
-        self.mobID.material.Data4[1] = int(items[4][2:4], 16)
-        self.mobID.material.Data4[2] = int(items[4][4:6], 16)
-        self.mobID.material.Data4[3] = int(items[4][6:8], 16)
-        
-        self.mobID.material.Data4[4] = int(items[5][:2], 16)
-        self.mobID.material.Data4[5] = int(items[5][2:4], 16)
-        self.mobID.material.Data4[6] = int(items[5][4:6], 16)
-        self.mobID.material.Data4[7] = int(items[5][6:8], 16)
-        
-        self.mobID.material.Data1 = int(items[6], 16)
-        
-        self.mobID.material.Data2 = int(items[7][0:4], 16)
-        self.mobID.material.Data3 = int(items[7][4:], 16)
+        self.urn = mob_id
+        return
         
     cdef object _from_list(self, object id_list):
         f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
              "%02x"  + \
              "%02x%02x%02x." + \
-             "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"
-             
-        self._from_str(f % tuple(id_list))
+             "%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x"
+        if len(id_list) != 32:
+            raise ValueError("Invalid length expected 32 got %d"  % len(id_list))
+        self.urn = f % tuple(id_list)
     
     cdef object _from_dict(self, dict d):
         self.mobID.length = d.get("length", 0)
@@ -103,24 +63,11 @@ cdef class MobID(object):
         return MobID(mobid_list)
     
     def to_list(self):
-        l = []
-        for i in xrange(12):
-            l.append(self.mobID.SMPTELabel[i])
-        
-        l.append(self.mobID.length)
-        l.append(self.mobID.instanceHigh)
-        l.append(self.mobID.instanceMid)
-        l.append(self.mobID.instanceLow)
-        
-        for i in xrange(8):
-            l.append(self.mobID.material.Data4[i])
-            
-        l.append(self.mobID.material.Data1)
-        l.append(self.mobID.material.Data2)
-        l.append(self.mobID.material.Data3)
-        
-        return l
-    
+        umid = self.urn
+        for item in ("urn:smpte:umid:",'.' ):
+            umid = umid.replace(item, '')
+        return [int(umid[i:i+2], 16) for i in range(0, len(umid), 2)]
+
     def to_dict(self):
         
         material = {'Data1': self.mobID.material.Data1,
@@ -159,21 +106,100 @@ cdef class MobID(object):
         )
 
     def __str__(self):
-        
-        f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
-             "%02x"  + \
-             "%02x%02x%02x." + \
-             "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"
-        mobID = self.mobID
-        return f % (
-             mobID.SMPTELabel[0], mobID.SMPTELabel[1], mobID.SMPTELabel[2],  mobID.SMPTELabel[3],
-             mobID.SMPTELabel[4], mobID.SMPTELabel[5], mobID.SMPTELabel[6],  mobID.SMPTELabel[7],
-             mobID.SMPTELabel[8], mobID.SMPTELabel[9], mobID.SMPTELabel[10], mobID.SMPTELabel[11],
-             mobID.length,
-             mobID.instanceHigh, mobID.instanceMid, mobID.instanceLow,
-             mobID.material.Data4[0], mobID.material.Data4[1], mobID.material.Data4[2], mobID.material.Data4[3],
-             mobID.material.Data4[4], mobID.material.Data4[5], mobID.material.Data4[6], mobID.material.Data4[7],
-             mobID.material.Data1, mobID.material.Data2, mobID.material.Data3)
+        return self.urn
+
+    property urn:
+        def __get__(self):
+            mobID = self.mobID
+            # handle case UMIDs where the material number is half swapped
+            if mobID.SMPTELabel[11] == 0x00 and \
+               mobID.material.Data4[0] == 0x06 and \
+               mobID.material.Data4[1] == 0x0E and \
+               mobID.material.Data4[2] == 0x2B and \
+               mobID.material.Data4[3] == 0x34 and \
+               mobID.material.Data4[4] == 0x7F and \
+               mobID.material.Data4[5] == 0x7F:
+
+                f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
+                 "%02x"  + \
+                 "%02x%02x%02x." + \
+                 "%02x%02x%02x%02x.%02x%02x%02x%02x.%08x.%04x%04x"
+
+                return f % (
+                     mobID.SMPTELabel[0], mobID.SMPTELabel[1], mobID.SMPTELabel[2],  mobID.SMPTELabel[3],
+                     mobID.SMPTELabel[4], mobID.SMPTELabel[5], mobID.SMPTELabel[6],  mobID.SMPTELabel[7],
+                     mobID.SMPTELabel[8], mobID.SMPTELabel[9], mobID.SMPTELabel[10], mobID.SMPTELabel[11],
+                     mobID.length,
+                     mobID.instanceHigh, mobID.instanceMid, mobID.instanceLow,
+                     mobID.material.Data4[0], mobID.material.Data4[1], mobID.material.Data4[2], mobID.material.Data4[3],
+                     mobID.material.Data4[4], mobID.material.Data4[5], mobID.material.Data4[6], mobID.material.Data4[7],
+                     mobID.material.Data1, mobID.material.Data2, mobID.material.Data3)
+            else:
+                f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
+                 "%02x"  + \
+                 "%02x%02x%02x." + \
+                 "%08x.%04x%04x.%02x%02x%02x%02x.%02x%02x%02x%02x"
+
+                return f % (
+                     mobID.SMPTELabel[0], mobID.SMPTELabel[1], mobID.SMPTELabel[2],  mobID.SMPTELabel[3],
+                     mobID.SMPTELabel[4], mobID.SMPTELabel[5], mobID.SMPTELabel[6],  mobID.SMPTELabel[7],
+                     mobID.SMPTELabel[8], mobID.SMPTELabel[9], mobID.SMPTELabel[10], mobID.SMPTELabel[11],
+                     mobID.length,
+                     mobID.instanceHigh, mobID.instanceMid, mobID.instanceLow,
+                     mobID.material.Data1, mobID.material.Data2, mobID.material.Data3,
+                     mobID.material.Data4[0], mobID.material.Data4[1], mobID.material.Data4[2], mobID.material.Data4[3],
+                     mobID.material.Data4[4], mobID.material.Data4[5], mobID.material.Data4[6], mobID.material.Data4[7])
+
+        def __set__(self, value):
+            cdef unsigned int data[32]
+            cdef int ret
+
+            s = str(value)
+            for item in ("urn:smpte:umid:", ".", '-', '0x'):
+                s = s.replace(item, '')
+            s = s.lower()
+            ret = sscanf(s, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"
+                            "%02x"
+                            "%02x%02x%02x"
+                            "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                            &data[0], &data[1], &data[2], &data[3],
+                            &data[4], &data[5], &data[6], &data[7],
+                            &data[8], &data[9], &data[10], &data[11],
+                            &data[12],
+                            &data[13], &data[14], &data[15],
+                            &data[16], &data[17], &data[18], &data[19],
+                            &data[20], &data[21],
+                            &data[22], &data[23],
+                            &data[24], &data[25], &data[26], &data[27],
+                            &data[28], &data[29], &data[30], &data[31])
+
+            if ret != 32:
+                raise ValueError("Invalid MobId")
+
+            for i in range(12):
+                self.mobID.SMPTELabel[i] = data[i]
+
+            self.mobID.length = data[12]
+            self.mobID.instanceHigh = data[13]
+            self.mobID.instanceMid = data[14]
+            self.mobID.instanceLow = data[15]
+
+            # handle case UMIDs where the material number is half swapped
+            if data[11] == 0x00 and \
+                data[16] == 0x06 and data[17] == 0x0E and data[18] == 0x2B and \
+                data[19] == 0x34 and data[20] == 0x7F and data[21] == 0x7F:
+
+                self.mobID.material.Data1 = (data[24] << 24) + (data[25] << 16) + (data[26] << 8) + data[27]
+                self.mobID.material.Data2 = (data[28] << 8) + data[29]
+                self.mobID.material.Data3 = (data[30] << 8) + data[31]
+                for i in range(8):
+                     self.mobID.material.Data4[i] = data[i + 16]
+            else:
+                self.mobID.material.Data1 = (data[16] << 24) + (data[17] << 16) + (data[18] << 8) + data[19]
+                self.mobID.material.Data2 = (data[20] << 8) + data[21]
+                self.mobID.material.Data3 = (data[22] << 8) + data[23]
+                for i in range(8):
+                    self.mobID.material.Data4[i] = data[i + 24]
 
     property umid:
         
@@ -196,40 +222,7 @@ cdef class MobID(object):
                  mobID.material.Data4[4], mobID.material.Data4[5], mobID.material.Data4[6], mobID.material.Data4[7])
 
         def __set__(self, value):
-
-            if isinstance(value, (str,unicode)):
-                value = str(value)
-                if value.startswith("0x"):
-                    value = value.replace('0x', '')
-
-                if len(value) != 64:
-                    raise ValueError("invalid umid length expected 64 got: %d" % len(value))
-
-                values = []
-                for i,item in enumerate([value[i:i+8] for i in range(0, len(value), 8)]):
-                    if i == 4:
-                        values.extend([int(item, 16)])
-                    elif i == 5:
-                        values.extend([int(item[j:j+4], 16) for j in range(0, len(item), 4)])
-                    else:
-                        values.extend([int(item[j:j+2], 16) for j in range(0, len(item), 2)])
-            else:
-                raise TypeError("Invalid type %s expected str" % str(type(value)))
-
-            for i in range(0, 12):
-                self.mobID.SMPTELabel[i] = values[i]
-
-            self.mobID.length = values[12]
-            self.mobID.instanceHigh = values[13]
-            self.mobID.instanceMid = values[14]
-            self.mobID.instanceLow = values[15]
-
-            self.mobID.material.Data1 = values[16]
-            self.mobID.material.Data2 = values[17]
-            self.mobID.material.Data3 = values[18]
-
-            for i in range(0, 8):
-                self.mobID.material.Data4[i] = values[i+19]
+            self.urn = value
 
     property material:
         

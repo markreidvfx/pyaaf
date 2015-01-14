@@ -24,7 +24,7 @@ main_test_file = os.path.join(cur_dir,"files/test_file_01.aaf")
 assert os.path.exists(main_test_file)
 
 test_mob_id = [0x06, 0x0c, 0x2b, 0x34, 0x02, 0x05, 0x11, 0x01, 0x01, 0x00, 0x10, 0x00, 0x13,
-                               0x00, 0x00, 0x00, 0xda5ab5f4, 0x0405, 0x11d4, 0x8e, 0x3d, 0x00, 0x90, 0x27, 0xdf, 0xca, 0x7c]
+                               0x00, 0x00, 0x00, 0xda, 0x5a, 0xb5, 0xf4, 0x04, 0x05, 0x11, 0xd4, 0x8e, 0x3d, 0x00, 0x90, 0x27, 0xdf, 0xca, 0x7c]
 
 class TestMobID(unittest.TestCase):
         
@@ -62,7 +62,7 @@ class TestMobID(unittest.TestCase):
         mob = f.storage.composition_mobs()[0]
         
         mob_id = mob.mobID
-        
+        print(mob.mobID)
         assert mob_id == aaf.util.MobID(mob_id.to_list())
         assert mob_id == aaf.util.MobID(mob_id.to_dict())
         assert mob_id == aaf.util.MobID(str(mob_id))
@@ -92,6 +92,9 @@ class TestMobID(unittest.TestCase):
 
         clip.mob_id = test_mob_id
         assert clip['SourceID'].value == test_mob_id
+        print(test_mob_id)
+        print(clip['SourceID'].value.to_list())
+        assert clip['SourceID'].value.to_list() == test_mob_id
         assert clip.mob_id == aaf.util.MobID(test_mob_id).to_dict()
         
     def test_umid(self):
@@ -101,10 +104,14 @@ class TestMobID(unittest.TestCase):
 
         mob_id.umid = umid
         assert mob_id.umid == umid
+        assert mob_id == umid
 
         f = aaf.open()
         mob = f.create.MasterMob()
         mob.umid = umid
+        print(umid)
+        print(mob.mobID)
+        print(aaf.util.MobID(umid))
         assert mob.umid == umid
 
 if __name__ == '__main__':
