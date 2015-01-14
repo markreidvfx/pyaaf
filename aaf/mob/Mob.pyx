@@ -212,6 +212,15 @@ cdef class Mob(AAFObject):
             error_check(self.ptr.CountSlots(&nb_slots))
             return nb_slots
 
+    property umid:
+        def __get__(self):
+            return self.mobID.umid
+
+        def __set__(self, value):
+            mob_id = self.mobID
+            mob_id.umid = value
+            self.mobID = mob_id
+
     property material_id:
         def __get__(self):
             return self.mobID.material

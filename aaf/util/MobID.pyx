@@ -1,3 +1,4 @@
+
 cdef class MobID(object):
 
     def __init__(self, mobID = None):
@@ -173,7 +174,63 @@ cdef class MobID(object):
              mobID.material.Data4[0], mobID.material.Data4[1], mobID.material.Data4[2], mobID.material.Data4[3],
              mobID.material.Data4[4], mobID.material.Data4[5], mobID.material.Data4[6], mobID.material.Data4[7],
              mobID.material.Data1, mobID.material.Data2, mobID.material.Data3)
+
+    property umid:
         
+        def __get__(self):
+            f = "0x%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X" + \
+                "%02X"  + \
+                "%02X%02X%02X" + \
+                "%08X%04X%04X" + \
+                "%02X%02X%02X%02X%02X%02X%02X%02X"
+
+            mobID = self.mobID
+            return f % (
+                 mobID.SMPTELabel[0], mobID.SMPTELabel[1], mobID.SMPTELabel[2],  mobID.SMPTELabel[3],
+                 mobID.SMPTELabel[4], mobID.SMPTELabel[5], mobID.SMPTELabel[6],  mobID.SMPTELabel[7],
+                 mobID.SMPTELabel[8], mobID.SMPTELabel[9], mobID.SMPTELabel[10], mobID.SMPTELabel[11],
+                 mobID.length,
+                 mobID.instanceHigh, mobID.instanceMid, mobID.instanceLow,
+                 mobID.material.Data1, mobID.material.Data2, mobID.material.Data3,
+                 mobID.material.Data4[0], mobID.material.Data4[1], mobID.material.Data4[2], mobID.material.Data4[3],
+                 mobID.material.Data4[4], mobID.material.Data4[5], mobID.material.Data4[6], mobID.material.Data4[7])
+
+        def __set__(self, value):
+
+            if isinstance(value, (str,unicode)):
+                value = str(value)
+                if value.startswith("0x"):
+                    value = value.replace('0x', '')
+
+                if len(value) != 64:
+                    raise ValueError("invalid umid length expected 64 got: %d" % len(value))
+
+                values = []
+                for i,item in enumerate([value[i:i+8] for i in range(0, len(value), 8)]):
+                    if i == 4:
+                        values.extend([int(item, 16)])
+                    elif i == 5:
+                        values.extend([int(item[j:j+4], 16) for j in range(0, len(item), 4)])
+                    else:
+                        values.extend([int(item[j:j+2], 16) for j in range(0, len(item), 2)])
+            else:
+                raise TypeError("Invalid type %s expected str" % str(type(value)))
+
+            for i in range(0, 12):
+                self.mobID.SMPTELabel[i] = values[i]
+
+            self.mobID.length = values[12]
+            self.mobID.instanceHigh = values[13]
+            self.mobID.instanceMid = values[14]
+            self.mobID.instanceLow = values[15]
+
+            self.mobID.material.Data1 = values[16]
+            self.mobID.material.Data2 = values[17]
+            self.mobID.material.Data3 = values[18]
+
+            for i in range(0, 8):
+                self.mobID.material.Data4[i] = values[i+19]
+
     property material:
         
         def __get__(self):

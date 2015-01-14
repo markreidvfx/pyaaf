@@ -94,5 +94,18 @@ class TestMobID(unittest.TestCase):
         assert clip['SourceID'].value == test_mob_id
         assert clip.mob_id == aaf.util.MobID(test_mob_id).to_dict()
         
+    def test_umid(self):
+        umid = u"0x060A2B340101010101010F001300000051D2066BDCF6003E060E2B347F7F2A80"
+
+        mob_id = aaf.util.MobID()
+
+        mob_id.umid = umid
+        assert mob_id.umid == umid
+
+        f = aaf.open()
+        mob = f.create.MasterMob()
+        mob.umid = umid
+        assert mob.umid == umid
+
 if __name__ == '__main__':
     unittest.main()
