@@ -158,6 +158,9 @@ cdef class MobID(object):
             for item in ("urn:smpte:umid:", ".", '-', '0x'):
                 s = s.replace(item, '')
             s = s.lower()
+            if isinstance(s, unicode):
+                s = s.encode("ascii")
+
             ret = sscanf(s, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x"
                             "%02x"
                             "%02x%02x%02x"
