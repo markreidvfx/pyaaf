@@ -2,7 +2,7 @@
 cimport lib
 
 from .base cimport AAFBase, AAFObject
-from .define cimport DefObject, ClassDef, TypeDef, DataDef, ContainerDef, OperationDef, ParameterDef, InterpolationDef, TaggedValueDef, TypeDefMap, ContainerDefMap, DataDefMap, ExtEnumDefMap, InterpolationDefMap
+from .define cimport DefObject, ClassDef, TypeDef, DataDef, ContainerDef, OperationDef, ParameterDef, InterpolationDef, TaggedValueDef, TypeDefMap, CompressionDefMap, ContainerDefMap, DataDefMap, ExtEnumDefMap, InterpolationDefMap
 from .util cimport error_check, query_interface, register_object, lookup_object, AUID
 from .iterator cimport CodecDefIter, ClassDefIter, TypeDefIter, PluginDefIter, KLVDataDefIter, LoadedPluginIter
 from wstring cimport wstring,toWideString
@@ -213,6 +213,10 @@ cdef class Dictionary(AAFObject):
         if prop:
             return prop.value or []
         return []
+
+    property compressiondefs:
+        def __get__(self):
+            return CompressionDefMap
         
 cdef class PluginManager(object):
     def __init__(self):
