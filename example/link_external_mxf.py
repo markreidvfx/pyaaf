@@ -49,8 +49,10 @@ reel_name = stream_metadata['reel_name']
 codec_type = stream['codec_type']
 
 rate = fractions.Fraction(stream['avg_frame_rate'])
+#rate = "23976/1000"
 duration = stream['duration_ts'] #int(float(stream['duration']) * float(rate))
 
+print "reel name", reel_name
 print "file package umid = ", file_package_umid
 print "duration =", duration
 
@@ -60,6 +62,16 @@ if codec_type == 'video':
     height = int(stream['height'])
 
     descriptor = f.create.CDCIDescriptor()
+    #print sorted(descriptor.all_keys())
+    descriptor['ColorRange'].value = 255
+    descriptor['WhiteReferenceLevel'].value = 235
+    descriptor['BlackReferenceLevel'].value = 16
+    descriptor['VerticalSubsampling'].value = 1
+    descriptor['HorizontalSubsampling'].value = 2
+    descriptor['ComponentWidth'].value = 8
+    descriptor['ImageAlignmentFactor'].value = 8192
+    descriptor['ImageAspectRatio'].value = fractions.Fraction(width, height)
+    descriptor['VideoLineMap'].value = [42,0]
 
     descriptor['DisplayXOffset'].value = 0
     descriptor['DisplayYOffset'].value = 0
@@ -71,10 +83,10 @@ if codec_type == 'video':
     descriptor['SampledHeight'].value = height
     descriptor['StoredWidth'].value = width
     descriptor['StoredHeight'].value = height
+    #descriptor['Compression'].value = f.dictionary.compressiondefs['avid_dnxhd_legacy']
+    #descriptor['ContainerFormat'].value = f.dictionary.lookup_containerdef("aafklv")
 
-    descriptor['ImageAspectRatio'].value = fractions.Fraction(width, height)
     descriptor['SampleRate'].value = rate
-    descriptor['HorizontalSubsampling'].value = 2
 
 elif codec_type == 'audio':
     raise Exception("Audio not supported yet")
@@ -85,10 +97,11 @@ descriptor['Length'].value = duration
 
 
 
-reel_mob = f.create.SourceMob(file_package_name)
+reel_mob = f.create.SourceMob(reel_name)
 reel_mob.umid = reel_umid
-reel_mob.essence_descriptor = f.create.ImportDescriptor()
-
+#reel_descriptor = f.create.ImportDescriptor()
+reel_descriptor = f.create.TapeDescriptor()
+reel_mob.essence_descriptor = reel_descriptor
 
 source_clip = f.create.SourceClip('picture', duration)
 sequence = f.create.Sequence("picture")
@@ -96,7 +109,8 @@ sequence.append(source_clip)
 reel_mob.append_new_timeline_slot(rate, sequence, 1)
 
 timecode = f.create.Timecode(duration, 86400, 24)
-sequence = f.create.Sequence("LegacyTimecode")
+timecode['DataDefinition'].value = f.dictionary.lookup_datadef("Timecode")
+sequence = f.create.Sequence("Timecode")
 sequence.append(timecode)
 reel_mob.append_new_timeline_slot(rate, sequence, 2)
 source_clip = reel_mob.create_clip(1)
@@ -114,12 +128,13 @@ slot = file_package_mob.append_new_timeline_slot(rate, sequence, 1)
 source_clip = file_package_mob.create_clip(1)
 
 mastermob = f.create.MasterMob(material_package_name)
-#mastermob.umid = material_package_umid
-mastermob.append_new_timeline_slot(rate, source_clip, 1)
+sequence = f.create.Sequence("picture")
+sequence.append(source_clip)
+
+mastermob.append_new_timeline_slot(rate, sequence, 1)
 
 f.storage.add_mob(reel_mob)
 f.storage.add_mob(file_package_mob)
 f.storage.add_mob(mastermob)
-
 
 f.save()
