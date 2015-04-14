@@ -1,6 +1,7 @@
 from __future__ import print_function
 from distutils.core import setup, Extension, Command 
 from distutils.command.build_ext import build_ext
+from distutils.command.build import build
 import os
 import subprocess
 import sys
@@ -171,7 +172,15 @@ def name_tool_fix_com_api(path):
 def install_name_tool(path):
     cmd = ['sh','fixup_bundle.sh', path]
     subprocess.check_call(cmd)
-        
+
+class build_pyaaf(build):
+
+    def run(self):
+        com_api, libaafintp, libaafpgapi = copy_com_api(debug = self.debug)
+        if sys.platform == 'darwin':
+            name_tool_fix_com_api(com_api)
+        return build.run(self)
+
 class build_pyaaf_ext(build_ext):
 
     def build_extensions(self):
@@ -213,7 +222,8 @@ setup(
     license='MIT',
     packages=['aaf'],
     ext_modules=cythonize(ext_modules, include_path=include_path, build_dir=build_dir, nthreads=NTHREADS),
-    cmdclass = {'build_ext':build_pyaaf_ext},
+    cmdclass = {'build':build_pyaaf,
+                            'build_ext':build_pyaaf_ext},
     package_data=package_data
 
 )
