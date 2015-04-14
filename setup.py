@@ -100,11 +100,11 @@ for dirname, dirnames, filenames in os.walk("aaf", topdown=True):
 
 def get_com_api(debug=True):
     if sys.platform.startswith("win"):
-        dir = os.path.join(AAF_ROOT,'%s' % str(WIN_ARCH))
+        dirpath = os.path.join(AAF_ROOT, '%s' % str(WIN_ARCH))
         if debug or USE_AAF_SDK_DEBUG:
-            dir = os.path.join(dir, "Debug")
+            dirpath = os.path.join(dirpath, "Debug")
         else:
-            dir = os.path.join(dir, "Release")
+            dirpath = os.path.join(dirpath, "Release")
 
         for dirname in ext_extra['library_dirs']:
             com_api = os.path.join(dirname, 'AAFCOAPI.dll')
@@ -117,13 +117,13 @@ def get_com_api(debug=True):
     ext = '.so'
     if sys.platform == 'darwin':
         ext = '.dylib'
-    dir = os.path.join(AAF_ROOT, 'bin')
+    dirpath = os.path.join(AAF_ROOT, 'bin')
     if debug or USE_AAF_SDK_DEBUG:
-        dir = os.path.join(dir, 'debug')
+        dirpath = os.path.join(dirpath, 'debug')
     
-    com_api = os.path.join(dir, 'libcom-api' + ext)
-    libaafintp = os.path.join(dir, 'aafext', 'libaafintp' + ext)
-    libaafpgapi = os.path.join(dir, 'aafext', 'libaafpgapi' + ext)
+    com_api = os.path.join(dirpath, 'libcom-api' + ext)
+    libaafintp = os.path.join(dirpath, 'aafext', 'libaafintp' + ext)
+    libaafpgapi = os.path.join(dirpath, 'aafext', 'libaafpgapi' + ext)
     
     return com_api, libaafintp, libaafpgapi
 
@@ -133,16 +133,16 @@ def copy_com_api(debug=True):
     for item in [com_api, libaafintp, libaafpgapi]:
         print(os.path.basename(item), '=', item)
     
-    dir = os.path.dirname(__file__)
+    dirpath = os.path.dirname(__file__)
     
     # copy libcom-api
     basename = os.path.basename(com_api)
-    dest = os.path.join(dir, 'aaf', basename)
+    dest = os.path.join(dirpath, 'aaf', basename)
     print("copying", os.path.basename(com_api), '->', dest)
     shutil.copy(com_api, dest)
     
     # create ext dir
-    aafext_dir = os.path.join(dir, 'aaf', 'aafext')
+    aafext_dir = os.path.join(dirpath, 'aaf', 'aafext')
     if not os.path.exists(aafext_dir):
         print('creating', aafext_dir)
         os.makedirs(aafext_dir)
