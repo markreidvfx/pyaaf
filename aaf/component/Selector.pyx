@@ -21,7 +21,17 @@ cdef class Selector(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-            
+
+    def __init__(self, root):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+
+    def append_alternate_segment(self, Segment value not None):
+        error_check(self.ptr.AppendAlternateSegment(value.seg_ptr))
+
+    def remove_alternate_segment(self, Segment value not None):
+        error_check(self.ptr.RemoveAlternateSegment(value.seg_ptr))
+
     def alternate_segments(self):
         cdef SegmentIter value = SegmentIter.__new__(SegmentIter)
         error_check(self.ptr.EnumAlternateSegments(&value.ptr))
@@ -35,3 +45,6 @@ cdef class Selector(Segment):
             seg.query_interface()
             seg.root = self.root
             return seg.resolve()
+
+        def __set__(self, Segment value not None):
+            error_check(self.ptr.SetSelectedSegment(value.seg_ptr))
