@@ -46,7 +46,7 @@ cdef class OperationDef(DefObject):
             return data_def.name.replace("DataDef_", "")
 
         def __set__(self, value):
-            cdef Dictionary dictionary = self.root.dictionary
+            cdef Dictionary dictionary = self.dictionary()
             cdef DataDef data_def = dictionary.lookup_datadef(value)
             error_check(self.ptr.SetDataDef(data_def.ptr))
     

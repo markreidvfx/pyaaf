@@ -46,7 +46,7 @@ cdef class VaryingValue(Parameter):
     
     def add_point(self, time, value):
         
-        cdef ControlPoint point = ControlPoint(self.root, self, time, value)
+        cdef ControlPoint point = ControlPoint(self.root(), self, time, value)
         error_check(self.ptr.AddControlPoint(point.ptr))
         return point
         

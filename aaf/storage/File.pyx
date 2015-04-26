@@ -188,7 +188,7 @@ cdef class File(AAFBase):
             cdef Header header = Header.__new__(Header)
             error_check(self.ptr.GetHeader(&header.ptr))
             header.query_interface()
-            header.root = weakref.proxy(self)
+            header.root = weakref.ref(self)
             return header
             
     property storage:

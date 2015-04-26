@@ -255,7 +255,7 @@ cdef class CreateInstance(object):
     def from_name(self, name, *args, **kwargs):
         
         obj_type = lookup_object(name)
-        return obj_type(self.dictionary.root, *args, **kwargs)
+        return obj_type(self.dictionary.root(), *args, **kwargs)
 
         
     def create_instance(self, *args, **kwargs):
