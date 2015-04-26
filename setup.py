@@ -1,7 +1,6 @@
 from __future__ import print_function
-from distutils.core import setup, Extension, Command 
-from distutils.command.build_ext import build_ext
-from distutils.command.build import build
+from setuptools import setup, Extension, Command
+from setuptools.command.build_ext import build_ext
 import os
 import subprocess
 import sys
@@ -173,14 +172,6 @@ def install_name_tool(path):
     cmd = ['sh','fixup_bundle.sh', path]
     subprocess.check_call(cmd)
 
-class build_pyaaf(build):
-
-    def run(self):
-        com_api, libaafintp, libaafpgapi = copy_com_api(debug = self.debug)
-        if sys.platform == 'darwin':
-            name_tool_fix_com_api(com_api)
-        return build.run(self)
-
 class build_pyaaf_ext(build_ext):
 
     def build_extensions(self):
@@ -205,14 +196,11 @@ for item in (libaafintp, libaafpgapi):
 package_data = {'aaf':package_data}
 
 include_path = ext_extra['include_dirs']
-include_path.append(os.path.abspath("aaf"))
-
-build_dir = os.path.abspath(os.path.join("build", "cython"))
 
 setup(
     script_args=copy_args,
     name='PyAAF',
-    version='0.8.1',
+    version='0.9.0',
     description='Python Bindings for the Advanced Authoring Format (AAF)',
     
     author="Mark Reid",
@@ -221,9 +209,8 @@ setup(
     url="https://github.com/markreidvfx/pyaaf",
     license='MIT',
     packages=['aaf'],
-    ext_modules=cythonize(ext_modules, include_path=include_path, build_dir=build_dir, nthreads=NTHREADS),
-    cmdclass = {'build':build_pyaaf,
-                            'build_ext':build_pyaaf_ext},
+    ext_modules=cythonize(ext_modules, include_path=include_path, nthreads=NTHREADS),
+    cmdclass = {'build_ext':build_pyaaf_ext},
     package_data=package_data
 
 )

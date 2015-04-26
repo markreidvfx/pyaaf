@@ -30,6 +30,7 @@ clean:
 	- find aaf -name '*.dylib' -delete
 	- find aaf -name '*.pyd' -delete
 	- find aaf -name '*.dll' -delete
+	- find aaf -maxdepth 1 -name '*.cpp' -delete
 
 clean-all: clean
 	- rm configure config.py
