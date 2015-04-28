@@ -23,8 +23,12 @@ if '--aaf-root' in copy_args:
     del copy_args[index]
 else:
     AAF_ROOT = os.environ.get("AAF_ROOT")
-    
-USE_AAF_SDK_DEBUG = bool(int(os.environ.get("USE_AAF_SDK_DEBUG", "1")))
+
+debug_default = "1"
+if sys.platform.startswith('win'):
+    debug_default = "0"
+
+USE_AAF_SDK_DEBUG = bool(int(os.environ.get("USE_AAF_SDK_DEBUG", debug_default)))
 NTHREADS= int(os.environ.get("NTHREADS",0))
 
 space = '   '
