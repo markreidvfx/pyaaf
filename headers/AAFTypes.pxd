@@ -1,16 +1,15 @@
 from libc.stddef cimport wchar_t
-from libc.stdint cimport int64_t, uint64_t
 
 cdef extern from *:
     ctypedef signed char aafInt8 "aafInt8"
     ctypedef signed short int aafInt16 "aafInt16"
     ctypedef signed int aafInt32 "aafInt32"
-    ctypedef int64_t aafInt64 "aafInt64"
+    ctypedef long long aafInt64 "aafInt64"
     
     ctypedef unsigned char aafUInt8 "aafUInt8"
     ctypedef unsigned short int aafUInt16 "aafUInt16"
     ctypedef unsigned int aafUInt32 "aafUInt32"
-    ctypedef uint64_t aafUInt64 "aafUInt64"
+    ctypedef unsigned long long aafUInt64 "aafUInt64"
     
     ctypedef aafInt32 aafBoolean_t "aafBoolean_t"
     
