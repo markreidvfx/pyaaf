@@ -176,6 +176,25 @@ def install_name_tool(path):
     cmd = ['sh','fixup_bundle.sh', path]
     subprocess.check_call(cmd)
 
+class clean(Command):
+    description = "custom clean command"
+    user_options = []
+
+    def initialize_options(self):
+        self.cwd = None
+    def finalize_options(self):
+        self.cwd = os.getcwd()
+    def run(self):
+        assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
+
+        for pattern in ('*.cpp', '*.so', '*.dylib', '*.dll', '*.pyd'):
+            for item in(glob.glob(os.path.join('aaf', pattern))):
+                print("rm %s" % item)
+                os.remove(item)
+        if os.path.exists("build"):
+            print("rm build")
+            shutil.rmtree("build")
+
 class build_pyaaf_ext(build_ext):
 
     def build_extensions(self):
@@ -201,6 +220,9 @@ package_data = {'aaf':package_data}
 
 include_path = ext_extra['include_dirs']
 
+if not 'clean' in copy_args:
+    ext_modules = cythonize(ext_modules, include_path=include_path, nthreads=NTHREADS)
+
 setup(
     script_args=copy_args,
     name='PyAAF',
@@ -213,8 +235,9 @@ setup(
     url="https://github.com/markreidvfx/pyaaf",
     license='MIT',
     packages=['aaf'],
-    ext_modules=cythonize(ext_modules, include_path=include_path, nthreads=NTHREADS),
-    cmdclass = {'build_ext':build_pyaaf_ext},
+    ext_modules=ext_modules,
+    cmdclass = {'build_ext':build_pyaaf_ext,
+                'clean':clean},
     package_data=package_data
 
 )
