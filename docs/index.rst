@@ -34,13 +34,7 @@ Basic Demo
     for slot in main_compostion.slots():
         segment = slot.segment
         print segment
-        
-            
-        
-    
-    
-    
-    
+
 
 Building From Source
 --------------------
@@ -49,22 +43,25 @@ First you need to download the AAF-devel-libs for your platform
 
 http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6
 
-If your platform isn't there then you'll need to download the full SDK
-and build it yourself. 
+.. note::
+    On Windows if you use the prebuild AAF-devel-libs you may
+    require the Microsoft Visual C++ 2010 Redistributable Package (x86_, x64_).
+    Also required is Visual Studio or `Microsoft Visual C++ Compiler for Python 2.7`__.
 
+.. _x86: https://www.microsoft.com/en-ca/download/details.aspx?id=5555
+.. _x64: https://www.microsoft.com/en-ca/download/details.aspx?id=14632
+__ https://www.microsoft.com/en-ca/download/details.aspx?id=44266
+
+If your platform isn't there then you'll need to download the full SDK
+and build it yourself.
 
 ::
 
     $ git clone https://github.com/markreidvfx/pyaaf.git
     $ cd pyaaf
     $ export AAF_ROOT=path/to/root/of/AAF-devel-libs
-    $ virtualenv venv
-    $ . venv/bin/activate
-    $ pip install cython nose
-    $ make
-    $ nosetests
-    
- 
+    $ python setup.py install
+
 
 API Reference
 =============
