@@ -13,4 +13,6 @@ AAF SDK - http://aaf.sourceforge.net
 
 Note: pre-built devel libraries can be downloaded [here](http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6)
 
+The lastest release can be downloaded [here](https://github.com/markreidvfx/pyaaf/releases).
+
 Have fun, [Read the Docs](http://markreidvfx.github.io/pyaaf/), and good luck!

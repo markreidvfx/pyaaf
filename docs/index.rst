@@ -35,6 +35,10 @@ Basic Demo
         segment = slot.segment
         print segment
 
+Installing
+----------
+The lastest release can be downloaded `here
+<https://github.com/markreidvfx/pyaaf/releases>`_.
 
 Building From Source
 --------------------
