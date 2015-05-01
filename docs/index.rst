@@ -47,24 +47,35 @@ First you need to download the AAF-devel-libs for your platform
 
 http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6
 
+
+If your platform isn't there then you'll need to download the full AAF SDK
+and build it yourself.
+
 .. note::
-    On Windows if you use the prebuild AAF-devel-libs you may
-    require the Microsoft Visual C++ 2010 Redistributable Package (x86_, x64_).
-    Also required is Visual Studio or `Microsoft Visual C++ Compiler for Python 2.7`__.
+    On Windows the prebuild AAF-devel-libs need the
+    Microsoft Visual C++ 2010 Redistributable Package (x86_, x64_).
+
+    For Python <= 3.2 you will need the `Visual C++ Compiler for Python 2.7`_ or Visual Studio 2008.
+
+    For Python >= 3.3 you will need the `Windows 7 SDK`_ or Visual Studio 2010.
+    To setup the Windows SDK for python I'd recommend following `this guide here`_.
 
 .. _x86: https://www.microsoft.com/en-ca/download/details.aspx?id=5555
 .. _x64: https://www.microsoft.com/en-ca/download/details.aspx?id=14632
-__ https://www.microsoft.com/en-ca/download/details.aspx?id=44266
+.. _Visual C++ Compiler for Python 2.7: https://www.microsoft.com/en-ca/download/details.aspx?id=44266
+.. _Windows 7 SDK: https://www.microsoft.com/en-us/download/details.aspx?id=3138
+.. _this guide here: http://blog.ionelmc.ro/2014/12/21/compiling-python-extensions-on-windows/#for-python-3-4
 
-If your platform isn't there then you'll need to download the full SDK
-and build it yourself.
+
+To build inplace and test.
 
 ::
 
     $ git clone https://github.com/markreidvfx/pyaaf.git
     $ cd pyaaf
     $ export AAF_ROOT=path/to/root/of/AAF-devel-libs
-    $ python setup.py install
+    $ python setup.py build_ext --inplace
+    $ nosetest
 
 
 API Reference
