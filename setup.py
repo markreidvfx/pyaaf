@@ -31,6 +31,9 @@ if sys.platform.startswith('win'):
 USE_AAF_SDK_DEBUG = bool(int(os.environ.get("USE_AAF_SDK_DEBUG", debug_default)))
 NTHREADS= int(os.environ.get("NTHREADS",0))
 
+if '--debug' in copy_args:
+    USE_AAF_SDK_DEBUG=True
+
 space = '   '
 if AAF_ROOT is None:
 
@@ -39,6 +42,9 @@ if AAF_ROOT is None:
     print( space, "AAF SDK can be found from http://aaf.sourceforge.net")
     print( space, "Pre-built devel libraries can be found here")
     print( space, "http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6")
+    print( space, "If you compiled the full SDK yourself, set AAF_ROOT")
+    print( space, "to the build directory in the SDK for your platform.")
+    print( space, "For example AAFx86_64LinuxSDK/g++ or AAFWinSDK/vs9")
     sys.exit(-1)
     
 if not os.path.exists(AAF_ROOT):
@@ -66,7 +72,7 @@ if sys.platform.startswith('win'):
     import platform
     if platform.architecture()[0] == '64bit':
         WIN_ARCH = 'x64'
-    if '--debug' in copy_args or USE_AAF_SDK_DEBUG:
+    if USE_AAF_SDK_DEBUG:
         ext_extra['library_dirs'] = [os.path.join(AAF_ROOT,WIN_ARCH ,'Debug','Refimpl')]
         ext_extra['libraries'] = ['AAFD', 'AAFIIDD']
     else:
@@ -75,9 +81,7 @@ if sys.platform.startswith('win'):
 
     ext_extra['library_dirs'].extend([os.path.join(AAF_ROOT, 'lib'),
                                         os.path.join(AAF_ROOT, 'bin')])
-    
 print("AAF_ROOT =",AAF_ROOT)
-
 
 ext_modules = []
 for dirname, dirnames, filenames in os.walk("aaf", topdown=True):
@@ -198,16 +202,11 @@ class clean(Command):
 class build_pyaaf_ext(build_ext):
 
     def build_extensions(self):
-        com_api, libaafintp, libaafpgapi = copy_com_api(debug=self.debug)
-        if sys.platform == 'darwin':
-            name_tool_fix_com_api(com_api)
-        
+
         result = build_ext.build_extensions(self)
-        
         if sys.platform == 'darwin':
             for item in self.get_outputs():
                 install_name_tool(item)
-        print("done!")
         return result
 
         
@@ -221,6 +220,9 @@ package_data = {'aaf':package_data}
 include_path = ext_extra['include_dirs']
 
 if not 'clean' in copy_args:
+    copy_com_api(USE_AAF_SDK_DEBUG)
+    if sys.platform == 'darwin':
+        name_tool_fix_com_api(com_api)
     ext_modules = cythonize(ext_modules, include_path=include_path, nthreads=NTHREADS)
 
 setup(
