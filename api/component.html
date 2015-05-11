@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>aaf.component &mdash; pyaaf 0.8.0 documentation</title>
+    <title>aaf.component &mdash; pyaaf 0.9.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.8.0',
+        VERSION:     '0.9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="pyaaf 0.8.0 documentation" href="../index.html" />
+    <link rel="top" title="pyaaf 0.9.0 documentation" href="../index.html" />
     <link rel="next" title="aaf.essence" href="essence.html" />
     <link rel="prev" title="aaf.mob" href="mob.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="mob.html" title="aaf.mob"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">pyaaf 0.8.0 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">pyaaf 0.9.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -87,6 +87,18 @@
 <dt id="aaf.component.Segment">
 <em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">Segment</tt><a class="headerlink" href="#aaf.component.Segment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.component.Component" title="aaf.component.Component"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Component</span></tt></a></p>
+<dl class="method">
+<dt id="aaf.component.Segment.offset_to_tc">
+<tt class="descname">offset_to_tc</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Segment.offset_to_tc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the given segment offset to a timecode value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Segment.tc_to_offset">
+<tt class="descname">tc_to_offset</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Segment.tc_to_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the given timecode and edit rate to a segment offset value.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div></blockquote>
@@ -103,6 +115,11 @@
 <tt class="descname">cutpoint</tt><a class="headerlink" href="#aaf.component.Transition.cutpoint" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="aaf.component.Transition.operation_group">
+<tt class="descname">operation_group</tt><a class="headerlink" href="#aaf.component.Transition.operation_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div></blockquote>
@@ -117,12 +134,67 @@
 <dl class="method">
 <dt id="aaf.component.Sequence.append">
 <tt class="descname">append</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.append" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Append Component at end of Sequence</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.component_at">
+<tt class="descname">component_at</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.component_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the component at the given index</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.component_at_time">
+<tt class="descname">component_at_time</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.component_at_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the component at a given time (position in edit units)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="aaf.component.Sequence.components">
 <tt class="descname">components</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.components" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.Sequence.count">
+<tt class="descname">count</tt><a class="headerlink" href="#aaf.component.Sequence.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of Components in Sequence</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.index_at_time">
+<tt class="descname">index_at_time</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.index_at_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the index of the component at a given time (position in edit units)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.insert">
+<tt class="descname">insert</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert Component at given index</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.positions">
+<tt class="descname">positions</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>yields (index, edit_start_time, component) of items in the sequence</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.prepend">
+<tt class="descname">prepend</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.prepend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepend Component at beginning of Sequence</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.remove">
+<tt class="descname">remove</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove Component at given index</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Sequence.time_at_index">
+<tt class="descname">time_at_index</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Sequence.time_at_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the time (position in edit units) of a given index</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -199,14 +271,39 @@
 <dt id="aaf.component.SourceClip">
 <em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">SourceClip</tt><a class="headerlink" href="#aaf.component.SourceClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.component.SourceReference" title="aaf.component.SourceReference"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.SourceReference</span></tt></a></p>
+<dl class="attribute">
+<dt id="aaf.component.SourceClip.mob_id">
+<tt class="descname">mob_id</tt><a class="headerlink" href="#aaf.component.SourceClip.mob_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="aaf.component.SourceClip.resolve_ref">
 <tt class="descname">resolve_ref</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.SourceClip.resolve_ref" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="aaf.component.SourceClip.resolve_slot">
+<tt class="descname">resolve_slot</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.SourceClip.resolve_slot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.SourceClip.slot_id">
+<tt class="descname">slot_id</tt><a class="headerlink" href="#aaf.component.SourceClip.slot_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="aaf.component.SourceClip.source_ref">
 <tt class="descname">source_ref</tt><a class="headerlink" href="#aaf.component.SourceClip.source_ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.SourceClip.start_time">
+<tt class="descname">start_time</tt><a class="headerlink" href="#aaf.component.SourceClip.start_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.SourceClip.walk">
+<tt class="descname">walk</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.SourceClip.walk" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -299,6 +396,26 @@
 <em class="property">class </em><tt class="descclassname">aaf.component.</tt><tt class="descname">EssenceGroup</tt><a class="headerlink" href="#aaf.component.EssenceGroup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#aaf.component.Segment" title="aaf.component.Segment"><tt class="xref py py-class docutils literal"><span class="pre">aaf.component.Segment</span></tt></a></p>
 <p>Describes multiple digital representations of the same original content source.</p>
+<dl class="method">
+<dt id="aaf.component.EssenceGroup.choice_at">
+<tt class="descname">choice_at</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.EssenceGroup.choice_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.EssenceGroup.choices">
+<tt class="descname">choices</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.EssenceGroup.choices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.EssenceGroup.count">
+<tt class="descname">count</tt><a class="headerlink" href="#aaf.component.EssenceGroup.count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="aaf.component.EssenceGroup.still_frame">
+<tt class="descname">still_frame</tt><a class="headerlink" href="#aaf.component.EssenceGroup.still_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div></blockquote>
@@ -316,9 +433,19 @@
 <tt class="descname">alternate_segments</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Selector.alternate_segments" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="aaf.component.Selector.append_alternate_segment">
+<tt class="descname">append_alternate_segment</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Selector.append_alternate_segment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="aaf.component.Selector.remove_alternate_segment">
+<tt class="descname">remove_alternate_segment</tt><big>(</big><big>)</big><a class="headerlink" href="#aaf.component.Selector.remove_alternate_segment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
-<dt id="aaf.component.Selector.segment">
-<tt class="descname">segment</tt><a class="headerlink" href="#aaf.component.Selector.segment" title="Permalink to this definition">¶</a></dt>
+<dt id="aaf.component.Selector.selected">
+<tt class="descname">selected</tt><a class="headerlink" href="#aaf.component.Selector.selected" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -606,12 +733,12 @@
         <li class="right" >
           <a href="mob.html" title="aaf.mob"
              >previous</a> |</li>
-        <li><a href="../index.html">pyaaf 0.8.0 documentation</a> &raquo;</li> 
+        <li><a href="../index.html">pyaaf 0.9.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Mark Reid.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

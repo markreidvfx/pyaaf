@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to pyaaf’s documentation! &mdash; pyaaf 0.8.0 documentation</title>
+    <title>Welcome to pyaaf’s documentation! &mdash; pyaaf 0.9.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.8.0',
+        VERSION:     '0.9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="pyaaf 0.8.0 documentation" href="#" />
+    <link rel="top" title="pyaaf 0.9.0 documentation" href="#" />
     <link rel="next" title="aaf.storage" href="api/storage.html" /> 
   </head>
   <body>
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="api/storage.html" title="aaf.storage"
              accesskey="N">next</a> |</li>
-        <li><a href="#">pyaaf 0.8.0 documentation</a> &raquo;</li> 
+        <li><a href="#">pyaaf 0.9.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -76,20 +76,30 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="installing">
+<h2>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h2>
+<p>The lastest release can be downloaded <a class="reference external" href="https://github.com/markreidvfx/pyaaf/releases">here</a>.</p>
+</div>
 <div class="section" id="building-from-source">
 <h2>Building From Source<a class="headerlink" href="#building-from-source" title="Permalink to this headline">¶</a></h2>
 <p>First you need to download the AAF-devel-libs for your platform</p>
 <p><a class="reference external" href="http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6">http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6</a></p>
-<p>If your platform isn&#8217;t there then you&#8217;ll need to download the full SDK
+<p>If your platform isn&#8217;t there then you&#8217;ll need to download the full AAF SDK
 and build it yourself.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>On Windows the prebuild AAF-devel-libs need the
+Microsoft Visual C++ 2010 Redistributable Package (<a class="reference external" href="https://www.microsoft.com/en-ca/download/details.aspx?id=5555">x86</a>, <a class="reference external" href="https://www.microsoft.com/en-ca/download/details.aspx?id=14632">x64</a>).</p>
+<p>For Python &lt;= 3.2 you will need the <a class="reference external" href="https://www.microsoft.com/en-ca/download/details.aspx?id=44266">Visual C++ Compiler for Python 2.7</a> or Visual Studio 2008.</p>
+<p class="last">For Python &gt;= 3.3 you will need the <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=3138">Windows 7 SDK</a> or Visual Studio 2010.
+To setup the Windows SDK for python I&#8217;d recommend following <a class="reference external" href="http://blog.ionelmc.ro/2014/12/21/compiling-python-extensions-on-windows/#for-python-3-4">this guide here</a>.</p>
+</div>
+<p>To build inplace and test.</p>
 <div class="highlight-python"><div class="highlight"><pre>$ git clone https://github.com/markreidvfx/pyaaf.git
 $ cd pyaaf
 $ export AAF_ROOT=path/to/root/of/AAF-devel-libs
-$ virtualenv venv
-$ . venv/bin/activate
-$ pip install cython nose
-$ make
-$ nosetests
+$ python setup.py build_ext --inplace
+$ nosetest
 </pre></div>
 </div>
 </div>
@@ -256,6 +266,7 @@ $ nosetests
   <ul>
 <li><a class="reference internal" href="#">Welcome to pyaaf&#8217;s documentation!</a><ul>
 <li><a class="reference internal" href="#basic-demo">Basic Demo</a></li>
+<li><a class="reference internal" href="#installing">Installing</a></li>
 <li><a class="reference internal" href="#building-from-source">Building From Source</a></li>
 </ul>
 </li>
@@ -301,12 +312,12 @@ $ nosetests
         <li class="right" >
           <a href="api/storage.html" title="aaf.storage"
              >next</a> |</li>
-        <li><a href="#">pyaaf 0.8.0 documentation</a> &raquo;</li> 
+        <li><a href="#">pyaaf 0.9.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Mark Reid.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
