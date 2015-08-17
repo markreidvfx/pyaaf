@@ -81,7 +81,7 @@ cdef extern from "AAFTypes.h":
     ctypedef aafInt64 aafFrameOffset_t
     ctypedef aafInt32 aafDropType_t
     
-    cdef enum aafDropType_e:
+    cdef enum aafDropType_e "_aafDropType_e":
         kAAFTcNonDrop
         kAAFTcDrop
         
@@ -111,13 +111,13 @@ cdef extern from "AAFTypes.h":
     
     ctypedef aafInt32 aafMediaOpenMode_t
     
-    cdef enum aafMediaOpenMode_e:
+    cdef enum aafMediaOpenMode_e "_aafMediaOpenMode_e":
         kAAFMediaOpenReadOnly
         kAAFMediaOpenAppend
 
     ctypedef aafInt32 aafMobKind_t
     
-    cdef enum aafMobKind_e:
+    cdef enum aafMobKind_e "_aafMobKind_e":
         kAAFCompMob
         kAAFMasterMob
         kAAFFileMob
@@ -134,7 +134,7 @@ cdef extern from "AAFTypes.h":
         
     ctypedef aafInt32 aafFadeType_t
     
-    cdef enum aafFadeType_e:
+    cdef enum aafFadeType_e "_aafFadeType_e":
         kAAFFadeNone
         kAAFFadeLinearAmp
         kAAFFadeLinearPower
@@ -151,14 +151,14 @@ cdef extern from "AAFTypes.h":
     
     ctypedef aafUInt8 aafEdgecodeHeader_t[8]  
     
-    cdef enum aafEdgeType_e:
+    cdef enum aafEdgeType_e "_aafEdgeType_e":
         kAAFEtNull
         kAAFEtKeycode
         kAAFEtEdgenum4
         kAAFEtEdgenum5
         kAAFEtHeaderSize
         
-    cdef enum aafFilmType_e:
+    cdef enum aafFilmType_e "_aafFilmType_e":
         kAAFFtNull
         kAAFFt35MM
         kAAFFt16MM
@@ -175,13 +175,13 @@ cdef extern from "AAFTypes.h":
     
     ctypedef aafInt32 aafInterpKind_t
     
-    cdef enum aafInterpKind_e:
+    cdef enum aafInterpKind_e "_aafInterpKind_e":
         kAAFConstInterp
         kAAFLinearInterp
     
     ctypedef aafInt32 aafEditHint_t
     
-    cdef enum aafEditHint_e:
+    cdef enum aafEditHint_e "_aafEditHint_e":
         kAAFNoEditHint
         kAAFProportional
         kAAFRelativeLeft
@@ -190,7 +190,7 @@ cdef extern from "AAFTypes.h":
         
     ctypedef aafInt32 aafProductReleaseType_t
     
-    cdef enum aafProductReleaseType_e:
+    cdef enum aafProductReleaseType_e "_aafProductReleaseType_e":
         kAAFVersionUnknown
         kAAFVersionReleased
         kAAFVersionDebug
@@ -208,11 +208,11 @@ cdef extern from "AAFTypes.h":
     
     ctypedef aafInt32 eAAFByteOrder_t
     
-    cdef enum eAAFByteOrder_e:
+    cdef enum eAAFByteOrder_e "_eAAFByteOrder_e":
         kAAFByteOrderLittle
         kAAFByteOrderBig
     
-    cdef enum aafSearchTag_e:
+    cdef enum aafSearchTag_e "_aafSearchTag_e":
         kAAFNoSearch
         kAAFByMobID
         kAAFByMobKind
@@ -225,7 +225,7 @@ cdef extern from "AAFTypes.h":
         kAAFBySourceMobUsageCode
         kAAFByCompositionMobUsageCode
     
-    cdef enum aafCriteriaType_e:
+    cdef enum aafCriteriaType_e "_aafCriteriaType_e":
         kAAFAnyRepresentation
         kAAFFastestRepresentation
         kAAFBestFidelityRepresentation
@@ -264,7 +264,7 @@ cdef extern from "AAFTypes.h":
         
     ctypedef aafInt32 aafColorSpace_t
     
-    cdef enum aafColorSpace_e: 
+    cdef enum aafColorSpace_e "_aafColorSpace_e":
         kAAFColorSpaceRGB
         kAAFColorSpaceYUV
         kAAFColorSpaceYIQ
@@ -276,7 +276,7 @@ cdef extern from "AAFTypes.h":
         
     ctypedef aafInt32 aafColorSiting_t
     
-    cdef enum aafColorSiting_e:
+    cdef enum aafColorSiting_e "_aafColorSiting_e":
         kAAFCoSiting
         kAAFAveraging 
         kAAFThreeTap
@@ -286,13 +286,13 @@ cdef extern from "AAFTypes.h":
 
     ctypedef aafInt32 aafAppendOption_t
     
-    cdef enum aafAppendOption_e:
+    cdef enum aafAppendOption_e "_aafAppendOption_e":
         kAAFAppend
         kAAFForceOverwrite
         
     ctypedef aafInt32 aafPulldownKind_t
     
-    cdef enum aafPulldownKind_e:
+    cdef enum aafPulldownKind_e "_aafPulldownKind_e":
         kAAFTwoThreePD
         kAAFPALPD
         kAAFOneToOneNTSC
@@ -304,7 +304,7 @@ cdef extern from "AAFTypes.h":
     
     ctypedef aafInt32 aafPulldownDir_t
     
-    cdef enum aafPulldownDir_e:
+    cdef enum aafPulldownDir_e "_aafPulldownDir_e":
         kAAFTapeToFilmSpeed
         kAAFFilmToTapeSpeed
         
@@ -312,7 +312,7 @@ cdef extern from "AAFTypes.h":
         
     ctypedef aafInt32 aafFrameLayout_t
     
-    cdef enum aafFrameLayout_e:
+    cdef enum aafFrameLayout_e "_aafFrameLayout_e":
         kAAFFullFrame
         kAAFSeparateFields
         kAAFOneField
@@ -321,7 +321,7 @@ cdef extern from "AAFTypes.h":
             
     ctypedef aafInt32 aafCompressEnable_t
     
-    cdef enum aafCompressEnable_e:
+    cdef enum aafCompressEnable_e "_aafCompressEnable_e":
         kAAFCompressionEnable
         kAAFCompressionDisable
 
@@ -329,7 +329,7 @@ cdef extern from "AAFTypes.h":
     
     ctypedef aafInt32 eAAFTypeCategory_t
     
-    cdef enum eAAFTypeCategory_e:
+    cdef enum eAAFTypeCategory_e "_eAAFTypeCategory_e":
         kAAFTypeCatUnknown       # can only occur in damaged files
         kAAFTypeCatInt           # any integral type
         kAAFTypeCatCharacter     # any character type
