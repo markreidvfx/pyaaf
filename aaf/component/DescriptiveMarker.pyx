@@ -24,3 +24,11 @@ cdef class DescriptiveMarker(CommentMarker):
         dictionary.create_instance(self)
 
         error_check(self.ptr.Initialize())
+
+    def set_described_slot_ids(self, values):
+        cdef vector[lib.aafUInt32] buf
+
+        for item in values:
+            buf.push_back(item)
+
+        error_check(self.ptr.SetDescribedSlotIDs(buf.size(), &buf[0]))

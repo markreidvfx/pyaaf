@@ -18,6 +18,18 @@ cdef class TypeDefSet(TypeDef):
         if self.ptr:
             self.ptr.Release()
 
+    def size(self, PropertyValue p_value):
+        cdef lib.aafUInt32 count
+        error_check(self.ptr.GetCount(p_value.ptr, &count))
+        return count
+
+    def element_typedef(self):
+        cdef TypeDef typedef = TypeDef.__new__(TypeDef)
+        error_check(self.ptr.GetElementType(&typedef.typedef_ptr))
+        typedef.query_interface()
+        typedef.root = self.root
+        return resolve_typedef(typedef)
+
     def iter_property_value(self, PropertyValue p_value):
         cdef PropValueIter prop_iter = PropValueIter.__new__(PropValueIter)
         error_check(self.ptr.GetElements(p_value.ptr, &prop_iter.ptr))

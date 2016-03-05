@@ -1256,6 +1256,7 @@ cdef extern from "AAF.h" nogil:
     cdef GUID IID_IAAFDescriptiveMarker
     cdef cppclass IAAFDescriptiveMarker(IUnknown):
         HRESULT Initialize()
+        HRESULT SetDescribedSlotIDs(aafUInt32  numberElements, aafUInt32*  pDescribedSlotIDs)
 
     cdef aafUID_t AUID_IAAFKLVData
     cdef GUID IID_IAAFKLVData
