@@ -3,10 +3,10 @@ from .base cimport AAFBase, AAFObject
 
 cdef class MetaDef(AAFBase):
     cdef lib.IAAFMetaDefinition *meta_ptr
-    
+
 cdef class ClassDef(MetaDef):
     cdef lib.IAAFClassDef *ptr
-    
+
 cdef class PropertyDef(MetaDef):
     cdef lib.IAAFPropertyDef *ptr
 
@@ -14,9 +14,9 @@ cdef class PropertyDef(MetaDef):
 
 cdef class TypeDef(MetaDef):
     cdef lib.IAAFTypeDef *typedef_ptr
-    
+
 cdef object resolve_typedef(TypeDef typedef)
- 
+
 cdef class TypeDefCharacter(TypeDef):
     cdef lib.IAAFTypeDefCharacter *ptr
 
@@ -35,14 +35,14 @@ cdef class TypeDefIndirect(TypeDef):
 # Note Opaque inherits TypeDefIndirect
 cdef class TypeDefOpaque(TypeDefIndirect):
     cdef lib.IAAFTypeDefOpaque *opaque_ptr
-    
+
 cdef class TypeDefInt(TypeDef):
     cdef lib.IAAFTypeDefInt *ptr
 
 # Note TypeDefWeakObjRef and TypeDefWeakObjRef inherit
 cdef class TypeDefObjectRef(TypeDef):
     cdef lib.IAAFTypeDefObjectRef *ref_ptr
-    
+
 cdef class TypeDefStrongObjRef(TypeDefObjectRef):
     cdef lib.IAAFTypeDefStrongObjRef *ptr
 
@@ -85,30 +85,30 @@ cpdef dict PulldownDirMap
 
 cdef class DefObject(AAFObject):
     cdef lib.IAAFDefObject *defobject_ptr
-    
+
 cdef class DataDef(DefObject):
     cdef lib.IAAFDataDef *ptr
-    
+
 cdef class ContainerDef(DefObject):
     cdef lib.IAAFContainerDef *ptr
-    
+
 cdef class InterpolationDef(DefObject):
     cdef lib.IAAFInterpolationDef *ptr
-    
+
 cdef class ParameterDef(DefObject):
     cdef lib.IAAFParameterDef *ptr
-    
+
 cdef class PluginDef(DefObject):
     cdef lib.IAAFPluginDef *ptr
-    
+
 cdef class CodecDef(DefObject):
     cdef lib.IAAFCodecDef *ptr
-    
+
 cdef class OperationDef(DefObject):
     cdef lib.IAAFOperationDef *ptr
-    
+
 cdef class KLVDataDef(DefObject):
     cdef lib.IAAFKLVDataDefinition *ptr
-    
+
 cdef class TaggedValueDef(DefObject):
     cdef lib.IAAFTaggedValueDefinition *ptr

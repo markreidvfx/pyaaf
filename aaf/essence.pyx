@@ -46,7 +46,7 @@ ColorSiting['unknownsiting'] = lib.kAAFUnknownSiting
 
 cdef register_formatdefs(map[string, pair[ lib.aafUID_t, string] ] def_map, dict d, replace=[]):
     cdef pair[string, pair[lib.aafUID_t, string] ] def_pair
-    cdef AUID auid_obj 
+    cdef AUID auid_obj
     for pair in def_map:
         auid_obj = AUID()
         auid_obj.from_auid(pair.second.first)
@@ -54,7 +54,7 @@ cdef register_formatdefs(map[string, pair[ lib.aafUID_t, string] ] def_map, dict
         for n in replace:
             name = name.replace(n, '')
         d[name.lower()] = (auid_obj, pair.second.second.decode('ascii'))
-        
+
 register_formatdefs(lib.get_essenceformats_def_map(), EssenceFormatDefMap, ['kAAF'])
 
 include "essence/EssenceData.pyx"
@@ -71,14 +71,14 @@ include "essence/WAVEDescriptor.pyx"
 include "essence/AIFCDescriptor.pyx"
 include "essence/TIFFDescriptor.pyx"
 include "essence/DigitalImageDescriptor.pyx"
-include "essence/CDCIDescriptor.pyx"        
+include "essence/CDCIDescriptor.pyx"
 include "essence/RGBADescriptor.pyx"
 include "essence/SoundDescriptor.pyx"
 include "essence/PCMDescriptor.pyx"
 include "essence/TapeDescriptor.pyx"
 include "essence/PhysicalDescriptor.pyx"
 include "essence/ImportDescriptor.pyx"
-        
+
 register_object(EssenceData)
 register_object(Locator)
 register_object(NetworkLocator)

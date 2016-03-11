@@ -8,7 +8,7 @@ Mob
 
    .. autoclass:: Mob
        :members:
-       
+
 MasterMob
 ---------
 
@@ -20,18 +20,18 @@ CompositionMob
 
    .. autoclass:: CompositionMob
        :members:
-       
+
 SourceMob
 ---------
-   
+
    .. autoclass:: SourceMob
        :members:
        :undoc-members:
        :show-inheritance:
-       
+
 MobSlot
-------- 
-       
+-------
+
    .. autoclass:: MobSlot
        :members:
        :undoc-members:
@@ -44,10 +44,10 @@ TimelineMobSlot
        :members:
        :undoc-members:
        :show-inheritance:
-       
+
 EventMobSlot
 ------------
-       
+
    .. autoclass:: EventMobSlot
        :members:
        :undoc-members:

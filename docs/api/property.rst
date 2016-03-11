@@ -8,21 +8,21 @@ PropertyItem
 
    .. autoclass:: PropertyItem
           :members:
-          
+
 Property
 --------
 
    .. autoclass:: Property
           :members:
-          
-          
+
+
 PropertyValue
 ------------
 
    .. autoclass:: PropertyValue
           :members:
-          
-          
+
+
 TaggedValue
 -----------
 

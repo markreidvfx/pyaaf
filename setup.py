@@ -46,11 +46,11 @@ if AAF_ROOT is None:
     print( space, "to the build directory in the SDK for your platform.")
     print( space, "For example AAFx86_64LinuxSDK/g++ or AAFWinSDK/vs9")
     sys.exit(-1)
-    
+
 if not os.path.exists(AAF_ROOT):
     print(space, "AAF_ROOT direcotry does not exist: %s" % AAF_ROOT)
     sys.exit(-1)
-    
+
 AAF_INCLUDE = os.path.join(AAF_ROOT,'include')
 
 AAF_LIB = os.path.join(AAF_ROOT,'lib', 'debug')
@@ -91,12 +91,12 @@ for dirname, dirnames, filenames in os.walk("aaf", topdown=True):
 
         path = os.path.join(dirname, filename)
         name = "aaf." + os.path.splitext(os.path.basename(path))[0]
-        
+
         sources = [path]
 
         extra_src_dir = os.path.join(os.path.dirname(__file__), 'aaf', os.path.splitext(filename)[0])
         extra_src = glob.glob(os.path.join(extra_src_dir, '*.cpp'))
-        
+
         sources.extend(extra_src)
         extension = Extension(name,
                               sources=sources,
@@ -128,33 +128,33 @@ def get_com_api(debug=True):
     dirpath = os.path.join(AAF_ROOT, 'bin')
     if debug or USE_AAF_SDK_DEBUG:
         dirpath = os.path.join(dirpath, 'debug')
-    
+
     com_api = os.path.join(dirpath, 'libcom-api' + ext)
     libaafintp = os.path.join(dirpath, 'aafext', 'libaafintp' + ext)
     libaafpgapi = os.path.join(dirpath, 'aafext', 'libaafpgapi' + ext)
-    
+
     return com_api, libaafintp, libaafpgapi
 
 def copy_com_api(debug=True):
     com_api, libaafintp, libaafpgapi = get_com_api(debug)
-    
+
     for item in [com_api, libaafintp, libaafpgapi]:
         print(os.path.basename(item), '=', item)
-    
+
     dirpath = os.path.dirname(__file__)
-    
+
     # copy libcom-api
     basename = os.path.basename(com_api)
     dest = os.path.join(dirpath, 'aaf', basename)
     print("copying", os.path.basename(com_api), '->', dest)
     shutil.copy(com_api, dest)
-    
+
     # create ext dir
     aafext_dir = os.path.join(dirpath, 'aaf', 'aafext')
     if not os.path.exists(aafext_dir):
         print('creating', aafext_dir)
         os.makedirs(aafext_dir)
-        
+
     # copy libaafintp
     basename = os.path.basename(libaafintp)
     intp_dest = os.path.join(aafext_dir,basename)
@@ -165,15 +165,15 @@ def copy_com_api(debug=True):
     pgapi_dest = os.path.join(aafext_dir,basename)
     print("copying", os.path.basename(libaafpgapi), '->', pgapi_dest)
     shutil.copy(libaafpgapi, pgapi_dest)
-    
+
     return dest,intp_dest, pgapi_dest
 
 def name_tool_fix_com_api(path):
-    
+
     cmd = ['install_name_tool', '-id', 'libcom-api.dylib', path]
     #print(subprocess.list2cmdline(cmd))
     subprocess.check_call(cmd)
-    
+
     #'install_name_tool -id libcom-api.dylib aaf/libcom-api.dylib'
 
 def install_name_tool(path):
@@ -209,12 +209,12 @@ class build_pyaaf_ext(build_ext):
                 install_name_tool(item)
         return result
 
-        
+
 com_api, libaafintp, libaafpgapi = get_com_api()
 package_data = [os.path.basename(com_api)]
 for item in (libaafintp, libaafpgapi):
     package_data.append(os.path.join('aafext', os.path.basename(item)))
-        
+
 package_data = {'aaf':package_data}
 
 include_path = ext_extra['include_dirs']
@@ -230,10 +230,10 @@ setup(
     name='PyAAF',
     version='0.9.0',
     description='Python Bindings for the Advanced Authoring Format (AAF)',
-    
+
     author="Mark Reid",
     author_email="mindmark@gmail.com",
-    
+
     url="https://github.com/markreidvfx/pyaaf",
     license='MIT',
     packages=['aaf'],

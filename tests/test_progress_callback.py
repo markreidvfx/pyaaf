@@ -32,25 +32,25 @@ def progress_callback():
 
 class TestFile(unittest.TestCase):
     def test_basic(self):
-        
+
         aaf.util.set_progress_callback(progress_callback)
-        
+
         f = aaf.open(main_test_file)
-        
+
         global Counter
 
         value  = Counter
         assert Counter > 0
-        
+
         out_test_file = os.path.join(sandbox, 'test_progress_callback.aaf')
-        
+
         f.save(out_test_file)
-        
+
         assert Counter > value
-        
+
         f.close()
-        
-        
+
+
         print("Final", Counter, "Before save", value)
 
 if __name__ == '__main__':

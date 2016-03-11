@@ -21,20 +21,20 @@ cdef class AAFCharBuffer(object):
     cdef vector[lib.aafCharacter] buf
     cdef readonly object encoding
     cpdef null_terminate(self)
-    
+
     cdef write_aafchar(self, lib.aafCharacter c)
     cpdef write_unicode(self, unicode value)
     cpdef write_bytes(self, bytes value)
     cpdef write_str(self, object string)
-    
+
     cpdef unicode read_unicode(self)
     cpdef bytes read_bytes(self)
     cpdef object read_str(self)
     cpdef bytes read_raw(self)
-    
+
     cdef lib.aafCharacter * get_ptr(self)
 
-    
+
 cdef class SourceRef(object):
     cdef lib.aafSourceRef_t source_ref
     cdef lib.aafSourceRef_t get_aafSourceRef_t(self)
@@ -42,14 +42,14 @@ cdef class SourceRef(object):
 cdef class Timecode(object):
     cdef lib.aafTimecode_t timecode
     cdef lib.aafTimecode_t get_timecode_t(self)
-    
+
 cdef class AUID(object):
     cdef lib.aafUID_t auid
     cdef lib.aafUID_t get_auid(self)
     cdef lib.GUID get_iid(self)
     cdef void from_auid(self, lib.aafUID_t auid)
     cdef void from_iid(self, lib.GUID iid)
-    
+
 cdef class MobID(object):
     cdef lib.aafMobID_t mobID
     cdef lib.aafMobID_t get_aafMobID_t(self)
@@ -66,6 +66,6 @@ cdef fused aaf_integral:
     lib.aafUInt16
     lib.aafUInt32
     lib.aafUInt64
-    
+
 cdef setup_progress_callback()
 cdef setup_diagnostic_output_callback()

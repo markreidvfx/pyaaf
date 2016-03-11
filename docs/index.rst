@@ -15,22 +15,22 @@ Basic Demo
 ::
 
     import aaf
-    
+
     f = aaf.open("path/to/file.aaf", "r")
-    
+
     # get the main composition
     main_compostion = f.storage.toplevel_mobs()[0]
-    
+
     # print the name of the composition
     print main_compostion.name
-    
+
     # AAFObjects have properties that can be accessed like a dictionary
     # print out the creation time
     print main_compostion['CreationTime'].value
-    
+
     # video, audio and other track types are stored in slots
-    # on a mob object. 
-    
+    # on a mob object.
+
     for slot in main_compostion.slots():
         segment = slot.segment
         print segment
@@ -85,7 +85,7 @@ Contents:
 
 .. toctree::
    :maxdepth: 3
-   
+
    api/storage
    api/mob
    api/component
@@ -117,4 +117,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

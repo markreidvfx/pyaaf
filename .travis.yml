@@ -28,7 +28,7 @@ before_install:
     - make
     - sudo make install
     - cd ..
-    
+
 # Install build requirements.
 install: pip install cython
 

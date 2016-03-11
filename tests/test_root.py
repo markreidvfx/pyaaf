@@ -31,19 +31,19 @@ def iter_mobs(path):
 
 
 class TestFile(unittest.TestCase):
-    
+
     def test_itermobs(self):
         test_file = main_test_file
-        
+
         for m in iter_mobs(test_file):
             assert m.root is not None
     def test_walk_file(self):
         test_file = main_test_file
-        
+
         f = aaf.open(test_file)
-    
+
         header = f.header
-        
+
         def walk_properties(space, iter_item):
 
             for item in iter_item:
@@ -53,17 +53,17 @@ class TestFile(unittest.TestCase):
                     print(space, item.root)
                     assert item.root is not None
                 name = ""
-                
+
                 if hasattr(item, 'name'):
                     name = item.name or ""
-                
+
                 #print space,name, value
                 s = space + '   '
-                
+
                 if isinstance(value, aaf.base.AAFBase):
                     #print("***", item, value)
                     assert value.root is not None
-                
+
                 if isinstance(value, aaf.base.AAFObject):
                     #print(space, value.root)
                     assert value.root is not None
@@ -72,8 +72,8 @@ class TestFile(unittest.TestCase):
                     print(space,value, value.root)
                     assert value.root is not None
                     walk_properties(s, value)
-        
+
         walk_properties("", header.properties())
-            
+
 if __name__ == '__main__':
     unittest.main()

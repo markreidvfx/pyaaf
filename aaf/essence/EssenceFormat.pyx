@@ -4,22 +4,22 @@ cdef fused format_specifier:
     lib.aafInt32
     lib.aafUInt32
     lib.aafColorSpace_t
-    lib.aafRect_t 
+    lib.aafRect_t
     lib.aafFrameLayout_t
     lib.aafColorSiting_t
     lib.aafUID_t
     lib.aafBoolean_t
     lib.aafRational_t
-            
-    
+
+
 cdef class EssenceFormat(AAFBase):
     def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceFormat
         self.ptr = NULL
-    
+
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
-    
+
     cdef query_interface(self, AAFBase obj = None):
         if obj is None:
             obj = self
@@ -27,84 +27,84 @@ cdef class EssenceFormat(AAFBase):
             query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFEssenceFormat)
 
         AAFBase.query_interface(self, obj)
-    
+
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
     def __setitem__(self, x, y):
         self.set_format_specifier(x,y)
-        
+
     def __getitem__(self, x):
         for i in xrange(self.count()):
             name = self.get_format_specifier_name(i)
             if name.lower() == x.lower():
                 return self.get_format_specifier_value(i)
         raise KeyError(x)
-    
+
     def keys(self):
         keys = []
         for i in xrange(self.count()):
             keys.append(self.get_format_specifier_name(i))
         return keys
-    
+
     def has_key(self, x):
         if x.lower() in self.keys():
             return True
         return False
-    
+
     def all_keys(self):
         return [name for name, item in EssenceFormatDefMap.items()]
-    
+
     def to_dict(self):
         d = {}
         for i in xrange(self.count()):
             name = self.get_format_specifier_name(i)
             value = self.get_format_specifier_value(i)
             d[name] = value
-        
+
         return d
-    
+
     def __repr__(self):
         return str(self.to_dict())
-    
+
     def count(self):
         cdef lib.aafInt32 count
         error_check(self.ptr.NumFormatSpecifiers(&count))
         return count
-    
+
     def get_format_specifier_auid(self, lib.aafInt32 index):
         if index >= self.count() or index < 0:
             raise IndexError("invalid index %i" % index)
-        
+
         cdef AUID auid = AUID()
-        
+
         error_check(self.ptr.GetIndexedFormatSpecifier(index, &auid.auid, 0, NULL, NULL))
         return auid
-    
+
     def get_format_specifier_type(self, lib.aafInt32 index):
-        
+
         specifier_auid = self .get_format_specifier_auid(index)
         for name, item in EssenceFormatDefMap.items():
             if specifier_auid == item[0]:
                 return item[1]
-        
+
         raise ValueError("unknown format specifier auid: %s" %(str(specifier_auid)))
-    
+
     def get_format_specifier_name(self, lib.aafInt32 index):
         specifier_auid = self .get_format_specifier_auid(index)
         for name, item in EssenceFormatDefMap.items():
             if specifier_auid == item[0]:
                 return name
-        
+
         raise ValueError("unknown format specifier auid: %s" %(str(specifier_auid)))
-    
+
     def get_format_specifier_value(self, lib.aafInt32 index):
         specifier_type = self.get_format_specifier_type(index)
         specifier_name = self.get_format_specifier_name(index)
-        
+
         cdef lib.aafInt32 bytes_read
-        
-        cdef lib.aafInt8 value_Int8 
+
+        cdef lib.aafInt8 value_Int8
         cdef lib.aafInt16 value_Int16
         cdef lib.aafInt32 value_Int32
         cdef lib.aafUInt32 value_UInt32
@@ -114,20 +114,20 @@ cdef class EssenceFormat(AAFBase):
         cdef lib.aafColorSiting_t value_ColorSiting
         cdef lib.aafUID_t value_UID
         cdef lib.aafBoolean_t value_bool
-        
+
         cdef lib.aafRational_t value_rational
-        
-        cdef AUID auid = AUID() 
-        
+
+        cdef AUID auid = AUID()
+
         if specifier_type == 'operand.expInt32':
             error_check(self.ptr.GetIndexedFormatSpecifier(index, &auid.auid, sizeof(lib.aafInt32), <lib.aafUInt8*> &value_Int32, &bytes_read))
             return value_Int32
-        
+
         elif specifier_type  == 'operand.expUInt32':
-            
+
             error_check(self.ptr.GetIndexedFormatSpecifier(index, &auid.auid, sizeof(lib.aafUInt32), <lib.aafUInt8*> &value_UInt32, &bytes_read))
             return value_UInt32
-        
+
         elif specifier_type == 'operand.expRational':
             error_check(self.ptr.GetIndexedFormatSpecifier(index, &auid.auid, sizeof(lib.aafRational_t), <lib.aafUInt8*> &value_rational, &bytes_read))
             return aafRational_to_fraction(value_rational)
@@ -141,15 +141,15 @@ cdef class EssenceFormat(AAFBase):
         cdef AUID auid_obj = EssenceFormatDefMap[specifier][0]
         cdef AUID audi_operand_obj
         cdef lib.aafUID_t auid = auid_obj.get_auid()
-        
+
         specifier_type = EssenceFormatDefMap[specifier][1]
 
         cdef lib.aafRect_t rect
         cdef lib.aafInt32 line_map[5]
         cdef lib.aafRational_t value_rational
-        
+
         #print auid_obj.auid,specifier_type
-        
+
         if specifier_type == 'operand.expInt32':
             set_format_specifier[lib.aafInt32](self,auid, value)
         elif specifier_type in ('operand.expUInt32', '?operand.expUInt32'):

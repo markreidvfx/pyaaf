@@ -21,27 +21,27 @@ cpdef object error_check(lib.HRESULT ret):
     if not lib.SUCCEEDED(ret):
         message = HRESULT2str(ret)
         raise RuntimeError("failed with [%d]: %s" % (ret, message))
-    
+
     return ret
 
 cdef object HRESULT2str(lib.HRESULT result):
     cdef lib.aafUInt32 size_in_bytes
     ret = lib.AAFResultToTextBufLen(result, &size_in_bytes)
-    
+
     if not lib.SUCCEEDED(ret):
         return "Unknown Error"
-    
-    
+
+
     cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
     buf.size_in_bytes = size_in_bytes
-    
+
     ret = lib.AAFResultToText(result, buf.get_ptr(), buf.size_in_bytes)
-    
+
     if not lib.SUCCEEDED(ret):
         return "Unknown Error"
 
     message = buf.read_str()
-    message = message.replace("AAFRESULT_", "").replace("_", " ").lower()    
+    message = message.replace("AAFRESULT_", "").replace("_", " ").lower()
     return message
 
 cdef object query_interface(lib.IUnknown **src, lib.IUnknown **dst, lib.GUID guid):
@@ -75,7 +75,7 @@ cdef object resolve_object(object obj):
     return RESOLVE_OBJECT_FUNC(obj)
 
 cdef object fraction_to_aafRational(object obj, lib.aafRational_t& r):
-    
+
     f = AAFFraction(obj).limit_denominator(200000000)
     r.numerator = f.numerator
     r.denominator = f.denominator
@@ -93,52 +93,50 @@ include "util/Timecode.pyx"
 include "util/progress_callback.pyx"
 include "util/diagnostic_output.pyx"
 
-cdef dict VersionTypes = {'Unknown' : 0, 
-                          'Released' : 1, 
-                          'Debug' : 2, 
-                          'Patched' : 3,  
-                          'Beta' : 4, 
+cdef dict VersionTypes = {'Unknown' : 0,
+                          'Released' : 1,
+                          'Debug' : 2,
+                          'Patched' : 3,
+                          'Beta' : 4,
                           'PrivateBuild' : 5}
 
 def get_library_version():
     cdef lib.aafProductVersion_t version
     error_check(lib.AAFGetLibraryVersion(&version))
     dict_version = dict(version)
-    
+
     # set a nicer VersionType name
     for key, value in VersionTypes.items():
         if dict_version['type'] == value:
             dict_version['type'] = key
             break
     else:
-        dict_version['type'] = "Unknown" 
-    
+        dict_version['type'] = "Unknown"
+
     return dict_version
 
 def get_static_library_version():
     cdef lib.aafProductVersion_t version
     error_check(lib.AAFGetStaticLibraryVersion(&version))
     dict_version = dict(version)
-    
+
     # set a nicer VersionType name
     for key, value in VersionTypes.items():
         if dict_version['type'] == value:
             dict_version['type'] = key
             break
     else:
-        dict_version['type'] = "Unknown" 
-    
+        dict_version['type'] = "Unknown"
+
     return dict_version
 
 def get_library_path_name():
     cdef lib.aafUInt32 size_in_bytes
     error_check(lib.AAFGetLibraryPathNameBufLen(&size_in_bytes))
-    
+
     cdef AAFCharBuffer buf = AAFCharBuffer.__new__(AAFCharBuffer)
     buf.size_in_bytes =  size_in_bytes
-    
-    error_check(lib.AAFGetLibraryPathName(buf.get_ptr(), size_in_bytes))
-    
-    return buf.read_str()
 
-        
+    error_check(lib.AAFGetLibraryPathName(buf.get_ptr(), size_in_bytes))
+
+    return buf.read_str()

@@ -23,7 +23,7 @@ cdef object isA(AAFBase obj1,obj2):
         #obj2(obj1)
     except:
         return False
-    
+
     return True
 
 def resolve_object_func(AAFBase obj):
@@ -32,9 +32,9 @@ def resolve_object_func(AAFBase obj):
     """
     cdef AAFBase new_obj
     cdef AAFObject test_aaf_obj
-    
+
     if isA(obj, AAFObject):
-        
+
         test_aaf_obj = AAFObject.__new__(AAFObject)
         test_aaf_obj.query_interface(obj)
         try:
@@ -51,9 +51,9 @@ def resolve_object_func(AAFBase obj):
             else:
                 test_aaf_obj.root = obj.root
                 return test_aaf_obj
-            
+
     elif isA(obj, MetaDef):
-        
+
         if isA(obj, TypeDef):
             new_obj = TypeDef.__new__(TypeDef)
             new_obj.query_interface(obj)
@@ -69,7 +69,7 @@ def resolve_object_func(AAFBase obj):
             new_obj.query_interface(obj)
             new_obj.root = obj.root
             return new_obj
-        else:        
+        else:
             raise ValueError("Unknown Metadef")
     return obj
 
@@ -85,7 +85,7 @@ include "define/TypeDefEnum.pyx"
 include "define/TypeDefExtEnum.pyx"
 include "define/TypeDefFixedArray.pyx"
 include "define/TypeDefInt.pyx"
-    
+
 # Note Opaque inherits TypeDefIndirect
 include "define/TypeDefIndirect.pyx"
 include "define/TypeDefOpaque.pyx"
@@ -103,10 +103,10 @@ include "define/TypeDefString.pyx"
 include "define/TypeDefVariableArray.pyx"
 
 cdef object resolve_typedef(TypeDef typedef):
-    
+
     cat = typedef.category
     cdef TypeDef obj
-    
+
     if cat == lib.kAAFTypeCatInt:
         obj = TypeDefInt.__new__(TypeDefInt)
     elif cat == lib.kAAFTypeCatCharacter:
@@ -139,7 +139,7 @@ cdef object resolve_typedef(TypeDef typedef):
         obj = TypeDefVariableArray.__new__(TypeDefVariableArray)
     else:
         raise Exception("Unkown TypeDef")
-    
+
     obj.query_interface(typedef)
     obj.root = typedef.root
     return obj
@@ -154,7 +154,7 @@ cpdef dict InterpolationDefMap = {}
 
 cdef register_defs(map[string, lib.aafUID_t] def_map, dict d, replace=[]):
     cdef pair[string, lib.aafUID_t] def_pair
-    cdef AUID auid_obj 
+    cdef AUID auid_obj
     for pair in def_map:
         auid_obj = AUID()
         auid_obj.from_auid(pair.second)
@@ -162,8 +162,8 @@ cdef register_defs(map[string, lib.aafUID_t] def_map, dict d, replace=[]):
         for n in replace:
             name = name.replace(n, '')
         d[name.lower()] = auid_obj
-        
-register_defs(lib.get_typedef_map(), TypeDefMap, ["kAAFTypeID_"])    
+
+register_defs(lib.get_typedef_map(), TypeDefMap, ["kAAFTypeID_"])
 register_defs(lib.get_datadef_map(), DataDefMap, ["kAAFDataDef_"])
 register_defs(lib.get_codecdef_map(), CodecDefMap, ["kAAFCodecDef_",'kAAFCodec'])
 register_defs(lib.get_container_def_map(), ContainerDefMap, ["kAAFContainerDef_"])
@@ -205,7 +205,7 @@ include "define/OperationDef.pyx"
 include "define/KLVDataDef.pyx"
 include "define/TaggedValueDef.pyx"
 
-register_object(DefObject)           
+register_object(DefObject)
 register_object(DataDef)
 register_object(ParameterDef)
 register_object(PluginDef)

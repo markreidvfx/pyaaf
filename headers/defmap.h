@@ -169,7 +169,7 @@ std::map<std::string, aafUID_t> get_typedef_map()
     MAP_ADD(kAAFTypeID_RIFFChunkStrongReferenceVector)
     MAP_ADD(kAAFTypeID_DescriptiveObjectStrongReferenceVector)
     #undef MAP_ADD
-    
+
     return def_map;
 }
 
@@ -193,7 +193,7 @@ std::map<std::string, aafUID_t> get_datadef_map()
     #undef MAP_ADD
 
     return def_map;
-    
+
 }
 
 std::map<std::string, aafUID_t> get_codecdef_map()
@@ -241,9 +241,9 @@ std::map<std::string, aafUID_t> get_codecdef_map()
     MAP_ADD(kAAFCodecFlavour_VC3_1253)
     MAP_ADD(kAAFCodecFlavour_VC3_1254)
     #undef MAP_ADD
-    
+
     return def_map;
-    
+
 }
 
 std::map<std::string, aafUID_t> get_container_def_map()
@@ -344,7 +344,7 @@ std::map<std::string, aafUID_t> get_container_def_map()
     MAP_ADD(kAAFContainerDef_MXFGC_Avid_DNX_220_720p)
     MAP_ADD(kAAFContainerDef_MXFGC_Avid_DNX_145_720p)
     #undef MAP_ADD
-    
+
     return def_map;
 }
 
@@ -467,13 +467,13 @@ std::map<std::string, std::pair< aafUID_t, std::string > > get_essenceformats_de
     MAP_ADD(kAAFNumChannels, operand.expUInt32)
     MAP_ADD(kAAFPadBytesPerRow, ?operand.expUInt32)
     MAP_ADD(kAAFCompressionQuality, ?operand.expUInt32)
-    MAP_ADD(kAAFLegacyAUIDs, ?operand.expUInt32) 
-    MAP_ADD(kAAFEssenceElementKey, ?operand.expUInt32) 
-    MAP_ADD(kAAFPhysicalTrackNum, ?operand.expUInt32) 
-    MAP_ADD(kAAFNumThreads, ?operand.expUInt32) 
+    MAP_ADD(kAAFLegacyAUIDs, ?operand.expUInt32)
+    MAP_ADD(kAAFEssenceElementKey, ?operand.expUInt32)
+    MAP_ADD(kAAFPhysicalTrackNum, ?operand.expUInt32)
+    MAP_ADD(kAAFNumThreads, ?operand.expUInt32)
     MAP_ADD(kAAFBufferLayout, ?operand.expUInt32)
-    
+
     #undef MAP_ADD
-    
+
     return def_map;
 }

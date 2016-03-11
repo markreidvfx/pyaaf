@@ -6,9 +6,9 @@ Progress::ProgressCallback ()
 {
     //std::cout << " progress = " << progress << "\n";
     //progress++;
-    
+
     HRESULT result = AAFRESULT_SUCCESS;
-    
+
     if (callback_func != NULL)
     {
     result = callback_func();
@@ -38,7 +38,7 @@ Progress::QueryInterface (REFIID iid, void ** ppIfc)
 {
     if (ppIfc == 0)
         return AAFRESULT_NULL_PARAM;
-    
+
     if (memcmp(&iid, &IID_IUnknown, sizeof(IID)) == 0) {
         IUnknown* unk = (IUnknown*) this;
         *ppIfc = (void*) unk;
@@ -58,14 +58,14 @@ HRESULT Progress::Create(IAAFProgress** ppProgress, HRESULT (*callback_func)())
 {
     if (ppProgress == 0)
         return AAFRESULT_NULL_PARAM;
-    
+
     IAAFProgress* result = new Progress();
     if (result == 0)
         return AAFRESULT_NOMEMORY;
-    
+
     Progress* result_python = dynamic_cast<Progress*>(result);
     result_python->callback_func = callback_func;
-    
+
     result->AddRef();
     *ppProgress = result;
     return AAFRESULT_SUCCESS;
@@ -86,5 +86,5 @@ Progress::~Progress()
 HRESULT CreateProgressCallback(IAAFProgress** pProgress, HRESULT(*callback_func)())
 {
     return Progress::Create(pProgress, callback_func);
-    
+
 }

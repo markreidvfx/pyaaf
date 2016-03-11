@@ -17,7 +17,7 @@ build: build_ext
 
 install: build
 	python setup.py install
-	
+
 test:
 	cd tests;nosetests -v
 

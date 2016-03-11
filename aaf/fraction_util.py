@@ -10,9 +10,9 @@ class AAFFraction(Fraction):
     Subclass of fractions.Fraction from the standard library. Behaves exactly the same, except
     doesn't round to the Greatest Common Divisor at the end.
     """
-    
+
     def __new__(cls, numerator=0, denominator=None):
-        
+
         self = super(AAFFraction, cls).__new__(cls)
 
         if denominator is None:

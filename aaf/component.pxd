@@ -4,16 +4,16 @@ from base cimport AAFObject
 
 cdef class Component(AAFObject):
     cdef lib.IAAFComponent *comp_ptr
-    
+
 cdef class Segment(Component):
     cdef lib.IAAFSegment *seg_ptr
-    
+
 cdef class Transition(Component):
     cdef lib.IAAFTransition *ptr
-    
+
 cdef class Sequence(Segment):
     cdef lib.IAAFSequence *ptr
-    
+
 cdef class Timecode(Segment):
     cdef lib.IAAFTimecode *ptr
 
@@ -28,7 +28,7 @@ cdef class SourceReference(Segment):
 
 cdef class SourceClip(SourceReference):
     cdef lib.IAAFSourceClip *ptr
-    
+
 cdef class OperationGroup(Segment):
     cdef lib.IAAFOperationGroup *ptr
 
@@ -40,32 +40,32 @@ cdef class ScopeReference(Segment):
 
 cdef class EssenceGroup(Segment):
     cdef lib.IAAFEssenceGroup *ptr
-    
+
 cdef class Selector(Segment):
     cdef lib.IAAFSelector *ptr
- 
+
 #Note Edgecode renamed to EdgeCode
 cdef class EdgeCode(Segment):
     cdef lib.IAAFEdgecode *ptr
-    
+
 cdef class Event(Segment):
     cdef lib.IAAFEvent *event_ptr
-    
+
 cdef class CommentMarker(Event):
     cdef lib.IAAFCommentMarker *comment_ptr
-    
+
 cdef class DescriptiveMarker(CommentMarker):
     cdef lib.IAAFDescriptiveMarker *ptr
 
 cdef class GPITrigger(Event):
     pass
-    
+
 cdef class TimecodeStream(Segment):
     cdef lib.IAAFTimecodeStream *timecode_stream_ptr
-    
+
 cdef class TimecodeStream12M(TimecodeStream):
     cdef lib.IAAFTimecodeStream12M *ptr
-    
+
 cdef class Parameter(AAFObject):
     cdef lib.IAAFParameter *param_ptr
 

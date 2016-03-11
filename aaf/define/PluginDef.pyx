@@ -3,7 +3,7 @@ cdef class PluginDef(DefObject):
         self.iid = lib.IID_IAAFPluginDef
         self.auid = lib.AUID_AAFPluginDef
         self.ptr = NULL
-    
+
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
 
@@ -12,9 +12,9 @@ cdef class PluginDef(DefObject):
             obj = self
         else:
             query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFPluginDef)
-            
+
         DefObject.query_interface(self, obj)
-    
+
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()

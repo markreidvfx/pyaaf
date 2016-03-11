@@ -1,19 +1,19 @@
 cdef class DigitalImageDescriptor(FileDescriptor):
     """
-    The DigitalImageDescriptor class specifies that a File SourceMob is associated with 
+    The DigitalImageDescriptor class specifies that a File SourceMob is associated with
     video essence that is formatted either using RGBA or luminance/chrominance formatting.
-    The DigitalImageDescriptor class is a sub-class of the FileDescriptor class. 
+    The DigitalImageDescriptor class is a sub-class of the FileDescriptor class.
     The DigitalImageDescriptor class is an abstract class.
     """
-    
+
     def __cinit__(self):
         self.iid = lib.IID_IAAFDigitalImageDescriptor
         self.auid = lib.AUID_AAFDigitalImageDescriptor
         self.im_ptr = NULL
-    
+
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.im_ptr
-    
+
     cdef query_interface(self, AAFBase obj = None):
         if obj is None:
             obj = self
@@ -21,26 +21,26 @@ cdef class DigitalImageDescriptor(FileDescriptor):
             query_interface(obj.get_ptr(), <lib.IUnknown **> &self.im_ptr, lib.IID_IAAFDigitalImageDescriptor)
 
         FileDescriptor.query_interface(self, obj)
-    
+
     def __dealloc__(self):
         if self.im_ptr:
             self.im_ptr.Release()
-    
+
     property compression:
         def __set__(self, value):
             cdef AUID auid = CompressionDefMap[value.lower()]
             error_check(self.im_ptr.SetCompression(auid.get_auid()))
-        
+
         def __get__(self):
             cdef AUID auid = AUID()
             error_check(self.im_ptr.GetCompression(&auid.auid))
-            
+
             for key,value in CompressionDefMap.items():
                 if value == auid:
                     return key
-            
+
             raise ValueError("Unknown Compression")
-    
+
     property stored_view:
         """
         The dimension of the stored view.  Typically this includes
@@ -55,10 +55,10 @@ cdef class DigitalImageDescriptor(FileDescriptor):
         def __get__(self):
             cdef lib.aafUInt32 width
             cdef lib.aafUInt32 height
-            
+
             error_check(self.im_ptr.GetStoredView(&height,&width))
             return (width, height)
-    
+
     property sampled_view:
         """
         The dimensions of sampled view.  Typically this includes
@@ -70,9 +70,9 @@ cdef class DigitalImageDescriptor(FileDescriptor):
             cdef lib.aafUInt32 height = rect[1]
             cdef lib.aafInt32 x_offset = rect[2]
             cdef lib.aafInt32 y_offset = rect[3]
-            
+
             error_check(self.im_ptr.SetSampledView(height, width, x_offset, y_offset))
-        
+
         def __get__(self):
             cdef lib.aafUInt32 width
             cdef lib.aafUInt32 height
@@ -80,7 +80,7 @@ cdef class DigitalImageDescriptor(FileDescriptor):
             cdef lib.aafInt32 y_offset
             error_check(self.im_ptr.GetSampledView(&height, &width, &x_offset, &y_offset))
             return (width, height, x_offset, y_offset)
-        
+
     property display_view:
         """
         the dimension of display view.  Typically this includes
@@ -92,9 +92,9 @@ cdef class DigitalImageDescriptor(FileDescriptor):
             cdef lib.aafUInt32 height = rect[1]
             cdef lib.aafInt32 x_offset = rect[2]
             cdef lib.aafInt32 y_offset = rect[3]
-            
+
             error_check(self.im_ptr.SetDisplayView(height, width, x_offset, y_offset))
-        
+
         def __get__(self):
             cdef lib.aafUInt32 width
             cdef lib.aafUInt32 height
@@ -114,51 +114,51 @@ cdef class DigitalImageDescriptor(FileDescriptor):
             error_check(self.im_ptr.SetImageAspectRatio(ratio))
         def __get__(self):
             return self['ImageAspectRatio']
-        
+
     property layout:
         """
         The frame layout.  The frame layout describes whether all
         data for a complete sample is in one frame or is split into more
         than/ one field. Set Takes a str.
-        
+
         Values are:
-            "fullframe"      - Each frame contains a full sample in progressive 
+            "fullframe"      - Each frame contains a full sample in progressive
                                scan lines.
-            "separatefields" - Each sample consists of two fields, 
+            "separatefields" - Each sample consists of two fields,
                                which when interlaced produce a full sample.
             "onefield"       - Each sample consists of two interlaced
                                fields, but only one field is stored in the
                                data stream.
             "mixxedfields"   - Similar to FullFrame, except the two fields
-        
+
         Note: value is always converted to lowercase
         """
-        
+
         def __set__(self, value):
             value = value.lower()
             if value == "none":
                 value = None
             if value is None:
                 pass
-            
+
             cdef lib.aafFrameLayout_t layout = FrameLayout[value]
-            
+
             error_check(self.im_ptr.SetFrameLayout(layout))
-            
+
         def __get__(self):
             cdef lib.aafFrameLayout_t layout
-            
+
             error_check(self.im_ptr.GetFrameLayout(&layout))
             print layout
-            
+
             for key, value in FrameLayout.items():
                 if value == layout:
                     return key
-                
+
     property line_map:
         """
         The VideoLineMap property.  The video line map specifies the
-        scan line in the analog source that corresponds to the beginning 
+        scan line in the analog source that corresponds to the beginning
         of each digitized field.  For single-field video, there is 1
         value in the array.  For interleaved video, there are 2 values
         in the array. Set Takes a Tuple, example: (0) or (0,1).
@@ -167,29 +167,29 @@ cdef class DigitalImageDescriptor(FileDescriptor):
             if len(value) == 0 or len(value ) > 2:
                 raise ValueError("line_map len must be 1 or 2")
             cdef lib.aafUInt32 numberElements = len(value)
-            
+
             cdef lib.aafInt32 line_map[2]
-            
+
             for i,value in enumerate(value):
                 line_map[i] = value
-            
+
             error_check(self.im_ptr.SetVideoLineMap(numberElements, line_map))
         def __get__(self):
             cdef lib.aafUInt32 numberElements
             error_check(self.im_ptr.GetVideoLineMapSize(&numberElements))
-            
+
             cdef vector[lib.aafInt32] buf
             # I don't Know if its possible to have a line_map bigger then 2
             cdef lib.aafInt32 line_map[5]
-            
+
             error_check(self.im_ptr.GetVideoLineMap(numberElements, line_map))
 
             l = []
             for i in xrange(numberElements):
                 l.append(line_map[i])
-                
+
             return tuple(l)
-        
+
     property image_alignment:
         """
         Specifies the alignment when storing the digital essence.  For example, a value of 16
@@ -204,4 +204,3 @@ cdef class DigitalImageDescriptor(FileDescriptor):
             return value
         def __set__(self, lib.aafUInt32 value):
             error_check(self.im_ptr.SetImageAlignmentFactor(value))
-        

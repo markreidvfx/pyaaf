@@ -2,25 +2,25 @@
 =============
 
 .. automodule:: aaf.iterator
-     
+
    .. autoclass:: BaseIterator
        :members:
-    
+
    .. autoclass:: ClassDefIter
        :members:
- 
+
    .. autoclass:: CodecDefIter
        :members:
- 
+
    .. autoclass:: CodecFlavourIter
        :members:
 
    .. autoclass:: ComponentIter
        :members:
-  
+
    .. autoclass:: ContainerDefIter
        :members:
- 
+
    .. autoclass:: ControlPointIter
        :members:
 
@@ -41,34 +41,34 @@
 
    .. autoclass:: InterpolationDefIter
        :members:
- 
+
    .. autoclass:: KLVDataIter
        :members:
-  
+
    .. autoclass:: KLVDataDefIter
        :members:
- 
+
    .. autoclass:: LoadedPluginIter
        :members:
- 
+
    .. autoclass:: LocatorIter
        :members:
 
    .. autoclass:: MobSlotIter
        :members:
- 
+
    .. autoclass:: MobIter
        :members:
- 
+
    .. autoclass:: OperationDefIter
        :members:
-  
+
    .. autoclass:: ParamDefIter
        :members:
-  
+
    .. autoclass:: ParamIter
        :members:
- 
+
    .. autoclass:: PluginDefIter
        :members:
 
@@ -89,7 +89,7 @@
 
    .. autoclass:: PropValueResolveIter
        :members:
-   
+
    .. autoclass:: RIFFChunkIter
        :members:
 
@@ -107,5 +107,3 @@
 
    .. autoclass:: TypeDefStreamDataIter
        :members:
-
-    

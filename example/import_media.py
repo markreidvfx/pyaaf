@@ -63,17 +63,17 @@ Video_Profiles ={
 
 
 def probe(path):
-    
+
     cmd = [FFPROBE_EXEC, '-of','json','-show_format','-show_streams', path]
     print subprocess.list2cmdline(cmd)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
+
     stdout,stderr = p.communicate()
-    
+
     if p.returncode != 0:
         raise subprocess.CalledProcessError(p.returncode, subprocess.list2cmdline(cmd), stderr)
-    
-    
+
+
     return json.loads(stdout)
 
 
@@ -82,16 +82,16 @@ def timecode_to_seconds(time_string):
         return float(time_string)
     except:
         pass
-    
+
     for format in ("%H:%M:%S.%f", "%H:%M:%S", "%M:%S.%f","%M:%S"):
         try:
             t = datetime.datetime.strptime(time_string, format)
-            
+
             seconds = 0
-            
+
             if t.minute:
                 seconds += 60*t.minute
-            
+
             if t.hour:
                 seconds += 60 * 60 * t.hour
             seconds += t.second
@@ -101,40 +101,40 @@ def timecode_to_seconds(time_string):
         except:
             #print traceback.format_exc()
             pass
-        
+
     raise ValueError("invalid time format: %s" % time_string)
 
 def seconds_to_timecode(seconds):
     format = "%S.%f"
     t = datetime.timedelta(seconds=float(seconds))
-    
- 
+
+
     return str(t)
-        
+
 def conform_media(path,output_dir, start=None, end=None, duration=None, video_profile=None, audio_profile=None):
-    
+
     if not video_profile:
         video_profile = 'dnx_1080p_36_23.97'
     if not audio_profile:
         audio_profile = 'pcm_48000'
-        
+
     video_profile = Video_Profiles[video_profile]
     audio_profile = Audio_Profiles[audio_profile]
-        
+
     format = probe(path)
-    
+
     out_files = []
-    
+
     cmd = [FFMPEG_EXEC,'-y', '-nostdin']
-    
+
     if end:
         duration = timecode_to_seconds(end) - timecode_to_seconds(start)
         duration = seconds_to_timecode(duration)
         end = None
-    
+
     if start:
         start_seconds = timecode_to_seconds(start)
-        
+
         fast_start = max(0,int(start_seconds-30))
 
         if fast_start:
@@ -149,99 +149,99 @@ def conform_media(path,output_dir, start=None, end=None, duration=None, video_pr
         cmd.extend([ '-r', frame_rate])
 
     cmd.extend(['-i', path,])
-    
-    
-    
+
+
+
     width, height = video_profile['size'].split('x')
-    
+
     interlaced = False
-    
+
     if height[-1] == 'i':
         interlaced = True
     width = int(width)
     height = int(height[:-1])
-    
+
     #sample_rate =44100
     sample_rate = audio_profile['sample_rate']
-    
+
     for stream in format['streams']:
-        
+
         pprint(stream)
         stream_index = stream['index']
         if stream['codec_type'] == 'video':
-            
+
             input_width = stream['width']
             input_height = stream['height']
-            
-            
+
+
             max_width = width
             max_height = height
-            
+
             scale = min(max_width/ float(input_width), max_height/float(input_height) )
-            
+
             scale_width = int(input_width*scale)
             scale_height = int(input_height*scale)
 
             padding_ofs_x = (max_width  - scale_width)/2
             padding_ofs_y = (max_height - scale_height)/2
-            
-            
+
+
             vfilter = "scale=%d:%d,pad=%d:%d:%d:%d" % (scale_width,scale_height,
                                                        max_width,max_height, padding_ofs_x,padding_ofs_y)
-            
+
             print vfilter
-            
+
             cmd.extend(['-an','-vcodec', 'dnxhd', '-vb', '%dM' % bitrate, '-r', frame_rate, '-pix_fmt', pix_fmt])
-            
+
             if not start is None:
                 cmd.extend(['-ss', str(start)])
-            
+
             if not duration is None:
                 cmd.extend(['-t', str(duration)])
-            
+
             cmd.extend(['-vf', vfilter])
-            
+
             out_file = os.path.join(output_dir, 'out_%d.dnxhd' % (stream_index))
-            
+
             cmd.extend([out_file])
-            
+
             out_files.append({'path':out_file, 'frame_rate':frame_rate, 'type': 'video'})
-        
+
         elif stream['codec_type'] == 'audio':
-            
+
             input_sample_rate = int(stream['sample_rate'])
             channels = stream['channels']
-            
+
             cmd.extend(['-vn', '-acodec', 'pcm_s16le','-f','s16le', '-ar', str(sample_rate)])
-            
+
             if not start is None:
                 cmd.extend(['-ss', str(start)])
-            
+
             if not duration is None:
                 cmd.extend(['-t', str(duration)])
-            
+
             out_file = os.path.join(output_dir, 'out_%d_%d_%d.pcm' % (stream_index, sample_rate, channels))
-            
+
             cmd.extend([out_file])
-            
+
             out_files.append({'path':out_file, 'sample_rate':sample_rate, 'channels':channels,'type': 'audio'})
-            
-            
-    
+
+
+
     print subprocess.list2cmdline(cmd)
-    
+
     subprocess.check_call(cmd)
-    
+
     return out_files
-        
-        
+
+
 def create_aaf(path, media_streams, mobname):
-    
+
     f = aaf.open(path, 'rw')
 
     mastermob = f.dictionary.create.MasterMob(mobname)
     f.storage.add_mob(mastermob)
-    
+
     for stream in media_streams:
         if stream['type'] == 'video':
             print "importing video..."
@@ -252,17 +252,17 @@ def create_aaf(path, media_streams, mobname):
             print "importing audio..."
             start = time.time()
             mastermob.import_audio_essence(stream['path'], stream['channels'], stream['sample_rate'])
-            
+
             print "imported audio in %d secs" % (time.time()- start)
 
     f.save()
     f.close()
-    
-    
-    
+
+
+
 if __name__ == "__main__":
     from optparse import OptionParser
-    
+
     usage = "usage: %prog [options] output_aaf_file media_file"
     parser = OptionParser(usage=usage)
     parser.add_option('-s', '--start', type="string", dest="start",default=None,
@@ -271,69 +271,69 @@ if __name__ == "__main__":
                       help = "end recording at in timecode or seconds")
     parser.add_option('-d', '--duration', type="string", dest='duration',default=None,
                       help = "record duration in timecode or seconds")
-    
+
     parser.add_option("-v", '--video-profile', type='string', dest = 'video_profile', default="dnx_1080p_36_23.97",
                       help = "encoding profile for video [default: 1080p_36_23.97]")
     parser.add_option("-a", '--audio-profile', type='string', dest = 'audio_profile',default='pcm_48000',
                       help = 'encoding profile for audio [default: pcm_48000]')
-    
+
     parser.add_option('--list-profiles', dest='list_profiles',
                       action="store_true",default=False,
                       help = "lists profiles")
 
     (options, args) = parser.parse_args()
-    
-    
+
+
     if options.list_profiles:
-        
+
         titles = ['Audio Profile', 'Sample Rate', 'Sample Fmt']
         row_format ="{:<25}{:<15}{:<15}"
-        
+
         print ""
         print row_format.format( *titles)
         print ""
-        
+
         for key,value in sorted(Audio_Profiles.items()):
             print row_format.format(key, value['sample_rate'], value['sample_fmt'])
-        
+
         titles = ['Video Profile', "Size", 'Frame Rate', "Bitrate", "Pix Fmt", "Codec"]
         row_format ="{:<25}{:<15}{:<15}{:<10}{:<12}{:<10}"
         print ""
         print row_format.format( *titles)
         print ""
         for key, value in sorted(Video_Profiles.items()):
-            print row_format.format(key, value['size'], 
+            print row_format.format(key, value['size'],
                                     value['frame_rate'], value['bitrate'], value['pix_fmt'], value['codec'])
-        
+
         sys.exit()
-        
+
     if len(args) < 2:
         parser.error("not enough args")
-    
+
     details = probe(args[1])
-        
+
     #if not os.path.exists(args[1]):
         #parser.error("No such file or directory: %s" % args[1])
-        
+
     if options.end and options.duration:
         parser.error("Can only use --duration or --end not both")
-        
+
     if not Audio_Profiles.has_key(options.audio_profile.lower()):
         parser.error("No such audio profile: %s" % options.audio_profile)
-        
+
     if not Video_Profiles.has_key(options.video_profile.lower()):
         parser.error("No such video profile: %s" % options.video_profile)
-        
+
     aaf_file = args[0]
-    
-    
+
+
     tempdir = tempfile.mkdtemp("-aaf_import")
     print tempdir
     try:
         media_streams =  conform_media(args[1],
                                        output_dir=tempdir,
                                        start=options.start,
-                                       end=options.end, 
+                                       end=options.end,
                                        duration=options.duration,
                                        video_profile = options.video_profile.lower(),
                                        audio_profile = options.audio_profile.lower())
@@ -341,7 +341,7 @@ if __name__ == "__main__":
         print traceback.format_exc()
         shutil.rmtree(tempdir)
         parser.error("error conforming media")
-    
+
     try:
         basename = os.path.basename(args[1])
         name,ext = os.path.splitext(basename)
@@ -350,4 +350,3 @@ if __name__ == "__main__":
         create_aaf(aaf_file, media_streams,name)
     finally:
         shutil.rmtree(tempdir)
-    

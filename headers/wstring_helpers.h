@@ -8,7 +8,7 @@
 std::wstring toWideString( const char* cstr )
 {
 	std::wostringstream os;
-    
+
 	size_t i;
 	for (i = 0; i < strlen(cstr); i++ ){
 		wchar_t wc;
@@ -16,7 +16,7 @@ std::wstring toWideString( const char* cstr )
 			os << wc;
 		}
 	}
-    
+
 	return std::wstring( os.str() );
 }
 
@@ -25,7 +25,7 @@ std::string wideToString( const std::wstring& s )
 {
 	std::stringstream os;
 	const wchar_t* ws = s.c_str();
-	
+
 	size_t i;
 	for (i = 0; i < s.length(); i++ ){
 		char c;
@@ -33,7 +33,7 @@ std::string wideToString( const std::wstring& s )
 			os << c;
 		}
 	}
-    
+
 	return os.str();
 }
 

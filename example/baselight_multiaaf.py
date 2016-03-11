@@ -71,14 +71,14 @@ FFPROBE_EXEC = "/usr/local/bin/ffprobe"
 AVID_MXF_INFO_EXEC = "/usr/local/bin/avidmxfinfo"
 
 def probe(path):
-    
+
     cmd = [FFPROBE_EXEC, '-of','json','-show_format','-show_streams', path]
     #print subprocess.list2cmdline(cmd)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout,stderr = p.communicate()
     if p.returncode != 0:
         raise subprocess.CalledProcessError(p.returncode, subprocess.list2cmdline(cmd), stderr)
-    
+
     return json.loads(stdout)
 
 def chunks(l, n):
@@ -88,13 +88,13 @@ def chunks(l, n):
         yield l[i:i+n]
 
 def parse_umid(line):
-    
+
     line = line.split(' = ')[-1]
     umid =  "urn:smpte:umid:" + '.'.join([item for item in chunks(line, 8) ])
-    
+
     mob_id = aaf.util.MobID(umid)
     mob_id.material = line[-32:]
-    
+
     return mob_id
 
 def mxfinfo(path):
@@ -104,10 +104,10 @@ def mxfinfo(path):
     stdout,stderr = p.communicate()
     if p.returncode != 0:
         raise subprocess.CalledProcessError(p.returncode, subprocess.list2cmdline(cmd), stderr)
-    
+
     file_package_uid = None
     reel_uid = None
-    
+
     for line in stdout.splitlines():
         #print line
         if line.startswith("Physical package UID"):
@@ -171,49 +171,49 @@ for path in filelist:
         stream_metadata = stream['tags']
         material_name = metadata['material_package_name']
         mastermob.name = material_name
-        
+
         file_package_uuid = stream_metadata['file_package_uid']
         file_package_name = stream_metadata['file_package_name']
         #reel_name = stream_metadata['reel_name'] #this seems to choke on baselight made stuff
         reel_uid = stream_metadata['reel_uid']
-        
+
         file_package_mob_id, reel_mob_id,clip_start_timecode = mxfinfo(path)
         codec_type = stream['codec_type']
         rate = fractions.Fraction(stream['avg_frame_rate'])
         duration = int(float(stream['duration']) * float(rate))
-        
+
         print "file package mob id = ", file_package_mob_id
         print "duration of clip =", duration,"frames"
-        
+
         if codec_type == 'video':
             media_kind = "picture"
             width = int(stream['width'])
             height = int(stream['height'])
-            
+
             descriptor = f.create.CDCIDescriptor()
-            
+
             descriptor['StoredHeight'].value = height
             descriptor['StoredWidth'].value = width
             descriptor['ImageAspectRatio'].value = fractions.Fraction(width, height)
-        
+
         elif codec_type == 'audio':
             raise Exception("Audio not supported yet")
         else:
             raise Exception("Unknown media kind %s" % codec_type)
-        
+
         descriptor['Length'].value = duration
-        
+
         src_mob = f.create.SourceMob(file_package_name)
         src_mob.mobID = file_package_mob_id
         src_mob.essence_descriptor = descriptor
         src_mob.add_nil_ref(1, duration, media_kind, rate)
         f.storage.add_mob(src_mob)
-        
+
         source_clip = src_mob.create_clip(1)
-        
+
         mastermob.append_new_timeline_slot(rate, source_clip, 1)
         clip=mastermob.create_clip(1)
-        
+
         master_clips.update({clip_start_timecode:clip})
         #sequence.append(clip) #if you have this here the clips just get butted together in the sequence ie not in the right place
         print >>output_text_file, "Clip",clipnum,baselightjustname,"Start",frames_to_timecode(int(clip_start_timecode)),"Duration",frames_to_timecode(int(clip.length))
@@ -277,4 +277,3 @@ print >>output_text_file, "\nTotal Number of Clips",how_many_clips
 
 
 f.save()
-

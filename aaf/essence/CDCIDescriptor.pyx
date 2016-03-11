@@ -1,7 +1,7 @@
 cdef class CDCIDescriptor(DigitalImageDescriptor):
     """
     The CDCIDescriptor class specifies that a file SourceMob is associated with video
-    essence formatted with one luminance component and two color-difference components 
+    essence formatted with one luminance component and two color-difference components
     as specified in this document.
     Informative note: This format is commonly known as YCbCr.
     The CDCIDescriptor class is a sub-class of the DigitalImageDescriptor class.
@@ -11,10 +11,10 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
         self.iid = lib.IID_IAAFCDCIDescriptor
         self.auid = lib.AUID_AAFCDCIDescriptor
         self.ptr = NULL
-    
+
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
-    
+
     cdef query_interface(self, AAFBase obj = None):
         if obj is None:
             obj = self
@@ -22,18 +22,18 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
             query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFCDCIDescriptor)
 
         DigitalImageDescriptor.query_interface(self, obj)
-    
+
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
-            
+
     def __init__(self , root):
-        
+
         cdef Dictionary dictionary = root.dictionary
         dictionary.create_instance(self)
-        
+
         error_check(self.ptr.Initialize())
-            
+
     property component_width:
         """
         The ComponentWidth property.  Specifies the number of bits
@@ -51,7 +51,7 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
             cdef lib.aafInt32 value
             error_check(self.ptr.GetComponentWidth(&value))
             return value
-        
+
     property horizontal_subsampling:
         """
         The HorizontalSubsampling property.  Specifies the ratio of
@@ -67,7 +67,7 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
             cdef lib.aafUInt32 value
             error_check(self.ptr.GetHorizontalSubsampling(&value))
             return value
-        
+
     property vertical_subsampling:
         """
         The VerticalSubsampling property.  Specifies the ratio of
@@ -83,7 +83,7 @@ cdef class CDCIDescriptor(DigitalImageDescriptor):
             cdef lib.aafUInt32 value
             error_check(self.ptr.GetVerticalSubsampling(&value))
             return value
-        
+
     property color_range:
         """
         The ColorRange property.  Specifies the range of allowable

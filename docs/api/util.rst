@@ -8,7 +8,7 @@ AUID
 
    .. autoclass:: SourceRef
        :members:
-       
+
 MobID
 -----
 
@@ -20,7 +20,7 @@ SourceRef
 
    .. autoclass:: SourceRef
        :members:
-       
+
 Timecode
 --------
 

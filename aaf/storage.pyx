@@ -11,12 +11,12 @@ from .essence cimport EssenceData
 from wstring cimport wstring,toWideString
 import os
 import weakref
-        
+
 include "storage/File.pyx"
 include "storage/Header.pyx"
 include "storage/ContentStorage.pyx"
 include "storage/Identification.pyx"
-        
+
 register_object(Header)
 register_object(ContentStorage)
 register_object(Identification)

@@ -25,13 +25,13 @@ from .fraction_util import AAFFraction
 include "mob/Mob.pyx"
 include "mob/MasterMob.pyx"
 include "mob/CompositionMob.pyx"
-include "mob/SourceMob.pyx"        
-include "mob/MobSlot.pyx"            
+include "mob/SourceMob.pyx"
+include "mob/MobSlot.pyx"
 include "mob/TimelineMobSlot.pyx"
 include "mob/EventMobSlot.pyx"
 include "mob/StaticMobSlot.pyx"
-            
-register_object(Mob)           
+
+register_object(Mob)
 register_object(MasterMob)
 register_object(CompositionMob)
 register_object(SourceMob)

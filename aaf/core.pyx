@@ -6,9 +6,9 @@ def register_all(path=None):
     """
     Loads AAF dll and registers shared plugins.
     """
-    
+
     cdef bytes c_path
-    
+
     if path:
         if isinstance(path, unicode):
             c_path = path.encode("ascii")
@@ -17,7 +17,7 @@ def register_all(path=None):
         error_check(lib.AAFLoad(c_path))
     else:
         error_check(lib.AAFLoad(NULL))
-        
+
     cdef lib.IAAFPluginManager *plugin_manager
     plugin_manager = NULL
     try:

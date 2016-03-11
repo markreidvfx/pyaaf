@@ -1,5 +1,5 @@
 cimport lib
-    
+
 cdef class AAFBase(object):
     cdef lib.GUID iid
     cdef readonly object root

@@ -6,10 +6,10 @@ cdef class Selector(Segment):
         self.iid = lib.IID_IAAFSelector
         self.auid = lib.AUID_AAFSelector
         self.ptr = NULL
-    
+
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
-    
+
     cdef query_interface(self, AAFBase obj = None):
         if obj is None:
             obj = self
@@ -17,7 +17,7 @@ cdef class Selector(Segment):
             query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFSelector)
 
         Segment.query_interface(self, obj)
-    
+
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
@@ -37,7 +37,7 @@ cdef class Selector(Segment):
         error_check(self.ptr.EnumAlternateSegments(&value.ptr))
         value.root = self.root
         return value
-            
+
     property selected:
         def __get__(self):
             cdef Segment seg = Segment.__new__(Segment)

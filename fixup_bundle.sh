@@ -19,4 +19,3 @@ OLD_PATH=`echo $OLD_PATH`
 echo "$OLD_PATH -> $NEW_PATH"
 echo "install_name_tool -change $OLD_PATH $NEW_PATH $CORE"
 install_name_tool -change $OLD_PATH $NEW_PATH $CORE
-

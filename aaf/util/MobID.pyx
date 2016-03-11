@@ -15,7 +15,7 @@ cdef class MobID(object):
     cdef object _from_str(self, object mob_id):
         self.urn = mob_id
         return
-        
+
     cdef object _from_list(self, object id_list):
         f = "urn:smpte:umid:%02x%02x%02x%02x.%02x%02x%02x%02x.%02x%02x%02x%02x." + \
              "%02x"  + \
@@ -24,26 +24,26 @@ cdef class MobID(object):
         if len(id_list) != 32:
             raise ValueError("Invalid length expected 32 got %d"  % len(id_list))
         self.urn = f % tuple(id_list)
-    
+
     cdef object _from_dict(self, dict d):
         self.mobID.length = d.get("length", 0)
         self.mobID.instanceHigh = d.get("instanceHigh", 0)
         self.mobID.instanceMid = d.get("instanceMid", 0)
         self.mobID.instanceLow = d.get("instanceLow", 0)
-        
+
         material = d.get("material", {'Data1':0, 'Data2':0, 'Data3':0})
-        
+
         self.mobID.material.Data1 = material.get('Data1', 0)
         self.mobID.material.Data2 = material.get('Data2', 0)
         self.mobID.material.Data3 = material.get('Data3', 0)
-        
+
         Data4 = material.get("Data4", [0 for i in xrange(8)])
-        
+
         for i in xrange(8):
             if i >= len(Data4):
                 break
             self.mobID.material.Data4[i] = Data4[i]
-            
+
         SMPTELabel = d.get("SMPTELabel", [0 for i in xrange(12)])
         for i in xrange(12):
             if i >= len(SMPTELabel):
@@ -53,7 +53,7 @@ cdef class MobID(object):
 
     cdef lib.aafMobID_t get_aafMobID_t(self):
         return self.mobID
-    
+
     @staticmethod
     def from_dict(dict d):
         return MobID(d)
@@ -61,7 +61,7 @@ cdef class MobID(object):
     @staticmethod
     def from_list(mobid_list):
         return MobID(mobid_list)
-    
+
     def to_list(self):
         umid = self.urn
         for item in ("urn:smpte:umid:",'.' ):
@@ -69,22 +69,22 @@ cdef class MobID(object):
         return [int(umid[i:i+2], 16) for i in range(0, len(umid), 2)]
 
     def to_dict(self):
-        
+
         material = {'Data1': self.mobID.material.Data1,
                     'Data2': self.mobID.material.Data2,
                     'Data3': self.mobID.material.Data3,
                     'Data4': [self.mobID.material.Data4[i] for i in xrange(8)]
                     }
         SMPTELabel = [self.mobID.SMPTELabel[i] for i in xrange(12)]
-        
-        return {'material':material, 
+
+        return {'material':material,
                 'length': self.mobID.length,
                 'instanceHigh': self.mobID.instanceHigh,
                 'instanceMid': self.mobID.instanceMid,
                 'instanceLow': self.mobID.instanceLow,
                 'SMPTELabel': SMPTELabel
                 }
-    
+
     def __richcmp__(x, y, int op):
         if op == 2 or 3:
             result = False
@@ -93,10 +93,10 @@ cdef class MobID(object):
             if op == 3:
                 return not result
             return result
-        
+
         raise NotImplemented("richcmp %d not not Implemented" % op)
-        
-    
+
+
     def __repr__(self):
         return '<%s.%s of %s at 0x%x>' % (
             self.__class__.__module__,
@@ -205,7 +205,7 @@ cdef class MobID(object):
                     self.mobID.material.Data4[i] = data[i + 24]
 
     property umid:
-        
+
         def __get__(self):
             f = "0x%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X" + \
                 "%02X"  + \
@@ -228,7 +228,7 @@ cdef class MobID(object):
             self.urn = value
 
     property material:
-        
+
         def __get__(self):
             cdef AUID auid = AUID()
             auid.auid = self.mobID.material
