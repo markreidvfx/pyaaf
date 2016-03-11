@@ -40,7 +40,7 @@ class TestFile(unittest.TestCase):
 
         for mob in f.storage.mobs():
             assert mob == f.storage.lookup_mob(mob.mobID)
-            assert mob == f.storage.lookup_mob(mob.mobID).mobID
+            assert mob.mobID == f.storage.lookup_mob(mob.mobID).mobID
 
     def test_auid(self):
 

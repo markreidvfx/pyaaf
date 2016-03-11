@@ -161,20 +161,6 @@ cdef class Mob(AAFObject):
             if item.name == name:
                 return item
 
-    def __richcmp__(x, y, int op):
-        if op == 2:
-
-            if isinstance(x, Mob):
-                x = x.mobID
-
-            if isinstance(y, Mob):
-                y = y.mobID
-
-            if str(x) == str(y):
-                return True
-            return False
-        raise NotImplemented("richcmp %d not not Implemented" % op)
-
     def __repr__(self):
         name = self.name
         if name:
