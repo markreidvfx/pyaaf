@@ -124,6 +124,21 @@ class TestFile(unittest.TestCase):
 
         assert iter_count(iterable) == 199 - skip_amount
 
+    def test_compare(self):
+        f = aaf.open(main_test_file)
+        comp_mob1 = f.storage.toplevel_mobs()[0]
+        comp_mob2 = f.storage.toplevel_mobs()[0]
+
+        for slot_a, slot_b in zip(comp_mob1.slots(), comp_mob2.slots()):
+            self.assertEqual(slot_a, slot_b)
+
+        self.assertNotEqual(comp_mob1.slots()[0], comp_mob1.slots()[1])
+        self.assertNotEqual(comp_mob1.slots()[0], comp_mob2.slots()[1])
+
+        self.assertNotEqual(comp_mob1.slots()[0], f.storage)
+
+        self.assertNotEqual(comp_mob1.slots()[0], None)
+
 
 if __name__ == '__main__':
     unittest.main()

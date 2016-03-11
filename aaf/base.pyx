@@ -29,6 +29,14 @@ cdef class AAFBase(object):
     cdef resolve(self):
         return resolve_object(self)
 
+    def __richcmp__(AAFBase a, AAFBase b, int op):
+        if op == 2:
+            return a.base_ptr == b.base_ptr
+        elif op == 3:
+            return a.base_ptr != b.base_ptr
+        else:
+            raise NotImplemented("< > <= >= comparisons not supported")
+
     def __dealloc__(self):
         if self.base_ptr:
             self.base_ptr.Release()
