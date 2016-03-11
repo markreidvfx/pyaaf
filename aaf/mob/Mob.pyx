@@ -218,6 +218,16 @@ cdef class Mob(AAFObject):
 
     property mobID:
         """
+        (Deprecated property use mob_id instead)
+        The unique Mob ID associated with this mob. Get Returns MobID Object
+        """
+        def __get__(self):
+            return self.mob_id
+        def __set__(self, value):
+            self.mob_id = value
+
+    property mob_id:
+        """
         The unique Mob ID associated with this mob. Get Returns MobID Object
         """
         def __get__(self):
