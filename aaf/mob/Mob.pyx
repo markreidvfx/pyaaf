@@ -43,6 +43,9 @@ cdef class Mob(AAFObject):
                 return slot
         raise IndexError("Invalid slot number: %d" % slotID)
 
+    def remove_slot(self, lib.aafUInt32 index):
+        error_check(self.ptr.RemoveSlotAt(index))
+
     def insert_slot(self, lib.aafUInt32 index, MobSlot slot):
         """insert_slot(index, slot)
         Inserts the given slot into this mob at the given index.  All
@@ -50,6 +53,9 @@ cdef class Mob(AAFObject):
         index to accommodate.
         """
         error_check(self.ptr.InsertSlotAt(index, slot.slot_ptr))
+
+    def prepend_slot(self,  MobSlot slot):
+        error_check(self.ptr.PrependSlot(slot.slot_ptr))
 
     def append_slot(self, MobSlot slot not None):
         error_check(self.ptr.AppendSlot(slot.slot_ptr))
