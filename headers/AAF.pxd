@@ -886,7 +886,8 @@ cdef extern from "AAF.h" nogil:
     cdef GUID IID_IAAFMob2
     cdef cppclass IAAFMob2(IUnknown):
         HRESULT AppendAttribute(aafCharacter *pName, aafCharacter *pValue)
-
+        HRESULT SetUsageCode(aafUID_constref  usageCode)
+        HRESULT GetUsageCode(aafUID_t *  pUsageCode)
 
     cdef aafUID_t AUID_AAFMasterMob
     cdef GUID IID_IAAFMasterMob

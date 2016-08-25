@@ -7,6 +7,7 @@ cdef class Mob(AAFObject):
         self.iid = lib.IID_IAAFMob
         self.auid = lib.AUID_AAFMob
         self.ptr = NULL
+        self.mob2_ptr = NULL
 
     cdef lib.IUnknown **get_ptr(self):
         return <lib.IUnknown **> &self.ptr
@@ -247,3 +248,15 @@ cdef class Mob(AAFObject):
         def __set__(self, value):
             cdef MobID mobID_obj = MobID(value)
             error_check(self.ptr.SetMobID(mobID_obj.get_aafMobID_t()))
+
+    property usage_code:
+        def __get__(self):
+            return self['UsageCode'].value
+
+        def __set__(self, value):
+            cdef AUID auid
+            for key, auid in self['UsageCode'].typedef.elements().items():
+                if key == value:
+                    error_check(self.mob2_ptr.SetUsageCode(auid.auid))
+                    return
+            raise Exception("Invalid UsageCode %s", value)
