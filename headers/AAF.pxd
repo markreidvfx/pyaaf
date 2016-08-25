@@ -219,6 +219,11 @@ cdef extern from "AAF.h" nogil:
         HRESULT GetTypeDef(IAAFTypeDef ** ppTypeDef)
         HRESULT GetIsOptional(aafBoolean_t *  pIsOptional)
         HRESULT GetIsUniqueIdentifier(aafBoolean_t *  pIsUniqueIdentifier)
+        HRESULT GetNameBufLen(aafUInt32 *  pBufSize)
+        HRESULT GetName(aafCharacter *  pName, aafUInt32  bufSize)
+        HRESULT SetDescription(aafCharacter *  pDescription)
+        HRESULT GetDescriptionBufLen(aafUInt32 *  pBufSize)
+        HRESULT GetDescription( aafCharacter *  pDescription, aafUInt32  bufSize)
 
 
     cdef GUID IID_IAAFTypeDef
