@@ -189,6 +189,12 @@ cdef class PropertyValue(AAFBase):
             return result
         return self
 
+    property defined_type:
+        def __get__(self):
+            cdef lib.aafBoolean_t b
+            error_check(self.ptr.IsDefinedType(&b))
+            return b == 1
+
     property value:
         def __get__(self):
             typedef = self.typedef()
