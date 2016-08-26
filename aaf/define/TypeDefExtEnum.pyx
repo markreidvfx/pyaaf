@@ -105,7 +105,9 @@ cdef class TypeDefExtEnum(TypeDef):
         buf.write_str(value)
 
         for name, auid in self.elements().items():
+
             if name == value:
                 error_check(self.ptr.SetAUIDValue(p_value.ptr, auid.auid))
+                return
 
         raise ValueError("Invalid TypeDefExtEnum Key %s" % value)
