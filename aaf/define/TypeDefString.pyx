@@ -18,6 +18,16 @@ cdef class TypeDefString(TypeDef):
         if self.ptr:
             self.ptr.Release()
 
+    def __init__(self, root, AUID auid not None, name not None, TypeDef element_typedef = None):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_meta_instance(self, lib.AUID_AAFTypeDefString)
+        if element_typedef is None:
+            element_typedef = dictionary.lookup_typedef("Character")
+
+        cdef AAFCharBuffer aafchar_buf = AAFCharBuffer(name)
+
+        error_check(self.ptr.Initialize(auid.auid, element_typedef.typedef_ptr, aafchar_buf.get_ptr()))
+
     def typedef(self):
         cdef TypeDef typedef = TypeDef.__new__(TypeDef)
         error_check(self.ptr.GetType(&typedef.typedef_ptr))
