@@ -68,7 +68,8 @@ class TestCommentMaker(unittest.TestCase):
         marker['CommentMarkerTime'].value = "22:40"
         marker['CommentMarkerDate'].value = "06/18/2016"
         marker['CommentMarkerUSer'].value = "USERNAME"
-        marker["CommentMarkerColor"].value = {"red":65535, "green":0, "blue":0}
+        marker_colors = {"red":41471, "green":12134, "blue":6564}
+        marker["CommentMarkerColor"].value = marker_colors
 
         int32_typedef =  f.dictionary.lookup_typedef("Int32")
         crm_id = "060a2b340101010101010f0013-000000-5766066e2cd404e5-060e2b347f7f-2a80"
@@ -87,8 +88,13 @@ class TestCommentMaker(unittest.TestCase):
         tagged_values = [f.create.TaggedValue(name, value, typedef) for name, value,typedef in attr_data]
 
         marker["CommentMarkerAttributeList"].value = tagged_values
-        for tag in marker["CommentMarkerAttributeList"].value:
-            print(tag.name, tag.value)
+        for i,tag in enumerate(marker["CommentMarkerAttributeList"].value):
+            self.assertEqual(tag.name, attr_data[i][0])
+            self.assertEqual(tag.value, attr_data[i][1])
+            self.assertEqual(tag.typedef(), attr_data[i][2])
+
+        self.assertEqual(marker["CommentMarkerColor"].value, marker_colors)
+        self.assertEqual(marker['CommentMarkerUSer'].value, "USERNAME")
 
 if __name__ == "__main__":
     unittest.main()
