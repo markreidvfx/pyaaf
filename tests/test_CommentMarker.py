@@ -70,11 +70,23 @@ class TestCommentMaker(unittest.TestCase):
         marker['CommentMarkerUSer'].value = "USERNAME"
         marker["CommentMarkerColor"].value = {"red":65535, "green":0, "blue":0}
 
-        data = {'_ATN_CRM_USER': "USERNAME",
-                '_ATN_CRM_DATE': "06/18/2016",
-                '_ATN_CRM_COLOR': "Red"}
+        int32_typedef =  f.dictionary.lookup_typedef("Int32")
+        crm_id = "060a2b340101010101010f0013-000000-5766066e2cd404e5-060e2b347f7f-2a80"
+        crm_com = "This is the first marker text"
 
-        marker["CommentMarkerAttributeList"].value = [f.create.TaggedValue(name, value) for name, value in data.items()]
+        attr_data = [('_ATN_CRM_LONG_CREATE_DATE', 1466304031,   int32_typedef ),
+                     ('_ATN_CRM_USER',             "USERNAME",   string_typedef),
+                     ('_ATN_CRM_DATE',             "06/18/2016", string_typedef),
+                     ('_ATN_CRM_TIME',             "22:40",      string_typedef),
+                     ('_ATN_CRM_COLOR',            "Red",        string_typedef),
+                     ('_ATN_CRM_COM',              crm_com,      string_typedef),
+                     ('_ATN_CRM_LONG_MOD_DATE',    1466304042,   int32_typedef ),
+                     ('_ATN_CRM_ID',               crm_id,       string_typedef),
+                    ]
+
+        tagged_values = [f.create.TaggedValue(name, value, typedef) for name, value,typedef in attr_data]
+
+        marker["CommentMarkerAttributeList"].value = tagged_values
         for tag in marker["CommentMarkerAttributeList"].value:
             print(tag.name, tag.value)
 
