@@ -67,6 +67,7 @@ include "essence/NetworkLocator.pyx"
 
 include "essence/EssenceDescriptor.pyx"
 include "essence/FileDescriptor.pyx"
+include "essence/DataEssenceDescriptor.pyx"
 include "essence/WAVEDescriptor.pyx"
 include "essence/AIFCDescriptor.pyx"
 include "essence/TIFFDescriptor.pyx"
@@ -84,6 +85,7 @@ register_object(Locator)
 register_object(NetworkLocator)
 register_object(EssenceDescriptor)
 register_object(FileDescriptor)
+register_object(DataEssenceDescriptor)
 register_object(WAVEDescriptor)
 register_object(AIFCDescriptor)
 register_object(TIFFDescriptor)

@@ -28,6 +28,9 @@ cdef class EssenceDescriptor(AAFObject):
 cdef class FileDescriptor(EssenceDescriptor):
     cdef lib.IAAFFileDescriptor *file_ptr
 
+cdef class DataEssenceDescriptor(FileDescriptor):
+    cdef lib.IAAFDataEssenceDescriptor *ptr
+
 cdef class WAVEDescriptor(FileDescriptor):
     cdef lib.IAAFWAVEDescriptor *ptr
 

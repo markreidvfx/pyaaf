@@ -18,6 +18,19 @@ cdef class ClassDef(MetaDef):
         if self.ptr:
             self.ptr.Release()
 
+    def __init__(self, root, AUID class_id not None,
+                             ClassDef parent not None,
+                             name not None, is_concrete=True):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_meta_instance(self, lib.AUID_AAFClassDef)
+
+        cdef AAFCharBuffer name_buf = AAFCharBuffer(name)
+
+        error_check(self.ptr.Initialize(class_id.auid,
+                                        parent.ptr,
+                                        name_buf.get_ptr(),
+                                        is_concrete))
+
     def register_optional_propertydef(self, TypeDef property_typdef not None,
                                       AUID property_auid not None, property_name not None):
 

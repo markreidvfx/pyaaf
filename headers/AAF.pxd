@@ -82,6 +82,7 @@ cdef extern from "AAF.h" nogil:
         HRESULT LookupCodecDef(aafUID_t &dataDefinitionId, IAAFCodecDef ** ppParmDef)
         HRESULT LookupContainerDef(aafUID_t &dataDefinitionId, IAAFContainerDef ** ppParmDef)
         HRESULT RegisterTypeDef(IAAFTypeDef * pTypeDef)
+        HRESULT RegisterClassDef(IAAFClassDef * ppClassDef)
         HRESULT RegisterOperationDef(IAAFOperationDef * pOperationDef)
         HRESULT RegisterParameterDef(IAAFParameterDef * pParmDef)
         HRESULT RegisterCodecDef(IAAFCodecDef *pParmDef)
@@ -179,6 +180,7 @@ cdef extern from "AAF.h" nogil:
         HRESULT GetDescription(aafCharacter *pDescription, aafUInt32  bufSize)
         HRESULT GetDescriptionBufLen(aafUInt32 *  pBufSize)
 
+    cdef aafUID_t AUID_AAFClassDef
     cdef GUID IID_IAAFClassDef
     cdef cppclass IAAFClassDef(IUnknown):
         HRESULT Initialize(
@@ -701,6 +703,11 @@ cdef extern from "AAF.h" nogil:
         HRESULT GetSampleRate(aafRational_t *rate)
         HRESULT SetContainerFormat(IAAFContainerDef * format)
         HRESULT GetContainerFormat(IAAFContainerDef ** pFormat)
+
+    cdef aafUID_t AUID_AAFDataEssenceDescriptor
+    cdef GUID IID_IAAFDataEssenceDescriptor
+    cdef cppclass IAAFDataEssenceDescriptor(IUnknown):
+        HRESULT Initialize()
 
     cdef aafUID_t AUID_AAFWAVEDescriptor
     cdef GUID IID_IAAFWAVEDescriptor

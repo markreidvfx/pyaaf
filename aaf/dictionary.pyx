@@ -43,7 +43,7 @@ cdef class Dictionary(AAFObject):
         obj.query_interface()
         obj.root = self.root
 
-    cdef create_meta_instance(self, TypeDef obj, lib.aafUID_t auid):
+    cdef create_meta_instance(self, AAFBase obj, lib.aafUID_t auid):
         error_check(self.ptr.CreateMetaInstance(auid, obj.iid, obj.get_ptr()))
         obj.query_interface()
         obj.root = self.root
@@ -54,10 +54,14 @@ cdef class Dictionary(AAFObject):
         cdef InterpolationDef interp_def
         cdef TypeDef typedef
         cdef TaggedValueDef taggedvalue_def
+        cdef ClassDef class_def
 
         if isinstance(def_obj, TypeDef):
             typedef = def_obj
             error_check(self.ptr.RegisterTypeDef(typedef.typedef_ptr))
+        elif isinstance(def_obj, ClassDef):
+            class_def = def_obj
+            error_check(self.ptr.RegisterClassDef(class_def.ptr))
         elif isinstance(def_obj, OperationDef):
             op_def = def_obj
             error_check(self.ptr.RegisterOperationDef(op_def.ptr))
