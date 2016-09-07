@@ -65,7 +65,7 @@ cdef object lookup_object(object name):
         rename = rename.replace(n,r)
         if rename in OBJECT_MAP:
             return OBJECT_MAP[rename]
-    raise KeyError("No object named %s" % name)
+    return None
 
 cdef object set_resolve_object_func(object obj):
     global RESOLVE_OBJECT_FUNC

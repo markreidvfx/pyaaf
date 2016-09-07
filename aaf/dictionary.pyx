@@ -122,6 +122,8 @@ cdef class Dictionary(AAFObject):
                 return classdef
 
         obj_type = lookup_object(name)
+        if obj_type is None:
+            return None
         instance = obj_type.__new__(obj_type)
         return self.lookup_classdef_by_id(instance.class_auid)
 
@@ -256,9 +258,19 @@ cdef class CreateInstance(object):
 
         return self.create_instance
 
+    def from_classdef(self, ClassDef class_def not None,  *args, **kwargs):
+        cdef AAFBase obj = AAFBase.__new__(AAFBase)
+        error_check(class_def.ptr.CreateInstance(obj.iid, &obj.base_ptr))
+        return obj.resolve()
+
     def from_name(self, name, *args, **kwargs):
 
         obj_type = lookup_object(name)
+        if obj_type is None:
+            classdef = self.dictionary.lookup_classdef(name)
+            if classdef is None:
+                raise KeyError("No object named %s" % name)
+            return self.from_classdef(classdef, *args, **kwargs)
         return obj_type(self.dictionary.root(), *args, **kwargs)
 
 

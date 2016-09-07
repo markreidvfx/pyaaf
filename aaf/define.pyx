@@ -26,6 +26,13 @@ cdef object isA(AAFBase obj1,obj2):
 
     return True
 
+def resolve_closest_class(ClassDef classdef not None):
+    while classdef:
+        obj_type = lookup_object(classdef.name)
+        if obj_type:
+            return obj_type
+        classdef = classdef.parent()
+
 def resolve_object_func(AAFBase obj):
     """
     resolve any AAFBase object into it highest level class
@@ -38,14 +45,14 @@ def resolve_object_func(AAFBase obj):
         test_aaf_obj = AAFObject.__new__(AAFObject)
         test_aaf_obj.query_interface(obj)
         try:
-            obj_type = lookup_object(test_aaf_obj.class_name)
+            obj_type = resolve_closest_class(test_aaf_obj.classdef())
             new_obj = obj_type.__new__(obj_type)
             new_obj.query_interface(obj)
             new_obj.root = obj.root
             return new_obj
         except:
-            #print traceback.format_exc()
-            #print "no lookup for %s" % obj.class_name
+            # print traceback.format_exc()
+            # print "no lookup for %s" % test_aaf_obj.class_name
             if isinstance(obj, AAFObject):
                 return obj
             else:

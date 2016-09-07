@@ -13,7 +13,7 @@ cdef class DataEssenceDescriptor(FileDescriptor):
         else:
             query_interface(obj.get_ptr(), <lib.IUnknown **> &self.ptr, lib.IID_IAAFDataEssenceDescriptor)
 
-        PhysicalDescriptor.query_interface(self, obj)
+        FileDescriptor.query_interface(self, obj)
 
     def __dealloc__(self):
         if self.ptr:

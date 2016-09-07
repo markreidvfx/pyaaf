@@ -37,7 +37,14 @@ class TestClassDef(unittest.TestCase):
 
         f.dictionary.register_def(ancd_classdef)
 
-        # f.save("test.xml")
+
+        desc = f.create.ANCDataDescriptor()
+        self.assertEqual(desc.classdef().name, 'ANCDataDescriptor')
+
+        desc['Length'].value = 10
+        self.assertEqual(desc['Length'].value, 10)
+
+        self.assertRaises(RuntimeError, f.create.SubDescriptor)
 
 
 if __name__ == "__main__":
