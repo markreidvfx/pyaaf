@@ -49,13 +49,19 @@ cdef class MobSlot(AAFObject):
         def __get__(self):
             return self.datadef().name
 
-    property slotID:
+    property slot_id:
         def __get__(self):
             cdef lib.aafSlotID_t slotID
             error_check(self.slot_ptr.GetSlotID(&slotID))
             return slotID
         def __set__(self, lib.aafSlotID_t value):
             error_check(self.slot_ptr.SetSlotID(value))
+
+    property slotID:
+        def __get__(self):
+            return self.slot_id
+        def __set__(self, value):
+            self.slot_id = value
 
     property physical_num:
         """
