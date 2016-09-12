@@ -1,4 +1,3 @@
-from cython.view cimport array as cvarray
 
 cdef class EssenceData(AAFObject):
     def __cinit__(self):
