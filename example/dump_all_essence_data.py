@@ -17,6 +17,11 @@ if not args:
 path = args[0]
 
 f = aaf.open(path)
+basename = os.path.basename(path)
+name,ext = os.path.splitext(basename)
+dest_dir = os.path.join(os.path.dirname(path), "%s_essence_data" % name)
+if not os.path.exists(dest_dir):
+    os.makedirs(dest_dir)
 
 
 for i, essence in enumerate(f.storage.essence_data()):
@@ -28,25 +33,38 @@ for i, essence in enumerate(f.storage.essence_data()):
     # codec definition will tell you about the codec of the encoded data
     codec_def = essence_descriptor['CodecDefinition'].value
 
+    codec_def_name = None
+    if codec_def:
+        codec_def_name = codec_def.name
+
     # find a suitable extenstion for output file current only pcm,and dnxhd
-    if codec_def.name == "PCM Codec":
+    if codec_def_name == "PCM Codec":
         sample_rate = essence_descriptor['SampleRate'].value
         channels = essence_descriptor['Channels'].value
         ext = '_%i_%i.pcm' % (sample_rate, channels)
 
-    elif codec_def.name == "AAF DNxHD Codec":
+    elif codec_def_name == "AAF DNxHD Codec" or isinstance(essence_descriptor, aaf.essence.CDCIDescriptor):
         ext = '.dnxhd'
     else:
         ext = ''
 
-    outpuf_file_name = str(mob.mobID).replace("urn:smpte:umid:", '') + ext
+    outpuf_file_name = os.path.join(dest_dir, "stream_%d%s" % (i, ext))
     output_file = open(outpuf_file_name, 'w')
 
-    print "dumping data for source mob", mob.mobID,codec_def.name, essence_descriptor, outpuf_file_name
+    print "dumping data to", outpuf_file_name
 
-    while True:
-        data = essence.read(1024)
-        if not data:
-            break
-        output_file.write(data)
+    use_byte_array = True
+    if use_byte_array:
+        data = bytearray(2048)
+        while True:
+            bytes_read = essence.readinto(data)
+            if not bytes_read:
+                break
+            output_file.write(data[:bytes_read])
+    else:
+        while True:
+            data = essence.read(2048)
+            if not data:
+                break
+            output_file.write(data)
     output_file.close()

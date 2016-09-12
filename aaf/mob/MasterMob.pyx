@@ -219,7 +219,7 @@ cdef class MasterMob(Mob):
 
         return self.slot_at(slot_index)
 
-    def import_audio_essence(self, path, lib.aafUInt32 channels, object sample_rate):
+    def import_audio_essence(self, path, lib.aafUInt32 channels, object sample_rate, object edit_rate = None):
         """import_audio_essence(path, channels, sample_rate)
 
         Import raw PCM audio stream from file.
@@ -243,6 +243,9 @@ cdef class MasterMob(Mob):
 
         audio_essences = []
 
+        if edit_rate is None:
+            edit_rate = sample_rate
+
         cdef EssenceAccess essence
 
         # Add essences for each audio channel
@@ -250,7 +253,7 @@ cdef class MasterMob(Mob):
             essence = self.create_essence(slot_index+i,
                                          'sound',
                                          "PCM",
-                                         sample_rate,
+                                         edit_rate,
                                          sample_rate,
                                          compress = False)
 

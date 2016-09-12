@@ -1,3 +1,5 @@
+from cython.view cimport array as cvarray
+
 cdef class EssenceData(AAFObject):
     def __cinit__(self):
         self.iid = lib.IID_IAAFEssenceData
@@ -27,31 +29,58 @@ cdef class EssenceData(AAFObject):
         error_check(self.ptr.Initialize(source_mob.src_ptr))
 
 
-    def read(self, lib.aafUInt32  bytes):
+    def read(self, bytes_to_read = None):
+        cdef lib.aafInt32 readsize
 
-        cdef lib.aafUInt32 readsize = min(bytes, self.size - self.position)
+        if bytes_to_read is None:
+            readsize = self.size - self.position
+        else:
+            readsize = min(bytes_to_read, self.size - self.position)
 
         if readsize <= 0:
             return None
 
-        cdef vector[lib.UChar] buf = vector[lib.UChar](readsize)
+        buf = bytearray(readsize)
+        cdef unsigned char[:] data = buf
         cdef lib.aafUInt32 bytes_read = 0
 
-        error_check(self.ptr.Read(readsize,
-                                  <lib.aafUInt8 *> &buf[0],
-                                  &bytes_read))
+        cdef lib.HRESULT ret
+        with nogil:
+            ret = self.ptr.Read(readsize,
+                                <lib.aafUInt8 *> &data[0],
+                                &bytes_read)
+        error_check(ret)
+        if bytes_read < readsize:
+            return buf[:bytes_read]
 
-        cdef string s = string(<char *> &buf[0], bytes_read )
-        return s
+        return buf
 
-    def write(self, bytes data):
-        cdef string s_data = string(data)
+    def readinto(self, unsigned char[:] data not None):
+        cdef lib.aafUInt32 readsize = len(data)
+        cdef lib.aafUInt32 bytes_read = 0
+
+        cdef lib.aafUInt32 bytes_left = self.size - self.position
+        if bytes_left <= 0 or readsize == 0:
+            return 0
+
+        cdef lib.HRESULT ret
+        with nogil:
+            ret = self.ptr.Read(readsize,
+                                <lib.aafUInt8 *> &data[0],
+                                &bytes_read)
+        error_check(ret)
+        return bytes_read
+
+    def write(self, unsigned char[:] data not None):
         cdef lib.aafUInt32 bytes_written
-
-        error_check(self.ptr.Write(len(data),
-                                   <lib.aafUInt8 *> s_data.c_str(),
-                                   &bytes_written
-                                   ))
+        cdef lib.HRESULT ret
+        cdef lib.aafUInt32 data_size = len(data)
+        with nogil:
+            ret = self.ptr.Write(data_size,
+                                 <lib.aafUInt8 *> &data[0],
+                                 &bytes_written)
+        error_check(ret)
+        return bytes_written
 
     property position:
         def __get__(self):
