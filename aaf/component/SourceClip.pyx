@@ -99,12 +99,10 @@ cdef class SourceClip(SourceReference):
 
     property slot_id:
         def __get__(self):
-            return self.source_ref.slot_id
+            return self['SourceMobSlotID'].value
 
         def __set__(self, value):
-            source_ref = self.source_ref
-            source_ref.slot_id = value
-            self.source_ref = source_ref
+            self['SourceMobSlotID'].value = value
 
     property mob_id:
         def __get__(self):
