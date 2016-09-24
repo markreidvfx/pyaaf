@@ -18,3 +18,10 @@ cdef class ScopeReference(Segment):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+
+    def __init__(self, root, media_kind, lib.aafUInt32 scope = 0, lib.aafUInt32 relative_slot = 0 ):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+
+        cdef DataDef data_def = self.dictionary().lookup_datadef(media_kind)
+        error_check(self.ptr.Initialize(data_def.ptr, scope, relative_slot))
