@@ -36,6 +36,11 @@ cdef class EssenceGroup(Segment):
         seg.root = self.root
         return seg.resolve()
 
+    def append(self, Segment segment not None):
+        error_check(self.ptr.AppendChoice(segment.seg_ptr))
+
+    def insert(self, lib.aafUInt32 index, Segment segment not None):
+        error_check(self.ptr.InsertChoiceAt(index, segment.seg_ptr))
 
     def choices(self):
         for i in xrange(self.count):
