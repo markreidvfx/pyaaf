@@ -22,6 +22,12 @@ cdef class EssenceGroup(Segment):
         if self.ptr:
             self.ptr.Release()
 
+    def __init__(self, root):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+
+        # not Initialize
+
     def choice_at(self, lib.aafUInt32 index):
         cdef Segment seg = Segment.__new__(Segment)
         error_check(self.ptr.GetChoiceAt(index, &seg.seg_ptr))
