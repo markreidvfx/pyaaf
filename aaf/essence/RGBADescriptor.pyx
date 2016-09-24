@@ -18,3 +18,9 @@ cdef class RGBADescriptor(DigitalImageDescriptor):
     def __dealloc__(self):
         if self.ptr:
             self.ptr.Release()
+
+    def __init__(self, root):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+
+        # no Initialize
