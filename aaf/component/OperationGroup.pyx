@@ -73,10 +73,10 @@ cdef class OperationGroup(Segment):
             seg.root = self.root
             yield seg.resolve()
 
-    def append_segment(self, Segment seg not None):
+    def append(self, Segment seg not None):
         error_check(self.ptr.AppendInputSegment(seg.seg_ptr))
 
-    def insert_segment(self, lib.aafUInt32 index, Segment seg not None):
+    def insert(self, lib.aafUInt32 index, Segment seg not None):
         error_check(self.ptr.InsertInputSegmentAt(index, seg.seg_ptr))
 
     def operationdef(self):
