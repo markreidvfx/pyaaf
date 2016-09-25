@@ -127,6 +127,16 @@ cdef class Dictionary(AAFObject):
         instance = obj_type.__new__(obj_type)
         return self.lookup_classdef_by_id(instance.class_auid)
 
+    def lookup_operationdef(self, name not None):
+        for op in self.operationdefs():
+            if op.name == name:
+                return op
+
+    def lookup_parameterdef(self, name not None):
+        for p in self.parameterdefs():
+            if p.name == name:
+                return p
+
     def lookup_classdef_by_id(self, AUID auid not None):
         cdef ClassDef classdef = ClassDef.__new__(ClassDef)
 
