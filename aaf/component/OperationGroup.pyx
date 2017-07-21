@@ -113,7 +113,7 @@ cdef class OperationGroup(Segment):
             error_check(self.ptr.GetRender(&source_ref.ref_ptr))
             source_ref.query_interface()
             source_ref.root = self.root
-            return source_ref.resovle()
+            return source_ref.resolve()
 
         def __set__(self, SourceReference source_ref not None):
             error_check(self.ptr.SetRender(source_ref.ref_ptr))
