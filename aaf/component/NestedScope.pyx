@@ -24,3 +24,28 @@ cdef class NestedScope(Segment):
         error_check(self.ptr.GetSegments(&seg_iter.ptr))
         seg_iter.root = self.root
         return seg_iter
+
+    def __init__(self, root, media_kind not None, lib.aafLength_t length):
+        cdef Dictionary dictionary = root.dictionary
+        dictionary.create_instance(self)
+
+        self.media_kind = media_kind
+        self.length = length
+
+    def append(self, Segment seg not None):
+        error_check(self.ptr.AppendSegment(seg.seg_ptr))
+
+    def prepend(self, Segment seg not None):
+        error_check(self.ptr.PrependSegment(seg.seg_ptr))
+
+    def insert(self, lib.aafUInt32 index, Segment seg not None):
+        error_check(self.ptr.InsertSegmentAt(index, seg.seg_ptr))
+
+    def remove(self, lib.aafUInt32 index):
+        error_check(self.ptr.RemoveSegmentAt(index))
+
+    property count:
+        def __get__(self):
+            cdef lib.aafUInt32 count
+            error_check(self.ptr.CountSegments(&count))
+            return count
