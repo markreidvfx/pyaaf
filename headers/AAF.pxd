@@ -895,6 +895,14 @@ cdef extern from "AAF.h" nogil:
         HRESULT AppendAttribute(aafCharacter *pName, aafCharacter *pValue)
         HRESULT SetUsageCode(aafUID_constref  usageCode)
         HRESULT GetUsageCode(aafUID_t *  pUsageCode)
+        HRESULT AppendNewEventSlot(
+            aafRational_t  editRate,
+            IAAFSegment * pSegment,
+            aafSlotID_t  slotID,
+            aafCharacter  *pSlotName,
+            aafPosition_t  origin,
+            IAAFEventMobSlot ** ppNewSlot
+        )
 
     cdef aafUID_t AUID_AAFMasterMob
     cdef GUID IID_IAAFMasterMob

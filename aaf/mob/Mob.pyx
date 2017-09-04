@@ -112,6 +112,30 @@ cdef class Mob(AAFObject):
         timeline.root = self.root
         return timeline
 
+    def append_new_event_slot(self, edit_rate , Segment seg not None, lib.aafSlotID_t slotID = 0,
+                              slot_name = None, lib.aafPosition_t origin = 0):
+        """append_new_event_slot(edit_rate, seg, slotID = 0, slot_name = None, origin = 0)
+        """
+        if slot_name is None:
+            slot_name = 'event slot %d' % slotID
+
+        cdef EventMobSlot timeline = EventMobSlot.__new__(EventMobSlot)
+        cdef lib.aafRational_t edit_rate_t
+        fraction_to_aafRational(edit_rate, edit_rate_t)
+
+        cdef AAFCharBuffer slot_name_buf = AAFCharBuffer(slot_name)
+
+        error_check(self.mob2_ptr.AppendNewEventSlot(edit_rate_t,
+                                                  seg.seg_ptr,
+                                                  slotID,
+                                                  slot_name_buf.get_ptr(),
+                                                  origin,
+                                                  &timeline.ptr
+                                                  ))
+        timeline.query_interface()
+        timeline.root = self.root
+        return timeline
+
     def append_comment(self, name not None, value not None):
         """append_comment(name, value)
         """
