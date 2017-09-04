@@ -47,7 +47,7 @@ cdef class Mob(AAFObject):
     def remove_slot(self, lib.aafUInt32 index):
         error_check(self.ptr.RemoveSlotAt(index))
 
-    def insert_slot(self, lib.aafUInt32 index, MobSlot slot):
+    def insert_slot(self, lib.aafUInt32 index, MobSlot slot not None):
         """insert_slot(index, slot)
         Inserts the given slot into this mob at the given index.  All
         existing slots at the given and higher index will be moved up one
@@ -82,7 +82,7 @@ cdef class Mob(AAFObject):
 
         return d.create.SourceClip(source_slot.media_kind, length, source_ref)
 
-    def append_new_timeline_slot(self, edit_rate, Segment seg, lib.aafSlotID_t slotID = 0,
+    def append_new_timeline_slot(self, edit_rate, Segment seg not None, lib.aafSlotID_t slotID = 0,
                                  slot_name = None, lib.aafPosition_t origin = 0):
 
         """append_new_timeline_slot(edit_rate, seg, slotID = 0, slot_name = None, origin = 0)
