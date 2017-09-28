@@ -17,17 +17,9 @@ before_install:
     - wget http://sourceforge.net/projects/aaf/files/AAF-devel-libs/1.1.6/AAF-devel-libs-x86_64Linux-1.1.6.0.tar.gz
     - tar -xvf AAF-devel-libs-x86_64Linux-1.1.6.0.tar.gz
     - cd ..
-    # install newer version of ffmpeg
+    - sudo add-apt-repository -y ppa:mc3man/trusty-media
     - sudo apt-get update -qq
-    - sudo apt-get build-dep -qq ffmpeg
-    - wget http://ffmpeg.org/releases/ffmpeg-1.2.2.tar.bz2
-    - tar -xf ffmpeg-1.2.2.tar.bz2
-    - cd ffmpeg-1.2.2
-    # disable stuff we don't need only using ffmpeg for dv, dnxhd and audio encoding
-    - ./configure --disable-doc
-    - make
-    - sudo make install
-    - cd ..
+    - sudo apt-get install ffmpeg
 
 # Install build requirements.
 install: pip install cython
