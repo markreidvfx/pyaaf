@@ -5,6 +5,7 @@ import aaf.define
 import aaf.iterator
 import aaf.dictionary
 import aaf.storage
+from aaf.util import AUID
 
 import unittest
 import traceback
@@ -31,6 +32,49 @@ class TestFile(unittest.TestCase):
         test_file = os.path.join(sandbox,"new_file.aaf")
         f = aaf.open(test_file, 'w')
         f.save()
+
+
+    def test_file_identification(self):
+        test_file = os.path.join(sandbox,"identification_file.aaf")
+
+        ident = {'product_id': AUID('12345678-1234-1234-1234-123456789901'),
+                 "company_name": "Some Company",
+                 "product_name": "Product",
+                 'product_version_string': "12345"
+                 }
+
+        f = aaf.open(test_file, 'w', ident)
+        f.save()
+
+        i = f.header['IdentificationList'].value[0]
+
+        self.assertTrue(i['CompanyName'].value == ident['company_name'])
+        self.assertTrue(i['ProductName'].value == ident['product_name'])
+        self.assertTrue(i['ProductVersionString'].value == ident['product_version_string'])
+        self.assertTrue(i['ProductID'].value == ident['product_id'])
+
+    def test_file_modify_identification(self):
+        test_file = os.path.join(sandbox,"identification_modify_file.aaf")
+        ident = {'product_id': AUID('12345678-1234-1234-1234-123456789901'),
+                 "company_name": "Some Company",
+                 "product_name": "Product",
+                 'product_version_string': "12345"
+                 }
+
+        f = aaf.open(test_file, 'w', ident)
+        f.save()
+        f.close()
+
+        f = aaf.open(test_file, 'rw', ident)
+
+        f.save()
+
+        self.assertTrue(len(f.header['IdentificationList'].value) == 2)
+        for i in f.header['IdentificationList'].value:
+            self.assertTrue(i['CompanyName'].value == ident['company_name'])
+            self.assertTrue(i['ProductName'].value == ident['product_name'])
+            self.assertTrue(i['ProductVersionString'].value == ident['product_version_string'])
+            self.assertTrue(i['ProductID'].value == ident['product_id'])
 
     def test_save_as_aaf(self):
         test_file = main_test_file

@@ -6,7 +6,7 @@ cdef class File(AAFBase):
     cdef lib.IAAFFile *ptr
     cdef object mode
     cdef lib.aafProductIdentification_t productInfo
-    cdef object setup_new_file(self, path, mode=*)
+    cdef object setup_new_file(self, path, mode=*, identification=*)
 
 cdef class Header(AAFObject):
     cdef lib.IAAFHeader *ptr

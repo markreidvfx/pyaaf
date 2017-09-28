@@ -49,12 +49,12 @@ cdef class File(AAFBase):
                 error_check(ret)
             self.ptr.Release()
 
-    def __init__(self, path = None, mode = None):
+    def __init__(self, path = None, mode = None, identification = None):
         """__init__(path, mode = 'r')
 
         :param str path: AAF file path, set to `None` if in opening in transient mode.
         :param str mode: Similar to python's native open function modes.
-
+        :param dict identification: a dict of info about the application creating this file
         modes:
 
             * ``"r"`` readonly
@@ -65,6 +65,11 @@ cdef class File(AAFBase):
 
             * ``"t"`` transient in memory file
 
+        identification keys:
+            * company_name str
+            * product_name str
+            * product_id AUID
+            * product_version_string str
         """
 
 
@@ -91,43 +96,36 @@ cdef class File(AAFBase):
 
             error_check(result)
         elif mode == 'rw':
-            self.setup_new_file(path, mode)
+            self.setup_new_file(path, mode, identification)
         elif mode == 'w':
-            self.setup_new_file(path, mode)
+            self.setup_new_file(path, mode, identification)
         elif mode == 't':
-            self.setup_new_file(path, mode)
+            self.setup_new_file(path, mode, identification)
         else:
             raise ValueError("invalid mode: %s" % mode)
         self.mode = mode
         self.query_interface()
 
-    cdef object setup_new_file(self, path, mode='w'):
+    cdef object setup_new_file(self, path, mode='w', identification=None):
 
         cdef AAFCharBuffer path_buf = AAFCharBuffer(path)
 
-        # setup product id
-        cdef lib.aafUID_t productUID
-        productUID.Data1 = 0x97e04c67
-        productUID.Data2 = 0xdbe6
-        productUID.Data3 = 0x4d11
-        for i,value in enumerate((0xbc,0xd7,0x3a,0x3a,0x42,0x53,0xa2,0xef)):
-            productUID.Data4[i] = value
+        ident = identification or {}
+        # not sure were this uuid came from, I might have just made it up
+        cdef AUID product_id = ident.get('product_id', AUID('97e04c67-dbe6-4d11-bcd7-3a3a4253a2ef'))
+        cdef AAFCharBuffer company_name = AAFCharBuffer(ident.get("company_name", "CompanyName"))
+        cdef AAFCharBuffer product_name = AAFCharBuffer(ident.get("product_name", "PyAAF"))
+        cdef AAFCharBuffer product_version_string = AAFCharBuffer(ident.get("product_version_string", "0.9.0"))
 
         productInfo = self.productInfo
-
-        cdef AAFCharBuffer company_name = AAFCharBuffer("CompanyName")
-        cdef AAFCharBuffer product_name = AAFCharBuffer("PyAAF")
-        cdef AAFCharBuffer product_version_string = AAFCharBuffer("0.8.0")
-
         productInfo.companyName = company_name.get_ptr()
         productInfo.productName = product_name.get_ptr()
         productInfo.productVersionString = product_version_string.get_ptr()
-        productInfo.productID = productUID
+        productInfo.productID = product_id.get_auid()
 
         cdef lib.aafUID_t kind = lib.kAAFFileKind_Aaf4KBinary
 
         if mode == 'rw' and os.path.exists(path):
-            #d = dict(productUID)
             error_check(lib.AAFFileOpenExistingModify(path_buf.get_ptr(),
                                                       0, &productInfo,
                                                       &self.ptr))
@@ -150,7 +148,7 @@ cdef class File(AAFBase):
         error_check(lib.AAFFileOpenNewModifyEx(path_buf.get_ptr(),
                                                &kind, 0, &productInfo,
                                                &self.ptr))
-    def save(self, path = None):
+    def save(self, path = None, identification = None):
         """save(path = None)
 
         Save AAF file to disk. If path is ``None`` and the mode is ``"rw"`` or ``"w"`` it will overwrite or modify
@@ -159,6 +157,7 @@ cdef class File(AAFBase):
 
         :param path: optional path to new aaf file.
         :type path: `str` or `None`
+        :param dict identification: a dict of info about the application creating this file
 
         .. note::
 
@@ -170,7 +169,7 @@ cdef class File(AAFBase):
                 error_check(self.ptr.Save())
             return
 
-        cdef File new_file = File(path, 'w')
+        cdef File new_file = File(path, 'w', identification)
 
         error_check(self.ptr.SaveCopyAs(new_file.ptr))
 
