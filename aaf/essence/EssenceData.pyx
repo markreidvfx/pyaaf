@@ -103,3 +103,8 @@ cdef class EssenceData(AAFObject):
             return mob
         def __set__(self, SourceMob mob):
             error_check(self.ptr.SetFileMob(mob.src_ptr))
+    property mob_id:
+        def __get__(self):
+            return self['MobID'].value
+        def __set__(self, value):
+            self['MobID'].value = value

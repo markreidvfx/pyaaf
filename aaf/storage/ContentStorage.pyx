@@ -51,12 +51,12 @@ cdef class ContentStorage(AAFObject):
 
         error_check(self.ptr.RemoveMob(mob.ptr))
 
-    def lookup_mob(self, mobID):
+    def lookup_mob(self, mobID not None):
         """lookup_mob(mobID)
 
         Looks up the Mob that matches the given mob id.
 
-        :param mobID: 9d of :class:`aaf.mob.Mob` to lookup.
+        :param mobID: id of :class:`aaf.mob.Mob` to lookup.
         :type mobID: :class:`aaf.util.MobID` or :class:`str`
         :returns: :class:`aaf.mob.Mob`
         """
@@ -158,6 +158,24 @@ cdef class ContentStorage(AAFObject):
         error_check(self.ptr.EnumEssenceData(&data_iter.ptr))
         data_iter.root = self.root
         return data_iter
+
+    def lookup_essence_data(self, mobID not None):
+        """lookup_essence_data(mobID)
+
+        Looks up the EssenceData that matches the given mob id.
+
+        :param mobID: id of :class:`aaf.essence.EssenceData` to lookup.
+        :type mobID: :class:`aaf.util.MobID` or :class:`str`
+        :returns: :class:`aaf.essence.EssenceData`
+        """
+
+        cdef EssenceData essence = EssenceData.__new__(EssenceData)
+        cdef MobID mobID_obj = MobID(mobID)
+
+        error_check(self.ptr.LookupEssenceData(mobID_obj.mobID, &essence.ptr))
+        essence.query_interface()
+        essence.root = self.root
+        return essence.resolve()
 
     def add_essence_data(self, EssenceData data not None):
         error_check(self.ptr.AddEssenceData(data.ptr))
