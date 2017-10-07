@@ -55,6 +55,18 @@ cdef class MobID(object):
         return self.mobID
 
     @staticmethod
+    def new():
+        cdef MobID m = MobID()
+        m.mobID.SMPTELabel = [0x06, 0x0a, 0x2b, 0x34, 0x01, 0x01, 0x01, 0x05, 0x01, 0x01, 0x0f, 0x00]
+        m.mobID.length = 0x13
+        m.mobID.instanceHigh = 0x00
+        m.mobID.instanceMid = 0x00
+        m.mobID.instanceLow = 0x00
+        import uuid
+        m.material = uuid.uuid4()
+        return m
+
+    @staticmethod
     def from_dict(dict d):
         return MobID(d)
 
