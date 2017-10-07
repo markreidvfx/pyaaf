@@ -114,5 +114,12 @@ class TestMobID(unittest.TestCase):
         print(aaf.util.MobID(umid))
         assert mob.umid == umid
 
+    def test_int(self):
+        for i in range(1000):
+            m = aaf.util.MobID()
+            m.int = i
+            assert m.int == i
+
+
 if __name__ == '__main__':
     unittest.main()

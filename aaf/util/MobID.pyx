@@ -236,3 +236,21 @@ cdef class MobID(object):
         def __set__(self, value):
             cdef AUID auid = AUID(value)
             self.mobID.material = auid.auid
+
+    def __int__(self):
+        return self.int
+
+    property int:
+
+        def __get__(self):
+            cdef lib.aafUInt8 *p = <lib.aafUInt8*> &self.mobID
+            num = 0
+            for i in range(32):
+                num += p[31-i] << (i * 8)
+            return num
+
+        def __set__(self, value):
+
+            cdef lib.aafUInt8 *p = <lib.aafUInt8*> &self.mobID
+            for i in range(32):
+                p[31-i] = (value >> i*8) & 0xff
