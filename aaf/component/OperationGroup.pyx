@@ -79,6 +79,9 @@ cdef class OperationGroup(Segment):
     def insert(self, lib.aafUInt32 index, Segment seg not None):
         error_check(self.ptr.InsertInputSegmentAt(index, seg.seg_ptr))
 
+    def remove(self, lib.aafUInt32 index):
+        error_check(self.ptr.RemoveInputSegmentAt(index))
+
     def operationdef(self):
         cdef OperationDef op_def = OperationDef.__new__(OperationDef)
         error_check(self.ptr.GetOperationDefinition(&op_def.ptr))
