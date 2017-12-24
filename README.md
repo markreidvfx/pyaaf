@@ -1,10 +1,12 @@
-pyaaf
-=====
+PyAAF 1.0
+=========
 
 [![Build Status](https://secure.travis-ci.org/markreidvfx/pyaaf.png?branch=master)](https://travis-ci.org/markreidvfx/pyaaf)
 
 Python Bindings for the Advanced Authoring Format (AAF) written in Cython.
 
+Note:
+> PyAAF 2.0 a pure python implementation is being developed [here](https://github.com/markreidvfx/pyaaf2)
 
 Requirements
 ------------

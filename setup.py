@@ -228,7 +228,7 @@ if not 'clean' in copy_args:
 setup(
     script_args=copy_args,
     name='PyAAF',
-    version='0.9.0',
+    version='1.0.0',
     description='Python Bindings for the Advanced Authoring Format (AAF)',
 
     author="Mark Reid",
