@@ -64,7 +64,7 @@ ext_extra = {
 }
 
 if sys.platform.startswith('linux'):
-    ext_extra['extra_link_args'] = ['-Wl,-R$ORIGIN']
+    ext_extra['extra_link_args'] = ['-Wl,-R$ORIGIN/.libs']
 
 WIN_ARCH = 'Win32'
 
@@ -145,12 +145,19 @@ def copy_com_api(debug=True):
 
     # copy libcom-api
     basename = os.path.basename(com_api)
-    dest = os.path.join(dirpath, 'aaf', basename)
+    if sys.platform.startswith('linux'):
+        copy_root = os.path.join(dirpath, 'aaf', '.libs')
+        if not os.path.exists(copy_root):
+            print('creating', copy_root)
+            os.makedirs(copy_root)
+    else:
+        copy_root = os.path.join(dirpath, 'aaf')
+    dest = os.path.join(copy_root, basename)
     print("copying", os.path.basename(com_api), '->', dest)
     shutil.copy(com_api, dest)
 
     # create ext dir
-    aafext_dir = os.path.join(dirpath, 'aaf', 'aafext')
+    aafext_dir = os.path.join(copy_root, 'aafext')
     if not os.path.exists(aafext_dir):
         print('creating', aafext_dir)
         os.makedirs(aafext_dir)
@@ -209,13 +216,21 @@ class build_pyaaf_ext(build_ext):
                 install_name_tool(item)
         return result
 
-
 com_api, libaafintp, libaafpgapi = get_com_api()
-package_data = [os.path.basename(com_api)]
-for item in (libaafintp, libaafpgapi):
-    package_data.append(os.path.join('aafext', os.path.basename(item)))
 
-package_data = {'aaf':package_data}
+def get_package_data():
+    if sys.platform.startswith("linux"):
+        package_data = [os.path.join('.libs', os.path.basename(com_api))]
+        for item in (libaafintp, libaafpgapi):
+            package_data.append(os.path.join('.libs', 'aafext', os.path.basename(item)))
+    else:
+        package_data = [os.path.basename(com_api)]
+        for item in (libaafintp, libaafpgapi):
+            package_data.append(os.path.join('aafext', os.path.basename(item)))
+
+    return package_data
+
+package_data = {'aaf':get_package_data()}
 
 include_path = ext_extra['include_dirs']
 
